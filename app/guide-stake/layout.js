@@ -29,10 +29,10 @@ export default function GuideLayout({ children }) {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gray-50">
-        <div className="flex relative">
-          {/* Sidebar Desktop */}
-          <aside className="hidden md:block w-64 bg-white shadow-lg fixed h-full overflow-y-auto">
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="flex flex-1">
+          {/* Sidebar Desktop - Non fixed pour ne pas cacher le footer */}
+          <aside className="hidden md:block w-64 bg-white shadow-lg sticky top-0 h-screen overflow-y-auto">
             <div className="p-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center">
                 <span className="text-3xl mr-2">🎲</span>
@@ -123,14 +123,14 @@ export default function GuideLayout({ children }) {
           )}
 
           {/* Main Content */}
-          <main className="flex-1 md:ml-64">
+          <main className="flex-1">
             <div className="container mx-auto px-4 py-8 max-w-4xl mb-20 md:mb-0">
               {children}
             </div>
           </main>
         </div>
 
-        {/* Bottom Bar Mobile - Moved outside main content */}
+        {/* Bottom Bar Mobile */}
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 md:hidden z-40">
           <div className="grid grid-cols-3 py-2">
             <Link href="/" className="flex flex-col items-center py-2">
