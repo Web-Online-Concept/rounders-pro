@@ -28,7 +28,7 @@ export default function Affilies() {
               className="space-y-6"
             >
               {/* Access Key Web3Forms */}
-              <input type="hidden" name="access_key" value="VOTRE-ACCESS-KEY" />
+              <input type="hidden" name="access_key" value="fe6cc4ed-5dc2-4b79-ad1d-909a898798ee" />
               
               {/* Redirection après soumission */}
               <input type="hidden" name="redirect" value="https://www.rounders.pro/merci" />
