@@ -108,29 +108,28 @@ export default function HomePage() {
           </div>
           */}
           <div className="text-center">
-            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
-              Gagnez plus sur Stake avec Rounders
-            </h1>
-            <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
-              Le guide ultime pour maximiser vos gains sur Stake.
-              <br className="hidden md:block" />
-              Bonus exclusifs, stratégies avancées et support en français.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="https://stake.bet/?c=rounders"
-                target="_blank"
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition transform hover:scale-105"
-              >
-                Commencer sur Stake →
-              </a>
-              <Link
-                href="/guide-stake"
-                className="bg-white text-blue-600 border-2 border-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition"
-              >
-                Découvrir le Guide
-              </Link>
-            </div>
+          <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
+            Gagnez plus sur Stake avec Rounders
+          </h1>
+          <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
+            Le guide ultime pour maximiser vos gains sur Stake.
+            <br className="hidden md:block" />
+            Bonus exclusifs, stratégies avancées et support en français.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="https://stake.bet/?c=rounders"
+              target="_blank"
+              className="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition transform hover:scale-105"
+            >
+              Commencer sur Stake →
+            </a>
+            <Link
+              href="/guide-stake"
+              className="bg-white text-blue-600 border-2 border-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition"
+            >
+              Découvrir le Guide
+            </Link>
           </div>
         </div>
       </section>
@@ -199,17 +198,6 @@ export default function HomePage() {
             </div>
 
             <div className="bg-white rounded-lg shadow-xl p-8 transform hover:scale-105 transition">
-              {/* Image Bonus - Décommentez quand prête
-              <div className="mb-4">
-                <Image 
-                  src="/images/bonus-vip.jpg" 
-                  alt="Bonus VIP"
-                  width={400}
-                  height={250}
-                  className="rounded-lg w-full"
-                />
-              </div>
-              */}
               <div className="text-4xl mb-4">💰</div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
                 Bonus Cash VIP
@@ -231,17 +219,6 @@ export default function HomePage() {
             </div>
 
             <div className="bg-white rounded-lg shadow-xl p-8 transform hover:scale-105 transition">
-              {/* Image Affiliés - Décommentez quand prête
-              <div className="mb-4">
-                <Image 
-                  src="/images/espace-affilies.jpg" 
-                  alt="Espace Affiliés"
-                  width={400}
-                  height={250}
-                  className="rounded-lg w-full"
-                />
-              </div>
-              */}
               <div className="text-4xl mb-4">🎁</div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
                 Espace Affiliés VIP
