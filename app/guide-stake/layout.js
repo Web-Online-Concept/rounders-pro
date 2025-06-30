@@ -74,14 +74,14 @@ export default function GuideLayout({ children }) {
             <div className="mt-8 p-4 bg-orange-50 rounded-lg">
               <h3 className="font-semibold text-orange-700 mb-2">💰 Bonus Exclusif</h3>
               <p className="text-sm text-orange-600 mb-3">
-                Inscrivez-vous via notre lien pour recevoir des bonus cash jusqu'à 200€ !
+                Inscrivez-vous via notre lien pour recevoir des bonus cash jusqu&apos;à 200€ !
               </p>
               <a
                 href="https://stake.bet/?c=rounders"
                 target="_blank"
                 className="block text-center bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition font-semibold text-sm"
               >
-                S'inscrire →
+                S&apos;inscrire →
               </a>
             </div>
           </div>
