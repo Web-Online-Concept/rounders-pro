@@ -13,8 +13,8 @@ export default function GuideBonus() {
       {/* Introduction */}
       <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-8">
         <p className="text-blue-800">
-          Stake offre l'un des meilleurs systèmes de bonus du marché. Avec notre code affilié <strong>rounders</strong>, 
-          vous bénéficiez de 5%+ de rakeback dès l'inscription, plus nos bonus cash exclusifs !
+          Stake offre l&apos;un des meilleurs systèmes de bonus du marché. Avec notre code affilié <strong>rounders</strong>, 
+          vous bénéficiez de 5%+ de rakeback dès l&apos;inscription, plus nos bonus cash exclusifs !
         </p>
       </div>
 
@@ -70,7 +70,7 @@ export default function GuideBonus() {
               <div>
                 <h3 className="text-xl font-semibold mb-3">Comment fonctionne le rakeback ?</h3>
                 <p className="text-gray-600 mb-4">
-                  Le rakeback est un pourcentage de l'avantage de la maison (house edge) qui vous est retourné sur chaque mise. 
+                  Le rakeback est un pourcentage de l&apos;avantage de la maison (house edge) qui vous est retourné sur chaque mise. 
                   Par exemple, avec 10% de rakeback sur un jeu avec 1% de house edge, vous récupérez 0.1% de chaque mise.
                 </p>
                 
@@ -102,7 +102,7 @@ export default function GuideBonus() {
                         <td className="px-4 py-3 text-gray-600">Taux de base</td>
                       </tr>
                       <tr className="bg-green-50">
-                        <td className="px-4 py-3 font-semibold">Avec code "rounders"</td>
+                        <td className="px-4 py-3 font-semibold">Avec code &quot;rounders&quot;</td>
                         <td className="px-4 py-3 text-center font-semibold">5%+</td>
                         <td className="px-4 py-3 text-green-600 font-semibold">Boost immédiat !</td>
                       </tr>
@@ -250,7 +250,7 @@ export default function GuideBonus() {
                   <div className="flex items-start space-x-3">
                     <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">2</span>
                     <div>
-                      <p className="font-semibold">Prenez une capture d'écran</p>
+                      <p className="font-semibold">Prenez une capture d&apos;écran</p>
                       <p className="text-gray-600">Montrez clairement votre nouveau niveau VIP</p>
                     </div>
                   </div>
@@ -308,7 +308,7 @@ export default function GuideBonus() {
           rel="noopener noreferrer"
           className="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
         >
-          S'inscrire avec le code rounders →
+          S&apos;inscrire avec le code rounders →
         </a>
       </div>
     </>
