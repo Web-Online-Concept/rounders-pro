@@ -16,22 +16,41 @@ export default function sitemap() {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/guide-stake/france`,
+      url: `${baseUrl}/avantages-rounders`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/affilies`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
     },
-    {
-      url: `${baseUrl}/guide-stake/introduction`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
+    // Pages du guide
     {
       url: `${baseUrl}/guide-stake/inscription`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/guide-stake/premier-depot`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/guide-stake/interface`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/guide-stake/jeux`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/guide-stake/bonus`,
@@ -46,12 +65,6 @@ export default function sitemap() {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/guide-stake/jeux`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
       url: `${baseUrl}/guide-stake/crypto`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
@@ -62,6 +75,12 @@ export default function sitemap() {
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/guide-stake/responsable`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.6,
     },
     {
       url: `${baseUrl}/guide-stake/astuces`,
@@ -75,11 +94,37 @@ export default function sitemap() {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
+    // Pages supplémentaires si elles existent encore
     {
-      url: `${baseUrl}/affilies`,
+      url: `${baseUrl}/guide-stake/france`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
-      priority: 0.9,
+      priority: 0.8,
+    },
+    // Pages légales
+    {
+      url: `${baseUrl}/mentions-legales`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/politique-confidentialite`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/cgu`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/cookies`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
     },
   ]
   
