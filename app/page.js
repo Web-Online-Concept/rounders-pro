@@ -14,8 +14,8 @@ export default function HomePage() {
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-3xl">🎲</span>
+            <Link href="/" className="flex items-center gap-2" aria-label="Accueil Rounders">
+              <span className="text-3xl" aria-hidden="true">🎲</span>
               <span className="text-2xl font-bold text-gray-900">
                 Rounders<span className="text-blue-600">.pro</span>
               </span>
@@ -35,6 +35,7 @@ export default function HomePage() {
               <a
                 href="https://stake.bet/?c=rounders"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition"
               >
                 Jouer sur Stake →
@@ -45,6 +46,8 @@ export default function HomePage() {
             <button
               className="md:hidden p-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Menu mobile"
+              aria-expanded={isMenuOpen}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {isMenuOpen ? (
@@ -93,13 +96,13 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-blue-50 to-white py-12 md:py-16 pb-20 md:pb-12">
+      <section className="bg-gradient-to-b from-blue-50 to-white py-12 md:py-16 pb-16 md:pb-8" aria-label="Section principale">
         <div className="max-w-6xl mx-auto px-4">
           {/* Image Hero - Décommentez quand l'image sera prête
           <div className="mb-8">
             <Image 
               src="/images/hero-stake.jpg" 
-              alt="Stake Casino Interface"
+              alt="Interface du casino Stake avec bonus exclusifs Rounders"
               width={1200}
               height={600}
               className="rounded-lg shadow-xl mx-auto"
@@ -108,34 +111,38 @@ export default function HomePage() {
           </div>
           */}
           <div className="text-center">
-          <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
-            Gagnez plus sur Stake avec Rounders
-          </h1>
-          <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
-            Le guide ultime pour maximiser vos gains sur Stake.
-            <br className="hidden md:block" />
-            Bonus exclusifs, stratégies avancées et support en français.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="https://stake.bet/?c=rounders"
-              target="_blank"
-              className="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition transform hover:scale-105"
-            >
-              Commencer sur Stake →
-            </a>
-            <Link
-              href="/guide-stake"
-              className="bg-white text-blue-600 border-2 border-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition"
-            >
-              Découvrir le Guide
-            </Link>
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
+              Gagnez plus sur Stake avec Rounders
+            </h1>
+            <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
+              Le guide ultime pour maximiser vos gains sur Stake.
+              <br className="hidden md:block" />
+              Bonus exclusifs, stratégies avancées et support en français.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="https://stake.bet/?c=rounders"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition transform hover:scale-105"
+                aria-label="S'inscrire sur Stake avec le code rounders"
+              >
+                Commencer sur Stake →
+              </a>
+              <Link
+                href="/guide-stake"
+                className="bg-white text-blue-600 border-2 border-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition"
+                aria-label="Accéder au guide complet Stake"
+              >
+                Découvrir le Guide
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-8 md:py-12 bg-white">
+      <section className="py-6 md:py-8 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
@@ -159,157 +166,183 @@ export default function HomePage() {
       </section>
 
       {/* Main Features */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
-            Pourquoi choisir Rounders Pro ?
-          </h2>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-lg shadow-xl p-8 transform hover:scale-105 transition">
-              {/* Image Guide - Décommentez quand prête
-              <div className="mb-4">
-                <Image 
-                  src="/images/guide-stake.jpg" 
-                  alt="Guide Stake"
-                  width={400}
-                  height={250}
-                  className="rounded-lg w-full"
-                />
+      <main>
+        <section className="py-16 bg-gray-50" aria-label="Fonctionnalités principales">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
+              Pourquoi choisir Rounders ?
+            </h2>
+            
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-white rounded-lg shadow-xl p-8 transform hover:scale-105 transition">
+                {/* Image Guide - Décommentez quand prête
+                <div className="mb-4">
+                  <Image 
+                    src="/images/guide-stake.jpg" 
+                    alt="Guide complet Stake en français avec VPN et stratégies"
+                    width={400}
+                    height={250}
+                    className="rounded-lg w-full"
+                  />
+                </div>
+                */}
+                <div className="text-4xl mb-4">📚</div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                  Guide Complet Stake
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Le guide le plus détaillé en français pour maîtriser Stake de A à Z.
+                </p>
+                <ul className="text-gray-700 space-y-2 mb-6">
+                  <li>✓ Guide spécial joueurs français</li>
+                  <li>✓ Inscription pas à pas</li>
+                  <li>✓ Astuces et stratégies pros</li>
+                  <li>✓ Programme VIP expliqué</li>
+                </ul>
+                <Link href="/guide-stake" className="block">
+                  <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition">
+                    Accéder au guide
+                  </button>
+                </Link>
               </div>
-              */}
-              <div className="text-4xl mb-4">📚</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                Guide Complet Stake
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Le guide le plus détaillé en français pour maîtriser Stake de A à Z.
-              </p>
-              <ul className="text-gray-700 space-y-2 mb-6">
-                <li>✓ Guide spécial joueurs français</li>
-                <li>✓ Inscription pas à pas</li>
-                <li>✓ Astuces et stratégies pros</li>
-              </ul>
-              <Link href="/guide-stake" className="block">
-                <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition">
-                  Accéder au guide
-                </button>
-              </Link>
-            </div>
 
-            <div className="bg-white rounded-lg shadow-xl p-8 transform hover:scale-105 transition">
-              <div className="text-4xl mb-4">💰</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                Bonus Cash VIP
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Recevez jusqu&apos;à 200€ en USDC à chaque niveau VIP franchi !
-              </p>
-              <ul className="text-gray-700 space-y-2 mb-6">
-                <li>✓ Bronze : 10€ • Argent : 20€</li>
-                <li>✓ Or : 30€ • Platine : 50-100€</li>
-                <li>✓ Diamant : 200€ cash</li>
-                <li>✓ Paiement dans votre crypto préférée</li>
-              </ul>
-              <Link href="/affilies" className="block">
-                <button className="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition">
-                  Réclamer mes bonus
-                </button>
-              </Link>
-            </div>
+              <div className="bg-white rounded-lg shadow-xl p-8 transform hover:scale-105 transition">
+                {/* Image Bonus - Décommentez quand prête
+                <div className="mb-4">
+                  <Image 
+                    src="/images/bonus-vip.jpg" 
+                    alt="Bonus VIP Rounders - Jusqu'à 200€ par niveau sur Stake"
+                    width={400}
+                    height={250}
+                    className="rounded-lg w-full"
+                  />
+                </div>
+                */}
+                <div className="text-4xl mb-4">💰</div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                  Bonus Cash VIP
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Recevez jusqu&apos;à 200€ en crypto à chaque niveau VIP franchi !
+                </p>
+                <ul className="text-gray-700 space-y-2 mb-6">
+                  <li>✓ Bronze : 10€ • Argent : 20€</li>
+                  <li>✓ Or : 30€ • Platine : 50-100€</li>
+                  <li>✓ Diamant : 200€ cash</li>
+                  <li>✓ Paiement dans votre crypto préférée</li>
+                </ul>
+                <Link href="/affilies" className="block">
+                  <button className="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition">
+                    Réclamer mes bonus
+                  </button>
+                </Link>
+              </div>
 
-            <div className="bg-white rounded-lg shadow-xl p-8 transform hover:scale-105 transition">
-              <div className="text-4xl mb-4">🎁</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                Espace Affiliés VIP
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Réclamez facilement vos bonus exclusifs à chaque palier VIP atteint.
-              </p>
-              <ul className="text-gray-700 space-y-2 mb-6">
-                <li>✓ Formulaire simple</li>
-                <li>✓ Paiement sous 24-48h</li>
-                <li>✓ Support dédié</li>
-              </ul>
-              <Link href="/affilies" className="block">
-                <button className="w-full bg-purple-600 text-white py-3 rounded-lg font-bold hover:bg-purple-700 transition">
-                  Espace Affiliés
-                </button>
-              </Link>
+              <div className="bg-white rounded-lg shadow-xl p-8 transform hover:scale-105 transition">
+                {/* Image Affiliés - Décommentez quand prête
+                <div className="mb-4">
+                  <Image 
+                    src="/images/espace-affilies.jpg" 
+                    alt="Espace Affiliés Rounders - Réclamez vos bonus cash"
+                    width={400}
+                    height={250}
+                    className="rounded-lg w-full"
+                  />
+                </div>
+                */}
+                <div className="text-4xl mb-4">🎁</div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                  Espace Affiliés VIP
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Réclamez facilement vos bonus exclusifs à chaque palier VIP atteint.
+                </p>
+                <ul className="text-gray-700 space-y-2 mb-6">
+                  <li>✓ Formulaire simple</li>
+                  <li>✓ Paiement sous 24-48h</li>
+                  <li>✓ Support dédié</li>
+                  <li>✓ Suivi personnalisé</li>
+                </ul>
+                <Link href="/affilies" className="block">
+                  <button className="w-full bg-purple-600 text-white py-3 rounded-lg font-bold hover:bg-purple-700 transition">
+                    Espace Affiliés
+                  </button>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* How it Works */}
-      <section className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
-            Comment ça marche ?
-          </h2>
-          
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                1
-              </div>
-              <h3 className="font-bold text-gray-900 mb-2">Inscrivez-vous</h3>
-              <p className="text-gray-600 text-sm">
-                Créez votre compte Stake avec notre code affilié &quot;rounders&quot;
-              </p>
-            </div>
+        {/* How it Works */}
+        <section className="py-16 bg-white">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
+              Comment ça marche ?
+            </h2>
             
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                2
+            <div className="grid md:grid-cols-4 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                  1
+                </div>
+                <h3 className="font-bold text-gray-900 mb-2">Inscrivez-vous</h3>
+                <p className="text-gray-600 text-sm">
+                  Créez votre compte Stake avec notre code affilié &quot;rounders&quot;
+                </p>
               </div>
-              <h3 className="font-bold text-gray-900 mb-2">Jouez & Montez</h3>
-              <p className="text-gray-600 text-sm">
-                Jouez normalement et grimpez les niveaux VIP
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-purple-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                3
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                  2
+                </div>
+                <h3 className="font-bold text-gray-900 mb-2">Jouez & Montez</h3>
+                <p className="text-gray-600 text-sm">
+                  Jouez normalement et grimpez les niveaux VIP
+                </p>
               </div>
-              <h3 className="font-bold text-gray-900 mb-2">Réclamez</h3>
-              <p className="text-gray-600 text-sm">
-                Soumettez votre niveau VIP dans l&apos;Espace Affiliés
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-amber-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                4
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-purple-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                  3
+                </div>
+                <h3 className="font-bold text-gray-900 mb-2">Réclamez</h3>
+                <p className="text-gray-600 text-sm">
+                  Soumettez votre niveau VIP dans l&apos;Espace Affiliés
+                </p>
               </div>
-              <h3 className="font-bold text-gray-900 mb-2">Recevez</h3>
-              <p className="text-gray-600 text-sm">
-                Recevez votre bonus en USDC sous 24-48h
-              </p>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-amber-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                  4
+                </div>
+                <h3 className="font-bold text-gray-900 mb-2">Recevez</h3>
+                <p className="text-gray-600 text-sm">
+                  Recevez votre bonus en crypto sous 24-48h
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* CTA Section */}
-      <section className="py-16 bg-gray-900 text-white">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Prêt à maximiser vos gains ?
-          </h2>
-          <p className="text-xl mb-8 text-gray-300">
-            Rejoignez Rounders Pro et profitez de tous nos avantages exclusifs
-          </p>
-          <a
-            href="https://stake.bet/?c=rounders"
-            target="_blank"
-            className="inline-block bg-white text-gray-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition transform hover:scale-105"
-          >
-            Commencer maintenant →
-          </a>
-        </div>
-      </section>
+        {/* CTA Section */}
+        <section className="py-16 bg-gray-900 text-white">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Prêt à maximiser vos gains ?
+            </h2>
+            <p className="text-xl mb-8 text-gray-300">
+              Rejoignez Rounders et profitez de tous nos avantages exclusifs
+            </p>
+            <a
+              href="https://stake.bet/?c=rounders"
+              target="_blank"
+              className="inline-block bg-white text-gray-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition transform hover:scale-105"
+            >
+              Commencer maintenant →
+            </a>
+          </div>
+        </section>
+      </main>
 
       {/* Footer */}
       <footer className="bg-white py-8 hidden md:block">
@@ -318,9 +351,15 @@ export default function HomePage() {
             <div className="text-gray-600">
               &copy; 2025 Rounders.pro - Tous droits réservés
             </div>
-            <div className="flex gap-6">
+            <nav className="flex gap-6" aria-label="Navigation footer">
               <Link href="/guide-stake" className="text-gray-600 hover:text-gray-900">
-                Guide
+                Guide Stake
+              </Link>
+              <Link href="/guide-stake/france" className="text-gray-600 hover:text-gray-900">
+                Jouer depuis la France
+              </Link>
+              <Link href="/guide-stake/vip" className="text-gray-600 hover:text-gray-900">
+                Programme VIP
               </Link>
               <Link href="/affilies" className="text-gray-600 hover:text-gray-900">
                 Espace Affiliés
@@ -328,7 +367,15 @@ export default function HomePage() {
               <a href="mailto:rounders.pro@gmail.com" className="text-gray-600 hover:text-gray-900">
                 Contact
               </a>
-            </div>
+              <a href="https://x.com/rounders_pro" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900">
+                Twitter
+              </a>
+            </nav>
+          </div>
+          <div className="mt-4 text-center text-sm text-gray-500">
+            <p>
+              Rounders.pro est un guide indépendant sur Stake. Jouez de manière responsable. 18+ uniquement.
+            </p>
           </div>
         </div>
       </footer>
