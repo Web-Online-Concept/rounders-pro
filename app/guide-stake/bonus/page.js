@@ -59,6 +59,13 @@ export default function GuideBonusPage() {
           🎁 Calendrier des Bonus
         </h2>
         
+        <div className="bg-amber-50 border border-amber-300 rounded-lg p-4 mb-6">
+          <p className="text-amber-800">
+            <strong>⚠️ Important :</strong> Le Reload Quotidien est exclusivement réservé aux membres VIP 
+            de niveau <strong>Platine I et supérieur</strong>. Les niveaux Bronze, Argent et Or n&apos;y ont pas accès.
+          </p>
+        </div>
+        
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-white border-2 border-green-500 rounded-lg p-6 relative">
             <div className="absolute -top-3 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">
@@ -70,7 +77,7 @@ export default function GuideBonusPage() {
             </p>
             <div className="text-green-600 font-bold text-xl">Jusqu&apos;à 1,000$+</div>
             <p className="text-sm text-gray-500 mt-2">
-              ⚠️ Accessible à partir du niveau Bronze II
+              ⚠️ Réservé aux niveaux Platine et supérieurs
             </p>
           </div>
           
