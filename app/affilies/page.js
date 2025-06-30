@@ -19,73 +19,8 @@ export default function Affilies() {
             </p>
           </div>
 
-          {/* Section explicative - QUI PEUT ACCEDER */}
+          {/* Formulaire EN PREMIER */}
           <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-            <h2 className="text-2xl font-bold mb-6">Qui peut accéder à ce formulaire ?</h2>
-            
-            <div className="space-y-4 text-gray-700">
-              <p>
-                Ce formulaire est <strong>exclusivement réservé</strong> aux joueurs qui se sont inscrits sur Stake 
-                via notre lien d&apos;affiliation Rounders. Si vous n&apos;êtes pas encore inscrit ou si vous avez utilisé 
-                un autre lien, vous ne pourrez pas bénéficier de ces bonus exclusifs.
-              </p>
-
-              <div className="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
-                <p className="font-semibold">
-                  ⚠️ Important : Nous avons un accès direct aux données de nos affiliés et pouvons vérifier 
-                  instantanément si vous êtes bien inscrit via notre lien.
-                </p>
-              </div>
-
-              <h3 className="text-xl font-semibold mt-6 mb-3">Comment ça fonctionne ?</h3>
-              <ol className="list-decimal list-inside space-y-2">
-                <li>Vous devez être inscrit sur Stake via notre lien d&apos;affiliation</li>
-                <li>Atteindre un niveau VIP (Bronze minimum)</li>
-                <li>Avoir au moins 100$ de wager sur les 30 derniers jours</li>
-                <li>Remplir le formulaire ci-dessous avec vos informations</li>
-                <li>Nous vérifions votre éligibilité (24-48h)</li>
-                <li>Vous recevez votre bonus directement en crypto !</li>
-              </ol>
-
-              <h3 className="text-xl font-semibold mt-6 mb-3">Montants des bonus par niveau</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-                <div className="bg-gray-50 p-3 rounded text-center">
-                  <p className="font-semibold">Bronze</p>
-                  <p className="text-green-600 font-bold">10€</p>
-                </div>
-                <div className="bg-gray-50 p-3 rounded text-center">
-                  <p className="font-semibold">Argent</p>
-                  <p className="text-green-600 font-bold">20€</p>
-                </div>
-                <div className="bg-gray-50 p-3 rounded text-center">
-                  <p className="font-semibold">Or</p>
-                  <p className="text-green-600 font-bold">30€</p>
-                </div>
-                <div className="bg-gray-50 p-3 rounded text-center">
-                  <p className="font-semibold">Platine I-III</p>
-                  <p className="text-green-600 font-bold">50€</p>
-                </div>
-                <div className="bg-gray-50 p-3 rounded text-center">
-                  <p className="font-semibold">Platine IV-VI</p>
-                  <p className="text-green-600 font-bold">100€</p>
-                </div>
-                <div className="bg-gray-50 p-3 rounded text-center">
-                  <p className="font-semibold">Diamant I-V</p>
-                  <p className="text-green-600 font-bold">200€</p>
-                </div>
-              </div>
-
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mt-6">
-                <p className="text-orange-800">
-                  <strong>Rappel :</strong> Un seul bonus par personne et par niveau. Une fois que vous avez 
-                  réclamé votre bonus Bronze, vous devez atteindre Argent pour réclamer le bonus suivant.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Formulaire */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
             <h2 className="text-2xl font-bold mb-6">Formulaire de demande de bonus</h2>
             
             <form 
@@ -95,7 +30,7 @@ export default function Affilies() {
               className="space-y-6"
             >
               {/* Access Key Web3Forms */}
-              <input type="hidden" name="access_key" value="VOTRE-ACCESS-KEY" />
+              <input type="hidden" name="access_key" value="fe6cc4ed-5dc2-4b79-ad1d-909a898798ee" />
               
               {/* Redirection après soumission */}
               <input type="hidden" name="redirect" value="https://www.rounders.pro/merci" />
@@ -290,6 +225,91 @@ export default function Affilies() {
               </button>
             </form>
           </div>
+
+          {/* Section explicative - QUI PEUT ACCEDER - APRES LE FORMULAIRE */}
+          <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 className="text-2xl font-bold mb-6">Qui peut accéder à ce formulaire ?</h2>
+            
+            <div className="space-y-4 text-gray-700">
+              <p>
+                Ce formulaire est <strong>exclusivement réservé</strong> aux joueurs qui se sont inscrits sur Stake 
+                via notre lien d&apos;affiliation Rounders. Si vous n&apos;êtes pas encore inscrit ou si vous avez utilisé 
+                un autre lien, vous ne pourrez pas bénéficier de ces bonus exclusifs.
+              </p>
+
+              <div className="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
+                <p className="font-semibold">
+                  ⚠️ Important : Nous avons un accès direct aux données de nos affiliés et pouvons vérifier 
+                  instantanément si vous êtes bien inscrit via notre lien.
+                </p>
+              </div>
+
+              <h3 className="text-xl font-semibold mt-6 mb-3">Comment ça fonctionne ?</h3>
+              <ol className="list-decimal list-inside space-y-2">
+                <li>Vous devez être inscrit sur Stake via notre lien d&apos;affiliation</li>
+                <li>Atteindre un niveau VIP (Bronze minimum)</li>
+                <li>Avoir au moins 100$ de wager sur les 30 derniers jours</li>
+                <li>Remplir le formulaire ci-dessous avec vos informations</li>
+                <li>Nous vérifions votre éligibilité (24-48h)</li>
+                <li>Vous recevez votre bonus directement en crypto !</li>
+              </ol>
+
+              <h3 className="text-xl font-semibold mt-6 mb-3">Montants des bonus par niveau</h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                <div className="bg-gray-50 p-3 rounded text-center">
+                  <p className="font-semibold">Bronze</p>
+                  <p className="text-green-600 font-bold">10€</p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded text-center">
+                  <p className="font-semibold">Argent</p>
+                  <p className="text-green-600 font-bold">20€</p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded text-center">
+                  <p className="font-semibold">Or</p>
+                  <p className="text-green-600 font-bold">30€</p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded text-center">
+                  <p className="font-semibold">Platine I-III</p>
+                  <p className="text-green-600 font-bold">50€</p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded text-center">
+                  <p className="font-semibold">Platine IV-VI</p>
+                  <p className="text-green-600 font-bold">100€</p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded text-center">
+                  <p className="font-semibold">Diamant I-V</p>
+                  <p className="text-green-600 font-bold">200€</p>
+                </div>
+              </div>
+
+              <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mt-6">
+                <p className="text-orange-800">
+                  <strong>Rappel :</strong> Un seul bonus par personne et par niveau. Une fois que vous avez 
+                  réclamé votre bonus Bronze, vous devez atteindre Argent pour réclamer le bonus suivant.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* IMAGE EXEMPLE - A LA FIN */}
+          <div className="bg-white rounded-lg shadow-lg p-8">
+            <h2 className="text-2xl font-bold mb-6">Exemple de capture d&apos;écran à fournir</h2>
+            <p className="text-gray-600 mb-6">
+              Voici ce que nous attendons comme capture d&apos;écran. Votre niveau VIP doit être clairement visible :
+            </p>
+            <div className="text-center">
+              <img 
+                src="/images/exemple-vip-stake.jpg" 
+                alt="Exemple de capture d'écran du niveau VIP Stake"
+                className="mx-auto rounded-lg shadow-lg border border-gray-200 max-w-full"
+                style={{ maxHeight: '400px' }}
+              />
+              <p className="text-sm text-gray-500 mt-4">
+                La capture doit montrer clairement votre pseudo et votre niveau VIP actuel
+              </p>
+            </div>
+          </div>
+
         </div>
       </main>
       <Footer />
