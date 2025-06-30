@@ -80,7 +80,7 @@ export default function Affilies() {
           </h2>
           
           <form 
-            action="https://formspree.io/f/VOTRE_ENDPOINT_ICI"
+            action="https://formspree.io/f/myzjonkv"
             method="POST"
             className="space-y-6"
           >
