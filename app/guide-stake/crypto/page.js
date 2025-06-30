@@ -282,7 +282,7 @@ export default function GuideCryptoPage() {
           <div className="bg-blue-50 rounded-lg p-6">
             <h3 className="font-bold text-blue-900 mb-3">🚀 Pour économiser les frais</h3>
             <ul className="space-y-2 text-blue-800 text-sm">
-              <li>• Utilisez USDT sur réseau TRC20 (frais = 1$)</li>
+              <li>• Utilisez USDC sur réseau Solana (très rapide et peu cher)</li>
               <li>• Évitez Bitcoin aux heures de pointe</li>
               <li>• Groupez vos transactions</li>
               <li>• Utilisez les virements SEPA sur Coinbase</li>
