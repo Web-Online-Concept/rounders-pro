@@ -70,6 +70,17 @@ export default function GuideLayout({ children }) {
                 FAQ Complète
               </Link>
             </nav>
+            
+            <div className="mt-8">
+              <a
+                href="https://stake.bet/?c=rounders"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full bg-blue-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+              >
+                Jouer sur Stake
+              </a>
+            </div>
           </div>
         </aside>
 
