@@ -21,15 +21,11 @@ export default function GuideLayout({ children }) {
       <Header />
       <div className="min-h-screen flex">
         {/* Sidebar */}
-        <aside className="hidden md:block w-64 bg-white shadow-md sticky top-0 h-screen overflow-y-auto">
+        <aside className="hidden md:block w-64 bg-gray-50 border-r border-gray-200">
           <div className="p-6">
             <h2 className="text-xl font-bold text-gray-800 mb-6">Guide Complet Stake</h2>
             
             <nav className="space-y-2">
-              <Link href="/guide-stake" className={linkClass('/guide-stake')}>
-                Retour au Guide
-              </Link>
-              <div className="border-t my-4"></div>
               <Link href="/guide-stake/introduction" className={linkClass('/guide-stake/introduction')}>
                 Introduction
               </Link>
@@ -70,26 +66,12 @@ export default function GuideLayout({ children }) {
                 FAQ Complète
               </Link>
             </nav>
-            
-            <div className="mt-8 p-4 bg-orange-50 rounded-lg">
-              <h3 className="font-semibold text-orange-700 mb-2">💰 Bonus Exclusif</h3>
-              <p className="text-sm text-orange-600 mb-3">
-                Inscrivez-vous via notre lien pour recevoir des bonus cash jusqu&apos;à 200€ !
-              </p>
-              <a
-                href="https://stake.bet/?c=rounders"
-                target="_blank"
-                className="block text-center bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition font-semibold text-sm"
-              >
-                S&apos;inscrire →
-              </a>
-            </div>
           </div>
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 md:ml-64 bg-gray-50 pb-20 md:pb-0">
-          <div className="max-w-4xl mx-auto p-6 pb-24 md:pb-16">
+        <main className="flex-1 bg-white pb-20 md:pb-0">
+          <div className="max-w-4xl mx-auto p-6">
             {children}
           </div>
         </main>
