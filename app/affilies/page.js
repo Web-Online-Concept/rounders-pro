@@ -15,7 +15,7 @@ export default function Affilies() {
               💰 Réclamez votre Bonus Cash Rounders
             </h1>
             <p className="text-xl text-gray-600">
-              Jusqu'à 200€ selon votre niveau VIP sur Stake
+              Jusqu&apos;à 200€ selon votre niveau VIP sur Stake
             </p>
           </div>
 
@@ -28,7 +28,7 @@ export default function Affilies() {
               className="space-y-6"
             >
               {/* Access Key Web3Forms */}
-              <input type="hidden" name="access_key" value="fe6cc4ed-5dc2-4b79-ad1d-909a898798ee" />
+              <input type="hidden" name="access_key" value="VOTRE-ACCESS-KEY" />
               
               {/* Redirection après soumission */}
               <input type="hidden" name="redirect" value="https://www.rounders.pro/merci" />
@@ -151,7 +151,7 @@ export default function Affilies() {
               {/* Capture d'écran */}
               <div>
                 <label htmlFor="screenshot" className="block text-sm font-medium text-gray-700 mb-2">
-                  Capture d'écran de votre niveau VIP
+                  Capture d&apos;écran de votre niveau VIP
                 </label>
                 <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-orange-400 transition-colors">
                   <div className="space-y-1 text-center">
@@ -183,7 +183,7 @@ export default function Affilies() {
                         />
                       </label>
                     </div>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF jusqu'à 10MB</p>
+                    <p className="text-xs text-gray-500">PNG, JPG, GIF jusqu&apos;à 10MB</p>
                   </div>
                 </div>
               </div>
@@ -206,7 +206,7 @@ export default function Affilies() {
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
                 <h3 className="font-semibold text-amber-900 mb-2">Conditions importantes :</h3>
                 <ul className="text-sm text-amber-800 space-y-1">
-                  <li>• Être inscrit via notre lien d'affiliation</li>
+                  <li>• Être inscrit via notre lien d&apos;affiliation</li>
                   <li>• Un seul bonus par personne et par niveau</li>
                   <li>• Délai de traitement : 24-48h</li>
                   <li>• Minimum 100$ de wager sur les 30 derniers jours</li>
