@@ -54,14 +54,8 @@ export default function GuideLayout({ children }) {
           {/* Sidebar desktop */}
           <aside className="hidden md:block w-64 bg-gray-50 sticky top-0 h-screen overflow-y-auto">
             <div className="p-6">
-              {/* Logo et titre dans la sidebar desktop uniquement */}
-              <div className="mb-8">
-                <Link href="/" className="flex items-center space-x-2">
-                  <img src="/logo.png" alt="Rounders" className="w-6 h-6" />
-                  <span className="text-lg font-bold">Rounders.pro</span>
-                </Link>
-                <h2 className="text-xl font-bold text-gray-900 mt-4">Guide Complet Stake</h2>
-              </div>
+              {/* Titre du guide sans le logo */}
+              <h2 className="text-xl font-bold text-gray-900 mb-8">Guide Complet Stake</h2>
               
               <nav className="space-y-1">
                 {menuItems.map((item) => (
