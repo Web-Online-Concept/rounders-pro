@@ -1,6 +1,11 @@
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+
 export default function AvantagesRounders() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24 md:pb-16">
+    <>
+      <Header />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24 md:pb-16">
       {/* Hero Section */}
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -37,10 +42,11 @@ export default function AvantagesRounders() {
         
         <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-8 shadow-lg">
           <p className="text-lg text-gray-700 mb-6 text-center">
-            Recevez un bonus cash en fonction de votre niveau VIP atteint sur Stake !
+            Recevez un bonus cash en fonction de votre niveau VIP atteint sur Stake !<br />
+            <span className="text-sm">Montants indicatifs - consultez l&apos;Espace Affiliés pour les montants exacts</span>
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div className="bg-white rounded-xl p-6 text-center shadow-md">
               <div className="text-2xl font-bold text-yellow-600 mb-2">Bronze</div>
               <div className="text-3xl font-bold text-gray-900">10€</div>
@@ -60,11 +66,41 @@ export default function AvantagesRounders() {
             </div>
             
             <div className="bg-white rounded-xl p-6 text-center shadow-md">
-              <div className="text-2xl font-bold text-cyan-600 mb-2">Platine+</div>
-              <div className="text-3xl font-bold text-gray-900">100€+</div>
+              <div className="text-2xl font-bold text-cyan-600 mb-2">Platine</div>
+              <div className="text-3xl font-bold text-gray-900">100€</div>
+              <div className="text-sm text-gray-600 mt-2">Bonus Cash</div>
+            </div>
+            
+            <div className="bg-white rounded-xl p-6 text-center shadow-md">
+              <div className="text-2xl font-bold text-purple-600 mb-2">Diamant</div>
+              <div className="text-3xl font-bold text-gray-900">150€</div>
+              <div className="text-sm text-gray-600 mt-2">Bonus Cash</div>
+            </div>
+            
+            <div className="bg-white rounded-xl p-6 text-center shadow-md">
+              <div className="text-2xl font-bold text-pink-600 mb-2">Diamant II</div>
+              <div className="text-3xl font-bold text-gray-900">200€</div>
+              <div className="text-sm text-gray-600 mt-2">Bonus Cash</div>
+            </div>
+            
+            <div className="bg-white rounded-xl p-6 text-center shadow-md">
+              <div className="text-2xl font-bold text-red-600 mb-2">Diamant III</div>
+              <div className="text-3xl font-bold text-gray-900">250€</div>
+              <div className="text-sm text-gray-600 mt-2">Bonus Cash</div>
+            </div>
+            
+            <div className="bg-white rounded-xl p-6 text-center shadow-md">
+              <div className="text-2xl font-bold text-orange-600 mb-2">Diamant IV+</div>
+              <div className="text-3xl font-bold text-gray-900">300€+</div>
               <div className="text-sm text-gray-600 mt-2">Et plus !</div>
             </div>
           </div>
+          
+          <p className="text-center mb-8">
+            <a href="/guide-stake/programme-vip" className="text-blue-600 hover:text-blue-700 underline">
+              → Voir tous les détails du système VIP Stake dans notre guide
+            </a>
+          </p>
 
           <div className="text-center">
             <a 
@@ -125,18 +161,7 @@ export default function AvantagesRounders() {
           ✨ Autres avantages Rounders
         </h2>
         
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-gray-50 rounded-xl p-6">
-            <h3 className="text-xl font-semibold mb-3 flex items-center">
-              <span className="text-2xl mr-2">📊</span>
-              Suivi personnalisé
-            </h3>
-            <p className="text-gray-600">
-              Accès à un espace affilié dédié pour suivre votre progression 
-              et réclamer vos bonus facilement
-            </p>
-          </div>
-          
+        <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-gray-50 rounded-xl p-6">
             <h3 className="text-xl font-semibold mb-3 flex items-center">
               <span className="text-2xl mr-2">💬</span>
@@ -206,6 +231,8 @@ export default function AvantagesRounders() {
           de nos conditions générales
         </p>
       </div>
-    </div>
+      </div>
+      <Footer />
+    </>
   );
 }
