@@ -1,268 +1,264 @@
-// app/affilies/page.js
 'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
-export default function AffiliesPage() {
+export default function EspaceAffilies() {
   const [formData, setFormData] = useState({
-    username: '',
     email: '',
-    vipLevel: '',
+    pseudo: '',
+    niveau: '',
     crypto: '',
-    cryptoAddress: '',
-    screenshot: null,
-    message: ''
+    reseau: '',
+    adresse: '',
+    screenshot: null
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState('');
 
-  const bonusAmounts = {
-    'bronze': '10€',
-    'argent': '20€',
-    'or': '30€',
-    'platine1-3': '50€',
-    'platine4-6': '100€',
-    'diamant': '200€'
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // TODO: Implémenter l'envoi du formulaire
+    console.log('Formulaire soumis:', formData);
+    alert('Votre demande a été envoyée ! Nous vous contacterons sous 24-48h.');
+    // Reset form
+    setFormData({
+      email: '',
+      pseudo: '',
+      niveau: '',
+      crypto: '',
+      reseau: '',
+      adresse: '',
+      screenshot: null
+    });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Ici vous intégrerez votre logique d'envoi
-    // Pour l'instant, on simule l'envoi
-    setTimeout(() => {
-      setSubmitMessage('Votre demande a été envoyée ! Nous la traiterons dans les 24h.');
-      setIsSubmitting(false);
-      setFormData({
-        username: '',
-        email: '',
-        vipLevel: '',
-        crypto: '',
-        cryptoAddress: '',
-        screenshot: null,
-        message: ''
-      });
-    }, 2000);
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setFormData({ ...formData, screenshot: e.target.files[0] });
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-4xl mx-auto px-4">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">
-          💰 Espace Affiliés Rounders Pro
-        </h1>
-
-        {/* Rappel des bonus */}
-        <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg p-6 mb-8">
-          <h2 className="text-2xl font-bold mb-4 text-center">
-            Vos Bonus Cash Exclusifs
-          </h2>
-          <p className="text-center text-sm mb-4 opacity-90">
-            Paiement dans la crypto de votre choix
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {Object.entries(bonusAmounts).map(([level, amount]) => (
-              <div key={level} className="bg-white/10 backdrop-blur rounded p-3 text-center">
-                <div className="text-sm font-semibold capitalize">
-                  {level.replace('1-3', ' I-III').replace('4-6', ' IV-VI')}
-                </div>
-                <div className="text-xl font-bold">{amount}</div>
-              </div>
-            ))}
+    <>
+      <Header />
+      <main className="min-h-screen bg-gray-50 py-12">
+        <div className="container mx-auto px-4 max-w-2xl">
+          <h1 className="text-4xl font-bold text-center mb-8">Espace Affiliés Rounders</h1>
+          
+          {/* Avertissement important */}
+          <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6 mb-8">
+            <h2 className="text-xl font-bold text-blue-800 mb-3">⚠️ Important - Réservé aux affiliés</h2>
+            <p className="text-blue-700 mb-3">
+              Cet espace est exclusivement réservé aux joueurs inscrits sur Stake via notre lien d&apos;affiliation.
+            </p>
+            <ul className="list-disc list-inside text-blue-700 space-y-1 mb-3">
+              <li>Code affilié requis : <strong>rounders</strong></li>
+              <li>Inscription via : <a href="https://stake.bet/?c=rounders" className="underline hover:text-blue-900" target="_blank" rel="noopener noreferrer">stake.bet/?c=rounders</a></li>
+              <li>Vérifiez votre adresse crypto avant soumission</li>
+            </ul>
+            <p className="text-sm text-blue-600">
+              ⚠️ <strong>Attention :</strong> Toute erreur dans l&apos;adresse de réception crypto fournie ne sera pas de notre responsabilité. 
+              Vérifiez soigneusement votre adresse et le réseau sélectionné avant de soumettre le formulaire.
+            </p>
           </div>
-        </div>
 
-        {/* Formulaire */}
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Réclamer votre bonus VIP
-          </h2>
+          <p className="text-gray-600 text-center mb-4">
+            Réclamez vos bonus cash à chaque niveau VIP atteint. 
+            Consultez les <Link href="/guide-stake/vip" className="text-blue-600 hover:underline">modalités complètes du programme VIP</Link>.
+          </p>
 
-          {submitMessage && (
-            <div className="bg-green-50 border border-green-200 text-green-800 rounded-lg p-4 mb-6">
-              {submitMessage}
+          {/* Tableau des bonus */}
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 className="text-2xl font-semibold mb-4">Rappel des bonus par niveau</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex justify-between items-center py-2 border-b">
+                <span>🥉 Bronze</span>
+                <span className="font-bold">10€</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b">
+                <span>🥈 Argent</span>
+                <span className="font-bold">20€</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b">
+                <span>🥇 Or</span>
+                <span className="font-bold">30€</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b">
+                <span>💎 Platine I-III</span>
+                <span className="font-bold">50€</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b">
+                <span>💎 Platine IV-VI</span>
+                <span className="font-bold">100€</span>
+              </div>
+              <div className="flex justify-between items-center py-2">
+                <span>💎 Diamant I-V</span>
+                <span className="font-bold">200€</span>
+              </div>
             </div>
-          )}
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Pseudo Stake *
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.username}
-                onChange={(e) => setFormData({...formData, username: e.target.value})}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Votre pseudo sur Stake"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email de contact *
+          {/* Formulaire */}
+          <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-8">
+            <h2 className="text-2xl font-semibold mb-6">Formulaire de réclamation</h2>
+            
+            <div className="mb-6">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                Email *
               </label>
               <input
                 type="email"
+                id="email"
                 required
-                value={formData.email}
-                onChange={(e) => setFormData({...formData, email: e.target.value})}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="votre@email.com"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="mb-6">
+              <label htmlFor="pseudo" className="block text-sm font-medium text-gray-700 mb-2">
+                Pseudo Stake *
+              </label>
+              <input
+                type="text"
+                id="pseudo"
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.pseudo}
+                onChange={(e) => setFormData({ ...formData, pseudo: e.target.value })}
+                placeholder="Votre pseudo sur Stake"
+              />
+            </div>
+
+            <div className="mb-6">
+              <label htmlFor="niveau" className="block text-sm font-medium text-gray-700 mb-2">
                 Niveau VIP atteint *
               </label>
               <select
+                id="niveau"
                 required
-                value={formData.vipLevel}
-                onChange={(e) => setFormData({...formData, vipLevel: e.target.value})}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.niveau}
+                onChange={(e) => setFormData({ ...formData, niveau: e.target.value })}
               >
                 <option value="">Sélectionnez votre niveau</option>
                 <option value="bronze">Bronze (10€)</option>
                 <option value="argent">Argent (20€)</option>
                 <option value="or">Or (30€)</option>
-                <option value="platine1-3">Platine I-III (50€)</option>
-                <option value="platine4-6">Platine IV-VI (100€)</option>
-                <option value="diamant">Diamant I-V (200€)</option>
+                <option value="platine1">Platine I (50€)</option>
+                <option value="platine2">Platine II (50€)</option>
+                <option value="platine3">Platine III (50€)</option>
+                <option value="platine4">Platine IV (100€)</option>
+                <option value="platine5">Platine V (100€)</option>
+                <option value="platine6">Platine VI (100€)</option>
+                <option value="diamant1">Diamant I (200€)</option>
+                <option value="diamant2">Diamant II (200€)</option>
+                <option value="diamant3">Diamant III (200€)</option>
+                <option value="diamant4">Diamant IV (200€)</option>
+                <option value="diamant5">Diamant V (200€)</option>
               </select>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="mb-6">
+              <label htmlFor="crypto" className="block text-sm font-medium text-gray-700 mb-2">
                 Cryptomonnaie souhaitée *
               </label>
               <select
+                id="crypto"
                 required
-                value={formData.crypto}
-                onChange={(e) => setFormData({...formData, crypto: e.target.value})}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.crypto}
+                onChange={(e) => setFormData({ ...formData, crypto: e.target.value })}
               >
-                <option value="">Sélectionnez votre crypto</option>
-                <option value="BTC">Bitcoin (BTC)</option>
-                <option value="ETH">Ethereum (ETH)</option>
-                <option value="USDT">Tether (USDT)</option>
-                <option value="USDC">USD Coin (USDC)</option>
-                <option value="BNB">Binance Coin (BNB)</option>
-                <option value="SOL">Solana (SOL)</option>
-                <option value="DOGE">Dogecoin (DOGE)</option>
-                <option value="LTC">Litecoin (LTC)</option>
-                <option value="TRX">Tron (TRX)</option>
-                <option value="XRP">Ripple (XRP)</option>
+                <option value="">Sélectionnez une crypto</option>
+                <option value="btc">Bitcoin (BTC)</option>
+                <option value="eth">Ethereum (ETH)</option>
+                <option value="usdt">Tether (USDT)</option>
+                <option value="usdc">USD Coin (USDC)</option>
+                <option value="bnb">Binance Coin (BNB)</option>
+                <option value="sol">Solana (SOL)</option>
+                <option value="doge">Dogecoin (DOGE)</option>
+                <option value="ltc">Litecoin (LTC)</option>
+                <option value="trx">Tron (TRX)</option>
+                <option value="matic">Polygon (MATIC)</option>
               </select>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="mb-6">
+              <label htmlFor="reseau" className="block text-sm font-medium text-gray-700 mb-2">
+                Réseau (si applicable)
+              </label>
+              <input
+                type="text"
+                id="reseau"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.reseau}
+                onChange={(e) => setFormData({ ...formData, reseau: e.target.value })}
+                placeholder="Ex: Solana, ERC-20, BEP-20, TRC-20..."
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Précisez le réseau pour USDT, USDC ou toute crypto multi-chaîne
+              </p>
+            </div>
+
+            <div className="mb-6">
+              <label htmlFor="adresse" className="block text-sm font-medium text-gray-700 mb-2">
                 Adresse de réception *
               </label>
               <input
                 type="text"
+                id="adresse"
                 required
-                value={formData.cryptoAddress}
-                onChange={(e) => setFormData({...formData, cryptoAddress: e.target.value})}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Votre adresse crypto pour recevoir le paiement"
+                value={formData.adresse}
+                onChange={(e) => setFormData({ ...formData, adresse: e.target.value })}
+                placeholder="Votre adresse crypto"
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Vérifiez bien l&apos;adresse et le réseau correspondant
+              <p className="text-xs text-red-500 mt-1">
+                ⚠️ Vérifiez attentivement cette adresse - les erreurs ne sont pas de notre responsabilité
               </p>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="mb-6">
+              <label htmlFor="screenshot" className="block text-sm font-medium text-gray-700 mb-2">
                 Capture d&apos;écran du niveau VIP *
               </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                <input
-                  type="file"
-                  required
-                  accept="image/*"
-                  onChange={(e) => setFormData({...formData, screenshot: e.target.files[0]})}
-                  className="hidden"
-                  id="screenshot"
-                />
-                <label htmlFor="screenshot" className="cursor-pointer">
-                  <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                  </svg>
-                  <p className="mt-2 text-sm text-gray-600">
-                    {formData.screenshot ? formData.screenshot.name : 'Cliquez pour télécharger votre capture'}
-                  </p>
-                </label>
-              </div>
-              <p className="text-xs text-gray-500 mt-2">
-                La capture doit montrer clairement votre pseudo et niveau VIP
+              <input
+                type="file"
+                id="screenshot"
+                required
+                accept="image/*"
+                onChange={handleFileChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Montrez clairement votre niveau VIP actuel sur Stake
               </p>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Message (optionnel)
-              </label>
-              <textarea
-                value={formData.message}
-                onChange={(e) => setFormData({...formData, message: e.target.value})}
-                rows="3"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Informations supplémentaires..."
-              />
+            <div className="bg-gray-50 rounded-lg p-4 mb-6">
+              <h3 className="font-semibold mb-2">Conditions :</h3>
+              <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
+                <li>Vous devez être inscrit via notre lien d&apos;affiliation (code : rounders)</li>
+                <li>Un seul bonus par niveau VIP</li>
+                <li>Traitement sous 24-48h</li>
+                <li>Paiement dans la crypto de votre choix</li>
+              </ul>
             </div>
 
             <button
               type="submit"
-              disabled={isSubmitting}
-              className={`w-full py-3 rounded-lg font-bold transition ${
-                isSubmitting 
-                  ? 'bg-gray-400 cursor-not-allowed' 
-                  : 'bg-blue-600 hover:bg-blue-700 text-white'
-              }`}
+              className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
             >
-              {isSubmitting ? 'Envoi en cours...' : 'Réclamer mon bonus'}
+              Soumettre ma demande
             </button>
           </form>
         </div>
-
-        {/* Instructions */}
-        <div className="mt-8 bg-amber-50 rounded-lg p-6">
-          <h3 className="font-bold text-amber-900 mb-3">📋 Instructions importantes</h3>
-          <ul className="space-y-2 text-amber-800">
-            <li>• Vous devez être inscrit via notre lien d&apos;affiliation (code : rounders)</li>
-            <li>• Un seul bonus par niveau VIP (pas de cumul)</li>
-            <li>• La capture d&apos;écran doit être récente et non modifiée</li>
-            <li>• Paiement dans votre crypto préférée via la fonction pourboire Stake sous 24-48h</li>
-            <li>• En cas de problème, contactez-nous : rounders.pro@gmail.com</li>
-          </ul>
-        </div>
-
-        {/* Pas encore inscrit ? */}
-        <div className="mt-8 text-center bg-gray-100 rounded-lg p-6">
-          <p className="text-gray-700 mb-4">
-            Pas encore inscrit sur Stake ?
-          </p>
-          <a
-            href="https://stake.bet/?c=rounders"
-            target="_blank"
-            className="inline-block bg-gray-900 text-white px-8 py-3 rounded-lg font-bold hover:bg-gray-800 transition"
-          >
-            S&apos;inscrire sur Stake →
-          </a>
-        </div>
-
-        {/* Retour */}
-        <div className="mt-8 text-center">
-          <Link href="/" className="text-blue-600 hover:underline">
-            ← Retour à l&apos;accueil
-          </Link>
-        </div>
-      </div>
-    </div>
+      </main>
+      <Footer />
+    </>
   );
 }

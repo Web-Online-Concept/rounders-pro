@@ -1,260 +1,161 @@
-// app/guide-stake/layout.js
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function GuideLayout({ children }) {
   const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const isActive = (path) => pathname === path;
+
+  const navigation = [
+    { name: 'Sommaire', path: '/guide-stake' },
+    { name: 'Introduction', path: '/guide-stake/introduction' },
+    { name: 'Guide France', path: '/guide-stake/france' },
+    { name: 'Inscription', path: '/guide-stake/inscription' },
+    { name: 'Bonus & Rakeback', path: '/guide-stake/bonus' },
+    { name: 'Programme VIP', path: '/guide-stake/vip' },
+    { name: 'Les Jeux', path: '/guide-stake/jeux' },
+    { name: 'Cryptomonnaies', path: '/guide-stake/crypto' },
+    { name: 'Stratégies', path: '/guide-stake/strategies' },
+    { name: 'Astuces Pro', path: '/guide-stake/astuces' },
+    { name: 'FAQ', path: '/guide-stake/faq' },
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-3xl">😎</span>
-              <span className="text-2xl font-bold text-gray-900">
-                Rounders<span className="text-blue-600">.pro</span>
-              </span>
-            </Link>
-
-            <nav className="hidden md:flex items-center gap-6">
-              <Link href="/" className="hover:text-gray-600 transition">
-                Accueil
-              </Link>
-              <a
-                href="https://stake.bet/?c=rounders"
-                target="_blank"
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition"
-              >
-                Jouer sur Stake →
-              </a>
-            </nav>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden p-2"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {isMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex gap-8">
-          {/* Sidebar Navigation - Desktop */}
-          <aside className="hidden md:block w-64 flex-shrink-0">
-            <div className="bg-white rounded-lg shadow-sm p-6 sticky top-24">
-              <h2 className="font-bold text-gray-900 mb-4">Guide Stake</h2>
-              
-              {/* Navigation Links */}
-              <div className="space-y-1">
-                <Link
-                  href="/guide-stake"
-                  className={`block px-4 py-2 rounded-lg transition ${
-                    pathname === '/guide-stake' 
-                      ? 'bg-blue-600 text-white' 
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  📚 Sommaire
-                </Link>
-                <Link
-                  href="/guide-stake/introduction"
-                  className={`block px-4 py-2 rounded-lg transition ${
-                    pathname === '/guide-stake/introduction' 
-                      ? 'bg-blue-600 text-white' 
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  🎰 Introduction
-                </Link>
-                <Link
-                  href="/guide-stake/france"
-                  className={`block px-4 py-2 rounded-lg transition ${
-                    pathname === '/guide-stake/france' 
-                      ? 'bg-blue-600 text-white' 
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  🇫🇷 Guide Français
-                </Link>
-                <Link
-                  href="/guide-stake/inscription"
-                  className={`block px-4 py-2 rounded-lg transition ${
-                    pathname === '/guide-stake/inscription' 
-                      ? 'bg-blue-600 text-white' 
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  📝 Inscription
-                </Link>
-                <Link
-                  href="/guide-stake/bonus"
-                  className={`block px-4 py-2 rounded-lg transition ${
-                    pathname === '/guide-stake/bonus' 
-                      ? 'bg-blue-600 text-white' 
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  💰 Bonus
-                </Link>
-                <Link
-                  href="/guide-stake/vip"
-                  className={`block px-4 py-2 rounded-lg transition ${
-                    pathname === '/guide-stake/vip' 
-                      ? 'bg-blue-600 text-white' 
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  👑 Programme VIP
-                </Link>
-                <Link
-                  href="/guide-stake/jeux"
-                  className={`block px-4 py-2 rounded-lg transition ${
-                    pathname === '/guide-stake/jeux' 
-                      ? 'bg-blue-600 text-white' 
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  🎮 Jeux
-                </Link>
-                <Link
-                  href="/guide-stake/crypto"
-                  className={`block px-4 py-2 rounded-lg transition ${
-                    pathname === '/guide-stake/crypto' 
-                      ? 'bg-blue-600 text-white' 
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  💎 Cryptomonnaies
-                </Link>
-                <Link
-                  href="/guide-stake/strategies"
-                  className={`block px-4 py-2 rounded-lg transition ${
-                    pathname === '/guide-stake/strategies' 
-                      ? 'bg-blue-600 text-white' 
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  🧠 Stratégies
-                </Link>
-                <Link
-                  href="/guide-stake/astuces"
-                  className={`block px-4 py-2 rounded-lg transition ${
-                    pathname === '/guide-stake/astuces' 
-                      ? 'bg-blue-600 text-white' 
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  💡 Astuces Pro
-                </Link>
-                <Link
-                  href="/guide-stake/faq"
-                  className={`block px-4 py-2 rounded-lg transition ${
-                    pathname === '/guide-stake/faq' 
-                      ? 'bg-blue-600 text-white' 
-                      : 'hover:bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  ❓ FAQ
-                </Link>
-              </div>
-
-              {/* Espace Affiliés */}
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <Link
+    <>
+      <Header />
+      <div className="min-h-screen bg-gray-50">
+        <div className="flex">
+          {/* Sidebar Desktop */}
+          <aside className="hidden md:block w-64 bg-white shadow-lg fixed h-full overflow-y-auto">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold mb-6 flex items-center">
+                <span className="text-3xl mr-2">🎲</span>
+                Guide Stake
+              </h2>
+              <nav>
+                <ul className="space-y-2">
+                  {navigation.map((item) => (
+                    <li key={item.path}>
+                      <Link
+                        href={item.path}
+                        className={`block px-4 py-2 rounded-lg transition-colors ${
+                          isActive(item.path)
+                            ? 'bg-blue-600 text-white'
+                            : 'hover:bg-gray-100 text-gray-700'
+                        }`}
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+              <div className="mt-8 p-4 bg-blue-50 rounded-lg">
+                <p className="text-sm text-blue-800 mb-3">
+                  Prêt à commencer ?
+                </p>
+                <Link 
                   href="/affilies"
-                  className="block px-4 py-3 rounded-lg bg-green-600 text-white font-bold text-center hover:bg-green-700 transition"
+                  className="block w-full bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700 transition-colors mb-2"
                 >
-                  💰 Espace Affiliés
+                  Espace Affiliés
                 </Link>
-              </div>
-
-              {/* CTA */}
-              <div className="mt-6 pt-6 border-t border-gray-200">
                 <a
                   href="https://stake.bet/?c=rounders"
                   target="_blank"
-                  className="block bg-blue-600 text-white text-center py-3 rounded-lg font-bold hover:bg-blue-700 transition"
+                  rel="noopener noreferrer"
+                  className="block w-full bg-green-600 text-white text-center py-2 rounded-lg hover:bg-green-700 transition-colors"
                 >
-                  Jouer sur Stake →
+                  Jouer sur Stake
                 </a>
               </div>
             </div>
           </aside>
 
-          {/* Main Content */}
-          <main className="flex-1 bg-white rounded-lg shadow-sm p-8 pb-24 md:pb-8">
-            {/* Mobile Navigation */}
-            <div className="md:hidden mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Navigation du guide
-              </label>
-              <select
-                value={pathname}
-                onChange={(e) => window.location.href = e.target.value}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="/guide-stake">📚 Sommaire</option>
-                <option value="/guide-stake/introduction">🎰 Introduction</option>
-                <option value="/guide-stake/france">🇫🇷 Guide Français</option>
-                <option value="/guide-stake/inscription">📝 Inscription</option>
-                <option value="/guide-stake/bonus">💰 Bonus</option>
-                <option value="/guide-stake/vip">👑 Programme VIP</option>
-                <option value="/guide-stake/jeux">🎮 Jeux</option>
-                <option value="/guide-stake/crypto">💎 Cryptomonnaies</option>
-                <option value="/guide-stake/strategies">🧠 Stratégies</option>
-                <option value="/guide-stake/astuces">💡 Astuces Pro</option>
-                <option value="/guide-stake/faq">❓ FAQ</option>
-              </select>
-              
-              <Link
-                href="/affilies"
-                className="block mt-4 px-4 py-3 rounded-lg bg-green-600 text-white font-bold text-center hover:bg-green-700 transition"
-              >
-                💰 Espace Affiliés
-              </Link>
+          {/* Mobile Sidebar */}
+          {sidebarOpen && (
+            <div className="fixed inset-0 z-50 md:hidden">
+              <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setSidebarOpen(false)} />
+              <aside className="fixed left-0 top-0 w-64 h-full bg-white shadow-lg overflow-y-auto">
+                <div className="p-6">
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold flex items-center">
+                      <span className="text-3xl mr-2">🎲</span>
+                      Guide
+                    </h2>
+                    <button
+                      onClick={() => setSidebarOpen(false)}
+                      className="p-2 hover:bg-gray-100 rounded-lg"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                  <nav>
+                    <ul className="space-y-2">
+                      {navigation.map((item) => (
+                        <li key={item.path}>
+                          <Link
+                            href={item.path}
+                            onClick={() => setSidebarOpen(false)}
+                            className={`block px-4 py-2 rounded-lg transition-colors ${
+                              isActive(item.path)
+                                ? 'bg-blue-600 text-white'
+                                : 'hover:bg-gray-100 text-gray-700'
+                            }`}
+                          >
+                            {item.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+                </div>
+              </aside>
             </div>
+          )}
 
+          {/* Main Content */}
+          <main className="flex-1 md:ml-64 pb-16 md:pb-0">
             {children}
           </main>
-        </div>
-      </div>
 
-      {/* Mobile Bottom Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
-        <div className="grid grid-cols-3 items-center">
-          <Link href="/" className="flex flex-col items-center py-3 hover:bg-gray-50">
-            <span className="text-2xl mb-1">🏠</span>
-            <span className="text-xs">Accueil</span>
-          </Link>
-          <a 
-            href="https://stake.bet/?c=rounders" 
-            target="_blank"
-            className="flex flex-col items-center py-3 bg-blue-600 text-white"
-          >
-            <span className="text-2xl mb-1">🎰</span>
-            <span className="text-xs font-bold">Stake</span>
-          </a>
-          <Link href="/affilies" className="flex flex-col items-center py-3 hover:bg-gray-50">
-            <span className="text-2xl mb-1">💰</span>
-            <span className="text-xs">Bonus</span>
-          </Link>
+          {/* Bottom Bar Mobile */}
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 md:hidden z-40">
+            <div className="grid grid-cols-3 py-2">
+              <Link href="/" className="flex flex-col items-center py-2">
+                <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span className="text-xs">Accueil</span>
+              </Link>
+              <button 
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="flex flex-col items-center py-2"
+              >
+                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                <span className="text-xs text-blue-600">Menu</span>
+              </button>
+              <Link href="/affilies" className="flex flex-col items-center py-2">
+                <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="text-xs">Affiliés</span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }
