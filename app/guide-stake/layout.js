@@ -124,7 +124,9 @@ export default function GuideLayout({ children }) {
 
           {/* Main Content */}
           <main className="flex-1 md:ml-64 pb-16 md:pb-0">
-            {children}
+            <div className="container mx-auto px-4 py-8 max-w-4xl">
+              {children}
+            </div>
           </main>
 
           {/* Bottom Bar Mobile */}

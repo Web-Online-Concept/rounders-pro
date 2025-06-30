@@ -79,8 +79,8 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
               Pourquoi choisir Rounders ?
             </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* Guide Complet */}
+            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              {/* Guide Complet Stake */}
               <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
                 {/* <Image 
                   src="/images/guide-stake.jpg" 
@@ -89,7 +89,7 @@ export default function Home() {
                   height={250} 
                   className="w-full rounded-lg mb-6"
                 /> */}
-                <h3 className="text-2xl font-bold mb-4">Guide Complet</h3>
+                <h3 className="text-2xl font-bold mb-4">Guide Complet Stake</h3>
                 <p className="text-gray-600 mb-6">
                   Tout ce qu&apos;il faut savoir pour réussir sur Stake, de l&apos;inscription aux stratégies avancées.
                 </p>
@@ -116,75 +116,49 @@ export default function Home() {
                 </Link>
               </div>
 
-              {/* Bonus Cash VIP */}
+              {/* Avantages Exclusifs Rounders */}
               <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
                 {/* <Image 
-                  src="/images/bonus-vip.jpg" 
-                  alt="Bonus VIP exclusifs" 
+                  src="/images/avantages-rounders.jpg" 
+                  alt="Avantages exclusifs Rounders" 
                   width={400} 
                   height={250} 
                   className="w-full rounded-lg mb-6"
                 /> */}
-                <h3 className="text-2xl font-bold mb-4">Bonus Cash Rounders</h3>
+                <h3 className="text-2xl font-bold mb-4">Avantages Exclusifs Rounders</h3>
                 <p className="text-gray-600 mb-6">
-                  Recevez des bonus cash exclusifs à chaque niveau VIP franchi, jusqu&apos;à 200€ !
+                  En plus de Stake, profitez des avantages exclusifs réservés à notre communauté d&apos;affiliés.
                 </p>
-                <ul className="space-y-3 mb-6">
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>10€ dès le niveau Bronze</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>Jusqu&apos;à 200€ au Diamant</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>Paiement avec crypto au choix</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>Réclamation simple</span>
-                  </li>
-                </ul>
-                <Link href="/guide-stake/vip" className="text-blue-600 hover:text-blue-700 font-semibold">
-                  Voir les bonus →
-                </Link>
-              </div>
-
-              {/* Espace Affiliés */}
-              <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
-                {/* <Image 
-                  src="/images/espace-affilies.jpg" 
-                  alt="Espace affiliés VIP" 
-                  width={400} 
-                  height={250} 
-                  className="w-full rounded-lg mb-6"
-                /> */}
-                <h3 className="text-2xl font-bold mb-4">Espace Affiliés Rounders</h3>
-                <p className="text-gray-600 mb-6">
-                  Réclamez facilement vos bonus cash à chaque niveau VIP atteint sur Stake.
-                </p>
-                <ul className="space-y-3 mb-6">
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>Formulaire simple</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>Traitement rapide</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>Support dédié</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>Suivi personnalisé</span>
-                  </li>
-                </ul>
+                <div className="space-y-4 mb-6">
+                  <div>
+                    <h4 className="font-semibold text-lg mb-2">💰 Bonus Cash VIP</h4>
+                    <ul className="space-y-2 text-sm text-gray-600">
+                      <li className="flex items-start">
+                        <span className="text-green-500 mr-2">✓</span>
+                        <span>10€ dès le niveau Bronze</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-green-500 mr-2">✓</span>
+                        <span>Jusqu&apos;à 200€ au Diamant</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-lg mb-2">🎯 Espace Affiliés Dédié</h4>
+                    <ul className="space-y-2 text-sm text-gray-600">
+                      <li className="flex items-start">
+                        <span className="text-green-500 mr-2">✓</span>
+                        <span>Réclamation simple et rapide</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-green-500 mr-2">✓</span>
+                        <span>Paiement crypto au choix</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
                 <Link href="/affilies" className="text-blue-600 hover:text-blue-700 font-semibold">
-                  Réclamer mes bonus →
+                  Découvrir les avantages →
                 </Link>
               </div>
             </div>

@@ -19,14 +19,19 @@ export default function Header() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
             <Link href="/guide-stake" className="text-gray-600 hover:text-blue-600 transition-colors">
-              Guide Complet
+              Guide Complet Stake
             </Link>
-            <Link href="/guide-stake/bonus" className="text-gray-600 hover:text-blue-600 transition-colors">
-              Bonus
-            </Link>
-            <Link href="/guide-stake/vip" className="text-gray-600 hover:text-blue-600 transition-colors">
-              Programme VIP
-            </Link>
+            <a 
+              href="https://twitter.com/rounders_pro" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-blue-600 transition-colors flex items-center space-x-1"
+            >
+              <span>Twitter</span>
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
             <Link href="/affilies" className="text-gray-600 hover:text-blue-600 transition-colors">
               Espace Affiliés
             </Link>
@@ -57,14 +62,16 @@ export default function Header() {
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 space-y-4 pb-4">
             <Link href="/guide-stake" className="block text-gray-600 hover:text-blue-600 transition-colors">
-              Guide Complet
+              Guide Complet Stake
             </Link>
-            <Link href="/guide-stake/bonus" className="block text-gray-600 hover:text-blue-600 transition-colors">
-              Bonus
-            </Link>
-            <Link href="/guide-stake/vip" className="block text-gray-600 hover:text-blue-600 transition-colors">
-              Programme VIP
-            </Link>
+            <a 
+              href="https://twitter.com/rounders_pro" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              Twitter X
+            </a>
             <Link href="/affilies" className="block text-gray-600 hover:text-blue-600 transition-colors">
               Espace Affiliés
             </Link>
