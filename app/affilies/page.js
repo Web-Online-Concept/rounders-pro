@@ -1,264 +1,217 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-export default function EspaceAffilies() {
-  const [formData, setFormData] = useState({
-    email: '',
-    pseudo: '',
-    niveau: '',
-    crypto: '',
-    reseau: '',
-    adresse: '',
-    screenshot: null
-  });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: Implémenter l'envoi du formulaire
-    console.log('Formulaire soumis:', formData);
-    alert('Votre demande a été envoyée ! Nous vous contacterons sous 24-48h.');
-    // Reset form
-    setFormData({
-      email: '',
-      pseudo: '',
-      niveau: '',
-      crypto: '',
-      reseau: '',
-      adresse: '',
-      screenshot: null
-    });
-  };
-
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData({ ...formData, screenshot: e.target.files[0] });
-    }
-  };
-
+export default function Affilies() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gray-50 py-12 pb-24 md:pb-12">
-        <div className="container mx-auto px-4 max-w-2xl">
-          <h1 className="text-4xl font-bold text-center mb-8">Espace Affiliés Rounders</h1>
-          
-          {/* Avertissement important */}
-          <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6 mb-8">
-            <h2 className="text-xl font-bold text-blue-800 mb-3">⚠️ Important - Réservé aux affiliés</h2>
-            <p className="text-blue-700 mb-3">
-              Cet espace est exclusivement réservé aux joueurs inscrits sur Stake via notre lien d&apos;affiliation.
-            </p>
-            <ul className="list-disc list-inside text-blue-700 space-y-1 mb-3">
-              <li>Code affilié requis : <strong>rounders</strong></li>
-              <li>Inscription via : <a href="https://stake.bet/?c=rounders" className="underline hover:text-blue-900" target="_blank" rel="noopener noreferrer">stake.bet/?c=rounders</a></li>
-              <li>Vérifiez votre adresse crypto avant soumission</li>
-            </ul>
-            <p className="text-sm text-blue-600">
-              ⚠️ <strong>Attention :</strong> Toute erreur dans l&apos;adresse de réception crypto fournie ne sera pas de notre responsabilité. 
-              Vérifiez soigneusement votre adresse et le réseau sélectionné avant de soumettre le formulaire.
-            </p>
-          </div>
-
-          <p className="text-gray-600 text-center mb-4">
-            Réclamez vos bonus cash à chaque niveau VIP atteint. 
-            Consultez les <Link href="/guide-stake/vip" className="text-blue-600 hover:underline">modalités complètes du programme VIP</Link>.
+      
+      <main className="min-h-screen bg-gray-50 py-12 pb-24 md:pb-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-bold text-center mb-4">💰 Espace Affiliés Rounders</h1>
+          <p className="text-xl text-gray-600 text-center mb-12">
+            Réclamez vos bonus cash exclusifs selon votre niveau VIP Stake
           </p>
 
-          {/* Tableau des bonus */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Rappel des bonus par niveau</h2>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex justify-between items-center py-2 border-b">
-                <span>🥉 Bronze</span>
-                <span className="font-bold">10€</span>
+          {/* Alerte importante */}
+          <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 mb-8">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
               </div>
-              <div className="flex justify-between items-center py-2 border-b">
-                <span>🥈 Argent</span>
-                <span className="font-bold">20€</span>
-              </div>
-              <div className="flex justify-between items-center py-2 border-b">
-                <span>🥇 Or</span>
-                <span className="font-bold">30€</span>
-              </div>
-              <div className="flex justify-between items-center py-2 border-b">
-                <span>💎 Platine I-III</span>
-                <span className="font-bold">50€</span>
-              </div>
-              <div className="flex justify-between items-center py-2 border-b">
-                <span>💎 Platine IV-VI</span>
-                <span className="font-bold">100€</span>
-              </div>
-              <div className="flex justify-between items-center py-2">
-                <span>💎 Diamant I-V</span>
-                <span className="font-bold">200€</span>
+              <div className="ml-3">
+                <h3 className="text-yellow-800 font-semibold">Réservé aux affiliés Rounders</h3>
+                <p className="text-yellow-700 text-sm mt-1">
+                  Cet espace est exclusivement réservé aux joueurs inscrits sur Stake via notre lien d&apos;affiliation. 
+                  Vous devez utiliser le code <strong>rounders</strong> lors de votre inscription.
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Formulaire */}
-          <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-8">
-            <h2 className="text-2xl font-semibold mb-6">Formulaire de réclamation</h2>
-            
-            <div className="mb-6">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email *
-              </label>
-              <input
-                type="email"
-                id="email"
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder="votre@email.com"
-              />
+        {/* Montants des bonus */}
+        <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
+          <h2 className="text-2xl font-bold mb-6 text-center">Montants des bonus par niveau VIP</h2>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="bg-gray-50 p-4 rounded-lg text-center">
+              <div className="text-lg font-semibold text-yellow-600">Bronze</div>
+              <div className="text-2xl font-bold">10€</div>
             </div>
+            <div className="bg-gray-50 p-4 rounded-lg text-center">
+              <div className="text-lg font-semibold text-gray-600">Argent</div>
+              <div className="text-2xl font-bold">20€</div>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg text-center">
+              <div className="text-lg font-semibold text-yellow-500">Or</div>
+              <div className="text-2xl font-bold">30€</div>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg text-center">
+              <div className="text-lg font-semibold text-cyan-600">Platine I-III</div>
+              <div className="text-2xl font-bold">50€</div>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg text-center">
+              <div className="text-lg font-semibold text-purple-600">Platine IV-VI</div>
+              <div className="text-2xl font-bold">100€</div>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg text-center">
+              <div className="text-lg font-semibold text-pink-600">Diamant I-V</div>
+              <div className="text-2xl font-bold">200€</div>
+            </div>
+          </div>
+          
+          <p className="text-sm text-gray-600 text-center mt-6">
+            Ces bonus sont offerts en plus de tous les avantages VIP Stake. 
+            <a href="/guide-stake/vip" className="text-blue-600 hover:underline">
+              Voir le détail du programme VIP →
+            </a>
+          </p>
+        </div>
 
-            <div className="mb-6">
-              <label htmlFor="pseudo" className="block text-sm font-medium text-gray-700 mb-2">
-                Pseudo Stake *
+        {/* Formulaire de réclamation */}
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold mb-6 text-center">Réclamer mon bonus</h2>
+          
+          <form 
+            action="https://formspree.io/f/myzjonkv"
+            method="POST"
+            className="space-y-4"
+          >
+            <div>
+              <label htmlFor="pseudo" className="block text-sm font-medium text-gray-700">
+                Pseudo Stake
               </label>
               <input
                 type="text"
                 id="pseudo"
+                name="pseudo"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                value={formData.pseudo}
-                onChange={(e) => setFormData({ ...formData, pseudo: e.target.value })}
-                placeholder="Votre pseudo sur Stake"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
 
-            <div className="mb-6">
-              <label htmlFor="niveau" className="block text-sm font-medium text-gray-700 mb-2">
-                Niveau VIP atteint *
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="niveau" className="block text-sm font-medium text-gray-700">
+                Niveau VIP atteint
               </label>
               <select
                 id="niveau"
+                name="niveau"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                value={formData.niveau}
-                onChange={(e) => setFormData({ ...formData, niveau: e.target.value })}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               >
                 <option value="">Sélectionnez votre niveau</option>
                 <option value="bronze">Bronze (10€)</option>
                 <option value="argent">Argent (20€)</option>
                 <option value="or">Or (30€)</option>
-                <option value="platine1">Platine I (50€)</option>
-                <option value="platine2">Platine II (50€)</option>
-                <option value="platine3">Platine III (50€)</option>
-                <option value="platine4">Platine IV (100€)</option>
-                <option value="platine5">Platine V (100€)</option>
-                <option value="platine6">Platine VI (100€)</option>
-                <option value="diamant1">Diamant I (200€)</option>
-                <option value="diamant2">Diamant II (200€)</option>
-                <option value="diamant3">Diamant III (200€)</option>
-                <option value="diamant4">Diamant IV (200€)</option>
-                <option value="diamant5">Diamant V (200€)</option>
+                <option value="platine1-3">Platine I-III (50€)</option>
+                <option value="platine4-6">Platine IV-VI (100€)</option>
+                <option value="diamant">Diamant I-V (200€)</option>
               </select>
             </div>
 
-            <div className="mb-6">
-              <label htmlFor="crypto" className="block text-sm font-medium text-gray-700 mb-2">
-                Cryptomonnaie souhaitée *
+            <div>
+              <label htmlFor="crypto" className="block text-sm font-medium text-gray-700">
+                Cryptomonnaie souhaitée
               </label>
               <select
                 id="crypto"
+                name="crypto"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                value={formData.crypto}
-                onChange={(e) => setFormData({ ...formData, crypto: e.target.value })}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               >
                 <option value="">Sélectionnez une crypto</option>
-                <option value="btc">Bitcoin (BTC)</option>
-                <option value="eth">Ethereum (ETH)</option>
-                <option value="usdt">Tether (USDT)</option>
-                <option value="usdc">USD Coin (USDC)</option>
-                <option value="bnb">Binance Coin (BNB)</option>
-                <option value="sol">Solana (SOL)</option>
-                <option value="doge">Dogecoin (DOGE)</option>
-                <option value="ltc">Litecoin (LTC)</option>
-                <option value="trx">Tron (TRX)</option>
-                <option value="matic">Polygon (MATIC)</option>
+                <option value="USDT">USDT (Tether)</option>
+                <option value="USDC">USDC</option>
+                <option value="BTC">Bitcoin (BTC)</option>
+                <option value="ETH">Ethereum (ETH)</option>
+                <option value="LTC">Litecoin (LTC)</option>
+                <option value="TRX">Tron (TRX)</option>
+                <option value="DOGE">Dogecoin (DOGE)</option>
+                <option value="autre">Autre</option>
               </select>
             </div>
 
-            <div className="mb-6">
-              <label htmlFor="reseau" className="block text-sm font-medium text-gray-700 mb-2">
+            <div>
+              <label htmlFor="reseau" className="block text-sm font-medium text-gray-700">
                 Réseau (si applicable)
               </label>
               <input
                 type="text"
                 id="reseau"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                value={formData.reseau}
-                onChange={(e) => setFormData({ ...formData, reseau: e.target.value })}
-                placeholder="Ex: Solana, ERC-20, BEP-20, TRC-20..."
+                name="reseau"
+                placeholder="Ex: Solana, ERC-20, TRC-20..."
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Précisez le réseau pour USDT, USDC ou toute crypto multi-chaîne
-              </p>
             </div>
 
-            <div className="mb-6">
-              <label htmlFor="adresse" className="block text-sm font-medium text-gray-700 mb-2">
-                Adresse de réception *
+            <div>
+              <label htmlFor="adresse" className="block text-sm font-medium text-gray-700">
+                Adresse de réception
               </label>
               <input
                 type="text"
                 id="adresse"
+                name="adresse"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                value={formData.adresse}
-                onChange={(e) => setFormData({ ...formData, adresse: e.target.value })}
-                placeholder="Votre adresse crypto"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               />
-              <p className="text-xs text-red-500 mt-1">
-                ⚠️ Vérifiez attentivement cette adresse - les erreurs ne sont pas de notre responsabilité
+              <p className="mt-1 text-sm text-red-600">
+                ⚠️ Vérifiez bien votre adresse. Toute erreur ne sera pas de notre responsabilité.
               </p>
             </div>
 
-            <div className="mb-6">
-              <label htmlFor="screenshot" className="block text-sm font-medium text-gray-700 mb-2">
-                Capture d&apos;écran du niveau VIP *
-              </label>
-              <input
-                type="file"
-                id="screenshot"
-                required
-                accept="image/*"
-                onChange={handleFileChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Montrez clairement votre niveau VIP actuel sur Stake
-              </p>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-4 mb-6">
-              <h3 className="font-semibold mb-2">Conditions :</h3>
-              <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
-                <li>Vous devez être inscrit via notre lien d&apos;affiliation (code : rounders)</li>
-                <li>Un seul bonus par niveau VIP</li>
-                <li>Traitement sous 24-48h</li>
-                <li>Paiement dans la crypto de votre choix</li>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-semibold text-sm mb-2">Conditions importantes :</h3>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Vous devez être inscrit via notre lien d&apos;affiliation (code : rounders)</li>
+                <li>• Un seul bonus par niveau atteint</li>
+                <li>• Délai de traitement : 24-48h</li>
+                <li>• Nous nous réservons le droit de vérifier votre éligibilité</li>
               </ul>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-colors font-semibold"
             >
-              Soumettre ma demande
+              Envoyer ma demande
             </button>
           </form>
         </div>
-      </main>
-      <Footer />
-    </>
+
+        {/* Instructions */}
+        <div className="mt-8 bg-blue-50 rounded-lg p-6">
+          <h3 className="font-semibold text-blue-900 mb-2">Comment ça marche ?</h3>
+          <ol className="list-decimal list-inside space-y-2 text-blue-800">
+            <li>Remplissez le formulaire avec vos informations</li>
+            <li>Nous vérifions votre inscription via notre lien d&apos;affiliation</li>
+            <li>Nous contrôlons votre niveau VIP actuel</li>
+            <li>Vous recevez votre bonus sous 24-48h</li>
+          </ol>
+        </div>
+      </div>
+    </main>
+
+    <Footer />
+  </>
   );
 }
