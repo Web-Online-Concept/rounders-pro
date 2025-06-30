@@ -24,7 +24,7 @@ export default function GuideLayout({ children }) {
     { href: '/guide-stake/interface', label: 'Interface & Navigation' },
     { href: '/guide-stake/jeux', label: 'Les Jeux' },
     { href: '/guide-stake/bonus', label: 'Bonus & Rakeback' },
-    { href: '/guide-stake/programme-vip', label: 'Programme VIP' },
+    { href: '/guide-stake/vip', label: 'Programme VIP' },
     { href: '/guide-stake/crypto', label: 'Cryptomonnaies' },
     { href: '/guide-stake/strategies', label: 'Stratégies' },
     { href: '/guide-stake/responsable', label: 'Jeu Responsable' },
