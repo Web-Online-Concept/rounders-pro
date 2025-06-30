@@ -26,11 +26,10 @@ export default function Affilies() {
             <form 
               action="https://api.web3forms.com/submit" 
               method="POST"
-              encType="multipart/form-data"
               className="space-y-6"
             >
               {/* Access Key Web3Forms */}
-              <input type="hidden" name="access_key" value="fe6cc4ed-5dc2-4b79-ad1d-909a898798ee" />
+              <input type="hidden" name="access_key" value="VOTRE-ACCESS-KEY" />
               
               {/* Redirection après soumission */}
               <input type="hidden" name="redirect" value="https://www.rounders.pro/merci" />
@@ -150,44 +149,29 @@ export default function Affilies() {
                 />
               </div>
 
-              {/* Capture d'écran */}
+              {/* Lien capture d'écran */}
               <div>
-                <label htmlFor="screenshot" className="block text-sm font-medium text-gray-700 mb-2">
-                  Capture d&apos;écran de votre niveau VIP
+                <label htmlFor="screenshotLink" className="block text-sm font-medium text-gray-700 mb-2">
+                  Lien vers votre capture d&apos;écran *
                 </label>
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-orange-400 transition-colors">
-                  <div className="space-y-1 text-center">
-                    <svg
-                      className="mx-auto h-12 w-12 text-gray-400"
-                      stroke="currentColor"
-                      fill="none"
-                      viewBox="0 0 48 48"
-                    >
-                      <path
-                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    <div className="flex text-sm text-gray-600">
-                      <label
-                        htmlFor="screenshot"
-                        className="relative cursor-pointer bg-white rounded-md font-medium text-orange-600 hover:text-orange-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-orange-500"
-                      >
-                        <span>Télécharger une image</span>
-                        <input
-                          id="screenshot"
-                          name="screenshot"
-                          type="file"
-                          accept="image/png,image/jpeg,image/jpg,image/gif"
-                          className="sr-only"
-                        />
-                      </label>
-                    </div>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF jusqu&apos;à 10MB</p>
-                  </div>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                  <p className="text-sm text-blue-800">
+                    <strong>📸 Comment faire :</strong>
+                  </p>
+                  <ol className="text-sm text-blue-700 mt-2 space-y-1">
+                    <li>1. Uploadez votre capture sur <a href="https://imgur.com/upload" target="_blank" className="underline font-semibold">Imgur.com</a> (gratuit, sans inscription)</li>
+                    <li>2. Copiez le lien de l&apos;image</li>
+                    <li>3. Collez-le ci-dessous</li>
+                  </ol>
                 </div>
+                <input
+                  type="url"
+                  id="screenshotLink"
+                  name="screenshotLink"
+                  required
+                  placeholder="https://imgur.com/..."
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                />
               </div>
 
               {/* Message optionnel */}
@@ -249,7 +233,7 @@ export default function Affilies() {
                 <li>Vous devez être inscrit sur Stake via notre lien d&apos;affiliation</li>
                 <li>Atteindre un niveau VIP (Bronze minimum)</li>
                 <li>Avoir au moins 100$ de wager sur les 30 derniers jours</li>
-                <li>Remplir le formulaire ci-dessous avec vos informations</li>
+                <li>Remplir le formulaire ci-dessus avec vos informations</li>
                 <li>Nous vérifions votre éligibilité (24-48h)</li>
                 <li>Vous recevez votre bonus directement en crypto !</li>
               </ol>
@@ -295,7 +279,8 @@ export default function Affilies() {
           <div className="bg-white rounded-lg shadow-lg p-8">
             <h2 className="text-2xl font-bold mb-6">Exemple de capture d&apos;écran à fournir</h2>
             <p className="text-gray-600 mb-6">
-              Voici ce que nous attendons comme capture d&apos;écran. Votre niveau VIP doit être clairement visible :
+              Voici ce que nous attendons comme capture d&apos;écran. Votre niveau VIP doit être clairement visible.
+              <strong> Uploadez-la sur Imgur.com puis collez le lien dans le formulaire.</strong>
             </p>
             <div className="text-center">
               <img 
