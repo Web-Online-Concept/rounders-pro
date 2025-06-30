@@ -41,7 +41,7 @@ export default function Home() {
             </h2>
             <p className="text-xl text-gray-600 mb-8">
               Rejoignez la communauté Rounders Pro et profitez de bonus exclusifs, 
-              d'un jeu quotidien gratuit et de récompenses VIP supplémentaires
+              d&apos;un jeu quotidien gratuit et de récompenses VIP supplémentaires
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
@@ -133,7 +133,7 @@ export default function Home() {
                 Récompenses exclusives pour nos affiliés.
               </p>
               <Link href="/affilies" className="text-amber-600 font-medium hover:underline">
-                Accéder à l'espace →
+                Accéder à l&apos;espace →
               </Link>
             </div>
           </div>
