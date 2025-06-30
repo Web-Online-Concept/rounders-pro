@@ -78,7 +78,7 @@ export default function Home() {
         <section className="py-20 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-900">
-              Présentation de Stake, son casino et ses paris sportifs
+              🎰 Découvrez Stake, son casino et ses paris sportifs
             </h2>
             <p className="text-lg text-gray-700 text-center leading-relaxed">
               Stake est l&apos;une des plateformes de jeu en ligne les plus populaires au monde, 
