@@ -2,42 +2,42 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Programme VIP Stake - Tous les Niveaux et Récompenses | Rounders Pro',
-  description: 'Guide complet du programme VIP Stake : Bronze à Obsidienne, bonus par niveau, rakeback, reload quotidien Platinum, calcul de progression.',
-  keywords: 'stake vip, stake niveaux, stake platinum, stake diamant, stake bonus vip',
+  title: 'Programme VIP Stake - 15 Niveaux et Récompenses | Rounders Pro',
+  description: 'Guide complet du programme VIP Stake : Bronze à Obsidienne. Bonus, rakeback, reload quotidien. Plus bonus cash exclusifs Rounders Pro.',
+  keywords: 'stake vip, stake programme vip, stake niveaux, stake bronze, stake platine, stake diamant',
 };
 
 export default function GuideVIPPage() {
   const vipLevels = [
-    { name: 'Bronze', points: '10,000', color: 'amber-600', rakeback: '5%', reload: '❌', weekly: '✅', monthly: '✅' },
-    { name: 'Argent', points: '50,000', color: 'gray-500', rakeback: '5%', reload: '❌', weekly: '✅', monthly: '✅' },
-    { name: 'Or', points: '100,000', color: 'yellow-500', rakeback: '5%', reload: '❌', weekly: '✅', monthly: '✅' },
-    { name: 'Platine I', points: '250,000', color: 'blue-400', rakeback: '6%', reload: '✅', weekly: '✅', monthly: '✅' },
-    { name: 'Platine II', points: '500,000', color: 'blue-400', rakeback: '7%', reload: '✅', weekly: '✅', monthly: '✅' },
-    { name: 'Platine III', points: '1,000,000', color: 'blue-400', rakeback: '8%', reload: '✅', weekly: '✅', monthly: '✅' },
-    { name: 'Platine IV', points: '2,500,000', color: 'blue-400', rakeback: '9%', reload: '✅', weekly: '✅', monthly: '✅' },
-    { name: 'Platine V', points: '5,000,000', color: 'blue-400', rakeback: '9.5%', reload: '✅', weekly: '✅', monthly: '✅' },
-    { name: 'Platine VI', points: '10,000,000', color: 'blue-400', rakeback: '10%', reload: '✅', weekly: '✅', monthly: '✅' },
-    { name: 'Diamant I', points: '25,000,000', color: 'cyan-400', rakeback: '10%', reload: '✅', weekly: '✅', monthly: '✅', host: '✅' },
-    { name: 'Diamant II', points: '50,000,000', color: 'cyan-400', rakeback: '10%', reload: '✅', weekly: '✅', monthly: '✅', host: '✅' },
-    { name: 'Diamant III', points: '100,000,000', color: 'cyan-400', rakeback: '10%', reload: '✅', weekly: '✅', monthly: '✅', host: '✅' },
-    { name: 'Diamant IV', points: '250,000,000', color: 'cyan-400', rakeback: '10%', reload: '✅', weekly: '✅', monthly: '✅', host: '✅' },
-    { name: 'Diamant V', points: '500,000,000', color: 'cyan-400', rakeback: '10%', reload: '✅', weekly: '✅', monthly: '✅', host: '✅' },
-    { name: 'Obsidienne', points: '1,000,000,000', color: 'gray-900', rakeback: '10%+', reload: '✅', weekly: '✅', monthly: '✅', host: '✅', special: '✅' },
+    { name: 'Bronze', points: '0', rakeback: '10%', bonus: 'Hebdo + Mensuel', color: 'amber' },
+    { name: 'Argent', points: '30', rakeback: '11%', bonus: 'Hebdo + Mensuel', color: 'gray' },
+    { name: 'Or', points: '280', rakeback: '12%', bonus: 'Hebdo + Mensuel', color: 'yellow' },
+    { name: 'Platine I', points: '1,480', rakeback: '13%', bonus: 'Hebdo + Mensuel + DAILY', color: 'cyan' },
+    { name: 'Platine II', points: '3,480', rakeback: '14%', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
+    { name: 'Platine III', points: '6,480', rakeback: '15%', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
+    { name: 'Platine IV', points: '13,980', rakeback: '16%', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
+    { name: 'Platine V', points: '26,480', rakeback: '17%', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
+    { name: 'Platine VI', points: '63,980', rakeback: '18%', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
+    { name: 'Diamant I', points: '163,980', rakeback: '19%', bonus: 'Tous + Host VIP', color: 'blue' },
+    { name: 'Diamant II', points: '413,980', rakeback: '20%', bonus: 'Tous + Host VIP', color: 'blue' },
+    { name: 'Diamant III', points: '1,013,980', rakeback: '21%', bonus: 'Tous + Host VIP', color: 'blue' },
+    { name: 'Diamant IV', points: '2,513,980', rakeback: '22%', bonus: 'Tous + Host VIP', color: 'blue' },
+    { name: 'Diamant V', points: '6,513,980', rakeback: '23%', bonus: 'Tous + Host VIP', color: 'blue' },
+    { name: 'Obsidienne', points: '100,013,980', rakeback: '25%+', bonus: 'Tous + Avantages secrets', color: 'purple' },
   ];
 
   return (
     <div className="pb-20 md:pb-0">
       <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-        ⭐ Programme VIP Complet
+        👑 Programme VIP Stake Complet
       </h1>
 
-      <div className="bg-gradient-to-r from-amber-50 to-cyan-50 border-l-4 border-amber-600 p-4 mb-8">
-        <p className="text-amber-900 font-semibold">
-          🏆 Grimpez les échelons et débloquez des récompenses exclusives !
+      <div className="bg-purple-50 border-l-4 border-purple-600 p-4 mb-8">
+        <p className="text-purple-900 font-semibold">
+          💎 15 niveaux VIP avec des récompenses croissantes
         </p>
-        <p className="text-amber-800 mt-1">
-          De Bronze à Obsidienne : 15 niveaux de privilèges croissants
+        <p className="text-purple-800 mt-1">
+          Plus vous jouez, plus vous gagnez ! Bonus cash exclusifs Rounders Pro inclus.
         </p>
       </div>
 
@@ -47,27 +47,26 @@ export default function GuideVIPPage() {
           🎯 Comment fonctionne le programme VIP ?
         </h2>
         
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className="space-y-4">
+        <div className="bg-gray-100 rounded-lg p-6 mb-6">
+          <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">📊 Système de Points</h3>
-              <p className="text-gray-700">
-                Chaque dollar misé = 1 point. Les paris sportifs comptent <strong>3 fois plus</strong> !
+              <h3 className="font-bold text-gray-900 mb-3">📊 Calcul des points VIP</h3>
+              <p className="text-gray-700 mb-2">
+                Pour chaque <strong>1,000$</strong> misés, vous gagnez environ <strong>10 points VIP</strong>.
               </p>
-              <div className="bg-blue-50 rounded-lg p-3 mt-2">
-                <p className="text-sm text-blue-800">
-                  💡 Exemple : Un pari sportif de 100$ = 300 points
-                </p>
+              <div className="bg-white rounded p-3 text-sm">
+                <p className="font-mono">Points = (Mise × Edge) × 1.5</p>
+                <p className="text-gray-600 mt-1">Exemple : 100$ sur Dice (1% edge) = 1.5 points</p>
               </div>
             </div>
             
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">🎁 Récompenses par Niveau</h3>
+              <h3 className="font-bold text-gray-900 mb-3">🔄 Progression automatique</h3>
               <ul className="space-y-2 text-gray-700">
-                <li>• <strong>Bronze+</strong> : Bonus hebdomadaires et mensuels</li>
-                <li>• <strong>Platine+</strong> : Reload quotidien débloqué</li>
-                <li>• <strong>Diamant+</strong> : Hôte VIP personnel</li>
-                <li>• <strong>Obsidienne</strong> : Avantages secrets exclusifs</li>
+                <li>• Points cumulés à vie (jamais perdus)</li>
+                <li>• Montée de niveau instantanée</li>
+                <li>• Bonus débloqués immédiatement</li>
+                <li>• Rakeback augmenté en temps réel</li>
               </ul>
             </div>
           </div>
@@ -76,224 +75,251 @@ export default function GuideVIPPage() {
 
       {/* Tableau des niveaux */}
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">
           📈 Tous les Niveaux VIP
         </h2>
         
         <div className="overflow-x-auto">
-          <table className="w-full bg-white rounded-lg shadow-lg overflow-hidden">
+          <table className="w-full bg-white rounded-lg overflow-hidden">
             <thead className="bg-gray-900 text-white">
               <tr>
                 <th className="px-4 py-3 text-left">Niveau</th>
-                <th className="px-4 py-3 text-center">Points requis</th>
+                <th className="px-4 py-3 text-right">Points requis</th>
                 <th className="px-4 py-3 text-center">Rakeback</th>
-                <th className="px-4 py-3 text-center">Reload</th>
-                <th className="px-4 py-3 text-center">Weekly</th>
-                <th className="px-4 py-3 text-center">Monthly</th>
-                <th className="px-4 py-3 text-center hidden md:table-cell">Hôte VIP</th>
+                <th className="px-4 py-3 text-left">Bonus</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-200">
               {vipLevels.map((level, index) => (
-                <tr key={index} className={`border-b ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
-                  <td className="px-4 py-3">
-                    <span className={`font-bold text-${level.color}`}>
-                      {level.name}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-center font-mono text-sm">
-                    {level.points}
-                  </td>
-                  <td className="px-4 py-3 text-center font-bold text-green-600">
-                    {level.rakeback}
-                  </td>
-                  <td className="px-4 py-3 text-center text-2xl">
-                    {level.reload}
-                  </td>
-                  <td className="px-4 py-3 text-center text-2xl">
-                    {level.weekly}
-                  </td>
-                  <td className="px-4 py-3 text-center text-2xl">
-                    {level.monthly}
-                  </td>
-                  <td className="px-4 py-3 text-center text-2xl hidden md:table-cell">
-                    {level.host || '❌'}
-                  </td>
+                <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                  <td className="px-4 py-3 font-medium">{level.name}</td>
+                  <td className="px-4 py-3 text-right font-mono">{level.points}</td>
+                  <td className="px-4 py-3 text-center font-bold text-green-600">{level.rakeback}</td>
+                  <td className="px-4 py-3 text-sm">{level.bonus}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        
-        <div className="mt-4 text-sm text-gray-600 space-y-1">
-          <p>✅ = Disponible | ❌ = Non disponible</p>
-          <p className="font-semibold text-red-600">
-            ⚠️ Le Reload Quotidien n&apos;est disponible qu&apos;à partir du niveau Platine I
-          </p>
-        </div>
       </section>
 
-      {/* Calcul de progression */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          🧮 Calculer votre progression
-        </h2>
-        
-        <div className="bg-gray-100 rounded-lg p-6">
-          <h3 className="font-bold text-gray-900 mb-3">Exemple de calcul :</h3>
-          <p className="text-gray-700 mb-4">
-            Vous êtes Bronze avec 45% de progression vers Argent :
-          </p>
-          
-          <div className="bg-white rounded-lg p-4 space-y-3 font-mono text-sm">
-            <div>1️⃣ Argent (50,000) - Bronze (10,000) = <strong>40,000 points</strong> à faire</div>
-            <div>2️⃣ 45% × 40,000 = <strong>18,000 points</strong> déjà faits</div>
-            <div>3️⃣ 40,000 - 18,000 = <strong>22,000 points</strong> restants</div>
-            <div className="text-green-600 font-bold pt-2">
-              → Il vous reste 22,000$ à miser (ou 7,333$ en paris sportifs)
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Bonus par niveau */}
+      {/* Avantages par niveau */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          🎁 Détail des Bonus VIP
+          🎁 Avantages Détaillés par Palier
         </h2>
         
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6">
-            <h3 className="font-bold text-blue-900 mb-3">📅 Boost Hebdomadaire</h3>
-            <p className="text-blue-800 mb-2">
-              Chaque samedi à 12h30 GMT via Telegram VIP
-            </p>
-            <ul className="space-y-1 text-sm text-blue-700">
-              <li>• Disponible dès le niveau Bronze</li>
-              <li>• Montant basé sur votre activité</li>
-              <li>• Distribué via canal Telegram exclusif</li>
+        <div className="space-y-6">
+          <div className="bg-amber-50 border-l-4 border-amber-600 p-6">
+            <h3 className="font-bold text-amber-900 mb-2">🥉 Bronze → Or (Niveaux 1-3)</h3>
+            <ul className="space-y-1 text-amber-800">
+              <li>• Rakeback de base : 10% → 12%</li>
+              <li>• Bonus hebdomadaire (chaque samedi)</li>
+              <li>• Bonus mensuel (1er du mois)</li>
+              <li>• Accès aux promotions générales</li>
+              <li>• Support standard</li>
             </ul>
           </div>
           
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6">
-            <h3 className="font-bold text-purple-900 mb-3">📆 Bonus Mensuel</h3>
-            <p className="text-purple-800 mb-2">
-              Autour du 15 de chaque mois par email
-            </p>
-            <ul className="space-y-1 text-sm text-purple-700">
-              <li>• Disponible dès le niveau Bronze</li>
-              <li>• Basé sur votre volume mensuel</li>
-              <li>• Vérifiez vos spams !</li>
+          <div className="bg-cyan-50 border-l-4 border-cyan-600 p-6">
+            <h3 className="font-bold text-cyan-900 mb-2">💎 Platine I-VI (Niveaux 4-9)</h3>
+            <ul className="space-y-1 text-cyan-800">
+              <li>• Rakeback augmenté : 13% → 18%</li>
+              <li>• <strong className="text-red-600">Reload quotidien débloqué !</strong></li>
+              <li>• Bonus hebdomadaire et mensuel augmentés</li>
+              <li>• Limites de retrait augmentées</li>
+              <li>• Support prioritaire</li>
+              <li>• Invitations aux événements spéciaux</li>
             </ul>
           </div>
           
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6">
-            <h3 className="font-bold text-green-900 mb-3">🔄 Reload Quotidien</h3>
-            <p className="text-green-800 mb-2">
-              Bonus quotidien pour les VIP Platine+
-            </p>
-            <ul className="space-y-1 text-sm text-green-700">
-              <li>• <strong>Exclusif Platine et +</strong></li>
-              <li>• Basé sur 7-42 jours d&apos;activité</li>
-              <li>• Montants croissants par niveau</li>
+          <div className="bg-blue-50 border-l-4 border-blue-600 p-6">
+            <h3 className="font-bold text-blue-900 mb-2">💎 Diamant I-V (Niveaux 10-14)</h3>
+            <ul className="space-y-1 text-blue-800">
+              <li>• Rakeback premium : 19% → 23%</li>
+              <li>• <strong>Host VIP dédié</strong></li>
+              <li>• Bonus personnalisés négociables</li>
+              <li>• Cadeaux physiques (merchandise, gadgets)</li>
+              <li>• Accès aux paris pre-live exclusifs</li>
+              <li>• Invitations VIP (événements sportifs, voyages)</li>
             </ul>
           </div>
           
-          <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg p-6">
-            <h3 className="font-bold text-amber-900 mb-3">👤 Hôte VIP Personnel</h3>
-            <p className="text-amber-800 mb-2">
-              Service exclusif Diamant+
-            </p>
-            <ul className="space-y-1 text-sm text-amber-700">
-              <li>• Contact direct privilégié</li>
-              <li>• Bonus personnalisés</li>
-              <li>• Support prioritaire 24/7</li>
+          <div className="bg-purple-50 border-l-4 border-purple-600 p-6">
+            <h3 className="font-bold text-purple-900 mb-2">🌟 Obsidienne (Niveau 15)</h3>
+            <ul className="space-y-1 text-purple-800">
+              <li>• Rakeback maximum : 25%+</li>
+              <li>• Avantages secrets non divulgués</li>
+              <li>• Bonus sur mesure illimités</li>
+              <li>• Accès direct aux dirigeants Stake</li>
+              <li>• Expériences uniques (jets privés, yachts)</li>
+              <li>• Statut de légende dans la communauté</li>
             </ul>
           </div>
         </div>
       </section>
 
-      {/* Bonus spéciaux */}
+      {/* Bonus Exclusifs Rounders Pro */}
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          🎉 Autres Avantages VIP
+        <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg p-8">
+          <h2 className="text-2xl font-bold mb-6 text-center">
+            🎁 Bonus Cash Exclusifs Rounders Pro
+          </h2>
+          
+          <p className="text-center mb-8 text-lg">
+            En plus des récompenses Stake, recevez des bonus CASH à chaque niveau franchi !
+          </p>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
+              <div className="text-amber-300 font-bold text-xl mb-1">Bronze</div>
+              <div className="text-3xl font-bold">10€</div>
+              <div className="text-sm opacity-80">en USDC</div>
+            </div>
+            
+            <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
+              <div className="text-gray-300 font-bold text-xl mb-1">Argent</div>
+              <div className="text-3xl font-bold">20€</div>
+              <div className="text-sm opacity-80">en USDC</div>
+            </div>
+            
+            <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
+              <div className="text-yellow-300 font-bold text-xl mb-1">Or</div>
+              <div className="text-3xl font-bold">30€</div>
+              <div className="text-sm opacity-80">en USDC</div>
+            </div>
+            
+            <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
+              <div className="text-cyan-300 font-bold text-xl mb-1">Platine I-III</div>
+              <div className="text-3xl font-bold">50€</div>
+              <div className="text-sm opacity-80">en USDC</div>
+            </div>
+            
+            <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
+              <div className="text-cyan-200 font-bold text-xl mb-1">Platine IV-VI</div>
+              <div className="text-3xl font-bold">100€</div>
+              <div className="text-sm opacity-80">en USDC</div>
+            </div>
+            
+            <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
+              <div className="text-blue-300 font-bold text-xl mb-1">Diamant I-V</div>
+              <div className="text-3xl font-bold">200€</div>
+              <div className="text-sm opacity-80">en USDC</div>
+            </div>
+          </div>
+          
+          <div className="bg-white/10 backdrop-blur rounded-lg p-6">
+            <h3 className="font-bold text-xl mb-4 text-center">
+              💸 Comment réclamer vos bonus ?
+            </h3>
+            <ol className="space-y-3">
+              <li className="flex items-start">
+                <span className="font-bold mr-2">1.</span>
+                <span>Inscrivez-vous sur Stake avec notre code : <strong className="text-yellow-300">rounders</strong></span>
+              </li>
+              <li className="flex items-start">
+                <span className="font-bold mr-2">2.</span>
+                <span>Atteignez un nouveau niveau VIP</span>
+              </li>
+              <li className="flex items-start">
+                <span className="font-bold mr-2">3.</span>
+                <span>Prenez une capture d&apos;écran de votre niveau</span>
+              </li>
+              <li className="flex items-start">
+                <span className="font-bold mr-2">4.</span>
+                <span>Réclamez votre bonus dans l&apos;Espace Affiliés</span>
+              </li>
+            </ol>
+            
+            <div className="mt-6 text-center">
+              <Link
+                href="/affilies"
+                className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
+              >
+                Réclamer mes bonus →
+              </Link>
+            </div>
+          </div>
+          
+          <p className="text-center mt-6 text-sm opacity-80">
+            💰 Paiement rapide en USDC via la fonction pourboire Stake
+          </p>
+        </div>
+      </section>
+
+      {/* Conseils VIP */}
+      <div className="bg-amber-50 rounded-lg p-6 mb-8">
+        <h3 className="font-bold text-amber-900 mb-3">💡 Conseils pour monter rapidement</h3>
+        <ul className="space-y-2 text-amber-800">
+          <li>• Jouez régulièrement plutôt que sporadiquement</li>
+          <li>• Privilégiez les jeux à faible edge pour plus de volume</li>
+          <li>• Participez aux promotions et challenges</li>
+          <li>• Réinvestissez vos bonus pour générer plus de wager</li>
+          <li>• Utilisez le rakeback instantané à votre avantage</li>
+        </ul>
+      </div>
+
+      {/* FAQ VIP */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          ❓ Questions Fréquentes VIP
         </h2>
         
         <div className="space-y-4">
-          <div className="flex items-start bg-white rounded-lg shadow p-4">
-            <span className="text-2xl mr-4">🎂</span>
-            <div>
-              <h3 className="font-bold text-gray-900">Bonus d&apos;Anniversaire</h3>
-              <p className="text-gray-700 text-sm">
-                Recevez un bonus spécial le jour de votre anniversaire (email vérifié requis)
-              </p>
-            </div>
-          </div>
+          <details className="bg-white border rounded-lg p-4">
+            <summary className="font-bold text-gray-900 cursor-pointer">
+              Peut-on perdre son niveau VIP ?
+            </summary>
+            <p className="mt-3 text-gray-700">
+              Non ! Les niveaux VIP sont permanents. Une fois atteint, vous gardez votre niveau à vie.
+            </p>
+          </details>
           
-          <div className="flex items-start bg-white rounded-lg shadow p-4">
-            <span className="text-2xl mr-4">🎟️</span>
-            <div>
-              <h3 className="font-bold text-gray-900">Tirage Hebdomadaire 75,000$</h3>
-              <p className="text-gray-700 text-sm">
-                1 ticket pour chaque 1,000$ misés - tirage chaque semaine
-              </p>
-            </div>
-          </div>
+          <details className="bg-white border rounded-lg p-4">
+            <summary className="font-bold text-gray-900 cursor-pointer">
+              Comment est calculé le rakeback ?
+            </summary>
+            <p className="mt-3 text-gray-700">
+              Le rakeback est un pourcentage de l&apos;edge de la maison qui vous est retourné. 
+              Par exemple, avec 20% de rakeback sur un pari de 100$ avec 2% d&apos;edge, vous recevez 0.40$ instantanément.
+            </p>
+          </details>
           
-          <div className="flex items-start bg-white rounded-lg shadow p-4">
-            <span className="text-2xl mr-4">🏃</span>
-            <div>
-              <h3 className="font-bold text-gray-900">Course Quotidienne 100,000$</h3>
-              <p className="text-gray-700 text-sm">
-                Les 5,000 meilleurs joueurs se partagent la cagnotte toutes les 24h
-              </p>
-            </div>
-          </div>
+          <details className="bg-white border rounded-lg p-4">
+            <summary className="font-bold text-gray-900 cursor-pointer">
+              Les bonus Rounders Pro sont-ils cumulables ?
+            </summary>
+            <p className="mt-3 text-gray-700">
+              Non, vous recevez un bonus unique pour chaque niveau atteint. 
+              Par exemple, si vous passez de Bronze à Argent, vous recevez 20€ (pas 10€ + 20€).
+            </p>
+          </details>
         </div>
       </section>
 
-      {/* Bonus Rounders */}
+      {/* CTA */}
       <div className="bg-gray-900 text-white rounded-lg p-8 mb-8">
-        <h3 className="text-2xl font-bold mb-4">🚀 Bonus Exclusifs Rounders Pro</h3>
+        <h3 className="text-2xl font-bold mb-4">🚀 Commencez votre ascension VIP</h3>
         <p className="mb-6 text-gray-300">
-          En plus du programme VIP Stake, nos affiliés bénéficient de :
+          Inscrivez-vous avec notre code pour profiter des bonus cash exclusifs 
+          en plus du programme VIP Stake.
         </p>
         
-        <div className="grid md:grid-cols-2 gap-4">
-          <div className="bg-gray-800 rounded-lg p-4">
-            <h4 className="font-bold text-green-400 mb-2">💰 Bonus Paliers VIP</h4>
-            <p className="text-sm text-gray-300">
-              Recevez un bonus supplémentaire à chaque nouveau niveau atteint
-            </p>
-          </div>
-          <div className="bg-gray-800 rounded-lg p-4">
-            <h4 className="font-bold text-green-400 mb-2">📊 Tableau de Bord</h4>
-            <p className="text-sm text-gray-300">
-              Suivez votre progression et réclamez vos bonus facilement
-            </p>
-          </div>
-        </div>
-        
-        <div className="mt-6 text-center">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <a
+            href="https://stake.bet/?c=rounders"
+            target="_blank"
+            className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition text-center"
+          >
+            S&apos;inscrire sur Stake →
+          </a>
           <Link
             href="/affilies"
-            className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
+            className="inline-block bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition text-center"
           >
-            Rejoindre l&apos;Espace Affiliés →
+            Voir l&apos;Espace Affiliés →
           </Link>
         </div>
-      </div>
-
-      {/* Telegram */}
-      <div className="bg-blue-50 rounded-lg p-6 mb-8">
-        <h3 className="font-bold text-blue-900 mb-3">💬 Rejoindre le Telegram VIP</h3>
-        <p className="text-blue-800 mb-4">
-          Dès le niveau Bronze, rejoignez le canal Telegram exclusif pour recevoir vos boosts hebdomadaires 
-          et rester informé de toutes les promotions spéciales.
-        </p>
-        <p className="text-sm text-blue-700">
-          📱 Le lien vous sera fourni automatiquement une fois le niveau Bronze atteint
-        </p>
       </div>
 
       {/* Navigation */}

@@ -159,15 +159,20 @@ export default function GuideBonusPage() {
         </p>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h4 className="font-bold text-green-400 mb-2">✓ Bonus VIP Supplémentaires</h4>
-            <p className="text-sm text-gray-300">
-              Recevez des bonus additionnels à chaque palier VIP franchi
+            <h4 className="font-bold text-green-400 mb-2">✓ Bonus Cash par Niveau VIP</h4>
+            <p className="text-sm text-gray-300 mb-2">
+              Recevez de l&apos;argent réel à chaque palier franchi :
             </p>
+            <ul className="text-xs text-gray-400 space-y-1">
+              <li>• Bronze: 10€ • Argent: 20€ • Or: 30€</li>
+              <li>• Platine I-III: 50€ • Platine IV-VI: 100€</li>
+              <li>• Diamant: 200€ en USDC</li>
+            </ul>
           </div>
           <div>
-            <h4 className="font-bold text-green-400 mb-2">✓ Récompenses Exclusives</h4>
+            <h4 className="font-bold text-green-400 mb-2">✓ Paiement Rapide</h4>
             <p className="text-sm text-gray-300">
-              Accès à des bonus et avantages réservés à nos affiliés
+              Versement en USDC via pourboire Stake sous 24-48h
             </p>
           </div>
           <div>
@@ -184,14 +189,20 @@ export default function GuideBonusPage() {
           </div>
         </div>
         
-        <div className="mt-6 text-center">
+        <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
           <a
             href="https://stake.bet/?c=rounders"
             target="_blank"
-            className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
+            className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition text-center"
           >
-            Obtenir tous les bonus →
+            S&apos;inscrire sur Stake →
           </a>
+          <Link
+            href="/affilies"
+            className="inline-block bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition text-center"
+          >
+            Réclamer mes bonus VIP →
+          </Link>
         </div>
       </div>
 
