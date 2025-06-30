@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -81,10 +80,15 @@ export default function Affilies() {
           </h2>
           
           <form 
-            action="https://formspree.io/f/myzjonkv"
+            action="https://formspree.io/f/VOTRE_ENDPOINT_ICI"
             method="POST"
             className="space-y-6"
           >
+            {/* Champs cachés pour Formspree */}
+            <input type="hidden" name="_next" value="https://www.rounders.pro/merci" />
+            <input type="hidden" name="_subject" value="Nouvelle demande de bonus Rounders" />
+            <input type="hidden" name="_captcha" value="false" />
+            
             <div>
               <label htmlFor="pseudo" className="block text-sm font-medium text-gray-700 mb-1">
                 Pseudo Stake
@@ -197,6 +201,7 @@ export default function Affilies() {
                 <li>• Un seul bonus par niveau atteint</li>
                 <li>• Délai de traitement : 24-48h</li>
                 <li>• Nous nous réservons le droit de vérifier votre éligibilité</li>
+                <li>• Nous vérifions manuellement chaque demande via notre accès direct aux statistiques affiliés Stake</li>
               </ul>
             </div>
 
