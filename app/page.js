@@ -97,7 +97,7 @@ export default function Home() {
             </h2>
             <p className="text-lg md:text-xl text-gray-600 mb-8">
               Rejoignez la communauté Rounders Pro et profitez de bonus exclusifs, 
-              d&apos;un jeu quotidien gratuit et de récompenses VIP supplémentaires
+              de jeux gratuits et de récompenses VIP supplémentaires
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <a
@@ -168,7 +168,7 @@ export default function Home() {
               </div>
               <h4 className="text-xl font-bold text-gray-900 mb-3">Jeu Quotidien Gratuit</h4>
               <p className="text-gray-600 mb-4">
-                Tentez votre chance chaque jour avec notre roue de la fortune 
+                Tentez votre chance chaque jour avec nos jeux exclusifs 
                 et gagnez des récompenses en crypto.
               </p>
               <Link href="/jeu" className="text-green-600 font-medium hover:underline inline-flex items-center">

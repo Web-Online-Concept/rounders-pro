@@ -55,6 +55,21 @@ export default function GuideFrancePage() {
                   <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">
                     🇸🇬 Singapour
                   </span>
+                  <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">
+                    🇯🇵 Japon
+                  </span>
+                  <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">
+                    🇦🇺 Australie
+                  </span>
+                  <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">
+                    🇳🇿 Nouvelle-Zélande
+                  </span>
+                  <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">
+                    🇲🇽 Mexique
+                  </span>
+                  <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">
+                    🇧🇷 Brésil
+                  </span>
                 </div>
                 <a
                   href="https://stake.bet/?c=upM179Vw"
@@ -104,9 +119,13 @@ export default function GuideFrancePage() {
                   Après votre inscription, vous pouvez désactiver le VPN et vous connecter directement via :
                 </p>
                 <div className="bg-green-50 border-2 border-green-500 rounded-lg p-4">
-                  <p className="text-green-900 font-bold text-lg text-center">
-                    stake.bet/?c=upM179Vw
-                  </p>
+                  <a 
+                    href="https://stake.bet/?c=upM179Vw"
+                    target="_blank"
+                    className="text-green-900 font-bold text-lg text-center block hover:underline"
+                  >
+                    www.stake.bet
+                  </a>
                   <p className="text-green-700 text-sm text-center mt-2">
                     ✅ Accès direct depuis la France sans VPN
                   </p>
@@ -130,7 +149,7 @@ export default function GuideFrancePage() {
           </li>
           <li className="flex items-start">
             <span className="text-green-400 mr-2">✓</span>
-            <span>Accès à notre jeu quotidien gratuit avec prix en crypto</span>
+            <span>Récompenses et avantages exclusifs Rounders Pro</span>
           </li>
           <li className="flex items-start">
             <span className="text-green-400 mr-2">✓</span>

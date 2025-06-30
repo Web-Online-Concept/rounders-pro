@@ -70,7 +70,7 @@ export default function GuideBonusPage() {
             </p>
             <div className="text-green-600 font-bold text-xl">Jusqu&apos;à 1,000$+</div>
             <p className="text-sm text-gray-500 mt-2">
-              Réclamable tous les jours à partir de 00:00 UTC
+              ⚠️ Accessible à partir du niveau Bronze II
             </p>
           </div>
           
@@ -165,9 +165,9 @@ export default function GuideBonusPage() {
             </p>
           </div>
           <div>
-            <h4 className="font-bold text-green-400 mb-2">✓ Jeu Quotidien Gratuit</h4>
+            <h4 className="font-bold text-green-400 mb-2">✓ Récompenses Exclusives</h4>
             <p className="text-sm text-gray-300">
-              Accès à notre roue de la fortune exclusive avec prix en crypto
+              Accès à des bonus et avantages réservés à nos affiliés
             </p>
           </div>
           <div>

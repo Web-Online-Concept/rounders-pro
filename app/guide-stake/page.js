@@ -31,7 +31,7 @@ export default function GuideStakePage() {
     {
       href: '/guide-stake/bonus',
       title: '💰 Bonus et Rakeback',
-      description: 'Système de rakeback automatique, bonus quotidiens, hebdomadaires et mensuels expliqués.',
+      description: 'Système de rakeback automatique, bonus hebdomadaires et mensuels expliqués. Reload quotidien VIP.',
       tag: 'GAINS'
     },
     {
