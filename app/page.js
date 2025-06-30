@@ -94,7 +94,7 @@ export default function Home() {
             <p className="text-xl md:text-2xl text-gray-600 mb-2">
               Le guide ultime pour maximiser vos gains sur Stake
               <br className="hidden md:block" />
-              avec des bonus cash exclusifs jusqu'à 200€ par niveau VIP
+              avec des bonus cash exclusifs jusqu&apos;à 200€ par niveau VIP
             </p>
             
             {/* Image placeholder */}
@@ -133,7 +133,7 @@ export default function Home() {
               </div>
               <div>
                 <div className="text-3xl md:text-4xl font-bold text-blue-600">5%+</div>
-                <div className="text-gray-600 mt-2">Rakeback dès l'inscription</div>
+                <div className="text-gray-600 mt-2">Rakeback dès l&apos;inscription</div>
               </div>
               <div>
                 <div className="text-3xl md:text-4xl font-bold text-blue-600">12</div>
@@ -165,7 +165,7 @@ export default function Home() {
                 /> */}
                 <h3 className="text-2xl font-bold mb-4">Guide Complet</h3>
                 <p className="text-gray-600 mb-6">
-                  Tout ce qu'il faut savoir pour réussir sur Stake, de l'inscription aux stratégies avancées.
+                  Tout ce qu&apos;il faut savoir pour réussir sur Stake, de l&apos;inscription aux stratégies avancées.
                 </p>
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-start">
@@ -201,7 +201,7 @@ export default function Home() {
                 /> */}
                 <h3 className="text-2xl font-bold mb-4">Bonus Cash VIP</h3>
                 <p className="text-gray-600 mb-6">
-                  Recevez des bonus cash exclusifs à chaque niveau VIP franchi, jusqu'à 200€ !
+                  Recevez des bonus cash exclusifs à chaque niveau VIP franchi, jusqu&apos;à 200€ !
                 </p>
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-start">
@@ -210,7 +210,7 @@ export default function Home() {
                   </li>
                   <li className="flex items-start">
                     <span className="text-green-500 mr-2">✓</span>
-                    <span>Jusqu'à 200€ au Diamant</span>
+                    <span>Jusqu&apos;à 200€ au Diamant</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-green-500 mr-2">✓</span>
@@ -319,7 +319,7 @@ export default function Home() {
               Prêt à maximiser vos gains ?
             </h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Rejoignez Rounders et profitez de nos bonus exclusifs jusqu'à 200€ par niveau VIP
+              Rejoignez Rounders et profitez de nos bonus exclusifs jusqu&apos;à 200€ par niveau VIP
             </p>
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <a 
@@ -328,7 +328,7 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg"
               >
-                S'inscrire sur Stake →
+                S&apos;inscrire sur Stake →
               </a>
               <Link href="/guide-stake" className="bg-blue-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-800 transition-colors">
                 Lire le guide complet
