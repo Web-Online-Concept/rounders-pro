@@ -43,7 +43,7 @@ export default function Home() {
                   href="/guide-stake"
                   className="bg-white text-gray-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center"
                 >
-                  Découvrir le Guide
+                  Découvrir le Guide Stake
                 </Link>
               </div>
             </div>
@@ -53,32 +53,49 @@ export default function Home() {
         {/* Features rapides */}
         <section className="py-12 bg-gray-900 text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-center">
               <div>
-                <div className="text-3xl mb-2">🎰</div>
-                <div className="font-semibold">+7000 Jeux</div>
+                <div className="text-2xl md:text-3xl mb-1 md:mb-2">🎰</div>
+                <div className="text-sm md:text-base font-semibold">+7000 Jeux</div>
               </div>
               <div>
-                <div className="text-3xl mb-2">💰</div>
-                <div className="font-semibold">Bonus VIP généreux</div>
+                <div className="text-2xl md:text-3xl mb-1 md:mb-2">💰</div>
+                <div className="text-sm md:text-base font-semibold">Bonus VIP</div>
               </div>
               <div>
-                <div className="text-3xl mb-2">⚡</div>
-                <div className="font-semibold">Retraits instantanés</div>
+                <div className="text-2xl md:text-3xl mb-1 md:mb-2">⚡</div>
+                <div className="text-sm md:text-base font-semibold">Retraits instant</div>
               </div>
               <div>
-                <div className="text-3xl mb-2">🔐</div>
-                <div className="font-semibold">100% Crypto</div>
+                <div className="text-2xl md:text-3xl mb-1 md:mb-2">🔐</div>
+                <div className="text-sm md:text-base font-semibold">100% Crypto</div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Comment ça marche */}
-        <section className="py-20">
+        {/* Présentation de Stake */}
+        <section className="py-20 bg-white">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-900">
+              Présentation de Stake, son casino et ses paris sportifs
+            </h2>
+            <p className="text-lg text-gray-700 text-center leading-relaxed">
+              Stake est l&apos;une des plateformes de jeu en ligne les plus populaires au monde, 
+              offrant plus de 7000 jeux de casino (slots, jeux de table, live casino) et des 
+              paris sportifs sur tous les événements majeurs. Reconnu pour ses paiements 
+              instantanés en cryptomonnaie, son programme VIP généreux et son interface moderne, 
+              Stake attire des millions de joueurs. La plateforme accepte plus de 20 cryptos 
+              différentes et propose des bonus hebdomadaires et mensuels à tous ses membres VIP.
+            </p>
+          </div>
+        </section>
+
+        {/* Comment marchent les bonus Rounders */}
+        <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
-              Comment ça marche ?
+              Comment marchent les bonus Rounders avec Stake ?
             </h2>
             
             <div className="grid md:grid-cols-3 gap-8 mb-16">
@@ -153,11 +170,11 @@ export default function Home() {
             
             <div className="grid md:grid-cols-2 gap-8">
               {/* Guide Complet Stake */}
-              <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <Link href="/guide-stake" className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow group">
                 <img 
                   src="/images/guide-stake.jpg" 
                   alt="Guide Stake"
-                  className="w-full h-48 object-cover"
+                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="p-6">
                   <h3 className="text-2xl font-bold mb-3">Guide Complet Stake</h3>
@@ -165,24 +182,24 @@ export default function Home() {
                     Découvrez tout sur Stake : inscription, système VIP officiel, tous les jeux, 
                     rakeback, promotions et stratégies gagnantes.
                   </p>
-                  <Link href="/guide-stake" className="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center">
+                  <span className="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center">
                     Consulter le guide Stake
                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                     </svg>
-                  </Link>
+                  </span>
                 </div>
-              </div>
+              </Link>
               
               {/* Avantages Exclusifs Rounders */}
-              <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow relative">
-                <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+              <Link href="/avantages-rounders" className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow relative group">
+                <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold z-10">
                   EN PLUS !
                 </div>
                 <img 
                   src="/images/avantages-rounders.jpg" 
                   alt="Avantages Rounders"
-                  className="w-full h-48 object-cover"
+                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="p-6">
                   <h3 className="text-2xl font-bold mb-3">Avantages Exclusifs Rounders</h3>
@@ -190,14 +207,14 @@ export default function Home() {
                     Bonus cash de 10€ à 200€ offerts par Rounders selon votre niveau VIP. 
                     Ces bonus s&apos;AJOUTENT à tous les avantages Stake !
                   </p>
-                  <Link href="/avantages-rounders" className="text-orange-600 hover:text-orange-700 font-semibold inline-flex items-center">
+                  <span className="text-orange-600 hover:text-orange-700 font-semibold inline-flex items-center">
                     Voir nos avantages exclusifs
                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                     </svg>
-                  </Link>
+                  </span>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
         </section>
