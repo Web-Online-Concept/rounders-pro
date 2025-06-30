@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,7 +15,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
-              <span className="text-3xl">🎰</span>
+              <span className="text-3xl">🎲</span>
               <span className="text-2xl font-bold text-gray-900">
                 Rounders<span className="text-blue-600">.pro</span>
               </span>
@@ -92,14 +93,27 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-blue-50 to-white py-12 md:py-20 pb-24 md:pb-20">
-        <div className="max-w-6xl mx-auto px-4 text-center">
+      <section className="bg-gradient-to-b from-blue-50 to-white py-12 md:py-16 pb-20 md:pb-12">
+        <div className="max-w-6xl mx-auto px-4">
+          {/* Image Hero - Décommentez quand l'image sera prête
+          <div className="mb-8">
+            <Image 
+              src="/images/hero-stake.jpg" 
+              alt="Stake Casino Interface"
+              width={1200}
+              height={600}
+              className="rounded-lg shadow-xl mx-auto"
+              priority
+            />
+          </div>
+          */}
+          <div className="text-center">
           <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
-            Gagnez plus sur Stake avec
-            <span className="text-blue-600"> Rounders Pro</span>
+            Gagnez plus sur Stake avec Rounders
           </h1>
           <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
-            Le guide ultime pour maximiser vos gains sur Stake. 
+            Le guide ultime pour maximiser vos gains sur Stake.
+            <br className="hidden md:block" />
             Bonus exclusifs, stratégies avancées et support en français.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -121,7 +135,7 @@ export default function HomePage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 bg-white">
+      <section className="py-8 md:py-12 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
@@ -153,6 +167,17 @@ export default function HomePage() {
           
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white rounded-lg shadow-xl p-8 transform hover:scale-105 transition">
+              {/* Image Guide - Décommentez quand prête
+              <div className="mb-4">
+                <Image 
+                  src="/images/guide-stake.jpg" 
+                  alt="Guide Stake"
+                  width={400}
+                  height={250}
+                  className="rounded-lg w-full"
+                />
+              </div>
+              */}
               <div className="text-4xl mb-4">📚</div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
                 Guide Complet Stake
@@ -184,6 +209,7 @@ export default function HomePage() {
                 <li>✓ Bronze : 10€ • Argent : 20€</li>
                 <li>✓ Or : 30€ • Platine : 50-100€</li>
                 <li>✓ Diamant : 200€ cash</li>
+                <li>✓ Paiement dans votre crypto préférée</li>
               </ul>
               <Link href="/affilies" className="block">
                 <button className="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition">
@@ -261,53 +287,6 @@ export default function HomePage() {
               <p className="text-gray-600 text-sm">
                 Recevez votre bonus en USDC sous 24-48h
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
-            Ils nous font confiance
-          </h2>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-lg p-6 shadow">
-              <div className="flex items-center mb-4">
-                <div className="text-yellow-500">★★★★★</div>
-              </div>
-              <p className="text-gray-700 mb-4">
-                &quot;Guide super complet ! J&apos;ai enfin compris comment fonctionne Stake et les bonus VIP sont un vrai plus.&quot;
-              </p>
-              <div className="text-sm text-gray-600">
-                <strong>Alexandre D.</strong> - Niveau Or
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-lg p-6 shadow">
-              <div className="flex items-center mb-4">
-                <div className="text-yellow-500">★★★★★</div>
-              </div>
-              <p className="text-gray-700 mb-4">
-                &quot;50€ reçus en atteignant Platine ! Paiement rapide et support au top. Je recommande.&quot;
-              </p>
-              <div className="text-sm text-gray-600">
-                <strong>Marie L.</strong> - Niveau Platine II
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-lg p-6 shadow">
-              <div className="flex items-center mb-4">
-                <div className="text-yellow-500">★★★★★</div>
-              </div>
-              <p className="text-gray-700 mb-4">
-                &quot;Les astuces du guide m&apos;ont fait économiser beaucoup. Le système de bonus cash est génial !&quot;
-              </p>
-              <div className="text-sm text-gray-600">
-                <strong>Thomas R.</strong> - Niveau Argent
-              </div>
             </div>
           </div>
         </div>

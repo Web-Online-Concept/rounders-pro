@@ -9,6 +9,8 @@ export default function AffiliesPage() {
     username: '',
     email: '',
     vipLevel: '',
+    crypto: '',
+    cryptoAddress: '',
     screenshot: null,
     message: ''
   });
@@ -37,6 +39,8 @@ export default function AffiliesPage() {
         username: '',
         email: '',
         vipLevel: '',
+        crypto: '',
+        cryptoAddress: '',
         screenshot: null,
         message: ''
       });
@@ -55,6 +59,9 @@ export default function AffiliesPage() {
           <h2 className="text-2xl font-bold mb-4 text-center">
             Vos Bonus Cash Exclusifs
           </h2>
+          <p className="text-center text-sm mb-4 opacity-90">
+            Paiement dans la crypto de votre choix
+          </p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {Object.entries(bonusAmounts).map(([level, amount]) => (
               <div key={level} className="bg-white/10 backdrop-blur rounded p-3 text-center">
@@ -130,6 +137,47 @@ export default function AffiliesPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
+                Cryptomonnaie souhaitée *
+              </label>
+              <select
+                required
+                value={formData.crypto}
+                onChange={(e) => setFormData({...formData, crypto: e.target.value})}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Sélectionnez votre crypto</option>
+                <option value="BTC">Bitcoin (BTC)</option>
+                <option value="ETH">Ethereum (ETH)</option>
+                <option value="USDT">Tether (USDT)</option>
+                <option value="USDC">USD Coin (USDC)</option>
+                <option value="BNB">Binance Coin (BNB)</option>
+                <option value="SOL">Solana (SOL)</option>
+                <option value="DOGE">Dogecoin (DOGE)</option>
+                <option value="LTC">Litecoin (LTC)</option>
+                <option value="TRX">Tron (TRX)</option>
+                <option value="XRP">Ripple (XRP)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Adresse de réception *
+              </label>
+              <input
+                type="text"
+                required
+                value={formData.cryptoAddress}
+                onChange={(e) => setFormData({...formData, cryptoAddress: e.target.value})}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Votre adresse crypto pour recevoir le paiement"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Vérifiez bien l&apos;adresse et le réseau correspondant
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Capture d&apos;écran du niveau VIP *
               </label>
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
@@ -189,7 +237,7 @@ export default function AffiliesPage() {
             <li>• Vous devez être inscrit via notre lien d&apos;affiliation (code : rounders)</li>
             <li>• Un seul bonus par niveau VIP (pas de cumul)</li>
             <li>• La capture d&apos;écran doit être récente et non modifiée</li>
-            <li>• Paiement en USDC via la fonction pourboire Stake sous 24-48h</li>
+            <li>• Paiement dans votre crypto préférée via la fonction pourboire Stake sous 24-48h</li>
             <li>• En cas de problème, contactez-nous : rounders.pro@gmail.com</li>
           </ul>
         </div>

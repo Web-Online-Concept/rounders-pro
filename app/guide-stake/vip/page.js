@@ -12,7 +12,7 @@ export default function GuideVIPPage() {
     { name: 'Bronze', points: '10,000', rakeback: '5%+', bonus: 'Hebdo + Mensuel', color: 'amber' },
     { name: 'Argent', points: '50,000', rakeback: '6%+', bonus: 'Hebdo + Mensuel', color: 'gray' },
     { name: 'Or', points: '100,000', rakeback: '7%+', bonus: 'Hebdo + Mensuel', color: 'yellow' },
-    { name: 'Platine I', points: '250,000', rakeback: '8%+', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
+    { name: 'Platine I', points: '250,000', rakeback: '8%+', bonus: 'Hebdo + Mensuel + DAILY', color: 'cyan' },
     { name: 'Platine II', points: '500,000', rakeback: '9%+', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
     { name: 'Platine III', points: '1,000,000', rakeback: '10%+', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
     { name: 'Platine IV', points: '2,500,000', rakeback: '11%+', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
@@ -232,37 +232,37 @@ export default function GuideVIPPage() {
             <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
               <div className="text-amber-300 font-bold text-xl mb-1">Bronze</div>
               <div className="text-3xl font-bold">10€</div>
-              <div className="text-sm opacity-80">en USDC</div>
+              <div className="text-sm opacity-80">crypto au choix</div>
             </div>
             
             <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
               <div className="text-gray-300 font-bold text-xl mb-1">Argent</div>
               <div className="text-3xl font-bold">20€</div>
-              <div className="text-sm opacity-80">en USDC</div>
+              <div className="text-sm opacity-80">crypto au choix</div>
             </div>
             
             <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
               <div className="text-yellow-300 font-bold text-xl mb-1">Or</div>
               <div className="text-3xl font-bold">30€</div>
-              <div className="text-sm opacity-80">en USDC</div>
+              <div className="text-sm opacity-80">crypto au choix</div>
             </div>
             
             <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
               <div className="text-cyan-300 font-bold text-xl mb-1">Platine I-III</div>
               <div className="text-3xl font-bold">50€</div>
-              <div className="text-sm opacity-80">en USDC</div>
+              <div className="text-sm opacity-80">crypto au choix</div>
             </div>
             
             <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
               <div className="text-cyan-200 font-bold text-xl mb-1">Platine IV-VI</div>
               <div className="text-3xl font-bold">100€</div>
-              <div className="text-sm opacity-80">en USDC</div>
+              <div className="text-sm opacity-80">crypto au choix</div>
             </div>
             
             <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
               <div className="text-blue-300 font-bold text-xl mb-1">Diamant I-V</div>
               <div className="text-3xl font-bold">200€</div>
-              <div className="text-sm opacity-80">en USDC</div>
+              <div className="text-sm opacity-80">crypto au choix</div>
             </div>
           </div>
           
@@ -300,7 +300,7 @@ export default function GuideVIPPage() {
           </div>
           
           <p className="text-center mt-6 text-sm opacity-80">
-            💰 Paiement rapide en USDC via la fonction pourboire Stake
+            💰 Paiement rapide dans la crypto de votre choix via la fonction pourboire Stake
           </p>
         </div>
       </section>

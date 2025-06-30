@@ -170,13 +170,13 @@ export default function GuideBonusPage() {
             <ul className="text-xs text-gray-400 space-y-1">
               <li>• Bronze: 10€ • Argent: 20€ • Or: 30€</li>
               <li>• Platine I-III: 50€ • Platine IV-VI: 100€</li>
-              <li>• Diamant: 200€ en USDC</li>
+              <li>• Diamant: 200€ (crypto au choix)</li>
             </ul>
           </div>
           <div>
             <h4 className="font-bold text-green-400 mb-2">✓ Paiement Rapide</h4>
             <p className="text-sm text-gray-300">
-              Versement en USDC via pourboire Stake sous 24-48h
+              Versement dans votre crypto préférée via pourboire Stake sous 24-48h
             </p>
           </div>
           <div>
