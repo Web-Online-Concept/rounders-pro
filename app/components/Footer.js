@@ -38,8 +38,20 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
-          <p>&copy; 2025 Rounders. Tous droits réservés. Jouez responsable.</p>
+        <div className="border-t border-gray-800 mt-8 pt-8">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="text-center md:text-left text-sm">
+              <p>&copy; 2025 Rounders. Tous droits réservés. Jouez responsable.</p>
+            </div>
+            <div className="text-center md:text-right text-sm">
+              <ul className="flex flex-wrap justify-center md:justify-end gap-4">
+                <li><Link href="/mentions-legales" className="hover:text-white">Mentions légales</Link></li>
+                <li><Link href="/cgu" className="hover:text-white">CGU</Link></li>
+                <li><Link href="/politique-confidentialite" className="hover:text-white">Confidentialité</Link></li>
+                <li><Link href="/cookies" className="hover:text-white">Cookies</Link></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
