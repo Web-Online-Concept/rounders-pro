@@ -50,7 +50,7 @@ export default function GuideAstucesPage() {
                   1
                 </span>
                 <p className="text-gray-700">
-                  En haut de la page, à gauche du bouton "Wallet", cliquez sur votre solde
+                  En haut de la page, à gauche du bouton &quot;Wallet&quot;, cliquez sur votre solde
                 </p>
               </div>
               
@@ -138,7 +138,7 @@ export default function GuideAstucesPage() {
             
             <div className="bg-gray-100 rounded-lg p-4">
               <ol className="list-decimal list-inside space-y-2 text-gray-700">
-                <li>Allez dans "Wallet" → "Vault"</li>
+                <li>Allez dans &quot;Wallet&quot; → &quot;Vault&quot;</li>
                 <li>Choisissez le montant à mettre de côté</li>
                 <li>Définissez une durée de verrouillage (24h minimum)</li>
                 <li>Confirmez avec votre 2FA</li>
@@ -303,7 +303,7 @@ export default function GuideAstucesPage() {
                 <div>
                   <p className="font-semibold text-gray-900">Allez dans Settings → Security</p>
                   <p className="text-gray-700 text-sm">
-                    Cliquez sur "Enable 2FA"
+                    Cliquez sur &quot;Enable 2FA&quot;
                   </p>
                 </div>
               </div>

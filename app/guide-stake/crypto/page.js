@@ -225,7 +225,7 @@ export default function GuideCryptoPage() {
           <h3 className="font-bold text-green-900 mb-3">✅ C&apos;est très simple !</h3>
           <ol className="list-decimal list-inside space-y-2 text-green-800">
             <li>Connectez-vous à Stake</li>
-            <li>Cliquez sur "Wallet" → "Deposit"</li>
+            <li>Cliquez sur &quot;Wallet&quot; → &quot;Deposit&quot;</li>
             <li>Choisissez votre crypto</li>
             <li>Copiez l&apos;adresse de dépôt</li>
             <li>Envoyez depuis Coinbase</li>
