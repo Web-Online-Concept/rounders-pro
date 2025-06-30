@@ -74,16 +74,19 @@ export default function Affilies() {
         </div>
 
         {/* Formulaire de réclamation */}
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold mb-6 text-center">Réclamer mon bonus</h2>
+        <div className="bg-white rounded-xl shadow-xl p-8 border border-gray-100">
+          <h2 className="text-2xl font-bold mb-8 text-center flex items-center justify-center">
+            <span className="text-3xl mr-3">💸</span>
+            Réclamer mon bonus
+          </h2>
           
           <form 
             action="https://formspree.io/f/myzjonkv"
             method="POST"
-            className="space-y-4"
+            className="space-y-6"
           >
             <div>
-              <label htmlFor="pseudo" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="pseudo" className="block text-sm font-medium text-gray-700 mb-1">
                 Pseudo Stake
               </label>
               <input
@@ -91,12 +94,13 @@ export default function Affilies() {
                 id="pseudo"
                 name="pseudo"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                placeholder="Votre pseudo sur Stake"
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Email
               </label>
               <input
@@ -104,19 +108,20 @@ export default function Affilies() {
                 id="email"
                 name="email"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                placeholder="votre@email.com"
               />
             </div>
 
             <div>
-              <label htmlFor="niveau" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="niveau" className="block text-sm font-medium text-gray-700 mb-1">
                 Niveau VIP atteint
               </label>
               <select
                 id="niveau"
                 name="niveau"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none"
               >
                 <option value="">Sélectionnez votre niveau</option>
                 <option value="bronze">Bronze (10€)</option>
@@ -129,14 +134,14 @@ export default function Affilies() {
             </div>
 
             <div>
-              <label htmlFor="crypto" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="crypto" className="block text-sm font-medium text-gray-700 mb-1">
                 Cryptomonnaie souhaitée
               </label>
               <select
                 id="crypto"
                 name="crypto"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none"
               >
                 <option value="">Sélectionnez une crypto</option>
                 <option value="USDT">USDT (Tether)</option>
@@ -151,7 +156,7 @@ export default function Affilies() {
             </div>
 
             <div>
-              <label htmlFor="reseau" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="reseau" className="block text-sm font-medium text-gray-700 mb-1">
                 Réseau (si applicable)
               </label>
               <input
@@ -159,12 +164,12 @@ export default function Affilies() {
                 id="reseau"
                 name="reseau"
                 placeholder="Ex: Solana, ERC-20, TRC-20..."
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
             </div>
 
             <div>
-              <label htmlFor="adresse" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="adresse" className="block text-sm font-medium text-gray-700 mb-1">
                 Adresse de réception
               </label>
               <input
@@ -172,17 +177,23 @@ export default function Affilies() {
                 id="adresse"
                 name="adresse"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                placeholder="Votre adresse crypto"
               />
               <p className="mt-1 text-sm text-red-600">
                 ⚠️ Vérifiez bien votre adresse. Toute erreur ne sera pas de notre responsabilité.
               </p>
             </div>
 
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-sm mb-2">Conditions importantes :</h3>
-              <ul className="text-sm text-gray-600 space-y-1">
-                <li>• Vous devez être inscrit via notre lien d&apos;affiliation (code : rounders)</li>
+            <div className="bg-amber-50 border border-amber-200 p-5 rounded-lg">
+              <h3 className="font-semibold text-amber-900 mb-3 flex items-center">
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                Conditions importantes :
+              </h3>
+              <ul className="text-sm text-amber-800 space-y-1.5">
+                <li>• Vous devez être inscrit via notre lien d&apos;affiliation (code : <strong>rounders</strong>)</li>
                 <li>• Un seul bonus par niveau atteint</li>
                 <li>• Délai de traitement : 24-48h</li>
                 <li>• Nous nous réservons le droit de vérifier votre éligibilité</li>
@@ -191,7 +202,7 @@ export default function Affilies() {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-colors font-semibold"
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 px-6 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               Envoyer ma demande
             </button>
