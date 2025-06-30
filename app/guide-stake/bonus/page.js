@@ -34,10 +34,13 @@ export default function GuideBonusPage() {
             Stake offre un rakeback instantané sur TOUS vos paris, gagnants ou perdants :
           </p>
           <div className="bg-white rounded-lg p-6 text-center">
-            <div className="text-5xl font-bold text-blue-600 mb-2">10%</div>
+            <div className="text-5xl font-bold text-blue-600 mb-2">5%+</div>
             <p className="text-gray-600 text-lg">de l&apos;edge de la maison vous est retourné</p>
             <p className="text-sm text-gray-500 mt-4">
-              Exemple : Sur un pari de 100€ avec un edge de 2%, vous recevez instantanément 0.20€
+              Exemple : Sur un pari de 100€ avec un edge de 2%, vous recevez instantanément 0.10€
+            </p>
+            <p className="text-sm text-green-600 mt-2">
+              Le rakeback augmente avec votre niveau VIP !
             </p>
           </div>
         </div>
@@ -48,7 +51,8 @@ export default function GuideBonusPage() {
             <li>• Le rakeback est crédité instantanément après chaque pari</li>
             <li>• Aucune condition de mise sur le rakeback</li>
             <li>• Valable sur TOUS les jeux (casino, sports, originals)</li>
-            <li>• Augmente avec votre niveau VIP</li>
+            <li>• Commence à 5% avec le code affilié</li>
+            <li>• Augmente progressivement jusqu&apos;à 20%+ !</li>
           </ul>
         </div>
       </section>

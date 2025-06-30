@@ -9,21 +9,21 @@ export const metadata = {
 
 export default function GuideVIPPage() {
   const vipLevels = [
-    { name: 'Bronze', points: '0', rakeback: '10%', bonus: 'Hebdo + Mensuel', color: 'amber' },
-    { name: 'Argent', points: '30', rakeback: '11%', bonus: 'Hebdo + Mensuel', color: 'gray' },
-    { name: 'Or', points: '280', rakeback: '12%', bonus: 'Hebdo + Mensuel', color: 'yellow' },
-    { name: 'Platine I', points: '1,480', rakeback: '13%', bonus: 'Hebdo + Mensuel + DAILY', color: 'cyan' },
-    { name: 'Platine II', points: '3,480', rakeback: '14%', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
-    { name: 'Platine III', points: '6,480', rakeback: '15%', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
-    { name: 'Platine IV', points: '13,980', rakeback: '16%', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
-    { name: 'Platine V', points: '26,480', rakeback: '17%', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
-    { name: 'Platine VI', points: '63,980', rakeback: '18%', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
-    { name: 'Diamant I', points: '163,980', rakeback: '19%', bonus: 'Tous + Host VIP', color: 'blue' },
-    { name: 'Diamant II', points: '413,980', rakeback: '20%', bonus: 'Tous + Host VIP', color: 'blue' },
-    { name: 'Diamant III', points: '1,013,980', rakeback: '21%', bonus: 'Tous + Host VIP', color: 'blue' },
-    { name: 'Diamant IV', points: '2,513,980', rakeback: '22%', bonus: 'Tous + Host VIP', color: 'blue' },
-    { name: 'Diamant V', points: '6,513,980', rakeback: '23%', bonus: 'Tous + Host VIP', color: 'blue' },
-    { name: 'Obsidienne', points: '100,013,980', rakeback: '25%+', bonus: 'Tous + Avantages secrets', color: 'purple' },
+    { name: 'Bronze', points: '10,000', rakeback: '5%+', bonus: 'Hebdo + Mensuel', color: 'amber' },
+    { name: 'Argent', points: '50,000', rakeback: '6%+', bonus: 'Hebdo + Mensuel', color: 'gray' },
+    { name: 'Or', points: '100,000', rakeback: '7%+', bonus: 'Hebdo + Mensuel', color: 'yellow' },
+    { name: 'Platine I', points: '250,000', rakeback: '8%+', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
+    { name: 'Platine II', points: '500,000', rakeback: '9%+', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
+    { name: 'Platine III', points: '1,000,000', rakeback: '10%+', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
+    { name: 'Platine IV', points: '2,500,000', rakeback: '11%+', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
+    { name: 'Platine V', points: '5,000,000', rakeback: '12%+', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
+    { name: 'Platine VI', points: '10,000,000', rakeback: '13%+', bonus: 'Hebdo + Mensuel + Daily', color: 'cyan' },
+    { name: 'Diamant I', points: '25,000,000', rakeback: '14%+', bonus: 'Tous + Host VIP', color: 'blue' },
+    { name: 'Diamant II', points: '50,000,000', rakeback: '15%+', bonus: 'Tous + Host VIP', color: 'blue' },
+    { name: 'Diamant III', points: '100,000,000', rakeback: '16%+', bonus: 'Tous + Host VIP', color: 'blue' },
+    { name: 'Diamant IV', points: '250,000,000', rakeback: '17%+', bonus: 'Tous + Host VIP', color: 'blue' },
+    { name: 'Diamant V', points: '500,000,000', rakeback: '18%+', bonus: 'Tous + Host VIP', color: 'blue' },
+    { name: 'Obsidienne', points: '1,000,000,000', rakeback: '20%+', bonus: 'Tous + Avantages secrets', color: 'purple' },
   ];
 
   return (
@@ -41,6 +41,62 @@ export default function GuideVIPPage() {
         </p>
       </div>
 
+      {/* Offre de Bienvenue */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          🎁 Offre de Bienvenue & Autres Bonus
+        </h2>
+        
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+            <h3 className="font-bold text-green-900 mb-3">🎊 Offre de Bienvenue</h3>
+            <p className="text-green-800 mb-3">
+              Utilisez un code d&apos;affiliation dans les 24h après inscription pour débloquer :
+            </p>
+            <ul className="space-y-2 text-green-700">
+              <li>• <strong>5% de rakeback instantané</strong> avant même d&apos;être Bronze</li>
+              <li>• Accès anticipé aux récompenses VIP</li>
+              <li>• Code à saisir : <strong className="text-green-900">rounders</strong></li>
+            </ul>
+          </div>
+          
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <h3 className="font-bold text-blue-900 mb-3">📱 Boost Hebdomadaire Telegram</h3>
+            <p className="text-blue-800 mb-3">
+              Chaque samedi à 12h30 GMT, recevez votre boost :
+            </p>
+            <ul className="space-y-2 text-blue-700">
+              <li>• Réservé aux VIP Bronze et +</li>
+              <li>• Distribué sur le groupe Telegram VIP</li>
+              <li>• Cliquez sur le lien pour réclamer</li>
+              <li>• Montant selon votre activité</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div className="mt-6 bg-amber-50 border border-amber-200 rounded-lg p-6">
+          <h3 className="font-bold text-amber-900 mb-3">🎯 Autres Bonus Disponibles</h3>
+          <div className="grid md:grid-cols-2 gap-4 text-amber-800">
+            <div>
+              <p className="font-semibold">🎂 Bonus d&apos;anniversaire</p>
+              <p className="text-sm">Email avec coupon valable 7 jours</p>
+            </div>
+            <div>
+              <p className="font-semibold">💸 Tirage hebdo 50-75k$</p>
+              <p className="text-sm">1 ticket par 1000$ misés</p>
+            </div>
+            <div>
+              <p className="font-semibold">🏃 Course 100k$ - 24h</p>
+              <p className="text-sm">Top 5000 coureurs gagnent</p>
+            </div>
+            <div>
+              <p className="font-semibold">💬 Pluies quotidiennes</p>
+              <p className="text-sm">Dans le chat Stake</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Comment ça marche */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -52,11 +108,12 @@ export default function GuideVIPPage() {
             <div>
               <h3 className="font-bold text-gray-900 mb-3">📊 Calcul des points VIP</h3>
               <p className="text-gray-700 mb-2">
-                Pour chaque <strong>1,000$</strong> misés, vous gagnez environ <strong>10 points VIP</strong>.
+                Les points sont gagnés en pariant sur les jeux de casino et les événements sportifs.
               </p>
               <div className="bg-white rounded p-3 text-sm">
-                <p className="font-mono">Points = (Mise × Edge) × 1.5</p>
-                <p className="text-gray-600 mt-1">Exemple : 100$ sur Dice (1% edge) = 1.5 points</p>
+                <p className="font-mono">Points = (Mise × Edge) × multiplicateur</p>
+                <p className="text-gray-600 mt-2">• Casino : multiplicateur standard</p>
+                <p className="text-gray-600">• <strong className="text-green-600">Sports : compte 3x plus !</strong></p>
               </div>
             </div>
             
@@ -65,8 +122,9 @@ export default function GuideVIPPage() {
               <ul className="space-y-2 text-gray-700">
                 <li>• Points cumulés à vie (jamais perdus)</li>
                 <li>• Montée de niveau instantanée</li>
-                <li>• Bonus débloqués immédiatement</li>
+                <li>• Minimum 10,000 points pour Bronze</li>
                 <li>• Rakeback augmenté en temps réel</li>
+                <li>• Bonus débloqués immédiatement</li>
               </ul>
             </div>
           </div>
@@ -281,7 +339,8 @@ export default function GuideVIPPage() {
             </summary>
             <p className="mt-3 text-gray-700">
               Le rakeback est un pourcentage de l&apos;edge de la maison qui vous est retourné. 
-              Par exemple, avec 20% de rakeback sur un pari de 100$ avec 2% d&apos;edge, vous recevez 0.40$ instantanément.
+              Par exemple, avec 5% de rakeback sur un pari de 100$ avec 2% d&apos;edge, vous recevez 0.10$ instantanément
+              (100$ × 2% edge × 5% rakeback = 0.10$), que vous gagniez ou perdiez.
             </p>
           </details>
           
@@ -292,6 +351,16 @@ export default function GuideVIPPage() {
             <p className="mt-3 text-gray-700">
               Non, vous recevez un bonus unique pour chaque niveau atteint. 
               Par exemple, si vous passez de Bronze à Argent, vous recevez 20€ (pas 10€ + 20€).
+            </p>
+          </details>
+          
+          <details className="bg-white border rounded-lg p-4">
+            <summary className="font-bold text-gray-900 cursor-pointer">
+              Comment rejoindre le groupe Telegram VIP ?
+            </summary>
+            <p className="mt-3 text-gray-700">
+              Une fois niveau Bronze atteint, vous pouvez rejoindre le groupe Telegram VIP exclusif 
+              pour recevoir votre boost hebdomadaire chaque samedi à 12h30 GMT et des cadeaux spéciaux.
             </p>
           </details>
         </div>
