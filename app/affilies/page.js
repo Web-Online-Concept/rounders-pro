@@ -42,7 +42,7 @@ export default function EspaceAffilies() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gray-50 py-12">
+      <main className="min-h-screen bg-gray-50 py-12 pb-24 md:pb-12">
         <div className="container mx-auto px-4 max-w-2xl">
           <h1 className="text-4xl font-bold text-center mb-8">Espace Affiliés Rounders</h1>
           

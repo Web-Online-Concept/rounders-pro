@@ -6,11 +6,6 @@ import { usePathname } from 'next/navigation';
 export default function BottomBar() {
   const pathname = usePathname();
   
-  // Ne pas afficher sur les pages du guide (elles ont leur propre menu)
-  if (pathname.startsWith('/guide-stake')) {
-    return null;
-  }
-  
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 md:hidden z-40">
       <div className="grid grid-cols-4 py-2">
@@ -26,7 +21,7 @@ export default function BottomBar() {
         
         <Link 
           href="/guide-stake" 
-          className="flex flex-col items-center py-2 text-gray-600"
+          className={`flex flex-col items-center py-2 ${pathname.startsWith('/guide-stake') ? 'text-blue-600' : 'text-gray-600'}`}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />

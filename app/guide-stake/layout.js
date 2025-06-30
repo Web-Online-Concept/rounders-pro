@@ -30,6 +30,19 @@ export default function GuideLayout({ children }) {
     <>
       <Header />
       <div className="min-h-screen bg-gray-50 flex flex-col">
+        {/* Mobile Guide Menu Bar */}
+        <div className="md:hidden bg-white border-b border-gray-200 px-4 py-3">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="flex items-center space-x-2 text-gray-700 hover:text-blue-600"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <span className="font-medium">Menu du guide</span>
+          </button>
+        </div>
+
         <div className="flex flex-1">
           {/* Sidebar Desktop - Non fixed pour ne pas cacher le footer */}
           <aside className="hidden md:block w-64 bg-white shadow-lg sticky top-0 h-screen overflow-y-auto">
@@ -124,37 +137,10 @@ export default function GuideLayout({ children }) {
 
           {/* Main Content */}
           <main className="flex-1">
-            <div className="container mx-auto px-4 py-8 max-w-4xl mb-20 md:mb-0">
+            <div className="container mx-auto px-4 py-8 max-w-4xl pb-24 md:pb-8">
               {children}
             </div>
           </main>
-        </div>
-
-        {/* Bottom Bar Mobile */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 md:hidden z-40">
-          <div className="grid grid-cols-3 py-2">
-            <Link href="/" className="flex flex-col items-center py-2">
-              <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-              </svg>
-              <span className="text-xs">Accueil</span>
-            </Link>
-            <button 
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="flex flex-col items-center py-2"
-            >
-              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-              <span className="text-xs text-blue-600">Menu</span>
-            </button>
-            <Link href="/affilies" className="flex flex-col items-center py-2">
-              <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span className="text-xs">Affiliés</span>
-            </Link>
-          </div>
         </div>
       </div>
       <Footer />
