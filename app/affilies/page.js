@@ -82,12 +82,11 @@ export default function Affilies() {
           <form 
             action="https://formspree.io/f/myzjonkv"
             method="POST"
+            encType="multipart/form-data"
             className="space-y-6"
           >
-            {/* Champs cachés pour Formspree */}
-            <input type="hidden" name="_next" value="https://www.rounders.pro/merci" />
+            {/* Sujet personnalisé pour l'email */}
             <input type="hidden" name="_subject" value="Nouvelle demande de bonus Rounders" />
-            <input type="hidden" name="_captcha" value="false" />
             
             <div>
               <label htmlFor="pseudo" className="block text-sm font-medium text-gray-700 mb-1">
@@ -189,6 +188,23 @@ export default function Affilies() {
               </p>
             </div>
 
+            <div>
+              <label htmlFor="screenshot" className="block text-sm font-medium text-gray-700 mb-1">
+                Capture d&apos;écran de votre niveau VIP
+              </label>
+              <input
+                type="file"
+                id="screenshot"
+                name="screenshot"
+                accept="image/*"
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+              <p className="mt-1 text-sm text-gray-600">
+                Formats acceptés : JPG, PNG, GIF (max 10MB)
+              </p>
+            </div>
+
             <div className="bg-amber-50 border border-amber-200 p-5 rounded-lg">
               <h3 className="font-semibold text-amber-900 mb-3 flex items-center">
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -223,6 +239,9 @@ export default function Affilies() {
             <li>Nous contrôlons votre niveau VIP actuel</li>
             <li>Vous recevez votre bonus sous 24-48h</li>
           </ol>
+          <p className="text-sm text-blue-700 mt-3 italic">
+            Note : Après validation, vous serez redirigé vers une page de confirmation.
+          </p>
         </div>
       </div>
     </main>
