@@ -1,242 +1,316 @@
-// app/guide-stake/bonus/page.js
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'Bonus et Rakeback Stake - Jusqu\'à 10% de Cashback | Rounders Pro',
-  description: 'Système de rakeback Stake expliqué : 10% instantané, bonus quotidiens, hebdomadaires et mensuels. Maximisez vos récompenses.',
-  keywords: 'stake bonus, stake rakeback, stake cashback, stake reload, stake rewards',
-};
+export default function GuideBonus() {
+  const [activeTab, setActiveTab] = useState('rakeback');
 
-export default function GuideBonusPage() {
   return (
-    <div className="pb-20 md:pb-0">
-      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-        💰 Bonus et Système de Rakeback
-      </h1>
-
-      <div className="bg-green-50 border-l-4 border-green-600 p-4 mb-8">
-        <p className="text-green-900 font-semibold">
-          💰 Le système de récompenses le plus généreux du marché !
-        </p>
-        <p className="text-green-800 mt-1">
-          Recevez jusqu&apos;à 10% de rakeback instantané + bonus quotidiens
+    <>
+      <h1 className="text-4xl font-bold mb-8">Bonus & Rakeback sur Stake</h1>
+      
+      {/* Introduction */}
+      <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-8">
+        <p className="text-blue-800">
+          Stake offre l'un des meilleurs systèmes de bonus du marché. Avec notre code affilié <strong>rounders</strong>, 
+          vous bénéficiez de 5%+ de rakeback dès l'inscription, plus nos bonus cash exclusifs !
         </p>
       </div>
 
-      {/* Rakeback Section */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          🔄 Rakeback Automatique Instantané
-        </h2>
-        
-        <div className="bg-gray-100 rounded-lg p-6 mb-6">
-          <p className="text-gray-700 mb-4">
-            Stake offre un rakeback instantané sur TOUS vos paris, gagnants ou perdants :
-          </p>
-          <div className="bg-white rounded-lg p-6 text-center">
-            <div className="text-5xl font-bold text-blue-600 mb-2">5%+</div>
-            <p className="text-gray-600 text-lg">de l&apos;edge de la maison vous est retourné</p>
-            <p className="text-sm text-gray-500 mt-4">
-              Exemple : Sur un pari de 100€ avec un edge de 2%, vous recevez instantanément 0.10€
-            </p>
-            <p className="text-sm text-green-600 mt-2">
-              Le rakeback augmente avec votre niveau VIP !
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <p className="text-blue-900 font-semibold mb-2">💡 Comment ça fonctionne ?</p>
-          <ul className="space-y-2 text-blue-800">
-            <li>• Le rakeback est crédité instantanément après chaque pari</li>
-            <li>• Aucune condition de mise sur le rakeback</li>
-            <li>• Valable sur TOUS les jeux (casino, sports, originals)</li>
-            <li>• Commence à 5% avec le code affilié</li>
-            <li>• Augmente progressivement jusqu&apos;à 20%+ !</li>
-          </ul>
-        </div>
-      </section>
-
-      {/* Daily Bonuses Grid */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          🎁 Calendrier des Bonus
-        </h2>
-        
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-white border-2 border-green-500 rounded-lg p-6 relative">
-            <div className="absolute -top-3 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-              QUOTIDIEN
-            </div>
-            <h3 className="font-bold text-gray-900 mb-2 mt-2">🎁 Reload Quotidien</h3>
-            <p className="text-gray-600 mb-3">
-              Bonus basé sur votre activité des dernières 24h
-            </p>
-            <div className="text-green-600 font-bold text-xl">Jusqu&apos;à 1,000$+</div>
-            <p className="text-sm text-gray-500 mt-2">
-              ⚠️ Réservé aux niveaux Platine et supérieurs
-            </p>
-          </div>
-          
-          <div className="bg-white border-2 border-blue-500 rounded-lg p-6 relative">
-            <div className="absolute -top-3 left-4 bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-              HEBDOMADAIRE
-            </div>
-            <h3 className="font-bold text-gray-900 mb-2 mt-2">📅 Bonus Hebdomadaire</h3>
-            <p className="text-gray-600 mb-3">
-              Chaque samedi, basé sur votre volume de la semaine
-            </p>
-            <div className="text-blue-600 font-bold text-xl">Jusqu&apos;à 5,000$+</div>
-            <p className="text-sm text-gray-500 mt-2">
-              Disponible tous les samedis
-            </p>
-          </div>
-          
-          <div className="bg-white border-2 border-purple-500 rounded-lg p-6 relative">
-            <div className="absolute -top-3 left-4 bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-              MENSUEL
-            </div>
-            <h3 className="font-bold text-gray-900 mb-2 mt-2">🎂 Bonus Mensuel</h3>
-            <p className="text-gray-600 mb-3">
-              Récompense pour votre fidélité mensuelle
-            </p>
-            <div className="text-purple-600 font-bold text-xl">Jusqu&apos;à 10,000$+</div>
-            <p className="text-sm text-gray-500 mt-2">
-              Le 1er de chaque mois
-            </p>
-          </div>
-          
-          <div className="bg-white border-2 border-amber-500 rounded-lg p-6 relative">
-            <div className="absolute -top-3 left-4 bg-amber-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-              VIP
-            </div>
-            <h3 className="font-bold text-gray-900 mb-2 mt-2">🏆 Bonus VIP</h3>
-            <p className="text-gray-600 mb-3">
-              Bonus exclusifs selon votre niveau VIP
-            </p>
-            <div className="text-amber-600 font-bold text-xl">Montants secrets</div>
-            <p className="text-sm text-gray-500 mt-2">
-              Plus vous montez, plus c&apos;est généreux
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Promotions */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          🎯 Promotions Spéciales
-        </h2>
-        
-        <div className="space-y-4">
-          <div className="bg-blue-50 border-l-4 border-blue-600 p-4">
-            <h3 className="font-bold text-blue-900">🎯 Challenges Quotidiens</h3>
-            <p className="text-blue-800">
-              Participez aux défis quotidiens et hebdomadaires pour gagner des prix supplémentaires.
-              Les challenges changent régulièrement avec des cagnottes allant jusqu&apos;à 50,000$.
-            </p>
-          </div>
-          
-          <div className="bg-purple-50 border-l-4 border-purple-600 p-4">
-            <h3 className="font-bold text-purple-900">🎰 Races de Slots</h3>
-            <p className="text-purple-800">
-              Compétitions de volume sur des jeux spécifiques avec des cagnottes allant jusqu&apos;à 100,000$.
-              Plus vous jouez, plus vous montez dans le classement.
-            </p>
-          </div>
-          
-          <div className="bg-amber-50 border-l-4 border-amber-600 p-4">
-            <h3 className="font-bold text-amber-900">💸 Drops & Wins</h3>
-            <p className="text-amber-800">
-              Prix aléatoires sur certains slots pouvant atteindre 2,500$ par drop.
-              Aucune inscription nécessaire, les prix tombent automatiquement.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Rounders Exclusive */}
-      <div className="bg-gray-900 text-white rounded-lg p-8 mb-8">
-        <h3 className="text-2xl font-bold mb-4">🚀 Bonus Exclusifs Rounders Pro</h3>
-        <p className="mb-6 text-gray-300">
-          En vous inscrivant via notre lien, vous bénéficiez en plus :
-        </p>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="font-bold text-green-400 mb-2">✓ Bonus Cash par Niveau VIP</h4>
-            <p className="text-sm text-gray-300 mb-2">
-              Recevez de l&apos;argent réel à chaque palier franchi :
-            </p>
-            <ul className="text-xs text-gray-400 space-y-1">
-              <li>• Bronze: 10€ • Argent: 20€ • Or: 30€</li>
-              <li>• Platine I-III: 50€ • Platine IV-VI: 100€</li>
-              <li>• Diamant: 200€ (crypto au choix)</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold text-green-400 mb-2">✓ Paiement Rapide</h4>
-            <p className="text-sm text-gray-300">
-              Versement dans votre crypto préférée via pourboire Stake sous 24-48h
-            </p>
-          </div>
-          <div>
-            <h4 className="font-bold text-green-400 mb-2">✓ Support Prioritaire</h4>
-            <p className="text-sm text-gray-300">
-              Assistance dédiée en français via notre équipe
-            </p>
-          </div>
-          <div>
-            <h4 className="font-bold text-green-400 mb-2">✓ Guides Exclusifs</h4>
-            <p className="text-sm text-gray-300">
-              Stratégies avancées réservées à nos affiliés
-            </p>
-          </div>
-        </div>
-        
-        <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href="https://stake.bet/?c=rounders"
-            target="_blank"
-            className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition text-center"
+      {/* Tabs */}
+      <div className="bg-white rounded-lg shadow-md">
+        <div className="flex flex-wrap border-b">
+          <button
+            onClick={() => setActiveTab('rakeback')}
+            className={`px-6 py-3 font-semibold transition-colors ${
+              activeTab === 'rakeback' 
+                ? 'text-blue-600 border-b-2 border-blue-600' 
+                : 'text-gray-600 hover:text-blue-600'
+            }`}
           >
-            S&apos;inscrire sur Stake →
-          </a>
-          <Link
-            href="/affilies"
-            className="inline-block bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition text-center"
+            Rakeback
+          </button>
+          <button
+            onClick={() => setActiveTab('calendrier')}
+            className={`px-6 py-3 font-semibold transition-colors ${
+              activeTab === 'calendrier' 
+                ? 'text-blue-600 border-b-2 border-blue-600' 
+                : 'text-gray-600 hover:text-blue-600'
+            }`}
           >
-            Réclamer mes bonus VIP →
-          </Link>
+            Calendrier des bonus
+          </button>
+          <button
+            onClick={() => setActiveTab('exclusifs')}
+            className={`px-6 py-3 font-semibold transition-colors ${
+              activeTab === 'exclusifs' 
+                ? 'text-blue-600 border-b-2 border-blue-600' 
+                : 'text-gray-600 hover:text-blue-600'
+            }`}
+          >
+            Bonus Rounders
+          </button>
+        </div>
+
+        <div className="p-6">
+          {/* Rakeback Tab */}
+          {activeTab === 'rakeback' && (
+            <div className="space-y-6">
+              <h2 className="text-2xl font-semibold mb-4">Le système de Rakeback</h2>
+              
+              <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-6">
+                <h3 className="text-xl font-semibold mb-3">🎁 Offre de bienvenue Rounders</h3>
+                <p className="text-lg">
+                  En vous inscrivant avec notre code <strong>rounders</strong>, vous obtenez immédiatement 
+                  <span className="text-green-600 font-bold"> 5% de rakeback minimum</span> au lieu du taux standard !
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold mb-3">Comment fonctionne le rakeback ?</h3>
+                <p className="text-gray-600 mb-4">
+                  Le rakeback est un pourcentage de l'avantage de la maison (house edge) qui vous est retourné sur chaque mise. 
+                  Par exemple, avec 10% de rakeback sur un jeu avec 1% de house edge, vous récupérez 0.1% de chaque mise.
+                </p>
+                
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <p className="font-semibold mb-2">Exemple concret :</p>
+                  <ul className="space-y-2 text-gray-600">
+                    <li>• Vous misez 1000$ sur un jeu avec 1% de house edge</li>
+                    <li>• Avec 10% de rakeback, vous récupérez 1$ (0.1% de 1000$)</li>
+                    <li>• Plus vous jouez, plus vous récupérez !</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold mb-3">Évolution du rakeback selon votre VIP</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        <th className="px-4 py-2 text-left">Niveau VIP</th>
+                        <th className="px-4 py-2 text-center">Rakeback %</th>
+                        <th className="px-4 py-2 text-left">Avantage</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y">
+                      <tr>
+                        <td className="px-4 py-3">Sans code</td>
+                        <td className="px-4 py-3 text-center">Variable</td>
+                        <td className="px-4 py-3 text-gray-600">Taux de base</td>
+                      </tr>
+                      <tr className="bg-green-50">
+                        <td className="px-4 py-3 font-semibold">Avec code "rounders"</td>
+                        <td className="px-4 py-3 text-center font-semibold">5%+</td>
+                        <td className="px-4 py-3 text-green-600 font-semibold">Boost immédiat !</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-3">Bronze → Platine</td>
+                        <td className="px-4 py-3 text-center">5% → 15%</td>
+                        <td className="px-4 py-3 text-gray-600">Augmentation progressive</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-3">Diamant</td>
+                        <td className="px-4 py-3 text-center">20%+</td>
+                        <td className="px-4 py-3 text-gray-600">Maximum possible</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Calendrier Tab */}
+          {activeTab === 'calendrier' && (
+            <div className="space-y-6">
+              <h2 className="text-2xl font-semibold mb-4">Calendrier des bonus Stake</h2>
+              
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="px-4 py-2 text-left">Bonus</th>
+                      <th className="px-4 py-2 text-center">Fréquence</th>
+                      <th className="px-4 py-2 text-center">Niveau requis</th>
+                      <th className="px-4 py-2 text-left">Montant</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y">
+                    <tr>
+                      <td className="px-4 py-4 font-semibold">Boost Telegram</td>
+                      <td className="px-4 py-4 text-center">Variable</td>
+                      <td className="px-4 py-4 text-center">Tous</td>
+                      <td className="px-4 py-4 text-gray-600">5$ - 50$+</td>
+                    </tr>
+                    <tr className="bg-blue-50">
+                      <td className="px-4 py-4 font-semibold">Bonus hebdomadaire</td>
+                      <td className="px-4 py-4 text-center">Samedi</td>
+                      <td className="px-4 py-4 text-center text-gray-600">VIP</td>
+                      <td className="px-4 py-4 text-gray-600">Montants selon Volume de Jeu</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-4 font-semibold">Bonus mensuel</td>
+                      <td className="px-4 py-4 text-center">1er du mois</td>
+                      <td className="px-4 py-4 text-center">VIP</td>
+                      <td className="px-4 py-4 text-gray-600">Montants importants</td>
+                    </tr>
+                    <tr className="bg-yellow-50">
+                      <td className="px-4 py-4 font-semibold">Bonus Rounders</td>
+                      <td className="px-4 py-4 text-center">À la demande</td>
+                      <td className="px-4 py-4 text-center">Tous VIP</td>
+                      <td className="px-4 py-4 text-blue-600 font-semibold">10€ - 200€</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-4">Anniversaire</td>
+                      <td className="px-4 py-4 text-center">Annuel</td>
+                      <td className="px-4 py-4 text-center">Tous</td>
+                      <td className="px-4 py-4 text-gray-600">Variable</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-4">Tirages VIP</td>
+                      <td className="px-4 py-4 text-center">Aléatoire</td>
+                      <td className="px-4 py-4 text-center">VIP élevé</td>
+                      <td className="px-4 py-4 text-gray-600">Gros lots possibles</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="bg-amber-50 border-l-4 border-amber-400 p-4">
+                <p className="text-amber-800">
+                  <strong>Note :</strong> Les montants des bonus hebdomadaires et mensuels dépendent de votre volume de jeu 
+                  et de votre niveau VIP. Plus vous jouez, plus les bonus sont importants !
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Bonus Exclusifs Tab */}
+          {activeTab === 'exclusifs' && (
+            <div className="space-y-6">
+              <h2 className="text-2xl font-semibold mb-4">Bonus Exclusifs Rounders Pro</h2>
+              
+              <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg p-6">
+                <h3 className="text-2xl font-bold mb-4">💰 Nos bonus cash par niveau VIP</h3>
+                <p className="text-lg mb-4">
+                  En plus des bonus Stake, recevez nos bonus cash exclusifs à chaque palier !
+                </p>
+                
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-white/10 rounded-lg p-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span>🥉 Bronze</span>
+                        <span className="font-bold text-xl">10€</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span>🥈 Argent</span>
+                        <span className="font-bold text-xl">20€</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span>🥇 Or</span>
+                        <span className="font-bold text-xl">30€</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/10 rounded-lg p-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span>💎 Platine I-III</span>
+                        <span className="font-bold text-xl">50€</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span>💎 Platine IV-VI</span>
+                        <span className="font-bold text-xl">100€</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span>💎 Diamant I-V</span>
+                        <span className="font-bold text-xl">200€</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold mb-3">Comment réclamer vos bonus Rounders ?</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-3">
+                    <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">1</span>
+                    <div>
+                      <p className="font-semibold">Atteignez un nouveau niveau VIP</p>
+                      <p className="text-gray-600">Bronze, Argent, Or, Platine ou Diamant</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3">
+                    <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">2</span>
+                    <div>
+                      <p className="font-semibold">Prenez une capture d'écran</p>
+                      <p className="text-gray-600">Montrez clairement votre nouveau niveau VIP</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3">
+                    <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">3</span>
+                    <div>
+                      <p className="font-semibold">Remplissez le formulaire</p>
+                      <p className="text-gray-600">Dans notre <Link href="/affilies" className="text-blue-600 hover:underline">Espace Affiliés</Link></p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3">
+                    <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold">4</span>
+                    <div>
+                      <p className="font-semibold">Recevez votre bonus</p>
+                      <p className="text-gray-600">Paiement dans la crypto de votre choix sous 24-48h</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-green-50 border-l-4 border-green-400 p-6">
+                <h3 className="text-lg font-semibold mb-2">✅ Conditions simples</h3>
+                <ul className="space-y-2 text-gray-700">
+                  <li>• Inscription via notre lien affilié (code: rounders)</li>
+                  <li>• Un bonus par niveau atteint</li>
+                  <li>• Paiement garanti sous 48h</li>
+                  <li>• Choix de la crypto pour le paiement</li>
+                </ul>
+              </div>
+
+              <div className="text-center">
+                <Link 
+                  href="/affilies" 
+                  className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                >
+                  Réclamer mes bonus →
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Tips */}
-      <div className="bg-amber-50 rounded-lg p-6 mb-8">
-        <h3 className="font-bold text-amber-900 mb-3">💡 Conseils pour Maximiser vos Bonus</h3>
-        <ul className="space-y-2 text-amber-800">
-          <li>• Connectez-vous chaque jour pour ne pas manquer le reload quotidien</li>
-          <li>• Jouez régulièrement pour augmenter vos bonus hebdomadaires</li>
-          <li>• Montez en niveau VIP pour débloquer des bonus plus importants</li>
-          <li>• Participez aux challenges et races pour des gains supplémentaires</li>
-          <li>• Utilisez le coffre-fort pour sécuriser vos gains de bonus</li>
-        </ul>
-      </div>
-
-      {/* Navigation */}
-      <div className="flex justify-between mt-8">
-        <Link
-          href="/guide-stake/inscription"
-          className="text-blue-600 hover:underline font-medium"
+      {/* CTA Final */}
+      <div className="mt-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-8 text-white text-center">
+        <h2 className="text-2xl font-bold mb-4">Prêt à profiter de tous ces bonus ?</h2>
+        <p className="text-lg mb-6">
+          Inscrivez-vous avec notre code et commencez à accumuler rakeback et bonus dès maintenant !
+        </p>
+        <a
+          href="https://stake.bet/?c=rounders"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
         >
-          ← Inscription
-        </Link>
-        <Link
-          href="/guide-stake/vip"
-          className="text-blue-600 hover:underline font-medium"
-        >
-          Programme VIP →
-        </Link>
+          S'inscrire avec le code rounders →
+        </a>
       </div>
-    </div>
+    </>
   );
 }
