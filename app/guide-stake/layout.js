@@ -30,11 +30,11 @@ export default function GuideLayout({ children }) {
     <>
       <Header />
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        {/* Mobile Guide Menu Bar */}
-        <div className="md:hidden bg-white border-b border-gray-200 px-4 py-3">
+        {/* Mobile Guide Menu Bar - Sticky */}
+        <div className="md:hidden bg-white border-b border-gray-200 px-4 py-3 sticky top-[64px] z-30">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="flex items-center space-x-2 text-gray-700 hover:text-blue-600"
+            className="flex items-center justify-center space-x-2 text-gray-700 hover:text-blue-600 w-full"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
