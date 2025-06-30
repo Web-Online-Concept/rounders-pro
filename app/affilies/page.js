@@ -15,7 +15,7 @@ export default function Affilies() {
               💰 Réclamez votre Bonus Cash Rounders
             </h1>
             <p className="text-xl text-gray-600">
-              Jusqu&apos;à 200€ selon votre niveau VIP sur Stake
+              Jusqu&apos;à 200€ selon votre niveau VIP atteint sur Stake
             </p>
           </div>
 
@@ -70,7 +70,7 @@ export default function Affilies() {
               {/* Niveau VIP */}
               <div>
                 <label htmlFor="vipLevel" className="block text-sm font-medium text-gray-700 mb-2">
-                  Niveau VIP *
+                  Niveau VIP atteint *
                 </label>
                 <select
                   id="vipLevel"
@@ -152,7 +152,7 @@ export default function Affilies() {
               {/* Lien capture d'écran */}
               <div>
                 <label htmlFor="screenshotLink" className="block text-sm font-medium text-gray-700 mb-2">
-                  Lien vers votre capture d&apos;écran *
+                  Lien vers votre capture d&apos;écran de votre niveau VIP atteint *
                 </label>
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
                   <p className="text-sm text-blue-800">
@@ -279,7 +279,7 @@ export default function Affilies() {
           <div className="bg-white rounded-lg shadow-lg p-8">
             <h2 className="text-2xl font-bold mb-6">Exemple de capture d&apos;écran à fournir</h2>
             <p className="text-gray-600 mb-6">
-              Voici ce que nous attendons comme capture d&apos;écran. Votre niveau VIP doit être clairement visible.
+              Voici ce que nous attendons comme capture d&apos;écran. Votre niveau VIP atteint doit être clairement visible.
               <strong> Uploadez-la sur Imgur.com puis collez le lien dans le formulaire.</strong>
             </p>
             <div className="text-center">
@@ -290,7 +290,7 @@ export default function Affilies() {
                 style={{ maxHeight: '400px' }}
               />
               <p className="text-sm text-gray-500 mt-4">
-                La capture doit montrer clairement votre pseudo et votre niveau VIP actuel
+                La capture doit montrer clairement votre pseudo et votre niveau VIP atteint
               </p>
             </div>
           </div>
