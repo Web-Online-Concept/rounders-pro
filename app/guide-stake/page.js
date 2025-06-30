@@ -29,6 +29,18 @@ export default function GuideStakePage() {
       tag: 'TUTORIEL'
     },
     {
+      href: '/guide-stake/premier-depot',
+      title: '💳 Premier Dépôt',
+      description: 'Comment effectuer votre premier dépôt, bonus de bienvenue, méthodes recommandées.',
+      tag: 'DEPOT'
+    },
+    {
+      href: '/guide-stake/interface',
+      title: '🖥️ Interface & Navigation',
+      description: 'Maîtrisez l\'interface Stake, personnalisation, raccourcis et fonctionnalités cachées.',
+      tag: 'GUIDE'
+    },
+    {
       href: '/guide-stake/bonus',
       title: '💰 Bonus et Rakeback',
       description: 'Système de rakeback automatique, bonus hebdomadaires et mensuels expliqués. Reload quotidien VIP.',
@@ -63,6 +75,12 @@ export default function GuideStakePage() {
       title: '💡 Astuces Pro',
       description: 'Affichage en euros, utilisation du coffre, système de pourboires, trucs cachés.',
       tag: 'TIPS'
+    },
+    {
+      href: '/guide-stake/responsable',
+      title: '🛡️ Jeu Responsable',
+      description: 'Limites de jeu, auto-exclusion, conseils pour garder le contrôle et jouer sereinement.',
+      tag: 'SECURITE'
     },
     {
       href: '/guide-stake/faq',
@@ -103,7 +121,7 @@ export default function GuideStakePage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <div className="bg-white rounded-lg shadow p-4 text-center">
-          <div className="text-2xl font-bold text-blue-600">10</div>
+          <div className="text-2xl font-bold text-blue-600">13</div>
           <div className="text-sm text-gray-600">Sections</div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 text-center">
