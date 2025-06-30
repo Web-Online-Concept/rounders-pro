@@ -26,11 +26,15 @@ export default function GuideLayout({ children }) {
             <h2 className="text-xl font-bold text-gray-800 mb-6">Guide Complet Stake</h2>
             
             <nav className="space-y-2">
-              <Link href="/guide-stake/introduction" className={linkClass('/guide-stake/introduction')}>
-                Introduction
+              <Link href="/guide-stake" className={linkClass('/guide-stake')}>
+                Retour au Guide
               </Link>
+              <div className="border-t my-4"></div>
               <Link href="/guide-stake/france" className={linkClass('/guide-stake/france')}>
                 Guide France
+              </Link>
+              <Link href="/guide-stake/introduction" className={linkClass('/guide-stake/introduction')}>
+                Introduction
               </Link>
               <Link href="/guide-stake/inscription" className={linkClass('/guide-stake/inscription')}>
                 Inscription & Vérification
@@ -41,14 +45,14 @@ export default function GuideLayout({ children }) {
               <Link href="/guide-stake/interface" className={linkClass('/guide-stake/interface')}>
                 Interface & Navigation
               </Link>
-              <Link href="/guide-stake/jeux" className={linkClass('/guide-stake/jeux')}>
-                Les Jeux
-              </Link>
               <Link href="/guide-stake/bonus" className={linkClass('/guide-stake/bonus')}>
                 Bonus & Rakeback
               </Link>
               <Link href="/guide-stake/vip" className={linkClass('/guide-stake/vip')}>
                 Programme VIP
+              </Link>
+              <Link href="/guide-stake/jeux" className={linkClass('/guide-stake/jeux')}>
+                Les Jeux
               </Link>
               <Link href="/guide-stake/crypto" className={linkClass('/guide-stake/crypto')}>
                 Cryptomonnaies
@@ -56,11 +60,11 @@ export default function GuideLayout({ children }) {
               <Link href="/guide-stake/strategies" className={linkClass('/guide-stake/strategies')}>
                 Stratégies
               </Link>
-              <Link href="/guide-stake/responsable" className={linkClass('/guide-stake/responsable')}>
-                Jeu Responsable
-              </Link>
               <Link href="/guide-stake/astuces" className={linkClass('/guide-stake/astuces')}>
                 Astuces Pro
+              </Link>
+              <Link href="/guide-stake/responsable" className={linkClass('/guide-stake/responsable')}>
+                Jeu Responsable
               </Link>
               <Link href="/guide-stake/faq" className={linkClass('/guide-stake/faq')}>
                 FAQ Complète
