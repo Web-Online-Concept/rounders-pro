@@ -13,6 +13,11 @@ export default function Home() {
       <main className="pb-16 md:pb-0">
         {/* Hero Section */}
         <section className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 text-white">
+          <img 
+            src="/images/hero-stake.jpg" 
+            alt="Stake Casino" 
+            className="absolute inset-0 w-full h-full object-cover mix-blend-overlay"
+          />
           <div className="absolute inset-0 bg-black opacity-50"></div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
             <div className="text-center">
@@ -43,13 +48,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-          
-          {/* Image placeholder */}
-          {/* <img 
-            src="/images/hero-stake.jpg" 
-            alt="Stake Casino" 
-            className="absolute inset-0 w-full h-full object-cover mix-blend-overlay"
-          /> */}
         </section>
 
         {/* Features rapides */}
@@ -156,14 +154,11 @@ export default function Home() {
             <div className="grid md:grid-cols-2 gap-8">
               {/* Guide Complet Stake */}
               <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                {/* <img 
+                <img 
                   src="/images/guide-stake.jpg" 
                   alt="Guide Stake"
                   className="w-full h-48 object-cover"
-                /> */}
-                <div className="w-full h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                  <span className="text-6xl">📚</span>
-                </div>
+                />
                 <div className="p-6">
                   <h3 className="text-2xl font-bold mb-3">Guide Complet Stake</h3>
                   <p className="text-gray-600 mb-4">
@@ -184,14 +179,11 @@ export default function Home() {
                 <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
                   EN PLUS !
                 </div>
-                {/* <img 
+                <img 
                   src="/images/avantages-rounders.jpg" 
                   alt="Avantages Rounders"
                   className="w-full h-48 object-cover"
-                /> */}
-                <div className="w-full h-48 bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
-                  <span className="text-6xl">🎁</span>
-                </div>
+                />
                 <div className="p-6">
                   <h3 className="text-2xl font-bold mb-3">Avantages Exclusifs Rounders</h3>
                   <p className="text-gray-600 mb-4">

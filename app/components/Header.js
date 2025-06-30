@@ -9,7 +9,7 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo - Toujours centré sur mobile */}
           <Link href="/" className="flex items-center space-x-2 mx-auto md:mx-0">
-            <span className="text-2xl">🎲</span>
+            <img src="/logo.png" alt="Rounders" className="w-8 h-8" />
             <span className="text-xl font-bold text-gray-900">Rounders.pro</span>
           </Link>
           
