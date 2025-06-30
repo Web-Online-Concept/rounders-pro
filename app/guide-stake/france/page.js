@@ -72,7 +72,7 @@ export default function GuideFrancePage() {
                   </span>
                 </div>
                 <a
-                  href="https://stake.bet/?c=upM179Vw"
+                                              href="https://stake.bet/?c=rounders"
                   target="_blank"
                   className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
                 >
@@ -120,7 +120,7 @@ export default function GuideFrancePage() {
                 </p>
                 <div className="bg-green-50 border-2 border-green-500 rounded-lg p-4">
                   <a 
-                    href="https://stake.bet/?c=upM179Vw"
+                    href="https://stake.bet/?c=rounders"
                     target="_blank"
                     className="text-green-900 font-bold text-lg text-center block hover:underline"
                   >

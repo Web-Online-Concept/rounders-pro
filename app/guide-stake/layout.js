@@ -137,7 +137,7 @@ export default function GuideStakeLayout({ children }) {
             {/* CTA Button in Sidebar */}
             <div className="mt-8 px-4">
               <a
-                href="https://stake.bet/?c=upM179Vw"
+                href="https://stake.bet/?c=rounders"
                 target="_blank"
                 className="block w-full bg-blue-600 text-white text-center px-4 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg"
               >
@@ -187,7 +187,7 @@ export default function GuideStakeLayout({ children }) {
           </Link>
           
           <a 
-            href="https://stake.bet/?c=upM179Vw" 
+            href="https://stake.bet/?c=rounders" 
             target="_blank"
             className="flex flex-col items-center justify-center bg-blue-600 text-white"
           >

@@ -101,7 +101,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <a
-                href="https://stake.bet/?c=upM179Vw"
+                href="https://stake.bet/?c=rounders"
                 target="_blank"
                 className="bg-blue-600 text-white px-6 py-3 md:px-8 md:py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition shadow-lg hover:shadow-xl"
               >
@@ -206,7 +206,7 @@ export default function Home() {
             Rejoignez Stake via notre lien et profitez de tous nos avantages exclusifs
           </p>
           <a
-            href="https://stake.bet/?c=upM179Vw"
+            href="https://stake.bet/?c=rounders"
             target="_blank"
             className="inline-block bg-white text-blue-600 px-6 py-3 md:px-8 md:py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-lg"
           >
@@ -236,7 +236,7 @@ export default function Home() {
           </Link>
           
           <a 
-            href="https://stake.bet/?c=upM179Vw" 
+            href="https://stake.bet/?c=rounders" 
             target="_blank"
             className="flex flex-col items-center justify-center bg-blue-600 text-white"
           >

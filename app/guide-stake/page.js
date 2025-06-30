@@ -85,7 +85,7 @@ export default function GuideStakePage() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
           <a
-            href="https://stake.bet/?c=upM179Vw"
+            href="https://stake.bet/?c=rounders"
             target="_blank"
             className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg text-center"
           >
@@ -167,7 +167,7 @@ export default function GuideStakePage() {
           Inscrivez-vous via notre lien pour bénéficier de tous les avantages exclusifs Rounders Pro
         </p>
         <a
-          href="https://stake.bet/?c=upM179Vw"
+          href="https://stake.bet/?c=rounders"
           target="_blank"
           className="inline-block bg-white text-gray-900 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg"
         >
