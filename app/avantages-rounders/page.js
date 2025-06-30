@@ -13,7 +13,7 @@ export default function AvantagesRounders() {
         </h1>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
           En vous inscrivant sur Stake via notre lien d&apos;affiliation, vous bénéficiez 
-          d&apos;avantages exclusifs EN PLUS de tous les bonus offerts par Stake
+          de bonus cash exclusifs EN PLUS de tous les bonus offerts par Stake
         </p>
       </div>
 
@@ -42,11 +42,10 @@ export default function AvantagesRounders() {
         
         <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-8 shadow-lg">
           <p className="text-lg text-gray-700 mb-6 text-center">
-            Recevez un bonus cash en fonction de votre niveau VIP atteint sur Stake !<br />
-            <span className="text-sm">Montants indicatifs - consultez l&apos;Espace Affiliés pour les montants exacts</span>
+            Recevez un bonus cash en fonction de votre niveau VIP atteint sur Stake !
           </p>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
             <div className="bg-white rounded-xl p-6 text-center shadow-md">
               <div className="text-2xl font-bold text-yellow-600 mb-2">Bronze</div>
               <div className="text-3xl font-bold text-gray-900">10€</div>
@@ -55,52 +54,34 @@ export default function AvantagesRounders() {
             
             <div className="bg-white rounded-xl p-6 text-center shadow-md">
               <div className="text-2xl font-bold text-gray-600 mb-2">Argent</div>
-              <div className="text-3xl font-bold text-gray-900">25€</div>
+              <div className="text-3xl font-bold text-gray-900">20€</div>
               <div className="text-sm text-gray-600 mt-2">Bonus Cash</div>
             </div>
             
             <div className="bg-white rounded-xl p-6 text-center shadow-md">
               <div className="text-2xl font-bold text-yellow-500 mb-2">Or</div>
+              <div className="text-3xl font-bold text-gray-900">30€</div>
+              <div className="text-sm text-gray-600 mt-2">Bonus Cash</div>
+            </div>
+            
+            <div className="bg-white rounded-xl p-6 text-center shadow-md">
+              <div className="text-2xl font-bold text-cyan-600 mb-2">Platine I-III</div>
               <div className="text-3xl font-bold text-gray-900">50€</div>
               <div className="text-sm text-gray-600 mt-2">Bonus Cash</div>
             </div>
             
             <div className="bg-white rounded-xl p-6 text-center shadow-md">
-              <div className="text-2xl font-bold text-cyan-600 mb-2">Platine</div>
+              <div className="text-2xl font-bold text-purple-600 mb-2">Platine IV-VI</div>
               <div className="text-3xl font-bold text-gray-900">100€</div>
               <div className="text-sm text-gray-600 mt-2">Bonus Cash</div>
             </div>
             
             <div className="bg-white rounded-xl p-6 text-center shadow-md">
-              <div className="text-2xl font-bold text-purple-600 mb-2">Diamant</div>
-              <div className="text-3xl font-bold text-gray-900">150€</div>
-              <div className="text-sm text-gray-600 mt-2">Bonus Cash</div>
-            </div>
-            
-            <div className="bg-white rounded-xl p-6 text-center shadow-md">
-              <div className="text-2xl font-bold text-pink-600 mb-2">Diamant II</div>
+              <div className="text-2xl font-bold text-pink-600 mb-2">Diamant I-V</div>
               <div className="text-3xl font-bold text-gray-900">200€</div>
               <div className="text-sm text-gray-600 mt-2">Bonus Cash</div>
             </div>
-            
-            <div className="bg-white rounded-xl p-6 text-center shadow-md">
-              <div className="text-2xl font-bold text-red-600 mb-2">Diamant III</div>
-              <div className="text-3xl font-bold text-gray-900">250€</div>
-              <div className="text-sm text-gray-600 mt-2">Bonus Cash</div>
-            </div>
-            
-            <div className="bg-white rounded-xl p-6 text-center shadow-md">
-              <div className="text-2xl font-bold text-orange-600 mb-2">Diamant IV+</div>
-              <div className="text-3xl font-bold text-gray-900">300€+</div>
-              <div className="text-sm text-gray-600 mt-2">Et plus !</div>
-            </div>
           </div>
-          
-          <p className="text-center mb-8">
-            <a href="/guide-stake/programme-vip" className="text-blue-600 hover:text-blue-700 underline">
-              → Voir tous les détails du système VIP Stake dans notre guide
-            </a>
-          </p>
 
           <div className="text-center">
             <a 

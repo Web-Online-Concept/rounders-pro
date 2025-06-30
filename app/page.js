@@ -125,15 +125,15 @@ export default function Home() {
                 </div>
                 <div className="bg-white rounded-lg p-4 text-center shadow">
                   <div className="text-lg font-semibold text-gray-600">Argent</div>
-                  <div className="text-2xl font-bold">25€</div>
+                  <div className="text-2xl font-bold">20€</div>
                 </div>
                 <div className="bg-white rounded-lg p-4 text-center shadow">
                   <div className="text-lg font-semibold text-yellow-500">Or</div>
-                  <div className="text-2xl font-bold">50€</div>
+                  <div className="text-2xl font-bold">30€</div>
                 </div>
                 <div className="bg-white rounded-lg p-4 text-center shadow">
                   <div className="text-lg font-semibold text-cyan-600">Platine+</div>
-                  <div className="text-2xl font-bold">100€+</div>
+                  <div className="text-2xl font-bold">50€-200€</div>
                 </div>
               </div>
               <p className="text-center text-gray-600">
@@ -195,7 +195,7 @@ export default function Home() {
                 <div className="p-6">
                   <h3 className="text-2xl font-bold mb-3">Avantages Exclusifs Rounders</h3>
                   <p className="text-gray-600 mb-4">
-                    Bonus cash de 10€ à 200€+ offerts par Rounders selon votre niveau VIP. 
+                    Bonus cash de 10€ à 200€ offerts par Rounders selon votre niveau VIP. 
                     Ces bonus s&apos;AJOUTENT à tous les avantages Stake !
                   </p>
                   <Link href="/avantages-rounders" className="text-orange-600 hover:text-orange-700 font-semibold inline-flex items-center">
