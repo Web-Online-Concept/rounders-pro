@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { AFFILIATE_LINK, AFFILIATE_CODE } from './config/affiliate';
 
 export default function Home() {
   return (
@@ -24,7 +25,7 @@ export default function Home() {
               <Link href="/guide-stake" className="bg-white text-orange-600 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg">
                 Découvrir le Guide Stake
               </Link>
-              <a href="https://stake.bet/?c=rounders" target="_blank" className="bg-orange-700 text-white px-8 py-4 rounded-lg font-bold hover:bg-orange-800 transition shadow-lg">
+              <a href={AFFILIATE_LINK} target="_blank" className="bg-orange-700 text-white px-8 py-4 rounded-lg font-bold hover:bg-orange-800 transition shadow-lg">
                 Jouer sur Stake →
               </a>
             </div>
@@ -74,7 +75,7 @@ export default function Home() {
               instantanés en cryptomonnaie, son programme VIP généreux et son interface moderne, 
               Stake attire des millions de joueurs. La plateforme accepte plus de 20 cryptos 
               différentes et propose des bonus hebdomadaires et mensuels à tous ses membres VIP.
-              <a href="https://stake.bet/?c=rounders" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline ml-1">Découvrir Stake →</a>
+              <a href={AFFILIATE_LINK} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline ml-1">Découvrir Stake →</a>
             </p>
           </div>
         </section>
@@ -171,7 +172,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Inscrivez-vous</h3>
                 <p className="text-gray-600">
-                  Créez votre compte Stake en utilisant notre lien avec le code <strong>rounders</strong>
+                  Créez votre compte Stake en utilisant notre lien avec le code <strong>{AFFILIATE_CODE}</strong>
                 </p>
               </div>
               
@@ -254,7 +255,7 @@ export default function Home() {
               Rejoignez des milliers de joueurs et profitez des meilleurs bonus
             </p>
             <a 
-              href="https://stake.bet/?c=rounders"
+              href={AFFILIATE_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-green-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-600 transition-colors inline-flex items-center"
@@ -265,7 +266,7 @@ export default function Home() {
               </svg>
             </a>
             <p className="mt-4 text-sm text-gray-500">
-              Code promo : <span className="font-semibold">rounders</span>
+              Code promo : <span className="font-semibold">{AFFILIATE_CODE}</span>
             </p>
           </div>
         </section>

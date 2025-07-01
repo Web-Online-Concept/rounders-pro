@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { AFFILIATE_LINK } from '../config/affiliate';
 export default function Header() {
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
@@ -42,7 +43,7 @@ export default function Header() {
               Espace Affiliés
             </Link>
             <a 
-              href="https://stake.bet/?c=rounders&offer=rounders"
+              href={AFFILIATE_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
