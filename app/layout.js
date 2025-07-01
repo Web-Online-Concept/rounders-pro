@@ -1,20 +1,19 @@
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
+import BottomBar from './components/BottomBar'; // ✅ Ajout du menu mobile
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Rounders Pro - Bonus Cash Exclusifs Stake | 5%+ Rakeback',
-  description: 'Obtenez jusqu\'à 200€ de bonus cash exclusifs et 5%+ de rakeback instantané sur Stake. Guide complet, bonus VIP et code promo rounders.',
+  description: "Obtenez jusqu'à 200€ de bonus cash exclusifs et 5%+ de rakeback instantané sur Stake. Guide complet, bonus VIP et code promo rounders.",
   keywords: 'stake, stake bonus, stake france, rounders stake, stake rakeback, stake vip, bonus stake, code promo stake',
   metadataBase: new URL('https://rounders.pro'),
-  alternates: {
-    canonical: '/',
-  },
+  alternates: { canonical: '/' },
   openGraph: {
     title: 'Rounders Pro - Bonus Cash Exclusifs Stake',
-    description: 'Obtenez jusqu\'à 200€ de bonus cash exclusifs et 5%+ de rakeback sur Stake',
+    description: "Obtenez jusqu'à 200€ de bonus cash exclusifs et 5%+ de rakeback sur Stake",
     url: 'https://rounders.pro',
     siteName: 'Rounders Pro',
     locale: 'fr_FR',
@@ -23,7 +22,7 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Rounders Pro - Bonus Stake Exclusifs',
-    description: 'Jusqu\'à 200€ de bonus + 5% rakeback instantané',
+    description: "Jusqu'à 200€ de bonus + 5% rakeback instantané",
     creator: '@rounders_pro',
   },
   robots: {
@@ -55,7 +54,10 @@ export default function RootLayout({ children }) {
           `}
         </Script>
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+        <BottomBar /> {/* ✅ Menu mobile affiché sur toutes les pages */}
+      </body>
     </html>
   );
 }
