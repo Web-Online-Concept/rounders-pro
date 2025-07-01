@@ -19,7 +19,7 @@ export default function GuideLayout({ children }) {
   };
 
   const mobileLinkClass = (path) => {
-    return `block px-4 py-3 ${
+    return `block px-4 py-3 text-center ${
       pathname === path
         ? 'bg-orange-100 text-orange-700 font-semibold'
         : 'text-gray-700 hover:bg-gray-50'
@@ -47,11 +47,14 @@ export default function GuideLayout({ children }) {
         {/* Menu déroulant */}
         {mobileMenuOpen && (
           <div className="bg-white border-t border-gray-200 max-h-96 overflow-y-auto">
+            <div className="text-center font-semibold text-gray-800 py-3 border-b">
+              Navigation du Guide
+            </div>
             <nav className="py-2">
               <Link href="/guide-stake" className={mobileLinkClass('/guide-stake')} onClick={() => setMobileMenuOpen(false)}>
                 Retour au Guide
               </Link>
-              <div className="border-t mx-4 my-2"></div>
+              <div className="border-t mx-8 my-2"></div>
               <Link href="/guide-stake/france" className={mobileLinkClass('/guide-stake/france')} onClick={() => setMobileMenuOpen(false)}>
                 Guide France
               </Link>
@@ -91,6 +94,18 @@ export default function GuideLayout({ children }) {
               <Link href="/guide-stake/faq" className={mobileLinkClass('/guide-stake/faq')} onClick={() => setMobileMenuOpen(false)}>
                 FAQ Complète
               </Link>
+              <div className="border-t mx-8 my-2"></div>
+              <div className="px-4 py-3">
+                <a
+                  href="https://stake.bet/?c=rounders"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full bg-blue-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Jouer sur Stake
+                </a>
+              </div>
             </nav>
           </div>
         )}
