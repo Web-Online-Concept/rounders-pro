@@ -1,5 +1,6 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { AFFILIATE_LINK, AFFILIATE_CODE } from '../config/affiliate';
 
 export default function AvantagesRounders() {
   return (
@@ -108,7 +109,7 @@ export default function AvantagesRounders() {
             <h3 className="text-xl font-semibold mb-2">Inscrivez-vous</h3>
             <p className="text-gray-600">
               Créez votre compte sur Stake en utilisant notre lien d&apos;affiliation 
-              avec le code <strong>rounders</strong>
+              avec le code <strong>{AFFILIATE_CODE}</strong>
             </p>
           </div>
           
@@ -189,7 +190,7 @@ export default function AvantagesRounders() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a 
-            href="https://stake.com/?c=rounders"
+            href={AFFILIATE_LINK}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-8 py-4 bg-white text-blue-600 font-bold rounded-lg hover:bg-gray-100 transition-colors"

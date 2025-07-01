@@ -1,5 +1,6 @@
 // app/guide-stake/jeux/page.js
 import Link from 'next/link';
+import { AFFILIATE_LINK } from '../../config/affiliate';
 
 export const metadata = {
   title: 'Guide des Jeux Stake - Casino, Slots, Sports et Originals | Rounders Pro',
@@ -340,7 +341,7 @@ export default function GuideJeuxPage() {
         </p>
         
         <a
-          href="https://stake.bet/?c=rounders"
+          href={AFFILIATE_LINK}
           target="_blank"
           className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
         >

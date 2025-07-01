@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { AFFILIATE_LINK } from '../config/affiliate';
 
 export default function GuideLayout({ children }) {
   const pathname = usePathname();
@@ -166,7 +167,7 @@ export default function GuideLayout({ children }) {
               <div className="border-t mx-8 my-2"></div>
               <div className="px-4 py-3">
                 <a
-                  href="https://stake.bet/?c=rounders"
+                  href={AFFILIATE_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full bg-blue-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
@@ -234,7 +235,7 @@ export default function GuideLayout({ children }) {
             
             <div className="mt-8">
               <a
-                href="https://stake.bet/?c=rounders"
+                href={AFFILIATE_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block w-full bg-blue-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"

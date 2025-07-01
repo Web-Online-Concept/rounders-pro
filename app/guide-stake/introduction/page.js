@@ -1,6 +1,7 @@
 // app/guide-stake/introduction/page.js
 import Link from 'next/link';
 import Image from 'next/image';
+import { AFFILIATE_LINK } from '../../config/affiliate';
 
 export const metadata = {
   title: 'Introduction à Stake - Plateforme Casino & Paris Sportifs Crypto | Rounders Pro',
@@ -228,7 +229,7 @@ export default function GuideIntroductionPage() {
         
         <div className="flex flex-col sm:flex-row gap-4">
           <a
-            href="https://stake.bet/?c=rounders"
+            href={AFFILIATE_LINK}
             target="_blank"
             className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition text-center"
           >

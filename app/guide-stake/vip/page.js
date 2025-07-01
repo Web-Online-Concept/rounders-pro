@@ -1,5 +1,6 @@
 // app/guide-stake/vip/page.js
 import Link from 'next/link';
+import { AFFILIATE_LINK } from '../../config/affiliate';
 
 export const metadata = {
   title: 'Programme VIP Stake - 15 Niveaux et Récompenses | Rounders Pro',
@@ -376,7 +377,7 @@ export default function GuideVIPPage() {
         
         <div className="flex flex-col sm:flex-row gap-4">
           <a
-            href="https://stake.bet/?c=rounders"
+            href={AFFILIATE_LINK}
             target="_blank"
             className="inline-block bg-white text-gray-900 px-6 md:px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition text-center text-sm md:text-base"
           >

@@ -2,6 +2,7 @@
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { AFFILIATE_LINK } from '../config/affiliate';
 
 export default function Affilies() {
   return (
@@ -29,7 +30,7 @@ export default function Affilies() {
               className="space-y-6"
             >
               {/* Access Key Web3Forms */}
-              <input type="hidden" name="access_key" value="VOTRE-ACCESS-KEY" />
+              <input type="hidden" name="access_key" value="fe6cc4ed-5dc2-4b79-ad1d-909a898798ee" />
               
               {/* Redirection après soumission */}
               <input type="hidden" name="redirect" value="https://www.rounders.pro/merci" />
@@ -192,7 +193,7 @@ export default function Affilies() {
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
                 <h3 className="font-semibold text-amber-900 mb-2">Conditions importantes :</h3>
                 <ul className="text-sm text-amber-800 space-y-1">
-                  <li>• Être inscrit via notre lien d&apos;affiliation <a href="https://stake.bet/?c=rounders" target="_blank" rel="noopener noreferrer" className="text-orange-600 underline font-semibold hover:text-orange-700">stake.bet/?c=rounders</a></li>
+                  <li>• Être inscrit via notre lien d&apos;affiliation <a href={AFFILIATE_LINK} target="_blank" rel="noopener noreferrer" className="text-orange-600 underline font-semibold hover:text-orange-700">stake.bet/?c=rounders&offer=rounders</a></li>
                   <li>• Un seul bonus par personne et par niveau</li>
                   <li>• Délai de traitement : 24-48h</li>
                   <li>• Minimum 100$ de wager sur les 30 derniers jours</li>

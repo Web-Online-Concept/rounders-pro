@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { AFFILIATE_LINK } from '../../config/affiliate';
 
 export default function GuideBonus() {
   const [activeTab, setActiveTab] = useState('rakeback');
@@ -303,7 +304,7 @@ export default function GuideBonus() {
           Inscrivez-vous avec notre code et commencez à accumuler rakeback et bonus dès maintenant !
         </p>
         <a
-          href="https://stake.bet/?c=rounders"
+          href={AFFILIATE_LINK}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block bg-white text-blue-600 px-6 md:px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm md:text-base"

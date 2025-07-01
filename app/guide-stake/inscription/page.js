@@ -1,5 +1,6 @@
 // app/guide-stake/inscription/page.js
 import Link from 'next/link';
+import { AFFILIATE_LINK, AFFILIATE_CODE } from '../../config/affiliate';
 
 export const metadata = {
   title: 'Guide Inscription Stake - Tutoriel Complet Étape par Étape | Rounders Pro',
@@ -64,14 +65,14 @@ export default function GuideInscriptionPage() {
                   Cela vous garantit l&apos;accès à tous les bonus Rounders Pro.
                 </p>
                 <a
-                  href="https://stake.bet/?c=rounders"
+                  href={AFFILIATE_LINK}
                   target="_blank"
                   className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition"
                 >
                   Ouvrir Stake avec bonus →
                 </a>
                 <p className="text-sm text-gray-500 mt-2">
-                  💡 Le code &quot;rounders&quot; sera automatiquement appliqué
+                  💡 Le code &quot;{AFFILIATE_CODE}&quot; sera automatiquement appliqué
                 </p>
               </div>
             </div>
@@ -139,7 +140,7 @@ export default function GuideInscriptionPage() {
                   <div>
                     <h4 className="font-semibold text-gray-800">🎁 Code promo (optionnel)</h4>
                     <p className="text-gray-600">
-                      Si pas déjà rempli, entrez : <strong className="text-blue-600">rounders</strong>
+                      Si pas déjà rempli, entrez : <strong className="text-blue-600">{AFFILIATE_CODE}</strong>
                     </p>
                   </div>
                 </div>
@@ -297,7 +298,7 @@ export default function GuideInscriptionPage() {
             <div className="mt-3 text-gray-700">
               <p className="mb-2">Solutions :</p>
               <ul className="list-disc list-inside space-y-1 ml-4">
-                <li>Assurez-vous d&apos;utiliser : <strong>rounders</strong></li>
+                <li>Assurez-vous d&apos;utiliser : <strong>{AFFILIATE_CODE}</strong></li>
                 <li>Pas d&apos;espace avant ou après le code</li>
                 <li>Tout en minuscules</li>
                 <li>Si déjà inscrit, contactez-nous pour les bonus</li>
@@ -316,7 +317,7 @@ export default function GuideInscriptionPage() {
         </p>
         
         <a
-          href="https://stake.bet/?c=rounders"
+          href={AFFILIATE_LINK}
           target="_blank"
           className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
         >

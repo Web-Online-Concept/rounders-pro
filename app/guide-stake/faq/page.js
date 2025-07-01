@@ -1,3 +1,5 @@
+import { AFFILIATE_LINK } from '../../config/affiliate';
+
 export default function GuideFAQ() {
   return (
     <>
@@ -42,7 +44,7 @@ export default function GuideFAQ() {
             <div>
               <h3 className="font-semibold mb-2">Dois-je être inscrit via votre lien ?</h3>
               <p className="text-gray-600">
-                Oui, vous devez vous être inscrit sur Stake avec notre code affilié <strong>rounders</strong> via le lien : <a href="https://stake.bet/?c=rounders" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">stake.bet/?c=rounders</a>
+                Oui, vous devez vous être inscrit sur Stake avec notre code affilié <strong>rounders</strong> via le lien : <a href={AFFILIATE_LINK} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">stake.bet/?c=rounders&offer=rounders</a>
               </p>
             </div>
 
