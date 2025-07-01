@@ -19,9 +19,9 @@ export default function GuideLayout({ children }) {
   };
 
   const mobileLinkClass = (path) => {
-    return `block px-4 py-3 text-center ${
+    return `block px-6 py-3 ${
       pathname === path
-        ? 'bg-orange-100 text-orange-700 font-semibold'
+        ? 'bg-orange-100 text-orange-700 font-semibold border-l-4 border-orange-500'
         : 'text-gray-700 hover:bg-gray-50'
     }`;
   };
