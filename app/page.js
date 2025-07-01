@@ -12,7 +12,7 @@ export default function Home() {
       
       <main className="pb-16 md:pb-0">
         {/* Hero Section - EN ORANGE AVEC IMAGE DE FOND COMME DEMANDÉ */}
-        <section className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-20">
+        <section className="bg-gradient-to-r from-orange-500 to-orange-600 text-white pt-2 pb-20 md:py-20">
           <div className="max-w-6xl mx-auto px-4 text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Gagnez plus sur Stake avec Rounders
