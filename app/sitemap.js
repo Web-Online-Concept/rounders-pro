@@ -29,6 +29,18 @@ export default function sitemap() {
     },
     // Pages du guide
     {
+      url: `${baseUrl}/guide-stake/france`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/guide-stake/introduction`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/guide-stake/inscription`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
@@ -47,12 +59,6 @@ export default function sitemap() {
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/guide-stake/jeux`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
       url: `${baseUrl}/guide-stake/bonus`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
@@ -63,6 +69,12 @@ export default function sitemap() {
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/guide-stake/jeux`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/guide-stake/crypto`,
@@ -77,29 +89,22 @@ export default function sitemap() {
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/guide-stake/responsable`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.6,
-    },
-    {
       url: `${baseUrl}/guide-stake/astuces`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/guide-stake/responsable`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.6,
+    },
+    {
       url: `${baseUrl}/guide-stake/faq`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
-    },
-    // Pages supplémentaires si elles existent encore
-    {
-      url: `${baseUrl}/guide-stake/france`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
     },
     // Pages légales
     {
