@@ -2,315 +2,188 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
-export default function GuideBonus() {
-  const [activeTab, setActiveTab] = useState('rakeback');
+export default function GuideLayout({ children }) {
+  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const linkClass = (path) => {
+    return `block px-4 py-2 rounded ${
+      pathname === path
+        ? 'bg-orange-100 text-orange-700 font-semibold'
+        : 'text-gray-700 hover:bg-gray-100'
+    }`;
+  };
+
+  const mobileLinkClass = (path) => {
+    return `block px-6 py-3 ${
+      pathname === path
+        ? 'bg-orange-100 text-orange-700 font-semibold border-l-4 border-orange-500'
+        : 'text-gray-700 hover:bg-gray-50'
+    }`;
+  };
 
   return (
     <>
-      <h1 className="text-3xl md:text-4xl font-bold mb-8">Bonus & Rakeback sur Stake</h1>
+      <Header />
       
-      {/* Introduction */}
-      <div className="bg-blue-50 border-l-4 border-blue-400 p-4 md:p-6 mb-8">
-        <p className="text-blue-800 text-sm md:text-base">
-          Stake offre l&apos;un des meilleurs systèmes de bonus du marché. Avec notre code affilié <strong>rounders</strong>, 
-          vous bénéficiez de 5%+ de rakeback dès l&apos;inscription, plus nos bonus cash exclusifs !
-        </p>
-      </div>
-
-      {/* Tabs */}
-      <div className="bg-white rounded-lg shadow-md">
-        <div className="flex overflow-x-auto border-b">
+      {/* Menu burger mobile - sticky sous le header */}
+      <div className="md:hidden sticky top-0 z-40 bg-white border-b border-gray-200">
+        <div className="flex justify-center p-4">
           <button
-            onClick={() => setActiveTab('rakeback')}
-            className={`px-4 md:px-6 py-3 font-semibold transition-colors whitespace-nowrap text-sm md:text-base ${
-              activeTab === 'rakeback' 
-                ? 'text-blue-600 border-b-2 border-blue-600' 
-                : 'text-gray-600 hover:text-blue-600'
-            }`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition"
           >
-            Rakeback
-          </button>
-          <button
-            onClick={() => setActiveTab('calendrier')}
-            className={`px-4 md:px-6 py-3 font-semibold transition-colors whitespace-nowrap text-sm md:text-base ${
-              activeTab === 'calendrier' 
-                ? 'text-blue-600 border-b-2 border-blue-600' 
-                : 'text-gray-600 hover:text-blue-600'
-            }`}
-          >
-            Calendrier des bonus
-          </button>
-          <button
-            onClick={() => setActiveTab('exclusifs')}
-            className={`px-4 md:px-6 py-3 font-semibold transition-colors whitespace-nowrap text-sm md:text-base ${
-              activeTab === 'exclusifs' 
-                ? 'text-blue-600 border-b-2 border-blue-600' 
-                : 'text-gray-600 hover:text-blue-600'
-            }`}
-          >
-            Bonus Rounders
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+            </svg>
+            Menu Guide Stake
           </button>
         </div>
-
-        <div className="p-4 md:p-6">
-          {/* Rakeback Tab */}
-          {activeTab === 'rakeback' && (
-            <div className="space-y-6">
-              <h2 className="text-xl md:text-2xl font-semibold mb-4">Le système de Rakeback</h2>
-              
-              <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4 md:p-6">
-                <h3 className="text-lg md:text-xl font-semibold mb-3">🎁 Offre de bienvenue Rounders</h3>
-                <p className="text-base md:text-lg">
-                  En vous inscrivant avec notre code <strong>rounders</strong>, vous obtenez immédiatement 
-                  <span className="text-green-600 font-bold"> 5% de rakeback minimum</span> au lieu du taux standard !
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-lg md:text-xl font-semibold mb-3">Comment fonctionne le rakeback ?</h3>
-                <p className="text-gray-600 mb-4 text-sm md:text-base">
-                  Le rakeback est un pourcentage de l&apos;avantage de la maison (house edge) qui vous est retourné sur chaque mise. 
-                  Par exemple, avec 10% de rakeback sur un jeu avec 1% de house edge, vous récupérez 0.1% de chaque mise.
-                </p>
-                
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="font-semibold mb-2">Exemple concret :</p>
-                  <ul className="space-y-2 text-gray-600 text-sm md:text-base">
-                    <li>• Vous misez 1000$ sur un jeu avec 1% de house edge</li>
-                    <li>• Avec 10% de rakeback, vous récupérez 1$ (0.1% de 1000$)</li>
-                    <li>• Plus vous jouez, plus vous récupérez !</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg md:text-xl font-semibold mb-3">Évolution du rakeback selon votre VIP</h3>
-                <div className="overflow-x-auto -mx-4 px-4">
-                  <table className="w-full min-w-[400px]">
-                    <thead className="bg-gray-100">
-                      <tr>
-                        <th className="px-4 py-2 text-left text-sm">Niveau VIP</th>
-                        <th className="px-4 py-2 text-center text-sm">Rakeback %</th>
-                        <th className="px-4 py-2 text-left text-sm">Avantage</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y">
-                      <tr>
-                        <td className="px-4 py-3 text-sm">Sans code</td>
-                        <td className="px-4 py-3 text-center text-sm">Variable</td>
-                        <td className="px-4 py-3 text-gray-600 text-sm">Taux de base</td>
-                      </tr>
-                      <tr className="bg-green-50">
-                        <td className="px-4 py-3 font-semibold text-sm">Avec code &quot;rounders&quot;</td>
-                        <td className="px-4 py-3 text-center font-semibold text-sm">5%+</td>
-                        <td className="px-4 py-3 text-green-600 font-semibold text-sm">Boost immédiat !</td>
-                      </tr>
-                      <tr>
-                        <td className="px-4 py-3 text-sm">Bronze → Platine</td>
-                        <td className="px-4 py-3 text-center text-sm">5% → 15%</td>
-                        <td className="px-4 py-3 text-gray-600 text-sm">Augmentation progressive</td>
-                      </tr>
-                      <tr>
-                        <td className="px-4 py-3 text-sm">Diamant</td>
-                        <td className="px-4 py-3 text-center text-sm">20%+</td>
-                        <td className="px-4 py-3 text-gray-600 text-sm">Maximum possible</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+        
+        {/* Menu déroulant */}
+        {mobileMenuOpen && (
+          <div className="bg-white border-t border-gray-200 max-h-96 overflow-y-auto">
+            <div className="text-center font-semibold text-gray-800 py-3 border-b">
+              Navigation du Guide
             </div>
-          )}
-
-          {/* Calendrier Tab */}
-          {activeTab === 'calendrier' && (
-            <div className="space-y-6">
-              <h2 className="text-xl md:text-2xl font-semibold mb-4">Calendrier des bonus Stake</h2>
-              
-              <div className="overflow-x-auto -mx-4 px-4">
-                <table className="w-full min-w-[500px]">
-                  <thead className="bg-gray-100">
-                    <tr>
-                      <th className="px-3 md:px-4 py-2 text-left text-sm">Bonus</th>
-                      <th className="px-3 md:px-4 py-2 text-center text-sm">Fréquence</th>
-                      <th className="px-3 md:px-4 py-2 text-center text-sm">Niveau requis</th>
-                      <th className="px-3 md:px-4 py-2 text-left text-sm">Montant</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    <tr>
-                      <td className="px-3 md:px-4 py-3 md:py-4 font-semibold text-sm">Boost Telegram</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-center text-sm">Variable</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-center text-sm">Tous</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-gray-600 text-sm">5$ - 50$+</td>
-                    </tr>
-                    <tr className="bg-blue-50">
-                      <td className="px-3 md:px-4 py-3 md:py-4 font-semibold text-sm">Bonus hebdomadaire</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-center text-sm">Samedi</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-center text-gray-600 text-sm">VIP</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-gray-600 text-sm">Montants selon Volume de Jeu</td>
-                    </tr>
-                    <tr>
-                      <td className="px-3 md:px-4 py-3 md:py-4 font-semibold text-sm">Bonus mensuel</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-center text-sm">1er du mois</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-center text-sm">VIP</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-gray-600 text-sm">Montants importants</td>
-                    </tr>
-                    <tr className="bg-yellow-50">
-                      <td className="px-3 md:px-4 py-3 md:py-4 font-semibold text-sm">Bonus Rounders</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-center text-sm">À la demande</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-center text-sm">Tous VIP</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-blue-600 font-semibold text-sm">10€ - 200€</td>
-                    </tr>
-                    <tr>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-sm">Anniversaire</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-center text-sm">Annuel</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-center text-sm">Tous</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-gray-600 text-sm">Variable</td>
-                    </tr>
-                    <tr>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-sm">Tirages VIP</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-center text-sm">Aléatoire</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-center text-sm">VIP élevé</td>
-                      <td className="px-3 md:px-4 py-3 md:py-4 text-gray-600 text-sm">Gros lots possibles</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="bg-amber-50 border-l-4 border-amber-400 p-4">
-                <p className="text-amber-800 text-sm md:text-base">
-                  <strong>Note :</strong> Les montants des bonus hebdomadaires et mensuels dépendent de votre volume de jeu 
-                  et de votre niveau VIP. Plus vous jouez, plus les bonus sont importants !
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Bonus Exclusifs Tab */}
-          {activeTab === 'exclusifs' && (
-            <div className="space-y-6">
-              <h2 className="text-xl md:text-2xl font-semibold mb-4">Bonus Exclusifs Rounders Pro</h2>
-              
-              <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg p-4 md:p-6">
-                <h3 className="text-xl md:text-2xl font-bold mb-4">💰 Nos bonus cash par niveau VIP</h3>
-                <p className="text-base md:text-lg mb-4">
-                  En plus des bonus Stake, recevez nos bonus cash exclusifs à chaque palier !
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-white/10 rounded-lg p-4">
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm md:text-base">🥉 Bronze</span>
-                        <span className="font-bold text-lg md:text-xl">10€</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm md:text-base">🥈 Argent</span>
-                        <span className="font-bold text-lg md:text-xl">20€</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm md:text-base">🥇 Or</span>
-                        <span className="font-bold text-lg md:text-xl">30€</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-white/10 rounded-lg p-4">
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm md:text-base">💎 Platine I-III</span>
-                        <span className="font-bold text-lg md:text-xl">50€</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm md:text-base">💎 Platine IV-VI</span>
-                        <span className="font-bold text-lg md:text-xl">100€</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm md:text-base">💎 Diamant I-V</span>
-                        <span className="font-bold text-lg md:text-xl">200€</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg md:text-xl font-semibold mb-3">Comment réclamer vos bonus Rounders ?</h3>
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">1</span>
-                    <div>
-                      <p className="font-semibold text-sm md:text-base">Atteignez un nouveau niveau VIP</p>
-                      <p className="text-gray-600 text-sm">Bronze, Argent, Or, Platine ou Diamant</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">2</span>
-                    <div>
-                      <p className="font-semibold text-sm md:text-base">Prenez une capture d&apos;écran</p>
-                      <p className="text-gray-600 text-sm">Montrez clairement votre nouveau niveau VIP</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">3</span>
-                    <div>
-                      <p className="font-semibold text-sm md:text-base">Remplissez le formulaire</p>
-                      <p className="text-gray-600 text-sm">Dans notre <Link href="/affilies" className="text-blue-600 hover:underline">Espace Affiliés</Link></p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">4</span>
-                    <div>
-                      <p className="font-semibold text-sm md:text-base">Recevez votre bonus</p>
-                      <p className="text-gray-600 text-sm">Paiement dans la crypto de votre choix sous 24-48h</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-green-50 border-l-4 border-green-400 p-4 md:p-6">
-                <h3 className="text-base md:text-lg font-semibold mb-2">✅ Conditions simples</h3>
-                <ul className="space-y-2 text-gray-700 text-sm md:text-base">
-                  <li>• Inscription via notre lien affilié (code: rounders)</li>
-                  <li>• Un bonus par niveau atteint</li>
-                  <li>• Paiement garanti sous 48h</li>
-                  <li>• Choix de la crypto pour le paiement</li>
-                </ul>
-              </div>
-
-              <div className="text-center">
-                <Link 
-                  href="/affilies" 
-                  className="inline-block bg-blue-600 text-white px-6 md:px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm md:text-base"
+            <nav className="py-2">
+              <Link href="/guide-stake" className={mobileLinkClass('/guide-stake')} onClick={() => setMobileMenuOpen(false)}>
+                Retour au Guide
+              </Link>
+              <div className="border-t mx-8 my-2"></div>
+              <Link href="/guide-stake/france" className={mobileLinkClass('/guide-stake/france')} onClick={() => setMobileMenuOpen(false)}>
+                Guide France
+              </Link>
+              <Link href="/guide-stake/introduction" className={mobileLinkClass('/guide-stake/introduction')} onClick={() => setMobileMenuOpen(false)}>
+                Introduction
+              </Link>
+              <Link href="/guide-stake/inscription" className={mobileLinkClass('/guide-stake/inscription')} onClick={() => setMobileMenuOpen(false)}>
+                Inscription & Vérification
+              </Link>
+              <Link href="/guide-stake/premier-depot" className={mobileLinkClass('/guide-stake/premier-depot')} onClick={() => setMobileMenuOpen(false)}>
+                Premier Dépôt
+              </Link>
+              <Link href="/guide-stake/interface" className={mobileLinkClass('/guide-stake/interface')} onClick={() => setMobileMenuOpen(false)}>
+                Interface & Navigation
+              </Link>
+              <Link href="/guide-stake/bonus" className={mobileLinkClass('/guide-stake/bonus')} onClick={() => setMobileMenuOpen(false)}>
+                Bonus & Rakeback
+              </Link>
+              <Link href="/guide-stake/vip" className={mobileLinkClass('/guide-stake/vip')} onClick={() => setMobileMenuOpen(false)}>
+                Programme VIP
+              </Link>
+              <Link href="/guide-stake/jeux" className={mobileLinkClass('/guide-stake/jeux')} onClick={() => setMobileMenuOpen(false)}>
+                Les Jeux
+              </Link>
+              <Link href="/guide-stake/crypto" className={mobileLinkClass('/guide-stake/crypto')} onClick={() => setMobileMenuOpen(false)}>
+                Cryptomonnaies
+              </Link>
+              <Link href="/guide-stake/strategies" className={mobileLinkClass('/guide-stake/strategies')} onClick={() => setMobileMenuOpen(false)}>
+                Stratégies
+              </Link>
+              <Link href="/guide-stake/astuces" className={mobileLinkClass('/guide-stake/astuces')} onClick={() => setMobileMenuOpen(false)}>
+                Astuces Pro
+              </Link>
+              <Link href="/guide-stake/responsable" className={mobileLinkClass('/guide-stake/responsable')} onClick={() => setMobileMenuOpen(false)}>
+                Jeu Responsable
+              </Link>
+              <Link href="/guide-stake/faq" className={mobileLinkClass('/guide-stake/faq')} onClick={() => setMobileMenuOpen(false)}>
+                FAQ Complète
+              </Link>
+              <div className="border-t mx-8 my-2"></div>
+              <div className="px-4 py-3">
+                <a
+                  href="https://stake.bet/?c=rounders"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full bg-blue-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+                  onClick={() => setMobileMenuOpen(false)}
                 >
-                  Réclamer mes bonus →
-                </Link>
+                  Jouer sur Stake
+                </a>
               </div>
+            </nav>
+          </div>
+        )}
+      </div>
+      
+      <div className="min-h-screen flex">
+        {/* Sidebar desktop */}
+        <aside className="hidden md:block w-64 bg-gray-50 border-r border-gray-200">
+          <div className="p-6">
+            <h2 className="text-xl font-bold text-gray-800 mb-6">Guide Complet Stake</h2>
+            
+            <nav className="space-y-2">
+              <Link href="/guide-stake" className={linkClass('/guide-stake')}>
+                Retour au Guide
+              </Link>
+              <div className="border-t my-4"></div>
+              <Link href="/guide-stake/france" className={linkClass('/guide-stake/france')}>
+                Guide France
+              </Link>
+              <Link href="/guide-stake/introduction" className={linkClass('/guide-stake/introduction')}>
+                Introduction
+              </Link>
+              <Link href="/guide-stake/inscription" className={linkClass('/guide-stake/inscription')}>
+                Inscription & Vérification
+              </Link>
+              <Link href="/guide-stake/premier-depot" className={linkClass('/guide-stake/premier-depot')}>
+                Premier Dépôt
+              </Link>
+              <Link href="/guide-stake/interface" className={linkClass('/guide-stake/interface')}>
+                Interface & Navigation
+              </Link>
+              <Link href="/guide-stake/bonus" className={linkClass('/guide-stake/bonus')}>
+                Bonus & Rakeback
+              </Link>
+              <Link href="/guide-stake/vip" className={linkClass('/guide-stake/vip')}>
+                Programme VIP
+              </Link>
+              <Link href="/guide-stake/jeux" className={linkClass('/guide-stake/jeux')}>
+                Les Jeux
+              </Link>
+              <Link href="/guide-stake/crypto" className={linkClass('/guide-stake/crypto')}>
+                Cryptomonnaies
+              </Link>
+              <Link href="/guide-stake/strategies" className={linkClass('/guide-stake/strategies')}>
+                Stratégies
+              </Link>
+              <Link href="/guide-stake/astuces" className={linkClass('/guide-stake/astuces')}>
+                Astuces Pro
+              </Link>
+              <Link href="/guide-stake/responsable" className={linkClass('/guide-stake/responsable')}>
+                Jeu Responsable
+              </Link>
+              <Link href="/guide-stake/faq" className={linkClass('/guide-stake/faq')}>
+                FAQ Complète
+              </Link>
+            </nav>
+            
+            <div className="mt-8">
+              <a
+                href="https://stake.bet/?c=rounders"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full bg-blue-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+              >
+                Jouer sur Stake
+              </a>
             </div>
-          )}
-        </div>
-      </div>
+          </div>
+        </aside>
 
-      {/* CTA Final */}
-      <div className="mt-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-6 md:p-8 text-white text-center">
-        <h2 className="text-xl md:text-2xl font-bold mb-4">Prêt à profiter de tous ces bonus ?</h2>
-        <p className="text-base md:text-lg mb-6">
-          Inscrivez-vous avec notre code et commencez à accumuler rakeback et bonus dès maintenant !
-        </p>
-        <a
-          href="https://stake.bet/?c=rounders"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block bg-white text-blue-600 px-6 md:px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm md:text-base"
-        >
-          S&apos;inscrire avec le code rounders →
-        </a>
+        {/* Main content */}
+        <main className="flex-1 bg-white pb-20 md:pb-0">
+          <div className="max-w-4xl mx-auto p-6">
+            {children}
+          </div>
+        </main>
       </div>
+      <Footer />
     </>
   );
 }
