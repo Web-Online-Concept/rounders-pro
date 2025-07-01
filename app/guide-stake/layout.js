@@ -19,6 +19,33 @@ export default function GuideLayout({ children }) {
   return (
     <>
       <Header />
+      
+      {/* Menu mobile pour le guide */}
+      <div className="md:hidden sticky top-0 z-40 bg-white border-b border-gray-200">
+        <div className="p-4">
+          <h2 className="text-lg font-bold text-gray-800 text-center mb-3">Rounders.pro</h2>
+          <div className="overflow-x-auto">
+            <nav className="flex space-x-2 justify-center">
+              <Link href="/guide-stake" className={`whitespace-nowrap px-2 py-1 rounded text-sm ${pathname === '/guide-stake' ? 'bg-orange-100 text-orange-700 font-semibold' : 'text-gray-700'}`}>
+                Retour
+              </Link>
+              <Link href="/guide-stake/france" className={`whitespace-nowrap px-2 py-1 rounded text-sm ${pathname === '/guide-stake/france' ? 'bg-orange-100 text-orange-700 font-semibold' : 'text-gray-700'}`}>
+                France
+              </Link>
+              <Link href="/guide-stake/vip" className={`whitespace-nowrap px-2 py-1 rounded text-sm ${pathname === '/guide-stake/vip' ? 'bg-orange-100 text-orange-700 font-semibold' : 'text-gray-700'}`}>
+                VIP
+              </Link>
+              <Link href="/guide-stake/bonus" className={`whitespace-nowrap px-2 py-1 rounded text-sm ${pathname === '/guide-stake/bonus' ? 'bg-orange-100 text-orange-700 font-semibold' : 'text-gray-700'}`}>
+                Bonus
+              </Link>
+              <Link href="/guide-stake/jeux" className={`whitespace-nowrap px-2 py-1 rounded text-sm ${pathname === '/guide-stake/jeux' ? 'bg-orange-100 text-orange-700 font-semibold' : 'text-gray-700'}`}>
+                Jeux
+              </Link>
+            </nav>
+          </div>
+        </div>
+      </div>
+      
       <div className="min-h-screen flex">
         {/* Sidebar */}
         <aside className="hidden md:block w-64 bg-gray-50 border-r border-gray-200">

@@ -137,12 +137,12 @@ export default function GuideVIPPage() {
           📈 Tous les Niveaux VIP
         </h2>
         
-        <div className="overflow-x-auto">
-          <table className="w-full bg-white rounded-lg overflow-hidden">
+        <div className="overflow-x-auto -mx-4 px-4">
+          <table className="min-w-full bg-white rounded-lg overflow-hidden">
             <thead className="bg-gray-900 text-white">
               <tr>
                 <th className="px-4 py-3 text-left">Niveau</th>
-                <th className="px-4 py-3 text-right">Points requis</th>
+                <th className="px-4 py-3 text-right whitespace-nowrap">Points requis</th>
                 <th className="px-4 py-3 text-center">Rakeback</th>
                 <th className="px-4 py-3 text-left">Bonus</th>
               </tr>
@@ -150,8 +150,8 @@ export default function GuideVIPPage() {
             <tbody className="divide-y divide-gray-200">
               {vipLevels.map((level, index) => (
                 <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                  <td className="px-4 py-3 font-medium">{level.name}</td>
-                  <td className="px-4 py-3 text-right font-mono">{level.points}</td>
+                  <td className="px-4 py-3 font-medium whitespace-nowrap">{level.name}</td>
+                  <td className="px-4 py-3 text-right font-mono text-sm">{level.points}</td>
                   <td className="px-4 py-3 text-center font-bold text-green-600">{level.rakeback}</td>
                   <td className="px-4 py-3 text-sm">{level.bonus}</td>
                 </tr>
@@ -228,41 +228,41 @@ export default function GuideVIPPage() {
             En plus des récompenses Stake, recevez des bonus CASH à chaque niveau franchi !
           </p>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
             <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
-              <div className="text-amber-300 font-bold text-xl mb-1">Bronze</div>
-              <div className="text-3xl font-bold">10€</div>
-              <div className="text-sm opacity-80">crypto au choix</div>
+              <div className="text-amber-300 font-bold text-lg md:text-xl mb-1">Bronze</div>
+              <div className="text-2xl md:text-3xl font-bold">10€</div>
+              <div className="text-xs md:text-sm opacity-80">crypto au choix</div>
             </div>
             
             <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
-              <div className="text-gray-300 font-bold text-xl mb-1">Argent</div>
-              <div className="text-3xl font-bold">20€</div>
-              <div className="text-sm opacity-80">crypto au choix</div>
+              <div className="text-gray-300 font-bold text-lg md:text-xl mb-1">Argent</div>
+              <div className="text-2xl md:text-3xl font-bold">20€</div>
+              <div className="text-xs md:text-sm opacity-80">crypto au choix</div>
             </div>
             
             <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
-              <div className="text-yellow-300 font-bold text-xl mb-1">Or</div>
-              <div className="text-3xl font-bold">30€</div>
-              <div className="text-sm opacity-80">crypto au choix</div>
+              <div className="text-yellow-300 font-bold text-lg md:text-xl mb-1">Or</div>
+              <div className="text-2xl md:text-3xl font-bold">30€</div>
+              <div className="text-xs md:text-sm opacity-80">crypto au choix</div>
             </div>
             
             <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
-              <div className="text-cyan-300 font-bold text-xl mb-1">Platine I-III</div>
-              <div className="text-3xl font-bold">50€</div>
-              <div className="text-sm opacity-80">crypto au choix</div>
+              <div className="text-cyan-300 font-bold text-lg md:text-xl mb-1">Platine I-III</div>
+              <div className="text-2xl md:text-3xl font-bold">50€</div>
+              <div className="text-xs md:text-sm opacity-80">crypto au choix</div>
             </div>
             
             <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
-              <div className="text-cyan-200 font-bold text-xl mb-1">Platine IV-VI</div>
-              <div className="text-3xl font-bold">100€</div>
-              <div className="text-sm opacity-80">crypto au choix</div>
+              <div className="text-cyan-200 font-bold text-lg md:text-xl mb-1">Platine IV-VI</div>
+              <div className="text-2xl md:text-3xl font-bold">100€</div>
+              <div className="text-xs md:text-sm opacity-80">crypto au choix</div>
             </div>
             
             <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center">
-              <div className="text-blue-300 font-bold text-xl mb-1">Diamant I-V</div>
-              <div className="text-3xl font-bold">200€</div>
-              <div className="text-sm opacity-80">crypto au choix</div>
+              <div className="text-blue-300 font-bold text-lg md:text-xl mb-1">Diamant I-V</div>
+              <div className="text-2xl md:text-3xl font-bold">200€</div>
+              <div className="text-xs md:text-sm opacity-80">crypto au choix</div>
             </div>
           </div>
           
