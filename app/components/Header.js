@@ -42,7 +42,7 @@ export default function Header() {
               Espace Affiliés
             </Link>
             <a 
-              href="https://stake.com/?c=rounders"
+              href="https://stake.bet/?c=rounders&offer=rounders"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
