@@ -1,4 +1,36 @@
-{/* Menu Mobile */}
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+
+export default function GuideLayout({ children }) {
+  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const linkClass = (path) => {
+    return `block px-4 py-2 rounded ${
+      pathname === path
+        ? 'bg-orange-100 text-orange-700 font-semibold'
+        : 'text-gray-700 hover:bg-gray-100'
+    }`;
+  };
+
+  const mobileLinkClass = (path) => {
+    return `block px-6 py-3 ${
+      pathname === path
+        ? 'bg-orange-100 text-orange-700 font-semibold border-l-4 border-orange-500'
+        : 'text-gray-700 hover:bg-gray-50'
+    }`;
+  };
+
+  return (
+    <>
+      <Header />
+      
+      {/* Menu Mobile */}
       <div className="md:hidden sticky top-0 bg-white z-50 border-b">
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -31,111 +63,196 @@
             </div>
 
             {/* Liens du menu */}
-            <div className="p-4">
+            <div className="py-2">
               <Link 
-                href="/guide-stake/france" 
-                className={`${linkClass('/guide-stake/france')} block py-3 px-4 rounded transition-colors`}
+                href="/guide-stake" 
+                className={mobileLinkClass('/guide-stake')}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                🇫🇷 Guide France
+                Retour au Guide
+              </Link>
+              <div className="border-t mx-8 my-2"></div>
+              <Link 
+                href="/guide-stake/france" 
+                className={mobileLinkClass('/guide-stake/france')}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Guide France
               </Link>
               <Link 
                 href="/guide-stake/introduction" 
-                className={`${linkClass('/guide-stake/introduction')} block py-3 px-4 rounded transition-colors`}
+                className={mobileLinkClass('/guide-stake/introduction')}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                🎰 Introduction
+                Introduction
               </Link>
               <Link 
                 href="/guide-stake/inscription" 
-                className={`${linkClass('/guide-stake/inscription')} block py-3 px-4 rounded transition-colors`}
+                className={mobileLinkClass('/guide-stake/inscription')}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                ✍️ Inscription & Vérification
+                Inscription & Vérification
               </Link>
               <Link 
                 href="/guide-stake/premier-depot" 
-                className={`${linkClass('/guide-stake/premier-depot')} block py-3 px-4 rounded transition-colors`}
+                className={mobileLinkClass('/guide-stake/premier-depot')}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                💳 Premier Dépôt
+                Premier Dépôt
               </Link>
               <Link 
                 href="/guide-stake/interface" 
-                className={`${linkClass('/guide-stake/interface')} block py-3 px-4 rounded transition-colors`}
+                className={mobileLinkClass('/guide-stake/interface')}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                🖥️ Interface & Navigation  
+                Interface & Navigation  
               </Link>
               <Link 
                 href="/guide-stake/bonus" 
-                className={`${linkClass('/guide-stake/bonus')} block py-3 px-4 rounded transition-colors`}
+                className={mobileLinkClass('/guide-stake/bonus')}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                💰 Bonus & Rakeback
+                Bonus & Rakeback
               </Link>
               <Link 
                 href="/guide-stake/vip" 
-                className={`${linkClass('/guide-stake/vip')} block py-3 px-4 rounded transition-colors`}
+                className={mobileLinkClass('/guide-stake/vip')}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                ⭐ Programme VIP
+                Programme VIP
               </Link>
               <Link 
                 href="/guide-stake/jeux" 
-                className={`${linkClass('/guide-stake/jeux')} block py-3 px-4 rounded transition-colors`}
+                className={mobileLinkClass('/guide-stake/jeux')}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                🎮 Les Jeux
+                Les Jeux
               </Link>
               <Link 
                 href="/guide-stake/crypto" 
-                className={`${linkClass('/guide-stake/crypto')} block py-3 px-4 rounded transition-colors`}
+                className={mobileLinkClass('/guide-stake/crypto')}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                ₿ Cryptomonnaies
+                Cryptomonnaies
               </Link>
               <Link 
                 href="/guide-stake/strategies" 
-                className={`${linkClass('/guide-stake/strategies')} block py-3 px-4 rounded transition-colors`}
+                className={mobileLinkClass('/guide-stake/strategies')}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                📈 Stratégies
+                Stratégies
               </Link>
               <Link 
                 href="/guide-stake/astuces" 
-                className={`${linkClass('/guide-stake/astuces')} block py-3 px-4 rounded transition-colors`}
+                className={mobileLinkClass('/guide-stake/astuces')}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                💡 Astuces Pro
+                Astuces Pro
               </Link>
               <Link 
                 href="/guide-stake/responsable" 
-                className={`${linkClass('/guide-stake/responsable')} block py-3 px-4 rounded transition-colors`}
+                className={mobileLinkClass('/guide-stake/responsable')}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                🛡️ Jeu Responsable
+                Jeu Responsable
               </Link>
               <Link 
                 href="/guide-stake/faq" 
-                className={`${linkClass('/guide-stake/faq')} block py-3 px-4 rounded transition-colors`}
+                className={mobileLinkClass('/guide-stake/faq')}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                ❓ FAQ Complète
+                FAQ Complète
               </Link>
-            </div>
-
-            {/* Bouton CTA en bas */}
-            <div className="p-4 border-t">
-              <a 
-                href="https://stake.bet/?c=rounders" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="block bg-blue-600 text-white px-4 py-3 rounded-lg text-center hover:bg-blue-700 transition-colors font-semibold"
-              >
-                🎯 Jouer sur Stake
-              </a>
+              <div className="border-t mx-8 my-2"></div>
+              <div className="px-4 py-3">
+                <a
+                  href="https://stake.bet/?c=rounders"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full bg-blue-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Jouer sur Stake
+                </a>
+              </div>
             </div>
           </nav>
         </div>
       )}
+      
+      <div className="min-h-screen flex">
+        {/* Sidebar desktop */}
+        <aside className="hidden md:block w-64 bg-gray-50 border-r border-gray-200">
+          <div className="p-6">
+            <h2 className="text-xl font-bold text-gray-800 mb-6">Guide Complet Stake</h2>
+            
+            <nav className="space-y-2">
+              <Link href="/guide-stake" className={linkClass('/guide-stake')}>
+                Retour au Guide
+              </Link>
+              <div className="border-t my-4"></div>
+              <Link href="/guide-stake/france" className={linkClass('/guide-stake/france')}>
+                Guide France
+              </Link>
+              <Link href="/guide-stake/introduction" className={linkClass('/guide-stake/introduction')}>
+                Introduction
+              </Link>
+              <Link href="/guide-stake/inscription" className={linkClass('/guide-stake/inscription')}>
+                Inscription & Vérification
+              </Link>
+              <Link href="/guide-stake/premier-depot" className={linkClass('/guide-stake/premier-depot')}>
+                Premier Dépôt
+              </Link>
+              <Link href="/guide-stake/interface" className={linkClass('/guide-stake/interface')}>
+                Interface & Navigation
+              </Link>
+              <Link href="/guide-stake/bonus" className={linkClass('/guide-stake/bonus')}>
+                Bonus & Rakeback
+              </Link>
+              <Link href="/guide-stake/vip" className={linkClass('/guide-stake/vip')}>
+                Programme VIP
+              </Link>
+              <Link href="/guide-stake/jeux" className={linkClass('/guide-stake/jeux')}>
+                Les Jeux
+              </Link>
+              <Link href="/guide-stake/crypto" className={linkClass('/guide-stake/crypto')}>
+                Cryptomonnaies
+              </Link>
+              <Link href="/guide-stake/strategies" className={linkClass('/guide-stake/strategies')}>
+                Stratégies
+              </Link>
+              <Link href="/guide-stake/astuces" className={linkClass('/guide-stake/astuces')}>
+                Astuces Pro
+              </Link>
+              <Link href="/guide-stake/responsable" className={linkClass('/guide-stake/responsable')}>
+                Jeu Responsable
+              </Link>
+              <Link href="/guide-stake/faq" className={linkClass('/guide-stake/faq')}>
+                FAQ Complète
+              </Link>
+            </nav>
+            
+            <div className="mt-8">
+              <a
+                href="https://stake.bet/?c=rounders"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full bg-blue-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+              >
+                Jouer sur Stake
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        {/* Main content */}
+        <main className="flex-1 bg-white pb-20 md:pb-0">
+          <div className="max-w-4xl mx-auto p-6">
+            {children}
+          </div>
+        </main>
+      </div>
+      <Footer />
+    </>
+  );
+}
