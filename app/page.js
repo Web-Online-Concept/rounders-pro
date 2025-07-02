@@ -15,17 +15,20 @@ export default function Home() {
         {/* Hero Section - EN ORANGE AVEC IMAGE DE FOND COMME DEMANDÉ */}
         <section className="bg-gradient-to-r from-orange-500 to-orange-600 text-white pt-1 pb-20 md:py-10">
           <div className="max-w-6xl mx-auto px-4 text-center">
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">
-              🎰 Découvrez Stake
+            <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: '#FFFF00' }}>
+              💰 Découvrez l&apos;Affiliation Rounders avec la plateforme STAKE
             </h1>
-            <p className="text-lg md:text-xl mb-6">
-              Paris Sportifs - Poker - Casino
+            <p className="text-lg md:text-xl mb-2">
+              Bénéficiez de bonus cash exclusifs EN PLUS des bonus offerts par Stake
             </p>
-            <h2 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: '#FFFF00' }}>
-              💰 Gagnez encore plus de bonus avec l&apos;Affiliation Rounders
+            <p className="text-lg md:text-xl mb-6">
+              Tentez votre chance et participez à nos jeux sur Twitter X
+            </p>
+            <h2 className="text-2xl md:text-3xl font-bold mb-2">
+              🎰 Découvrez la plateforme STAKE
             </h2>
             <p className="text-lg md:text-xl mb-8">
-              Bonus cash exclusifs jusqu&apos;à 200€ à chaque niveau VIP atteint
+              Paris Sportifs - Poker - Casino
             </p>
             <div className="flex gap-4 justify-center">
               <Link href="/guide-stake" className="bg-white text-orange-600 px-6 sm:px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg">
