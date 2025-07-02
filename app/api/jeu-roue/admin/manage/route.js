@@ -40,7 +40,15 @@ export async function GET() {
 
     // Récupérer le budget du jour
     const today = new Date().toISOString().split('T')[0];
-    const budgetData = await redis.get(`budget:${today}`) || { spent: 0, winners: [] };
+    let budgetData = await redis.get(`budget:${today}`);
+    
+    // Gérer l'ancien format (nombre simple) et le nouveau format (objet)
+    if (typeof budgetData === 'number') {
+      budgetData = { spent: budgetData, winners: [] };
+    } else if (!budgetData) {
+      budgetData = { spent: 0, winners: [] };
+    }
+    
     const remainingBudget = status.dailyBudget - budgetData.spent;
 
     // Récupérer tous les gagnants (non masqués)
@@ -158,9 +166,15 @@ export async function POST(request) {
         const today = new Date().toISOString().split('T')[0];
         await redis.del(`budget:${today}`);
         
+        // Supprimer aussi toutes les participations du jour
+        const keys = await redis.keys(`participation:${today}:*`);
+        if (keys && keys.length > 0) {
+          await Promise.all(keys.map(key => redis.del(key)));
+        }
+        
         return NextResponse.json({
           success: true,
-          message: 'Budget du jour réinitialisé'
+          message: 'Budget et participations du jour réinitialisés'
         });
       }
 

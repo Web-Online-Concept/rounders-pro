@@ -323,10 +323,10 @@ export default function AdminPage() {
                   <div className="text-center">
                     <div className="text-sm text-gray-400">Gagnants aujourd&apos;hui</div>
                     <div className="text-3xl font-bold text-white">
-                      {gameData.todayBudget.winners?.filter(w => w.amount > 0).length || 0}
+                      {gameData.todayBudget?.winners?.filter(w => w.amount > 0).length || 0}
                     </div>
                     <div className="text-sm text-gray-400">
-                      Total: {gameData.todayBudget.spent || 0}€
+                      Total: {gameData.todayBudget?.spent || 0}€
                     </div>
                   </div>
                 </div>
