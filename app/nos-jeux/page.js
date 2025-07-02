@@ -53,7 +53,7 @@ export default function NosJeux() {
               </div>
               <div className="bg-white p-6 rounded-xl shadow-lg text-center">
                 <div className="text-4xl mb-4">2️⃣</div>
-                <h3 className="font-bold text-lg mb-2">Attendez l'annonce</h3>
+                <h3 className="font-bold text-lg mb-2">Attendez l&apos;annonce</h3>
                 <p className="text-gray-600">Un nouveau jeu surprise chaque jour</p>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-lg text-center">
@@ -84,7 +84,7 @@ export default function NosJeux() {
                   <div className="flex items-start gap-3">
                     <span className="text-2xl">💰</span>
                     <div>
-                      <h3 className="font-bold text-lg mb-1">Gagnez jusqu'à 50€</h3>
+                      <h3 className="font-bold text-lg mb-1">Gagnez jusqu&apos;à 50€</h3>
                       <p className="opacity-90">Des gains en cash entre 0€ et 50€ à chaque tour</p>
                     </div>
                   </div>
