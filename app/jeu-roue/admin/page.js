@@ -295,7 +295,7 @@ export default function AdminPage() {
                   </div>
                   
                   <div className="text-center">
-                    <div className="text-sm text-gray-400">Gagnants aujourd'hui</div>
+                    <div className="text-sm text-gray-400">Gagnants aujourd&apos;hui</div>
                     <div className="text-3xl font-bold text-white">
                       {gameData.todayBudget.winners?.filter(w => w.amount > 0).length || 0}
                     </div>
@@ -332,7 +332,7 @@ export default function AdminPage() {
                       disabled={isUpdating}
                       className="bg-red-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
                     >
-                      Réinitialiser aujourd'hui
+                      Réinitialiser aujourd&apos;hui
                     </button>
                   </div>
                 </div>
