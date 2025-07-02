@@ -13,34 +13,32 @@ export default function Header() {
           </Link>
           
           {/* Logo Twitter mobile uniquement */}
-          <a 
-            href="https://twitter.com/rounders_pro" 
-            target="_blank" 
-            rel="noopener noreferrer" 
+          <Link 
+            href="/nos-jeux" 
             className="md:hidden absolute right-4"
-            aria-label="Twitter Rounders Pro"
+            aria-label="Nos Jeux Rounders"
           >
             <svg className="w-6 h-6 text-gray-700 hover:text-blue-600 transition-colors" fill="currentColor" viewBox="0 0 24 24">
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
-          </a>
+          </Link>
           
           {/* Navigation desktop */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link href="/avantages-rounders" className="text-gray-700 hover:text-blue-600 transition-colors">
               Avantages Rounders
             </Link>
-            <Link href="/guide-stake" className="text-gray-700 hover:text-blue-600 transition-colors">
-              Guide Stake
-            </Link>
-            <a href="https://twitter.com/rounders_pro" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-1">
-              Twitter
+            <Link href="/nos-jeux" className="text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-1">
+              Nos Jeux X
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
               </svg>
-            </a>
+            </Link>
             <Link href="/affilies" className="text-gray-700 hover:text-blue-600 transition-colors">
-              Espace Affiliés
+              Bonus Affiliés
+            </Link>
+            <Link href="/guide-stake" className="text-gray-700 hover:text-blue-600 transition-colors">
+              Guide Stake
             </Link>
             <a 
               href={AFFILIATE_LINK}
