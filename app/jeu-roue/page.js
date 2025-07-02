@@ -55,23 +55,37 @@ export default function JeuRoue() {
     const randomIndex = Math.floor(Math.random() * segments.length);
     const selectedSegment = segments[randomIndex];
     
+    // DEBUG - À RETIRER APRÈS TEST
+    console.log('========== DEBUG ROUE ==========');
+    console.log('Index sélectionné:', randomIndex);
+    console.log('Segment sélectionné:', selectedSegment.label);
+    console.log('Ordre des segments:', segments.map(s => s.label).join(', '));
+    
     // Calculer l'angle pour s'arrêter sur le bon segment
     const segmentAngle = 360 / segments.length; // 45° par segment
     
-    // Dans le SVG, les segments sont décalés de -90°
-    // Le segment 2 est initialement en haut (à 0°)
-    // Pour amener le segment X en haut, on calcule la différence avec le segment 2
-    const segmentsToRotate = 2 - randomIndex;
-    const targetAngle = segmentsToRotate * segmentAngle;
+    // IMPORTANT: Déterminer quel segment est actuellement en haut
+    // Dans le SVG, avec startAngle = angle * index - 90:
+    // - Segment 0: -90° à -45° 
+    // - Segment 1: -45° à 0°
+    // - Segment 2: 0° à 45° (DONC LE CENTRE EST À 22.5°, proche du haut)
+    // Mais visuellement, il semble que ce soit un autre segment...
     
-    // Ajouter plusieurs tours complets pour l'effet visuel
+    // Nouvelle approche: on va simplement tourner de manière à ce que
+    // le segment sélectionné arrive en position haute
+    const rotationNeeded = -randomIndex * segmentAngle + 90; // +90 pour compenser le décalage initial
+    
+    // Ajouter plusieurs tours complets
     const spins = 5;
     
-    // Ajouter un peu d'aléatoire dans le segment (zone sûre pour éviter les bords)
-    const randomOffset = (Math.random() - 0.5) * segmentAngle * 0.4;
+    // Ajouter un peu d'aléatoire dans le segment
+    const randomOffset = (Math.random() - 0.5) * segmentAngle * 0.3;
     
     // Rotation finale
-    const finalRotation = (spins * 360) + targetAngle + randomOffset;
+    const finalRotation = (spins * 360) + rotationNeeded + randomOffset;
+    
+    console.log('Rotation finale:', finalRotation);
+    console.log('================================');
     
     // Animation de rotation
     const wheel = document.getElementById('wheel');
