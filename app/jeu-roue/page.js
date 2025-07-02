@@ -39,6 +39,8 @@ export default function JeuRoue() {
       const response = await fetch('/api/jeu-roue/status');
       const data = await response.json();
       
+      console.log('Status API response:', data); // Debug
+      
       if (data.isActive) {
         setGameStatus('active');
       } else {
@@ -87,6 +89,13 @@ export default function JeuRoue() {
 
       // Utiliser le résultat de l'API
       const selectedSegment = segments[data.result.index];
+      
+      if (!selectedSegment) {
+        console.error('Segment non trouvé:', data.result);
+        alert('Erreur: résultat invalide');
+        setIsSpinning(false);
+        return;
+      }
       
       // Calculer l'angle pour s'arrêter sur le bon segment
       const segmentAngle = 360 / segments.length; // 45° par segment
@@ -386,13 +395,19 @@ export default function JeuRoue() {
                   
                   <div className="mt-6 pt-6 border-t border-gray-200">
                     <a
-                      href="/gagnants"
+                      href="/jeu-roue"
                       className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-2"
                     >
-                      Voir tous les gagnants
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
                       </svg>
+                      Retour sur la Roue de la Fortune
+                    </a>
+                  </div>m15.357 2H15" />
+                      </svg>
+                      Rejouer
+                    </a>
+                  </div></svg>
                     </a>
                   </div>
                 </div>
