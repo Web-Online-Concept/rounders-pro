@@ -77,7 +77,7 @@ export default function JeuRoue() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          stakeUsername: formData.stakeUsername
+          pseudo: formData.stakeUsername  // CHANGÉ ICI : pseudo au lieu de stakeUsername
         })
       });
 
