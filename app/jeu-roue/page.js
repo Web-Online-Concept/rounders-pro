@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { AFFILIATE_LINK } from '../config/affiliate';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -11,9 +12,7 @@ export default function JeuRoue() {
   const [result, setResult] = useState(null);
   const [hasPlayed, setHasPlayed] = useState(false);
   const [formData, setFormData] = useState({
-    stakeUsername: '',
-    cryptoAddress: '',
-    cryptoType: 'USDT'
+    stakeUsername: ''
   });
 
   const segments = [
@@ -37,20 +36,67 @@ export default function JeuRoue() {
   const handleSpin = async (e) => {
     e.preventDefault();
     
-    if (!formData.stakeUsername && !formData.cryptoAddress) {
-      alert('Veuillez remplir au moins un champ');
+    if (!formData.stakeUsername) {
+      alert('Veuillez entrer votre pseudo Stake');
       return;
     }
 
     setIsSpinning(true);
+    // Déterminer le résultat AVANT de faire tourner la roue
+    const randomIndex = Math.floor(Math.random() * segments.length);
+    const selectedSegment = segments[randomIndex];
     
-    // Simuler la rotation (3-4 secondes)
-    const spinDuration = 3000 + Math.random() * 1000;
+    // Calculer l'angle pour s'arrêter sur le bon segment
+    const segmentAngle = 360 / segments.length;
+    const targetAngle = randomIndex * segmentAngle;
+    
+    // Ajouter plusieurs tours + l'angle final
+    const spins = 5; // Nombre de tours complets
+    const finalRotation = spins * 360 + (360 - targetAngle);
     
     // Animation de rotation
     const wheel = document.getElementById('wheel');
-    const randomRotation = 720 + Math.random() * 720; // Au moins 2 tours
-    wheel.style.transform = `rotate(${randomRotation}deg)`;
+    wheel.style.transform = `rotate(${finalRotation}deg)`;
+    
+    // Durée de l'animation
+    const spinDuration = 4000;
+        
+    // Durée de l'animation
+    const spinDuration = 4000;
+    
+    setTimeout(() => {
+      setResult(selectedSegment);
+      setIsSpinning(false);
+      setIsRevealing(true);
+      
+      // Attendre 5 secondes avant d'afficher le résultat
+      setTimeout(() => {
+        setHasPlayed(true);
+        setIsRevealing(false);
+      }, 5000);
+    }, spinDuration);
+  };}
+
+    setIsSpinning(true);
+    
+    // Déterminer le résultat AVANT de faire tourner la roue
+    const randomIndex = Math.floor(Math.random() * segments.length);
+    const selectedSegment = segments[randomIndex];
+    
+    // Calculer l'angle pour s'arrêter sur le bon segment
+    const segmentAngle = 360 / segments.length;
+    const targetAngle = randomIndex * segmentAngle;
+    
+    // Ajouter plusieurs tours + l'angle final
+    const spins = 5; // Nombre de tours complets
+    const finalRotation = spins * 360 + (360 - targetAngle);
+    
+    // Animation de rotation
+    const wheel = document.getElementById('wheel');
+    wheel.style.transform = `rotate(${finalRotation}deg)`;
+    
+    // Durée de l'animation
+    const spinDuration = 4000;
     
     setTimeout(() => {
       // Simuler un résultat
@@ -290,7 +336,8 @@ export default function JeuRoue() {
                   {result.value > 0 && (
                     <div className="bg-green-50 p-4 rounded-lg mb-6">
                       <p className="text-green-800">
-                        Pour recevoir votre gain, partagez votre résultat sur Twitter avec #RoundersWin
+                        Votre gain sera envoyé via pourboire sur Stake.<br/>
+                        <strong>Partagez votre résultat sur Twitter avec #RoundersWin</strong>
                       </p>
                     </div>
                   )}
