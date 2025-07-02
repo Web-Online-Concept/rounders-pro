@@ -256,7 +256,7 @@ export default function JeuRoue() {
                 <h3 className="text-xl font-bold mb-4">📊 Statistiques du jour</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Gagnants aujourd'hui :</span>
+                    <span className="text-gray-600">Gagnants aujourd&apos;hui :</span>
                     <span className="font-bold text-2xl text-green-600">2/5</span>
                   </div>
                   <div className="flex justify-between items-center">
@@ -270,7 +270,7 @@ export default function JeuRoue() {
                 </div>
                 <div className="mt-4 pt-4 border-t border-yellow-200">
                   <p className="text-sm text-gray-600 text-center">
-                    Il reste <strong className="text-green-600">3 gains</strong> à distribuer aujourd'hui !
+                    Il reste <strong className="text-green-600">3 gains</strong> à distribuer aujourd&apos;hui !
                   </p>
                 </div>
               </div>
