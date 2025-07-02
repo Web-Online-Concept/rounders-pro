@@ -57,15 +57,30 @@ export default function JeuRoue() {
 
     setIsSpinning(true);
     
-    // POUR TESTER - Forcer le segment 0 (0€)
-    const randomIndex = 0; // TEMPORAIRE pour test
+    // Déterminer le résultat AVANT de faire tourner la roue
+    const randomIndex = Math.floor(Math.random() * segments.length);
     const selectedSegment = segments[randomIndex];
     
-    console.log('TEST: On force le segment 0 (0€)');
-    console.log('Vérifiez où la roue s\'arrête visuellement');
+    // Calculer l'angle pour s'arrêter sur le bon segment
+    const segmentAngle = 360 / segments.length; // 45° par segment
     
-    // Pas de rotation du tout pour voir la position de base
-    const finalRotation = 0;
+    // Position initiale : le triangle est entre le segment 7 (50€) et le segment 0 (0€)
+    // Pour centrer le segment 0 sous le triangle, il faut tourner de segmentAngle/2 (22.5°)
+    // Pour centrer n'importe quel segment X sous le triangle :
+    // rotation = (X * segmentAngle) + (segmentAngle/2)
+    
+    // Mais comme on tourne dans le sens horaire et que les segments sont numérotés
+    // dans le sens horaire, pour amener le segment X en haut, on doit tourner de :
+    const baseRotation = -(randomIndex * segmentAngle + segmentAngle/2);
+    
+    // Ajouter plusieurs tours complets pour l'animation
+    const spins = 5;
+    
+    // Ajouter un peu d'aléatoire dans le segment (zone sûre pour éviter les bords)
+    const randomOffset = (Math.random() - 0.5) * segmentAngle * 0.4;
+    
+    // Rotation finale
+    const finalRotation = (spins * 360) + baseRotation + randomOffset;
     
     // Animation de rotation
     const wheel = document.getElementById('wheel');
