@@ -90,6 +90,19 @@ export default function Gagnants() {
                 </div>
               </div>
             </div>
+            
+            {/* Lien retour vers le jeu */}
+            <div className="text-center mt-6">
+              <a
+                href="/jeu-roue"
+                className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-medium"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Retour au jeu
+              </a>
+            </div>
           </div>
         </section>
 
