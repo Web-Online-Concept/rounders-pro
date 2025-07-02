@@ -42,6 +42,7 @@ export default function JeuRoue() {
     }
 
     setIsSpinning(true);
+    
     // Déterminer le résultat AVANT de faire tourner la roue
     const randomIndex = Math.floor(Math.random() * segments.length);
     const selectedSegment = segments[randomIndex];
@@ -58,50 +59,11 @@ export default function JeuRoue() {
     const wheel = document.getElementById('wheel');
     wheel.style.transform = `rotate(${finalRotation}deg)`;
     
-    // Durée de l'animation
-    const spinDuration = 4000;
-        
     // Durée de l'animation
     const spinDuration = 4000;
     
     setTimeout(() => {
       setResult(selectedSegment);
-      setIsSpinning(false);
-      setIsRevealing(true);
-      
-      // Attendre 5 secondes avant d'afficher le résultat
-      setTimeout(() => {
-        setHasPlayed(true);
-        setIsRevealing(false);
-      }, 5000);
-    }, spinDuration);
-  };}
-
-    setIsSpinning(true);
-    
-    // Déterminer le résultat AVANT de faire tourner la roue
-    const randomIndex = Math.floor(Math.random() * segments.length);
-    const selectedSegment = segments[randomIndex];
-    
-    // Calculer l'angle pour s'arrêter sur le bon segment
-    const segmentAngle = 360 / segments.length;
-    const targetAngle = randomIndex * segmentAngle;
-    
-    // Ajouter plusieurs tours + l'angle final
-    const spins = 5; // Nombre de tours complets
-    const finalRotation = spins * 360 + (360 - targetAngle);
-    
-    // Animation de rotation
-    const wheel = document.getElementById('wheel');
-    wheel.style.transform = `rotate(${finalRotation}deg)`;
-    
-    // Durée de l'animation
-    const spinDuration = 4000;
-    
-    setTimeout(() => {
-      // Simuler un résultat
-      const randomIndex = Math.floor(Math.random() * segments.length);
-      setResult(segments[randomIndex]);
       setIsSpinning(false);
       setIsRevealing(true);
       
@@ -243,57 +205,51 @@ export default function JeuRoue() {
                       <>
                         <h2 className="text-2xl font-bold mb-6">Participez au jeu !</h2>
                         
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                          <p className="text-sm text-blue-800">
+                            <strong>📢 Ouvert à tous les joueurs Stake !</strong><br/>
+                            Les gains seront versés via le système de pourboires Stake.
+                            Assurez-vous d&apos;avoir un compte actif pour recevoir vos gains.
+                          </p>
+                        </div>
+                        
                         <form onSubmit={handleSpin}>
                           <div className="mb-6">
-                            <h3 className="font-semibold mb-3">Option 1 : Affilié Rounders</h3>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Votre pseudo Stake
+                            </label>
                             <input
                               type="text"
-                              placeholder="Votre pseudo Stake"
-                              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                              placeholder="Entrez votre pseudo exact (sensible à la casse)"
+                              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                               value={formData.stakeUsername}
                               onChange={(e) => setFormData({...formData, stakeUsername: e.target.value})}
                               disabled={isSpinning || isRevealing}
+                              required
                             />
-                          </div>
-
-                          <div className="text-center mb-6">
-                            <span className="text-gray-500">OU</span>
-                          </div>
-
-                          <div className="mb-6">
-                            <h3 className="font-semibold mb-3">Option 2 : Participation publique</h3>
-                            <select
-                              className="w-full px-4 py-2 border rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                              value={formData.cryptoType}
-                              onChange={(e) => setFormData({...formData, cryptoType: e.target.value})}
-                              disabled={isSpinning}
-                            >
-                              <option value="USDT">USDT (TRC20)</option>
-                              <option value="BTC">Bitcoin</option>
-                              <option value="ETH">Ethereum</option>
-                              <option value="LTC">Litecoin</option>
-                            </select>
-                            <input
-                              type="text"
-                              placeholder="Votre adresse crypto"
-                              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                              value={formData.cryptoAddress}
-                              onChange={(e) => setFormData({...formData, cryptoAddress: e.target.value})}
-                              disabled={isSpinning}
-                            />
+                            <p className="text-xs text-gray-500 mt-1">
+                              ⚠️ Attention : Entrez votre pseudo EXACTEMENT comme sur Stake
+                            </p>
                           </div>
 
                           <button
                             type="submit"
-                            disabled={isSpinning}
+                            disabled={isSpinning || isRevealing}
                             className={`w-full py-3 rounded-lg font-bold text-white transition-colors ${
-                              isSpinning 
+                              isSpinning || isRevealing
                                 ? 'bg-gray-400 cursor-not-allowed' 
                                 : 'bg-orange-500 hover:bg-orange-600'
                             }`}
                           >
                             {isSpinning ? 'La roue tourne...' : 'Tourner la roue !'}
                           </button>
+                          
+                          <p className="text-center text-xs text-gray-500 mt-4">
+                            Pas encore sur Stake ? 
+                            <a href={AFFILIATE_LINK} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline ml-1">
+                              Créez votre compte
+                            </a>
+                          </p>
                         </form>
                       </>
                     ) : (
