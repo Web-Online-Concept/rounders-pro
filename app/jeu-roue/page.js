@@ -14,6 +14,14 @@ export default function JeuRoue() {
   const [formData, setFormData] = useState({
     stakeUsername: ''
   });
+  
+  // Simuler des gagnants pour la démo
+  const [todayWinners, setTodayWinners] = useState([
+    { username: 'Luc***', amount: '5€', time: '14:32' },
+    { username: 'Mar***', amount: '2€', time: '13:15' },
+    { username: 'Ale***', amount: '10€', time: '11:47' },
+    { username: 'Sop***', amount: '1€', time: '10:23' }
+  ]);
 
   const segments = [
     { value: 0, color: '#EF4444', label: '0€' },
@@ -48,6 +56,28 @@ export default function JeuRoue() {
     const selectedSegment = segments[randomIndex];
     
     // Calculer l'angle pour s'arrêter sur le bon segment
+    const segmentAngle = 360 / segments.length; // 45° par segment
+    
+    // Le centre du segment gagnant doit être aligné avec le triangle (en haut = 0°)
+    // Les segments commencent à -90° dans le SVG, donc on doit ajuster
+    const segmentCenterAngle = randomIndex * segmentAngle + (segmentAngle / 2);
+    
+    // Ajouter un peu d'aléatoire mais rester dans la zone sûre du segment (pas sur les bords)
+    // Zone sûre = 60% du segment (30% de marge de chaque côté)
+    const safeZoneOffset = (Math.random() - 0.5) * segmentAngle * 0.6;
+    
+    // Calculer la rotation finale pour aligner le segment avec le triangle
+    const targetRotation = 90 - segmentCenterAngle - safeZoneOffset;
+    
+    // Ajouter plusieurs tours + l'angle final
+    const spins = 5; // Nombre de tours complets
+    const finalRotation = spins * 360 + targetRotation;
+    
+    // Animation de rotation
+    const wheel = document.getElementById('wheel');
+    wheel.style.transform = `rotate(${finalRotation}deg)`;[randomIndex];
+    
+    // Calculer l'angle pour s'arrêter sur le bon segment
     const segmentAngle = 360 / segments.length;
     const targetAngle = randomIndex * segmentAngle;
     
@@ -71,6 +101,16 @@ export default function JeuRoue() {
       setTimeout(() => {
         setHasPlayed(true);
         setIsRevealing(false);
+        
+        // Ajouter le gagnant à la liste si gain > 0
+        if (selectedSegment.value > 0) {
+          const newWinner = {
+            username: formData.stakeUsername.substring(0, 3) + '***',
+            amount: selectedSegment.label,
+            time: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+          };
+          setTodayWinners(prev => [newWinner, ...prev]);
+        }
       }, 5000);
     }, spinDuration);
   };
@@ -308,6 +348,18 @@ export default function JeuRoue() {
                       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                     </svg>
                   </a>
+                  
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <a
+                      href="/gagnants"
+                      className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-2"
+                    >
+                      Voir tous les gagnants
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -339,6 +391,58 @@ export default function JeuRoue() {
             </div>
           </section>
         )}
+
+        {/* Section Gagnants du jour */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
+                🏆 Gagnants du jour
+              </h2>
+              
+              {todayWinners.length > 0 ? (
+                <div className="bg-gray-50 rounded-lg p-6 mb-6">
+                  <div className="space-y-3">
+                    {todayWinners.map((winner, index) => (
+                      <div key={index} className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm">
+                        <div className="flex items-center gap-4">
+                          <span className="text-2xl">
+                            {winner.amount === '10€' || winner.amount === '50€' ? '🎉' : '✨'}
+                          </span>
+                          <div>
+                            <span className="font-semibold">{winner.username}</span>
+                            <span className="text-gray-500 text-sm ml-2">{winner.time}</span>
+                          </div>
+                        </div>
+                        <span className={`font-bold ${
+                          parseInt(winner.amount) >= 10 ? 'text-green-600 text-lg' : 'text-gray-700'
+                        }`}>
+                          +{winner.amount}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center text-gray-500">
+                  <p>Aucun gagnant pour le moment aujourd&apos;hui</p>
+                </div>
+              )}
+              
+              <div className="text-center">
+                <a
+                  href="/gagnants"
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  Voir tous les gagnants
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />
