@@ -58,20 +58,20 @@ export default function JeuRoue() {
     // Calculer l'angle pour s'arrêter sur le bon segment
     const segmentAngle = 360 / segments.length; // 45° par segment
     
-    // Le centre du segment gagnant doit être aligné avec le triangle (en haut = 0°)
-    // Les segments commencent à -90° dans le SVG, donc on doit ajuster
-    const segmentCenterAngle = randomIndex * segmentAngle + (segmentAngle / 2);
+    // Dans le SVG, les segments sont décalés de -90°
+    // Le segment 2 est initialement en haut (à 0°)
+    // Pour amener le segment X en haut, on calcule la différence avec le segment 2
+    const segmentsToRotate = 2 - randomIndex;
+    const targetAngle = segmentsToRotate * segmentAngle;
     
-    // Ajouter un peu d'aléatoire mais rester dans la zone sûre du segment (pas sur les bords)
-    // Zone sûre = 60% du segment (30% de marge de chaque côté)
-    const safeZoneOffset = (Math.random() - 0.5) * segmentAngle * 0.6;
+    // Ajouter plusieurs tours complets pour l'effet visuel
+    const spins = 5;
     
-    // Calculer la rotation finale pour aligner le segment avec le triangle
-    const targetRotation = 90 - segmentCenterAngle - safeZoneOffset;
+    // Ajouter un peu d'aléatoire dans le segment (zone sûre pour éviter les bords)
+    const randomOffset = (Math.random() - 0.5) * segmentAngle * 0.4;
     
-    // Ajouter plusieurs tours + l'angle final
-    const spins = 5; // Nombre de tours complets
-    const finalRotation = spins * 360 + targetRotation;
+    // Rotation finale
+    const finalRotation = (spins * 360) + targetAngle + randomOffset;
     
     // Animation de rotation
     const wheel = document.getElementById('wheel');
