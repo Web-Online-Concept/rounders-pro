@@ -32,7 +32,7 @@ export default function NosJeux() {
                   </svg>
                 </a>
                 <a
-                  href="/affilies"
+                  href="/avantages-rounders"
                   className="bg-white text-orange-500 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors"
                 >
                   Devenir Affilié Rounders
@@ -187,7 +187,7 @@ export default function NosJeux() {
                   </svg>
                 </a>
                 <a
-                  href="/affilies"
+                  href="/avantages-rounders"
                   className="bg-orange-500 text-white px-8 py-4 rounded-lg font-bold hover:bg-orange-600 transition-colors"
                 >
                   Devenir Affilié Rounders →
