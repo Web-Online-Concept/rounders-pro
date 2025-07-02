@@ -151,8 +151,20 @@ export async function POST(request) {
         }
 
         const status = await redis.get('game:roue:status') || {};
+        const oldBudget = status.dailyBudget || 0;
         status.dailyBudget = budget;
         await redis.set('game:roue:status', status);
+        
+        // Si on augmente le budget, ajuster le budget restant du jour
+        if (budget > oldBudget) {
+          const today = new Date().toISOString().split('T')[0];
+          const budgetData = await redis.get(`budget:${today}`);
+          
+          if (budgetData && typeof budgetData === 'object') {
+            // Le budget restant augmente de la différence
+            // Pas besoin de modifier budgetData car remainingBudget est calculé
+          }
+        }
 
         return NextResponse.json({
           success: true,
@@ -162,19 +174,20 @@ export async function POST(request) {
       }
 
       case 'reset-budget': {
-        // Réinitialiser le budget du jour
+        // ATTENTION : Réinitialiser UNIQUEMENT les participations (PAS l'historique !)
         const today = new Date().toISOString().split('T')[0];
-        await redis.del(`budget:${today}`);
         
-        // Supprimer aussi toutes les participations du jour
+        // Supprimer UNIQUEMENT les participations pour permettre de rejouer
         const keys = await redis.keys(`participation:${today}:*`);
         if (keys && keys.length > 0) {
           await Promise.all(keys.map(key => redis.del(key)));
         }
         
+        // IMPORTANT: On ne touche JAMAIS à budget:${today} pour garder l'historique !
+        
         return NextResponse.json({
           success: true,
-          message: 'Budget et participations du jour réinitialisés'
+          message: 'Les joueurs peuvent maintenant rejouer (historique conservé)'
         });
       }
 

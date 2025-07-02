@@ -128,8 +128,8 @@ export default function AdminPage() {
     }
   };
 
-  const resetTodayBudget = async () => {
-    if (!confirm('Réinitialiser les participations du jour ? Les joueurs pourront rejouer mais l\'historique des gagnants sera conservé.')) {
+  const startNewGame = async () => {
+    if (!confirm('Lancer un nouveau jeu ? Les joueurs pourront rejouer mais l\'historique des gagnants sera conservé.')) {
       return;
     }
 
@@ -143,7 +143,7 @@ export default function AdminPage() {
       
       if (response.ok) {
         await checkAuthAndLoadData();
-        alert('Participations réinitialisées ! Les joueurs peuvent rejouer.');
+        alert('Nouveau jeu lancé ! Les joueurs peuvent maintenant rejouer.');
       }
     } catch (error) {
       console.error('Erreur:', error);
@@ -354,11 +354,11 @@ export default function AdminPage() {
                       Mettre à jour
                     </button>
                     <button
-                      onClick={resetTodayBudget}
+                      onClick={startNewGame}
                       disabled={isUpdating}
-                      className="bg-red-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                      className="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
                     >
-                      Autoriser à rejouer
+                      Nouveau Jeu
                     </button>
                   </div>
                 </div>
