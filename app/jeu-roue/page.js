@@ -38,6 +38,12 @@ export default function JeuRoue() {
     // Simuler le chargement de l'état du jeu
     setTimeout(() => {
       setGameStatus('active'); // Pour tester, on met 'active'
+      
+      // TEST: Identifier quel segment est en haut au départ
+      console.log('=== POSITION INITIALE ===');
+      console.log('Vérifiez visuellement quel montant est sous le triangle rouge');
+      console.log('Les segments sont dans cet ordre:', segments.map((s, i) => `${i}: ${s.label}`));
+      console.log('========================');
     }, 500);
   }, []);
 
@@ -51,41 +57,15 @@ export default function JeuRoue() {
 
     setIsSpinning(true);
     
-    // Déterminer le résultat AVANT de faire tourner la roue
-    const randomIndex = Math.floor(Math.random() * segments.length);
+    // POUR TESTER - Forcer le segment 0 (0€)
+    const randomIndex = 0; // TEMPORAIRE pour test
     const selectedSegment = segments[randomIndex];
     
-    // DEBUG - À RETIRER APRÈS TEST
-    console.log('========== DEBUG ROUE ==========');
-    console.log('Index sélectionné:', randomIndex);
-    console.log('Segment sélectionné:', selectedSegment.label);
-    console.log('Ordre des segments:', segments.map(s => s.label).join(', '));
+    console.log('TEST: On force le segment 0 (0€)');
+    console.log('Vérifiez où la roue s\'arrête visuellement');
     
-    // Calculer l'angle pour s'arrêter sur le bon segment
-    const segmentAngle = 360 / segments.length; // 45° par segment
-    
-    // IMPORTANT: Déterminer quel segment est actuellement en haut
-    // Dans le SVG, avec startAngle = angle * index - 90:
-    // - Segment 0: -90° à -45° 
-    // - Segment 1: -45° à 0°
-    // - Segment 2: 0° à 45° (DONC LE CENTRE EST À 22.5°, proche du haut)
-    // Mais visuellement, il semble que ce soit un autre segment...
-    
-    // Nouvelle approche: on va simplement tourner de manière à ce que
-    // le segment sélectionné arrive en position haute
-    const rotationNeeded = -randomIndex * segmentAngle + 90; // +90 pour compenser le décalage initial
-    
-    // Ajouter plusieurs tours complets
-    const spins = 5;
-    
-    // Ajouter un peu d'aléatoire dans le segment
-    const randomOffset = (Math.random() - 0.5) * segmentAngle * 0.3;
-    
-    // Rotation finale
-    const finalRotation = (spins * 360) + rotationNeeded + randomOffset;
-    
-    console.log('Rotation finale:', finalRotation);
-    console.log('================================');
+    // Pas de rotation du tout pour voir la position de base
+    const finalRotation = 0;
     
     // Animation de rotation
     const wheel = document.getElementById('wheel');
