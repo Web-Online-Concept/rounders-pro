@@ -28,14 +28,14 @@ export default function Header() {
             <Link href="/avantages-rounders" className="text-gray-700 hover:text-blue-600 transition-colors">
               Avantages Rounders
             </Link>
+            <Link href="/affilies" className="text-gray-700 hover:text-blue-600 transition-colors">
+              Bonus Affiliés
+            </Link>
             <Link href="/nos-jeux" className="text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-1">
-              Nos Jeux X
+              Nos Jeux
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
               </svg>
-            </Link>
-            <Link href="/affilies" className="text-gray-700 hover:text-blue-600 transition-colors">
-              Bonus Affiliés
             </Link>
             <Link href="/guide-stake" className="text-gray-700 hover:text-blue-600 transition-colors">
               Guide Stake
