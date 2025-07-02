@@ -42,7 +42,7 @@ export default function JeuRoue() {
               🎰 Roue de la Fortune Rounders
             </h1>
             <p className="text-xl text-gray-600">
-              Tentez votre chance chaque jour et gagnez jusqu'à 50€ !
+              Tentez votre chance chaque jour et gagnez jusqu&apos;à 50€ !
             </p>
           </div>
 
@@ -127,7 +127,7 @@ export default function JeuRoue() {
                     </div>
                   ) : (
                     <div>
-                      <p className="font-semibold">Dommage, vous n'avez pas gagné cette fois.</p>
+                      <p className="font-semibold">Dommage, vous n&apos;avez pas gagné cette fois.</p>
                       <p className="text-sm mt-1">Revenez demain pour retenter votre chance !</p>
                     </div>
                   )}
