@@ -1,6 +1,15 @@
+export const metadata = {
+  title: 'Nos Jeux Exclusifs - Rounders | Gagnez des Bonus Cash',
+  description: 'Participez aux jeux exclusifs Rounders sur Twitter X et gagnez jusqu\'à 50€ en cash chaque jour. Roue quotidienne et autres surprises.',
+  openGraph: {
+    title: 'Nos Jeux Exclusifs - Rounders | Gagnez des Bonus Cash',
+    description: 'Participez aux jeux exclusifs Rounders sur Twitter X et gagnez jusqu\'à 50€ en cash chaque jour.',
+  }
+};
+
 export default function NosJeux() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-orange-500 to-orange-600 text-white py-16 md:py-24">
         <div className="container mx-auto px-4">
@@ -35,7 +44,7 @@ export default function NosJeux() {
       </section>
 
       {/* Comment ça marche */}
-      <section className="py-16">
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
@@ -68,7 +77,7 @@ export default function NosJeux() {
       </section>
 
       {/* La Roue Quotidienne */}
-      <section className="py-16 bg-white">
+      <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-8 md:p-12 text-white">
@@ -115,7 +124,7 @@ export default function NosJeux() {
       </section>
 
       {/* Pourquoi Twitter X */}
-      <section className="py-16">
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-12">
@@ -188,6 +197,6 @@ export default function NosJeux() {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }
