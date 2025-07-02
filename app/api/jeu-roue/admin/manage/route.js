@@ -52,7 +52,9 @@ export async function GET() {
         allWinners.push({
           ...winner,
           date: today,
-          pseudo: winner.pseudo // Pseudo complet
+          pseudo: winner.pseudo, // Pseudo complet
+          paid: winner.paid || false,
+          paidAt: winner.paidAt || null
         });
       });
     }
@@ -69,7 +71,9 @@ export async function GET() {
           allWinners.push({
             ...winner,
             date: dateStr,
-            pseudo: winner.pseudo // Pseudo complet
+            pseudo: winner.pseudo, // Pseudo complet
+            paid: winner.paid || false,
+            paidAt: winner.paidAt || null
           });
         });
       }
@@ -184,6 +188,42 @@ export async function POST(request) {
         });
       }
 
+      case 'mark-paid': {
+        // Marquer un gagnant comme payé
+        const { date, pseudo, time } = params;
+        
+        const dayData = await redis.get(`budget:${date}`);
+        if (!dayData || !dayData.winners) {
+          return NextResponse.json(
+            { success: false, error: 'Gagnant introuvable' },
+            { status: 404 }
+          );
+        }
+
+        // Trouver et mettre à jour le gagnant
+        const updatedWinners = dayData.winners.map(winner => {
+          if (winner.pseudo === pseudo && winner.time === time) {
+            return {
+              ...winner,
+              paid: true,
+              paidAt: new Date().toISOString()
+            };
+          }
+          return winner;
+        });
+
+        // Sauvegarder
+        await redis.set(`budget:${date}`, {
+          ...dayData,
+          winners: updatedWinners
+        });
+
+        return NextResponse.json({
+          success: true,
+          message: 'Paiement marqué'
+        });
+      }
+
       case 'export-winners': {
         // Exporter les gagnants pour paiement
         const { startDate, endDate } = params;
@@ -205,7 +245,9 @@ export async function POST(request) {
                   date: dateStr,
                   pseudo: winner.pseudo,
                   amount: winner.amount,
-                  time: winner.time
+                  time: winner.time,
+                  paid: winner.paid || false,
+                  paidAt: winner.paidAt || null
                 });
               });
           }
@@ -215,7 +257,9 @@ export async function POST(request) {
           success: true,
           winners,
           total: winners.reduce((sum, w) => sum + w.amount, 0),
-          count: winners.length
+          count: winners.length,
+          unpaidTotal: winners.filter(w => !w.paid).reduce((sum, w) => sum + w.amount, 0),
+          unpaidCount: winners.filter(w => !w.paid).length
         });
       }
 

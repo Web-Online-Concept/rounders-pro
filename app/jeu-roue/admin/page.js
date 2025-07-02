@@ -16,6 +16,7 @@ export default function AdminPage() {
   const [gameData, setGameData] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [newBudget, setNewBudget] = useState('');
+  const [showOnlyUnpaid, setShowOnlyUnpaid] = useState(false);
   const [exportDates, setExportDates] = useState({
     start: new Date().toISOString().split('T')[0],
     end: new Date().toISOString().split('T')[0]
@@ -167,12 +168,15 @@ export default function AdminPage() {
         const data = await response.json();
         
         // Créer un CSV
-        let csv = 'Date,Pseudo Stake,Montant,Heure\n';
+        let csv = 'Date,Pseudo Stake,Montant,Heure,Statut,Date Paiement\n';
         data.winners.forEach(w => {
-          csv += `${w.date},${w.pseudo},${w.amount}€,${w.time}\n`;
+          const status = w.paid ? 'Payé' : 'En attente';
+          const paidDate = w.paidAt ? new Date(w.paidAt).toLocaleString('fr-FR') : '';
+          csv += `${w.date},${w.pseudo},${w.amount}€,${w.time},${status},${paidDate}\n`;
         });
-        csv += `\nTotal:,,${data.total}€,\n`;
-        csv += `Nombre de gagnants:,,${data.count},\n`;
+        csv += `\nTotal:,,${data.total}€,,,\n`;
+        csv += `Nombre de gagnants:,,${data.count},,,\n`;
+        csv += `Non payés:,,${data.unpaidTotal}€,,${data.unpaidCount} gagnants,\n`;
         
         // Télécharger le fichier
         const blob = new Blob([csv], { type: 'text/csv' });
@@ -185,6 +189,28 @@ export default function AdminPage() {
     } catch (error) {
       console.error('Erreur:', error);
       alert('Erreur lors de l\'export');
+    }
+  };
+
+  const markAsPaid = async (winner) => {
+    try {
+      const response = await fetch('/api/jeu-roue/admin/manage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'mark-paid',
+          date: winner.date,
+          pseudo: winner.pseudo,
+          time: winner.time
+        })
+      });
+      
+      if (response.ok) {
+        await checkAuthAndLoadData();
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+      alert('Erreur lors du marquage');
     }
   };
 
@@ -340,7 +366,19 @@ export default function AdminPage() {
 
               {/* Liste des gagnants récents */}
               <div className="bg-[#2a1f2a] rounded-lg p-6 mb-6">
-                <h2 className="text-xl font-bold text-white mb-4">Gagnants récents</h2>
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-bold text-white">Gagnants récents</h2>
+                  <button
+                    onClick={() => setShowOnlyUnpaid(!showOnlyUnpaid)}
+                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${
+                      showOnlyUnpaid 
+                        ? 'bg-orange-600 text-white' 
+                        : 'bg-[#1a0f1a] text-white hover:bg-[#2a1f2a]'
+                    }`}
+                  >
+                    {showOnlyUnpaid ? '🟠 Non payés uniquement' : 'Tous les gagnants'}
+                  </button>
+                </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-white">
                     <thead>
@@ -349,11 +387,14 @@ export default function AdminPage() {
                         <th className="text-left py-2">Pseudo Stake</th>
                         <th className="text-left py-2">Montant</th>
                         <th className="text-left py-2">Heure</th>
+                        <th className="text-center py-2">Statut</th>
+                        <th className="text-center py-2">Payé le</th>
                       </tr>
                     </thead>
                     <tbody>
                       {gameData.allWinners
                         .filter(w => w.amount > 0)
+                        .filter(w => showOnlyUnpaid ? !w.paid : true)
                         .slice(0, 20)
                         .map((winner, index) => (
                           <tr key={index} className="border-b border-[#ff6b00]/10">
@@ -361,15 +402,33 @@ export default function AdminPage() {
                             <td className="py-2 font-bold">{winner.pseudo}</td>
                             <td className="py-2 text-[#ff6b00]">{winner.amount}€</td>
                             <td className="py-2">{winner.time}</td>
+                            <td className="py-2 text-center">
+                              {winner.paid ? (
+                                <span className="text-green-500 font-bold">✅ Payé</span>
+                              ) : (
+                                <button
+                                  onClick={() => markAsPaid(winner)}
+                                  className="bg-orange-600 hover:bg-green-600 text-white px-3 py-1 rounded text-sm transition-colors"
+                                >
+                                  Marquer payé
+                                </button>
+                              )}
+                            </td>
+                            <td className="py-2 text-center text-sm text-gray-400">
+                              {winner.paidAt ? new Date(winner.paidAt).toLocaleString('fr-FR') : '-'}
+                            </td>
                           </tr>
                         ))}
                     </tbody>
                   </table>
-                  {gameData.allWinners.filter(w => w.amount > 0).length === 0 && (
+                  {gameData.allWinners.filter(w => w.amount > 0).filter(w => showOnlyUnpaid ? !w.paid : true).length === 0 && (
                     <div className="text-center py-4 text-gray-400">
-                      Aucun gagnant pour le moment
+                      {showOnlyUnpaid ? 'Tous les gagnants ont été payés ! 🎉' : 'Aucun gagnant pour le moment'}
                     </div>
                   )}
+                </div>
+                <div className="mt-4 text-sm text-gray-400">
+                  💡 Conseil : Cochez après avoir envoyé le pourboire sur Stake
                 </div>
               </div>
 
@@ -409,7 +468,7 @@ export default function AdminPage() {
               {/* Statistiques */}
               <div className="bg-[#2a1f2a] rounded-lg p-6">
                 <h2 className="text-xl font-bold text-white mb-4">Statistiques globales</h2>
-                <div className="grid md:grid-cols-3 gap-4">
+                <div className="grid md:grid-cols-4 gap-4">
                   <div className="text-center">
                     <div className="text-sm text-gray-400">Total distribué</div>
                     <div className="text-2xl font-bold text-[#ff6b00]">
@@ -426,6 +485,15 @@ export default function AdminPage() {
                     <div className="text-sm text-gray-400">Gain moyen</div>
                     <div className="text-2xl font-bold text-white">
                       {gameData.stats.averageWin}€
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-sm text-gray-400">Non payés</div>
+                    <div className="text-2xl font-bold text-orange-500">
+                      {gameData.allWinners.filter(w => w.amount > 0 && !w.paid).length}
+                    </div>
+                    <div className="text-xs text-gray-400">
+                      {gameData.allWinners.filter(w => w.amount > 0 && !w.paid).reduce((sum, w) => sum + w.amount, 0)}€
                     </div>
                   </div>
                 </div>
