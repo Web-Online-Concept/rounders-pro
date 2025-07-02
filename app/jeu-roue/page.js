@@ -93,7 +93,7 @@ export default function JeuRoue() {
         setHasPlayed(true);
         setIsRevealing(false);
         
-        // Ajouter le gagnant à la liste si gain > 0
+        // Ajouter le gagnant à la liste seulement si gain > 0
         if (selectedSegment.value > 0) {
           const newWinner = {
             username: formData.stakeUsername.substring(0, 3) + '***',
