@@ -146,19 +146,8 @@ export default function AvantagesRounders() {
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-gray-50 rounded-xl p-6">
             <h3 className="text-xl font-semibold mb-3 flex items-center">
-              <span className="text-2xl mr-2">💬</span>
-              Support dédié
-            </h3>
-            <p className="text-gray-600">
-              Une équipe disponible sur Twitter pour répondre à vos questions 
-              et vous accompagner
-            </p>
-          </div>
-          
-          <div className="bg-gray-50 rounded-xl p-6">
-            <h3 className="text-xl font-semibold mb-3 flex items-center">
               <span className="text-2xl mr-2">📖</span>
-              Guide complet
+              Guide complet Stake
             </h3>
             <p className="text-gray-600">
               Un guide détaillé pour maîtriser Stake et optimiser vos gains 
@@ -169,11 +158,22 @@ export default function AvantagesRounders() {
           <div className="bg-gray-50 rounded-xl p-6">
             <h3 className="text-xl font-semibold mb-3 flex items-center">
               <span className="text-2xl mr-2">🎁</span>
-              Promotions futures
+              Jeux Twitter X
             </h3>
             <p className="text-gray-600">
-              De nouvelles promotions exclusives à venir pour nos affiliés 
-              les plus fidèles
+              Participez à nos jeux quotidiens sur Twitter X pour gagner 
+              des bonus en cash
+            </p>
+          </div>
+          
+          <div className="bg-gray-50 rounded-xl p-6">
+            <h3 className="text-xl font-semibold mb-3 flex items-center">
+              <span className="text-2xl mr-2">💬</span>
+              Team Rounders
+            </h3>
+            <p className="text-gray-600">
+              Toujours à vos côtés pour toutes vos questions sur la 
+              plateforme Stake
             </p>
           </div>
         </div>
