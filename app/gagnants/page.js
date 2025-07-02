@@ -86,10 +86,10 @@ export default function GagnantsPage() {
     return (
       <>
         <Header />
-        <main className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#1a0f1a] to-[#0f0a0f]">
+        <main className="min-h-screen flex items-center justify-center bg-gray-50">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
-            <p className="mt-4 text-white">Chargement des gagnants...</p>
+            <p className="mt-4 text-gray-700">Chargement des gagnants...</p>
           </div>
         </main>
         <Footer />
@@ -101,7 +101,7 @@ export default function GagnantsPage() {
     <>
       <Header />
       
-      <main className="pb-16 md:pb-0 min-h-screen bg-gradient-to-b from-[#1a0f1a] to-[#0f0a0f]">
+      <main className="pb-16 md:pb-0 min-h-screen bg-gray-50">
         {/* Hero */}
         <section className="bg-gradient-to-br from-[#ff6b00] to-[#ff8533] text-white py-16">
           <div className="container mx-auto px-4 text-center">
@@ -117,23 +117,23 @@ export default function GagnantsPage() {
         {/* Statistiques */}
         <section className="py-8 -mt-8">
           <div className="container mx-auto px-4">
-            <div className="bg-[#2a1f2a] rounded-lg shadow-xl p-6 max-w-4xl mx-auto">
+            <div className="bg-white rounded-lg shadow-xl p-6 max-w-4xl mx-auto">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                 <div>
                   <div className="text-3xl font-bold text-[#ff6b00]">{stats.totalDistributed}€</div>
-                  <div className="text-sm text-gray-400">Total Distribué</div>
+                  <div className="text-sm text-gray-600">Total Distribué</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-white">{stats.totalWinners}</div>
-                  <div className="text-sm text-gray-400">Total Gagnants</div>
+                  <div className="text-3xl font-bold text-gray-900">{stats.totalWinners}</div>
+                  <div className="text-sm text-gray-600">Total Gagnants</div>
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-green-500">{stats.biggestWin}€</div>
-                  <div className="text-sm text-gray-400">Plus Gros Gain</div>
+                  <div className="text-sm text-gray-600">Plus Gros Gain</div>
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-blue-500">{stats.averageWin}€</div>
-                  <div className="text-sm text-gray-400">Gain Moyen</div>
+                  <div className="text-sm text-gray-600">Gain Moyen</div>
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@ export default function GagnantsPage() {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto space-y-8">
               {Object.keys(groupedWinners).length === 0 ? (
-                <div className="text-center text-gray-400 py-12">
+                <div className="text-center text-gray-500 py-12">
                   <p className="text-xl">Aucun gagnant pour le moment</p>
                   <p className="mt-2">Soyez le premier à tenter votre chance !</p>
                 </div>
@@ -168,9 +168,9 @@ export default function GagnantsPage() {
                 Object.entries(groupedWinners)
                   .sort(([dateA], [dateB]) => new Date(dateB) - new Date(dateA))
                   .map(([date, dayWinners]) => (
-                    <div key={date} className="bg-[#2a1f2a] rounded-lg p-6">
+                    <div key={date} className="bg-white rounded-lg shadow p-6">
                       <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-xl font-bold text-white">
+                        <h3 className="text-xl font-bold text-gray-900">
                           📅 {formatDate(date)}
                         </h3>
                         <span className="text-[#ff6b00] font-bold">
@@ -182,17 +182,17 @@ export default function GagnantsPage() {
                         {dayWinners.map((winner, index) => (
                           <div 
                             key={index} 
-                            className="flex items-center justify-between bg-[#1a0f1a] p-3 rounded-lg"
+                            className="flex items-center justify-between bg-gray-50 p-3 rounded-lg"
                           >
                             <div className="flex items-center gap-3">
                               <span className="text-2xl">{getEmoji(winner.amount)}</span>
                               <div>
-                                <span className="font-medium text-white">{winner.pseudo}</span>
-                                <span className="text-gray-400 text-sm ml-2">{winner.time}</span>
+                                <span className="font-medium text-gray-900">{winner.pseudo}</span>
+                                <span className="text-gray-500 text-sm ml-2">{winner.time}</span>
                               </div>
                             </div>
                             <span className={`font-bold ${
-                              winner.amount >= 10 ? 'text-green-500 text-lg' : 'text-gray-300'
+                              winner.amount >= 10 ? 'text-green-600 text-lg' : 'text-gray-700'
                             }`}>
                               +{winner.amount}€
                             </span>
@@ -207,12 +207,12 @@ export default function GagnantsPage() {
         </section>
 
         {/* CTA Final */}
-        <section className="py-12">
+        <section className="py-12 bg-white">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Tentez votre chance !
             </h2>
-            <p className="text-gray-400 mb-6">
+            <p className="text-gray-600 mb-6">
               Suivez @rounders_pro sur Twitter pour ne rater aucun jeu
             </p>
             <a
