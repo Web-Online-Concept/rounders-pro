@@ -1,7 +1,13 @@
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
 import { headers } from 'next/headers';
 
-// Configuration du jeu (à déplacer dans KV plus tard)
+// Initialiser Redis
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL,
+  token: process.env.KV_REST_API_TOKEN,
+});
+
+// Configuration du jeu (à déplacer dans Redis plus tard)
 const GAME_CONFIG = {
   isActive: true,
   dailyBudget: 100, // Budget en euros
@@ -34,7 +40,7 @@ const SEGMENTS = [
 export async function POST(request) {
   try {
     // 1. Vérifier que le jeu est actif
-    const gameStatus = await kv.get('game:roue:status') || GAME_CONFIG;
+    const gameStatus = await redis.get('game:roue:status') || GAME_CONFIG;
     
     if (!gameStatus.isActive) {
       return Response.json({ 
@@ -64,7 +70,7 @@ export async function POST(request) {
     const today = new Date().toISOString().split('T')[0];
     const participationKey = `participation:${today}:${ip}:${stakeUsername.toLowerCase()}`;
     
-    const hasPlayed = await kv.get(participationKey);
+    const hasPlayed = await redis.get(participationKey);
     if (hasPlayed) {
       return Response.json({ 
         success: false, 
@@ -74,7 +80,7 @@ export async function POST(request) {
 
     // 5. Vérifier le budget restant
     const budgetKey = `budget:${today}`;
-    const currentBudget = await kv.get(budgetKey) || gameStatus.dailyBudget;
+    const currentBudget = await redis.get(budgetKey) || gameStatus.dailyBudget;
     
     if (currentBudget <= 0) {
       return Response.json({ 
@@ -89,16 +95,16 @@ export async function POST(request) {
     // 7. Mettre à jour le budget si gain > 0
     if (result.value > 0) {
       const newBudget = Math.max(0, currentBudget - result.value);
-      await kv.set(budgetKey, newBudget, { ex: 86400 }); // Expire après 24h
+      await redis.set(budgetKey, newBudget, { ex: 86400 }); // Expire après 24h
       
       // Si le budget est épuisé, désactiver le jeu
       if (newBudget === 0) {
-        await kv.set('game:roue:status', { ...gameStatus, isActive: false });
+        await redis.set('game:roue:status', { ...gameStatus, isActive: false });
       }
     }
 
     // 8. Enregistrer la participation
-    await kv.set(participationKey, {
+    await redis.set(participationKey, {
       timestamp: new Date().toISOString(),
       result: result.value,
       ip: ip
@@ -107,7 +113,7 @@ export async function POST(request) {
     // 9. Enregistrer le gagnant si gain > 0
     if (result.value > 0) {
       const winnersKey = `winners:${today}`;
-      const winners = await kv.get(winnersKey) || [];
+      const winners = await redis.get(winnersKey) || [];
       
       winners.unshift({
         username: stakeUsername.substring(0, 3) + '***',
@@ -119,7 +125,7 @@ export async function POST(request) {
         fullUsername: stakeUsername // Pour le paiement
       });
       
-      await kv.set(winnersKey, winners, { ex: 86400 * 7 }); // Garde 7 jours
+      await redis.set(winnersKey, winners, { ex: 86400 * 7 }); // Garde 7 jours
     }
 
     // 10. Enregistrer les statistiques
@@ -187,7 +193,7 @@ function calculateResult(probabilities, remainingBudget) {
 // Fonction pour mettre à jour les statistiques
 async function updateStats(amount) {
   const statsKey = 'stats:global';
-  const stats = await kv.get(statsKey) || {
+  const stats = await redis.get(statsKey) || {
     totalDistributed: 0,
     totalWinners: 0,
     totalPlayers: 0,
@@ -202,5 +208,5 @@ async function updateStats(amount) {
     stats.biggestWin = Math.max(stats.biggestWin, amount);
   }
   
-  await kv.set(statsKey, stats);
+  await redis.set(statsKey, stats);
 }

@@ -1,4 +1,10 @@
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+
+// Initialiser Redis
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL,
+  token: process.env.KV_REST_API_TOKEN,
+});
 
 export async function GET(request) {
   try {
@@ -9,17 +15,17 @@ export async function GET(request) {
       mode: 'all'
     };
 
-    // Récupérer la configuration depuis KV
-    const gameStatus = await kv.get('game:roue:status') || defaultConfig;
+    // Récupérer la configuration depuis Redis
+    const gameStatus = await redis.get('game:roue:status') || defaultConfig;
     
     // Récupérer le budget du jour
     const today = new Date().toISOString().split('T')[0];
     const budgetKey = `budget:${today}`;
-    const remainingBudget = await kv.get(budgetKey) || gameStatus.dailyBudget;
+    const remainingBudget = await redis.get(budgetKey) || gameStatus.dailyBudget;
     
     // Récupérer les gagnants du jour
     const winnersKey = `winners:${today}`;
-    const todayWinners = await kv.get(winnersKey) || [];
+    const todayWinners = await redis.get(winnersKey) || [];
     
     // Formater les gagnants (sans le fullUsername pour la sécurité)
     const publicWinners = todayWinners.map(({ fullUsername, ...winner }) => winner);
