@@ -18,11 +18,8 @@ export default function Home() {
             <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: '#FFFF00' }}>
               💰 Découvrez l&apos;Affiliation Rounders avec la plateforme STAKE
             </h1>
-            <p className="text-lg md:text-xl mb-2">
-              Bénéficiez de bonus cash exclusifs EN PLUS des bonus offerts par Stake
-            </p>
             <p className="text-lg md:text-xl mb-6">
-              Tentez votre chance et participez à nos jeux sur Twitter X
+              Bénéficiez de bonus cash exclusifs EN PLUS des bonus offerts par Stake
             </p>
             <div className="flex gap-4 justify-center mb-12">
               <Link href="/avantages-rounders" className="bg-white text-orange-600 px-6 sm:px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg">
