@@ -27,11 +27,11 @@ export default function Header() {
           
           {/* Navigation desktop */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/guide-stake" className="text-gray-700 hover:text-blue-600 transition-colors">
-              Guide Stake
-            </Link>
             <Link href="/avantages-rounders" className="text-gray-700 hover:text-blue-600 transition-colors">
               Avantages Rounders
+            </Link>
+            <Link href="/guide-stake" className="text-gray-700 hover:text-blue-600 transition-colors">
+              Guide Stake
             </Link>
             <a href="https://twitter.com/rounders_pro" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-1">
               Twitter

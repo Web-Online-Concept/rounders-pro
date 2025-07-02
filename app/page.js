@@ -21,7 +21,7 @@ export default function Home() {
             <p className="text-lg md:text-xl mb-6">
               Paris Sportifs - Poker - Casino
             </p>
-            <h2 className="text-2xl md:text-3xl font-bold mb-2 text-blue-800">
+            <h2 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: '#1f87f8' }}>
               💰 Gagnez encore plus de bonus avec l&apos;Affiliation Rounders
             </h2>
             <p className="text-lg md:text-xl mb-8">
