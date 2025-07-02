@@ -38,12 +38,6 @@ export default function JeuRoue() {
     // Simuler le chargement de l'état du jeu
     setTimeout(() => {
       setGameStatus('active'); // Pour tester, on met 'active'
-      
-      // TEST: Identifier quel segment est en haut au départ
-      console.log('=== POSITION INITIALE ===');
-      console.log('Vérifiez visuellement quel montant est sous le triangle rouge');
-      console.log('Les segments sont dans cet ordre:', segments.map((s, i) => `${i}: ${s.label}`));
-      console.log('========================');
     }, 500);
   }, []);
 
