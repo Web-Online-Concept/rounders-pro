@@ -46,7 +46,7 @@ export default function NosJeux() {
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+              <h2 className="text-2xl md:text-4xl font-bold text-center mb-12">
                 🎯 Comment ça marche ?
               </h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -126,7 +126,7 @@ export default function NosJeux() {
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-12">
+              <h2 className="text-2xl md:text-4xl font-bold mb-12">
                 🚀 Pourquoi sur Twitter X ?
               </h2>
               <div className="grid md:grid-cols-3 gap-8">
