@@ -13,10 +13,13 @@ export default function Home() {
       
       <main className="pb-16 md:pb-0">
         {/* Hero Section - EN ORANGE AVEC IMAGE DE FOND COMME DEMANDÉ */}
-        <section className="bg-gradient-to-r from-orange-500 to-orange-600 text-white pt-2 pb-20 md:py-20">
+        <section className="bg-gradient-to-r from-orange-500 to-orange-600 text-white pt-1 pb-20 md:py-10">
           <div className="max-w-6xl mx-auto px-4 text-center">
-            <h1 className="text-3xl md:text-5xl font-bold mb-2">
-              Découvrez Stake : La meilleure plateforme du monde
+            <h1 className="text-2xl md:text-3xl font-bold mb-0">
+              Découvrez Stake
+            </h1>
+            <h1 className="text-2xl md:text-3xl font-bold mb-2">
+              La meilleure plateforme du monde
             </h1>
             <p className="text-lg md:text-xl mb-4">
               Casino en ligne & Paris Sportifs
@@ -25,7 +28,7 @@ export default function Home() {
               Gagnez encore plus de bonus avec l&apos;Affiliation Rounders
             </h2>
             <p className="text-lg md:text-xl mb-8">
-              Bonus cash exclusifs jusqu&apos;à 200€ à chaque niveau VIP franchi
+              Bonus cash exclusifs jusqu&apos;à 200€ à chaque niveau VIP atteint
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/guide-stake" className="bg-white text-orange-600 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg">
