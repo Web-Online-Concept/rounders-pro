@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 export default function JeuRoue() {
   const [gameStatus, setGameStatus] = useState('loading'); // loading, inactive, active, ended
   const [isSpinning, setIsSpinning] = useState(false);
+  const [isRevealing, setIsRevealing] = useState(false);
   const [result, setResult] = useState(null);
   const [hasPlayed, setHasPlayed] = useState(false);
   const [formData, setFormData] = useState({
@@ -56,7 +57,13 @@ export default function JeuRoue() {
       const randomIndex = Math.floor(Math.random() * segments.length);
       setResult(segments[randomIndex]);
       setIsSpinning(false);
-      setHasPlayed(true);
+      setIsRevealing(true);
+      
+      // Attendre 5 secondes avant d'afficher le résultat
+      setTimeout(() => {
+        setHasPlayed(true);
+        setIsRevealing(false);
+      }, 5000);
     }, spinDuration);
   };
 
@@ -128,8 +135,8 @@ export default function JeuRoue() {
                   <div className="relative">
                     <div className="relative w-80 h-80 mx-auto">
                       {/* Flèche indicatrice */}
-                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 z-10">
-                        <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[40px] border-b-red-600"></div>
+                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-2 z-10">
+                        <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[40px] border-t-red-600"></div>
                       </div>
                       
                       {/* Roue */}
@@ -186,60 +193,78 @@ export default function JeuRoue() {
 
                   {/* Formulaire */}
                   <div className="bg-white p-6 rounded-lg shadow-lg">
-                    <h2 className="text-2xl font-bold mb-6">Participez au jeu !</h2>
-                    
-                    <form onSubmit={handleSpin}>
-                      <div className="mb-6">
-                        <h3 className="font-semibold mb-3">Option 1 : Affilié Rounders</h3>
-                        <input
-                          type="text"
-                          placeholder="Votre pseudo Stake"
-                          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                          value={formData.stakeUsername}
-                          onChange={(e) => setFormData({...formData, stakeUsername: e.target.value})}
-                          disabled={isSpinning}
-                        />
-                      </div>
+                    {!isRevealing ? (
+                      <>
+                        <h2 className="text-2xl font-bold mb-6">Participez au jeu !</h2>
+                        
+                        <form onSubmit={handleSpin}>
+                          <div className="mb-6">
+                            <h3 className="font-semibold mb-3">Option 1 : Affilié Rounders</h3>
+                            <input
+                              type="text"
+                              placeholder="Votre pseudo Stake"
+                              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                              value={formData.stakeUsername}
+                              onChange={(e) => setFormData({...formData, stakeUsername: e.target.value})}
+                              disabled={isSpinning || isRevealing}
+                            />
+                          </div>
 
-                      <div className="text-center mb-6">
-                        <span className="text-gray-500">OU</span>
-                      </div>
+                          <div className="text-center mb-6">
+                            <span className="text-gray-500">OU</span>
+                          </div>
 
-                      <div className="mb-6">
-                        <h3 className="font-semibold mb-3">Option 2 : Participation publique</h3>
-                        <select
-                          className="w-full px-4 py-2 border rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                          value={formData.cryptoType}
-                          onChange={(e) => setFormData({...formData, cryptoType: e.target.value})}
-                          disabled={isSpinning}
-                        >
-                          <option value="USDT">USDT (TRC20)</option>
-                          <option value="BTC">Bitcoin</option>
-                          <option value="ETH">Ethereum</option>
-                          <option value="LTC">Litecoin</option>
-                        </select>
-                        <input
-                          type="text"
-                          placeholder="Votre adresse crypto"
-                          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                          value={formData.cryptoAddress}
-                          onChange={(e) => setFormData({...formData, cryptoAddress: e.target.value})}
-                          disabled={isSpinning}
-                        />
-                      </div>
+                          <div className="mb-6">
+                            <h3 className="font-semibold mb-3">Option 2 : Participation publique</h3>
+                            <select
+                              className="w-full px-4 py-2 border rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                              value={formData.cryptoType}
+                              onChange={(e) => setFormData({...formData, cryptoType: e.target.value})}
+                              disabled={isSpinning}
+                            >
+                              <option value="USDT">USDT (TRC20)</option>
+                              <option value="BTC">Bitcoin</option>
+                              <option value="ETH">Ethereum</option>
+                              <option value="LTC">Litecoin</option>
+                            </select>
+                            <input
+                              type="text"
+                              placeholder="Votre adresse crypto"
+                              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                              value={formData.cryptoAddress}
+                              onChange={(e) => setFormData({...formData, cryptoAddress: e.target.value})}
+                              disabled={isSpinning}
+                            />
+                          </div>
 
-                      <button
-                        type="submit"
-                        disabled={isSpinning}
-                        className={`w-full py-3 rounded-lg font-bold text-white transition-colors ${
-                          isSpinning 
-                            ? 'bg-gray-400 cursor-not-allowed' 
-                            : 'bg-orange-500 hover:bg-orange-600'
-                        }`}
-                      >
-                        {isSpinning ? 'La roue tourne...' : 'Tourner la roue !'}
-                      </button>
-                    </form>
+                          <button
+                            type="submit"
+                            disabled={isSpinning}
+                            className={`w-full py-3 rounded-lg font-bold text-white transition-colors ${
+                              isSpinning 
+                                ? 'bg-gray-400 cursor-not-allowed' 
+                                : 'bg-orange-500 hover:bg-orange-600'
+                            }`}
+                          >
+                            {isSpinning ? 'La roue tourne...' : 'Tourner la roue !'}
+                          </button>
+                        </form>
+                      </>
+                    ) : (
+                      <div className="text-center py-12">
+                        <div className="animate-pulse">
+                          <h2 className="text-3xl font-bold mb-4">🎲 Résultat en cours...</h2>
+                          <p className="text-gray-600 text-lg">Voyons ce que vous avez gagné !</p>
+                          <div className="mt-8">
+                            <div className="inline-flex space-x-2">
+                              <div className="w-3 h-3 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                              <div className="w-3 h-3 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                              <div className="w-3 h-3 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
