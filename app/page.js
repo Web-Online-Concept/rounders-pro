@@ -27,11 +27,12 @@ export default function Home() {
             <p className="text-lg md:text-xl mb-8">
               Bonus cash exclusifs jusqu&apos;à 200€ à chaque niveau VIP atteint
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/guide-stake" className="bg-white text-orange-600 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg">
-                Découvrir le Guide Stake
+            <div className="flex gap-4 justify-center">
+              <Link href="/guide-stake" className="bg-white text-orange-600 px-6 sm:px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg">
+                <span className="sm:hidden">Guide Stake</span>
+                <span className="hidden sm:inline">Découvrir le Guide Stake</span>
               </Link>
-              <a href={AFFILIATE_LINK} target="_blank" className="bg-orange-700 text-white px-8 py-4 rounded-lg font-bold hover:bg-orange-800 transition shadow-lg">
+              <a href={AFFILIATE_LINK} target="_blank" className="bg-orange-700 text-white px-6 sm:px-8 py-4 rounded-lg font-bold hover:bg-orange-800 transition shadow-lg">
                 Jouer sur Stake →
               </a>
             </div>
