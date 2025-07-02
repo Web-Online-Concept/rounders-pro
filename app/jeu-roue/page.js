@@ -15,13 +15,8 @@ export default function JeuRoue() {
     stakeUsername: ''
   });
   
-  // Simuler des gagnants pour la démo
-  const [todayWinners, setTodayWinners] = useState([
-    { username: 'Luc***', amount: '5€', time: '14:32' },
-    { username: 'Mar***', amount: '2€', time: '13:15' },
-    { username: 'Ale***', amount: '10€', time: '11:47' },
-    { username: 'Sop***', amount: '1€', time: '10:23' }
-  ]);
+  // Gagnants du jour (chargés depuis l'API)
+  const [todayWinners, setTodayWinners] = useState([]);
 
   const segments = [
     { value: 0, color: '#EF4444', label: '0€' },
@@ -35,11 +30,30 @@ export default function JeuRoue() {
   ];
 
   useEffect(() => {
-    // Simuler le chargement de l'état du jeu
-    setTimeout(() => {
-      setGameStatus('active'); // Pour tester, on met 'active'
-    }, 500);
+    // Charger l'état du jeu depuis l'API
+    checkGameStatus();
   }, []);
+
+  const checkGameStatus = async () => {
+    try {
+      const response = await fetch('/api/jeu-roue/status');
+      const data = await response.json();
+      
+      if (data.isActive) {
+        setGameStatus('active');
+      } else {
+        setGameStatus(data.reason === 'budget' ? 'ended' : 'inactive');
+      }
+      
+      // Charger les gagnants du jour
+      if (data.todayWinners) {
+        setTodayWinners(data.todayWinners);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement:', error);
+      setGameStatus('inactive');
+    }
+  };
 
   const handleSpin = async (e) => {
     e.preventDefault();
@@ -51,59 +65,89 @@ export default function JeuRoue() {
 
     setIsSpinning(true);
     
-    // Déterminer le résultat AVANT de faire tourner la roue
-    const randomIndex = Math.floor(Math.random() * segments.length);
-    const selectedSegment = segments[randomIndex];
-    
-    // Calculer l'angle pour s'arrêter sur le bon segment
-    const segmentAngle = 360 / segments.length; // 45° par segment
-    
-    // Position initiale : le triangle est entre le segment 7 (50€) et le segment 0 (0€)
-    // Pour centrer le segment 0 sous le triangle, il faut tourner de segmentAngle/2 (22.5°)
-    // Pour centrer n'importe quel segment X sous le triangle :
-    // rotation = (X * segmentAngle) + (segmentAngle/2)
-    
-    // Mais comme on tourne dans le sens horaire et que les segments sont numérotés
-    // dans le sens horaire, pour amener le segment X en haut, on doit tourner de :
-    const baseRotation = -(randomIndex * segmentAngle + segmentAngle/2);
-    
-    // Ajouter plusieurs tours complets pour l'animation
-    const spins = 5;
-    
-    // Ajouter un peu d'aléatoire dans le segment (zone sûre pour éviter les bords)
-    const randomOffset = (Math.random() - 0.5) * segmentAngle * 0.4;
-    
-    // Rotation finale
-    const finalRotation = (spins * 360) + baseRotation + randomOffset;
-    
-    // Animation de rotation
-    const wheel = document.getElementById('wheel');
-    wheel.style.transform = `rotate(${finalRotation}deg)`;
-    
-    // Durée de l'animation
-    const spinDuration = 4000;
-    
-    setTimeout(() => {
-      setResult(selectedSegment);
-      setIsSpinning(false);
-      setIsRevealing(true);
+    try {
+      // Appeler l'API pour obtenir le résultat
+      const response = await fetch('/api/jeu-roue/spin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          stakeUsername: formData.stakeUsername
+        })
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        alert(data.error || 'Une erreur est survenue');
+        setIsSpinning(false);
+        return;
+      }
+
+      // Utiliser le résultat de l'API
+      const selectedSegment = segments[data.result.index];
       
-      // Attendre 5 secondes avant d'afficher le résultat
+      // Calculer l'angle pour s'arrêter sur le bon segment
+      const segmentAngle = 360 / segments.length; // 45° par segment
+      
+      // Position initiale : le triangle est entre le segment 7 (50€) et le segment 0 (0€)
+      // Pour centrer le segment 0 sous le triangle, il faut tourner de segmentAngle/2 (22.5°)
+      // Pour centrer n'importe quel segment X sous le triangle :
+      // rotation = (X * segmentAngle) + (segmentAngle/2)
+      
+      // Mais comme on tourne dans le sens horaire et que les segments sont numérotés
+      // dans le sens horaire, pour amener le segment X en haut, on doit tourner de :
+      const baseRotation = -(data.result.index * segmentAngle + segmentAngle/2);
+      
+      // Ajouter plusieurs tours complets pour l'animation
+      const spins = 5;
+      
+      // Ajouter un peu d'aléatoire dans le segment (zone sûre pour éviter les bords)
+      const randomOffset = (Math.random() - 0.5) * segmentAngle * 0.4;
+      
+      // Rotation finale
+      const finalRotation = (spins * 360) + baseRotation + randomOffset;
+      
+      // Animation de rotation
+      const wheel = document.getElementById('wheel');
+      wheel.style.transform = `rotate(${finalRotation}deg)`;
+      
+      // Durée de l'animation
+      const spinDuration = 4000;
+      
       setTimeout(() => {
-        setHasPlayed(true);
-        setIsRevealing(false);
+        setResult(selectedSegment);
+        setIsSpinning(false);
+        setIsRevealing(true);
         
-        // Ajouter le gagnant à la liste seulement si gain > 0
-        if (selectedSegment.value > 0) {
-          const newWinner = {
-            username: formData.stakeUsername.substring(0, 3) + '***',
-            amount: selectedSegment.label,
-            time: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
-          };
-          setTodayWinners(prev => [newWinner, ...prev]);
-        }
-      }, 5000);
-    }, spinDuration);
+        // Attendre 5 secondes avant d'afficher le résultat
+        setTimeout(() => {
+          setHasPlayed(true);
+          setIsRevealing(false);
+          
+          // Ajouter le gagnant à la liste seulement si gain > 0
+          if (selectedSegment.value > 0) {
+            const newWinner = {
+              username: formData.stakeUsername.substring(0, 3) + '***',
+              amount: selectedSegment.label,
+              time: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+            };
+            setTodayWinners(prev => [newWinner, ...prev]);
+          }
+          
+          // Si le budget est épuisé, actualiser le statut
+          if (data.remainingBudget === 0) {
+            setGameStatus('ended');
+          }
+        }, 5000);
+      }, spinDuration);
+      
+    } catch (error) {
+      console.error('Erreur:', error);
+      alert('Une erreur est survenue. Veuillez réessayer.');
+      setIsSpinning(false);
+    }
   };
 
   if (gameStatus === 'loading') {
