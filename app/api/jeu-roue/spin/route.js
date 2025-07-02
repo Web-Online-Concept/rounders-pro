@@ -91,6 +91,7 @@ export async function POST(request) {
 
     // 6. Calculer le résultat avec les probabilités
     const result = calculateResult(gameStatus.probabilities, currentBudget);
+    const segmentIndex = SEGMENTS.findIndex(s => s.value === result.value);
 
     // 7. Mettre à jour le budget si gain > 0
     if (result.value > 0) {
@@ -137,7 +138,7 @@ export async function POST(request) {
       result: {
         value: result.value,
         label: result.label,
-        index: result.index
+        index: segmentIndex
       },
       remainingBudget: result.value > 0 ? currentBudget - result.value : currentBudget
     });
@@ -181,8 +182,9 @@ function calculateResult(probabilities, remainingBudget) {
   for (const [value, probability] of Object.entries(normalized)) {
     cumulative += probability;
     if (random <= cumulative) {
-      const segmentIndex = SEGMENTS.findIndex(s => s.value === parseInt(value));
-      return SEGMENTS[segmentIndex];
+      const segmentValue = parseInt(value);
+      const segment = SEGMENTS.find(s => s.value === segmentValue);
+      return segment;
     }
   }
   
