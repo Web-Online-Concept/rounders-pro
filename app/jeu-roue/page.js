@@ -75,18 +75,6 @@ export default function JeuRoue() {
     
     // Animation de rotation
     const wheel = document.getElementById('wheel');
-    wheel.style.transform = `rotate(${finalRotation}deg)`;[randomIndex];
-    
-    // Calculer l'angle pour s'arrêter sur le bon segment
-    const segmentAngle = 360 / segments.length;
-    const targetAngle = randomIndex * segmentAngle;
-    
-    // Ajouter plusieurs tours + l'angle final
-    const spins = 5; // Nombre de tours complets
-    const finalRotation = spins * 360 + (360 - targetAngle);
-    
-    // Animation de rotation
-    const wheel = document.getElementById('wheel');
     wheel.style.transform = `rotate(${finalRotation}deg)`;
     
     // Durée de l'animation
