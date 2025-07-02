@@ -24,27 +24,26 @@ export default function Home() {
             <p className="text-lg md:text-xl mb-6">
               Tentez votre chance et participez à nos jeux sur Twitter X
             </p>
-            <h2 className="text-2xl md:text-3xl font-bold mb-2">
-              🎰 Découvrez la plateforme STAKE
-            </h2>
-            <p className="text-lg md:text-xl mb-8">
-              Paris Sportifs - Poker - Casino
-            </p>
-            <div className="flex gap-4 justify-center">
-              <Link href="/guide-stake" className="bg-white text-orange-600 px-6 sm:px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg">
-                <span className="sm:hidden">Guide Stake</span>
-                <span className="hidden sm:inline">Découvrir le Guide Stake</span>
+            <div className="flex gap-4 justify-center mb-12">
+              <Link href="/avantages-rounders" className="bg-white text-orange-600 px-6 sm:px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg">
+                Les Avantages Rounders
               </Link>
-              <a href={AFFILIATE_LINK} target="_blank" className="bg-orange-700 text-white px-6 sm:px-8 py-4 rounded-lg font-bold hover:bg-orange-800 transition shadow-lg">
-                Jouer sur Stake →
-              </a>
+              <Link href="/guide-stake" className="bg-orange-700 text-white px-6 sm:px-8 py-4 rounded-lg font-bold hover:bg-orange-800 transition shadow-lg">
+                Découvrir Stake →
+              </Link>
             </div>
             <img 
               src="/images/hero-stake.jpg" 
               alt="Stake Casino et Bonus Rounders" 
-              className="mt-12 rounded-lg shadow-2xl mx-auto max-w-full"
+              className="rounded-lg shadow-2xl mx-auto max-w-full mb-8"
               style={{ maxHeight: '400px' }}
             />
+            <h2 className="text-2xl md:text-3xl font-bold mb-2">
+              🎰 Découvrez la plateforme STAKE
+            </h2>
+            <p className="text-lg md:text-xl">
+              Paris Sportifs - Poker - Casino
+            </p>
           </div>
         </section>
 
