@@ -62,7 +62,7 @@ export default function Gagnants() {
               🏆 Tous les Gagnants Rounders
             </h1>
             <p className="text-xl opacity-90">
-              Découvrez l&apos;historique complet de nos gagnants
+              Historique complet des gagnants à la Roue
             </p>
           </div>
         </section>
