@@ -129,7 +129,7 @@ export default function AdminPage() {
   };
 
   const resetTodayBudget = async () => {
-    if (!confirm('Réinitialiser le budget du jour ? Les gagnants seront effacés.')) {
+    if (!confirm('Réinitialiser les participations du jour ? Les joueurs pourront rejouer mais l\'historique des gagnants sera conservé.')) {
       return;
     }
 
@@ -143,7 +143,7 @@ export default function AdminPage() {
       
       if (response.ok) {
         await checkAuthAndLoadData();
-        alert('Budget réinitialisé');
+        alert('Participations réinitialisées ! Les joueurs peuvent rejouer.');
       }
     } catch (error) {
       console.error('Erreur:', error);
@@ -358,7 +358,7 @@ export default function AdminPage() {
                       disabled={isUpdating}
                       className="bg-red-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
                     >
-                      Réinitialiser aujourd&apos;hui
+                      Autoriser à rejouer
                     </button>
                   </div>
                 </div>
