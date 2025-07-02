@@ -19,7 +19,7 @@ export default function Home() {
               🎰 Découvrez Stake
             </h1>
             <p className="text-lg md:text-xl mb-6">
-              Casino en ligne & Paris Sportifs
+              Paris Sportifs - Poker - Casino
             </p>
             <h2 className="text-2xl md:text-3xl font-bold mb-2 text-blue-800">
               💰 Gagnez encore plus de bonus avec l&apos;Affiliation Rounders
