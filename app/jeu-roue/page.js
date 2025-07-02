@@ -17,6 +17,7 @@ export default function JeuRoue() {
   
   // Gagnants du jour (chargés depuis l'API)
   const [todayWinners, setTodayWinners] = useState([]);
+  const [remainingBudget, setRemainingBudget] = useState(null);
 
   const segments = [
     { value: 0, color: '#EF4444', label: '0€' },
@@ -43,6 +44,7 @@ export default function JeuRoue() {
       
       if (data.isActive) {
         setGameStatus('active');
+        setRemainingBudget(data.remainingBudget);
       } else {
         setGameStatus(data.reason === 'budget' ? 'ended' : 'inactive');
       }
@@ -148,6 +150,8 @@ export default function JeuRoue() {
           // Si le budget est épuisé, actualiser le statut
           if (data.remainingBudget === 0) {
             setGameStatus('ended');
+          } else {
+            setRemainingBudget(data.remainingBudget);
           }
         }, 5000);
       }, spinDuration);
@@ -188,6 +192,15 @@ export default function JeuRoue() {
             <p className="text-xl opacity-90">
               Tentez votre chance et gagnez jusqu&apos;à 50€ en cash !
             </p>
+            {gameStatus === 'active' && remainingBudget !== null && (
+              <div className="mt-4">
+                <div className="inline-flex items-center gap-2 bg-white/20 px-6 py-3 rounded-full backdrop-blur">
+                  <span className="text-lg font-semibold">
+                    💰 Il reste encore {remainingBudget}€ à gagner !
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
@@ -288,6 +301,14 @@ export default function JeuRoue() {
                     {!isRevealing ? (
                       <>
                         <h2 className="text-2xl font-bold mb-6">Participez au jeu !</h2>
+                        
+                        {remainingBudget !== null && (
+                          <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 mb-4 text-center">
+                            <p className="text-sm font-semibold text-orange-800">
+                              🎯 Budget restant : {remainingBudget}€
+                            </p>
+                          </div>
+                        )}
                         
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                           <p className="text-sm text-blue-800">
