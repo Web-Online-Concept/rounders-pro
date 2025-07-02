@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export default function Gagnants() {
-  // Données simulées pour la démo
+  // Données simulées pour la démo - SANS les gagnants à 0€
   const [winnersHistory] = useState([
     {
       date: 'Aujourd\'hui',
@@ -23,11 +23,9 @@ export default function Gagnants() {
       winners: [
         { username: 'Pau***', amount: '50€', time: '20:15' },
         { username: 'Emi***', amount: '3€', time: '19:42' },
-        { username: 'Tho***', amount: '0€', time: '18:30' },
         { username: 'Lea***', amount: '5€', time: '17:22' },
         { username: 'Max***', amount: '2€', time: '16:45' },
         { username: 'Jul***', amount: '10€', time: '15:10' },
-        { username: 'Nic***', amount: '0€', time: '14:05' },
         { username: 'Cam***', amount: '1€', time: '12:30' }
       ]
     },
@@ -37,7 +35,6 @@ export default function Gagnants() {
       winners: [
         { username: 'Rom***', amount: '10€', time: '22:45' },
         { username: 'Cla***', amount: '5€', time: '21:30' },
-        { username: 'Ant***', amount: '0€', time: '20:15' },
         { username: 'Lou***', amount: '2€', time: '19:00' },
         { username: 'Mat***', amount: '3€', time: '17:45' },
         { username: 'Sar***', amount: '10€', time: '16:20' },
@@ -48,9 +45,9 @@ export default function Gagnants() {
 
   const [stats] = useState({
     totalDistributed: 100,
-    totalWinners: 19,
+    totalWinners: 16,
     biggestWin: 50,
-    averageWin: 5.26
+    averageWin: 6.25
   });
 
   return (
@@ -119,8 +116,7 @@ export default function Gagnants() {
                             <div className="flex items-center gap-4">
                               <span className="text-2xl">
                                 {winner.amount === '50€' ? '👑' : 
-                                 winner.amount === '10€' ? '🎉' : 
-                                 winner.amount === '0€' ? '😢' : '✨'}
+                                 winner.amount === '10€' ? '🎉' : '✨'}
                               </span>
                               <div>
                                 <span className="font-semibold">{winner.username}</span>
@@ -128,10 +124,9 @@ export default function Gagnants() {
                               </div>
                             </div>
                             <span className={`font-bold ${
-                              winner.amount === '0€' ? 'text-gray-400' :
                               parseInt(winner.amount) >= 10 ? 'text-green-600 text-lg' : 'text-gray-700'
                             }`}>
-                              {winner.amount === '0€' ? winner.amount : `+${winner.amount}`}
+                              +{winner.amount}
                             </span>
                           </div>
                         </div>
