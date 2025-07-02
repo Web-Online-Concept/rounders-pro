@@ -19,7 +19,7 @@ export default function Gagnants() {
     },
     {
       date: 'Hier - 1er Janvier 2025',
-      totalAmount: 47,
+      totalAmount: 71,
       winners: [
         { username: 'Pau***', amount: '50€', time: '20:15' },
         { username: 'Emi***', amount: '3€', time: '19:42' },
@@ -44,10 +44,10 @@ export default function Gagnants() {
   ]);
 
   const [stats] = useState({
-    totalDistributed: 100,
+    totalDistributed: 124,
     totalWinners: 16,
     biggestWin: 50,
-    averageWin: 6.25
+    averageWin: 7.75
   });
 
   return (
