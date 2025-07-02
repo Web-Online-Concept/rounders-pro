@@ -403,8 +403,6 @@ export default function JeuRoue() {
                       </svg>
                       Retour sur la Roue de la Fortune
                     </a>
-                  </div></svg>
-                    </a>
                   </div>
                 </div>
               </div>
