@@ -34,7 +34,7 @@ export async function GET() {
           .filter(w => w.amount > 0)
           .map(w => ({
             pseudo: w.pseudo.substring(0, 3) + '***',
-            amount: w.amount,
+            amount: w.amount + '€',  // Ajouter le symbole €
             time: w.time
           }))
       : [];

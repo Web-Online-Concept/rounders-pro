@@ -140,7 +140,7 @@ export default function JeuRoue() {
           // Ajouter le gagnant à la liste seulement si gain > 0
           if (selectedSegment.value > 0) {
             const newWinner = {
-              username: formData.stakeUsername.substring(0, 3) + '***',
+              pseudo: formData.stakeUsername.substring(0, 3) + '***',
               amount: selectedSegment.label,
               time: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
             };
@@ -475,7 +475,7 @@ export default function JeuRoue() {
                             {winner.amount === '10€' || winner.amount === '50€' ? '🎉' : '✨'}
                           </span>
                           <div>
-                            <span className="font-semibold">{winner.username}</span>
+                            <span className="font-semibold">{winner.pseudo}</span>
                             <span className="text-gray-500 text-sm ml-2">{winner.time}</span>
                           </div>
                         </div>
