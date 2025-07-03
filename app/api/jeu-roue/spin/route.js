@@ -76,16 +76,20 @@ export async function POST(request) {
       }, { status: 400 });
     }
 
-    // Vérifier si l'utilisateur a déjà joué aujourd'hui (PAR IP SEULEMENT)
-    const participationKey = `participation:${today}:${clientIp}`;
-    const hasPlayed = await redis.get(participationKey);
+    // Vérifier si l'IP a déjà joué aujourd'hui
+    const ipParticipationKey = `participation:${today}:ip:${clientIp}`;
+    const ipHasPlayed = await redis.get(ipParticipationKey);
     
-    // Vérifier aussi dans la liste des gagnants du jour (par IP)
+    // Vérifier si le pseudo a déjà joué aujourd'hui
+    const pseudoParticipationKey = `participation:${today}:pseudo:${pseudo.toLowerCase()}`;
+    const pseudoHasPlayed = await redis.get(pseudoParticipationKey);
+    
+    // Vérifier aussi dans la liste des gagnants du jour (par IP OU pseudo)
     const hasWonToday = todayBudget.winners && todayBudget.winners.some(
-      w => w.ip === clientIp
+      w => w.pseudo.toLowerCase() === pseudo.toLowerCase() || w.ip === clientIp
     );
     
-    if (hasPlayed || hasWonToday) {
+    if (ipHasPlayed || pseudoHasPlayed || hasWonToday) {
       return NextResponse.json({
         success: false,
         error: 'Vous avez déjà joué aujourd\'hui. Revenez demain !'
@@ -95,8 +99,9 @@ export async function POST(request) {
     // Calculer le résultat avec probabilités ajustées
     const result = calculateResult(status.probabilities, remainingBudget);
 
-    // Enregistrer la participation (SANS LE PSEUDO)
-    await redis.set(participationKey, true, { ex: 86400 }); // Expire après 24h
+    // Enregistrer les participations (IP ET pseudo séparément)
+    await redis.set(ipParticipationKey, true, { ex: 86400 }); // Expire après 24h
+    await redis.set(pseudoParticipationKey, true, { ex: 86400 }); // Expire après 24h
 
     // Mettre à jour le budget
     // Ajouter le nouveau gagnant
