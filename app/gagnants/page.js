@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import Head from 'next/head';
 
 export default function GagnantsPage() {
@@ -174,7 +174,7 @@ export default function GagnantsPage() {
         />
       </Head>
       
-      <Navbar />
+      <Header />
       
       <main className="min-h-screen bg-gray-50 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
