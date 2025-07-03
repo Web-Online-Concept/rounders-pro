@@ -98,6 +98,7 @@ export default function JeuRouePage() {
         setIsSpinning(false);
         checkGameStatus();
         
+        // Mise à jour du budget restant après le spin
         if (data.remainingBudget === 0) {
           setGameStatus('inactive');
           setRemainingBudget(0);
@@ -195,7 +196,7 @@ export default function JeuRouePage() {
 
           {/* Jeu actif */}
           {gameStatus === 'active' && remainingBudget > 0 && (
-            <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center">
               {/* Roue */}
               <div className="relative">
                 <div className="relative w-80 h-80 mx-auto">
