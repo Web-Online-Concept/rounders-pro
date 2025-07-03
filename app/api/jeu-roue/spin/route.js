@@ -1,8 +1,31 @@
-import { NextResponse } from 'next/server';
+function getParisDate() {
+  // Obtenir la date actuelle en Europe/Paris
+  const parisDate = new Date().toLocaleString('en-CA', { 
+    timeZone: 'Europe/Paris',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).split(',')[0];
+  
+  return parisDate; // Format: YYYY-MM-DD
+}import { NextResponse } from 'next/server';
 import { Redis } from '@upstash/redis';
 import { headers } from 'next/headers';
 
 const redis = Redis.fromEnv();
+
+// Obtenir la date de Paris (pas UTC)
+function getParisDate() {
+  // Obtenir la date actuelle en Europe/Paris
+  const parisDate = new Date().toLocaleString('en-CA', { 
+    timeZone: 'Europe/Paris',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).split(',')[0];
+  
+  return parisDate; // Format: YYYY-MM-DD
+}
 
 // Obtenir l'IP du client
 function getClientIp() {
@@ -27,17 +50,24 @@ export async function POST(request) {
       }, { status: 400 });
     }
 
-    // Vérifier le statut du jeu
-    const status = await redis.get('game:roue:status');
-    if (!status || !status.isActive) {
-      return NextResponse.json({
-        success: false,
-        error: 'Le jeu n\'est pas actif'
-      }, { status: 400 });
-    }
+    // Vérifier le statut du jeu pour récupérer le budget
+    const status = await redis.get('game:roue:status') || {
+      dailyBudget: 0,
+      mode: 'all',
+      probabilities: {
+        "0": 0.60,
+        "1": 0.20,
+        "2": 0.10,
+        "3": 0.05,
+        "4": 0.025,
+        "5": 0.015,
+        "10": 0.008,
+        "50": 0.002
+      }
+    };
 
-    // Vérifier le budget
-    const today = new Date().toISOString().split('T')[0];
+    // Vérifier le budget (SEUL critère pour jouer)
+    const today = getParisDate();
     let todayBudget = await redis.get(`budget:${today}`);
     
     // Gérer l'ancien format
@@ -84,7 +114,11 @@ export async function POST(request) {
       todayBudget.winners.push({
         pseudo: pseudo,
         amount: result.value,
-        time: new Date().toLocaleTimeString('fr-FR'),
+        time: new Date().toLocaleTimeString('fr-FR', { 
+          hour: '2-digit', 
+          minute: '2-digit',
+          timeZone: 'Europe/Paris'
+        }),
         ip: clientIp
       });
     }

@@ -4,6 +4,18 @@ import { cookies } from 'next/headers';
 
 const redis = Redis.fromEnv();
 
+// Obtenir la date de Paris (pas UTC)
+function getParisDate() {
+  const parisDate = new Date().toLocaleString('en-CA', { 
+    timeZone: 'Europe/Paris',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).split(',')[0];
+  
+  return parisDate; // Format: YYYY-MM-DD
+}
+
 // Vérifier l'authentification admin
 async function checkAuth() {
   const cookieStore = await cookies();
@@ -23,8 +35,7 @@ export async function GET() {
 
     // Récupérer le statut du jeu
     const status = await redis.get('game:roue:status') || {
-      isActive: false,
-      dailyBudget: 50,
+      dailyBudget: 0,
       mode: 'all',
       probabilities: {
         "0": 0.60,
@@ -39,7 +50,7 @@ export async function GET() {
     };
 
     // Récupérer le budget du jour
-    const today = new Date().toISOString().split('T')[0];
+    const today = getParisDate();
     let budgetData = await redis.get(`budget:${today}`);
     
     // Gérer l'ancien format (nombre simple) et le nouveau format (objet)
@@ -71,7 +82,13 @@ export async function GET() {
     for (let i = 1; i <= 7; i++) {
       const date = new Date();
       date.setDate(date.getDate() - i);
-      const dateStr = date.toISOString().split('T')[0];
+      const dateStr = date.toLocaleString('en-CA', { 
+        timeZone: 'Europe/Paris',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).split(',')[0];
+      
       const dayData = await redis.get(`budget:${dateStr}`);
       
       if (dayData && dayData.winners) {
@@ -127,19 +144,6 @@ export async function POST(request) {
     const { action, ...params } = data;
 
     switch (action) {
-      case 'toggle': {
-        // Activer/désactiver le jeu
-        const status = await redis.get('game:roue:status') || {};
-        status.isActive = !status.isActive;
-        await redis.set('game:roue:status', status);
-        
-        return NextResponse.json({
-          success: true,
-          isActive: status.isActive,
-          message: status.isActive ? 'Jeu activé' : 'Jeu désactivé'
-        });
-      }
-
       case 'update-budget': {
         // Modifier le budget
         const { budget } = params;
@@ -151,43 +155,13 @@ export async function POST(request) {
         }
 
         const status = await redis.get('game:roue:status') || {};
-        const oldBudget = status.dailyBudget || 0;
         status.dailyBudget = budget;
         await redis.set('game:roue:status', status);
-        
-        // Si on augmente le budget, ajuster le budget restant du jour
-        if (budget > oldBudget) {
-          const today = new Date().toISOString().split('T')[0];
-          const budgetData = await redis.get(`budget:${today}`);
-          
-          if (budgetData && typeof budgetData === 'object') {
-            // Le budget restant augmente de la différence
-            // Pas besoin de modifier budgetData car remainingBudget est calculé
-          }
-        }
 
         return NextResponse.json({
           success: true,
           dailyBudget: budget,
           message: `Budget mis à jour : ${budget}€`
-        });
-      }
-
-      case 'reset-budget': {
-        // ATTENTION : Réinitialiser UNIQUEMENT les participations (PAS l'historique !)
-        const today = new Date().toISOString().split('T')[0];
-        
-        // Supprimer UNIQUEMENT les participations pour permettre de rejouer
-        const keys = await redis.keys(`participation:${today}:*`);
-        if (keys && keys.length > 0) {
-          await Promise.all(keys.map(key => redis.del(key)));
-        }
-        
-        // IMPORTANT: On ne touche JAMAIS à budget:${today} pour garder l'historique !
-        
-        return NextResponse.json({
-          success: true,
-          message: 'Les joueurs peuvent maintenant rejouer (historique conservé)'
         });
       }
 
@@ -261,7 +235,13 @@ export async function POST(request) {
         const end = new Date(endDate);
         
         for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-          const dateStr = d.toISOString().split('T')[0];
+          const dateStr = d.toLocaleString('en-CA', { 
+            timeZone: 'Europe/Paris',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+          }).split(',')[0];
+          
           const dayData = await redis.get(`budget:${dateStr}`);
           
           if (dayData && dayData.winners) {

@@ -6,7 +6,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export default function JeuRoue() {
-  const [gameStatus, setGameStatus] = useState('loading'); // loading, inactive, active, ended
+  const [gameStatus, setGameStatus] = useState('loading'); // loading, inactive, active
   const [isSpinning, setIsSpinning] = useState(false);
   const [isRevealing, setIsRevealing] = useState(false);
   const [result, setResult] = useState(null);
@@ -42,12 +42,8 @@ export default function JeuRoue() {
       
       console.log('Status API response:', data); // Debug
       
-      if (data.isActive) {
-        setGameStatus('active');
-        setRemainingBudget(data.remainingBudget);
-      } else {
-        setGameStatus(data.reason === 'budget' ? 'ended' : 'inactive');
-      }
+      setGameStatus(data.isActive ? 'active' : 'inactive');
+      setRemainingBudget(data.remainingBudget || 0);
       
       // Charger les gagnants du jour
       if (data.todayWinners) {
@@ -142,14 +138,18 @@ export default function JeuRoue() {
             const newWinner = {
               pseudo: formData.stakeUsername.substring(0, 3) + '***',
               amount: selectedSegment.label,
-              time: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+              time: new Date().toLocaleTimeString('fr-FR', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                timeZone: 'Europe/Paris'
+              })
             };
             setTodayWinners(prev => [newWinner, ...prev]);
           }
           
           // Si le budget est épuisé, actualiser le statut
           if (data.remainingBudget === 0) {
-            setGameStatus('ended');
+            setGameStatus('inactive');
           } else {
             setRemainingBudget(data.remainingBudget);
           }
@@ -192,11 +192,13 @@ export default function JeuRoue() {
             <p className="text-xl opacity-90">
               Tentez votre chance et gagnez jusqu&apos;à 50€ en cash !
             </p>
-            {gameStatus === 'active' && remainingBudget !== null && (
+            {remainingBudget !== null && (
               <div className="mt-4">
                 <div className="inline-flex items-center gap-2 bg-white/20 px-6 py-3 rounded-full backdrop-blur">
                   <span className="text-lg font-semibold">
-                    💰 Il reste encore {remainingBudget}€ à gagner !
+                    💰 {remainingBudget > 0 
+                      ? `Il reste encore ${remainingBudget}€ à gagner !` 
+                      : 'Budget épuisé - Revenez plus tard !'}
                   </span>
                 </div>
               </div>
@@ -204,37 +206,30 @@ export default function JeuRoue() {
           </div>
         </section>
 
-        {/* État du jeu */}
-        {gameStatus === 'inactive' && (
-          <section className="py-20">
-            <div className="container mx-auto px-4 text-center">
-              <div className="max-w-2xl mx-auto bg-yellow-50 border border-yellow-200 rounded-lg p-8">
-                <h2 className="text-2xl font-bold mb-4 text-yellow-800">
-                  🚫 Aucun jeu actif pour le moment
-                </h2>
-                <p className="text-yellow-700 mb-6">
-                  Suivez-nous sur Twitter @rounders_pro pour être notifié du prochain jeu !
-                </p>
-                <a
-                  href="https://twitter.com/rounders_pro"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800"
-                >
-                  Suivre @rounders_pro
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {gameStatus === 'active' && !hasPlayed && (
-          <section className="py-12">
-            <div className="container mx-auto px-4">
-              <div className="max-w-4xl mx-auto">
+        {/* Jeu principal - Toujours visible */}
+        <section className="py-12">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              {gameStatus === 'inactive' && !hasPlayed && (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8 text-center">
+                  <p className="text-yellow-800 text-lg">
+                    🚫 Jeu non accessible actuellement. Revenez plus tard ou surveillez nos publications sur Twitter !
+                  </p>
+                  <a
+                    href="https://twitter.com/rounders_pro"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 mt-4"
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    @rounders_pro
+                  </a>
+                </div>
+              )}
+              
+              {!hasPlayed && (
                 <div className="grid md:grid-cols-2 gap-8 items-center">
                   {/* Roue */}
                   <div className="relative">
@@ -329,7 +324,7 @@ export default function JeuRoue() {
                               className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                               value={formData.stakeUsername}
                               onChange={(e) => setFormData({...formData, stakeUsername: e.target.value})}
-                              disabled={isSpinning || isRevealing}
+                              disabled={isSpinning || isRevealing || gameStatus === 'inactive'}
                               required
                             />
                             <p className="text-xs text-gray-500 mt-1">
@@ -339,14 +334,14 @@ export default function JeuRoue() {
 
                           <button
                             type="submit"
-                            disabled={isSpinning || isRevealing}
+                            disabled={isSpinning || isRevealing || gameStatus === 'inactive'}
                             className={`w-full py-3 rounded-lg font-bold text-white transition-colors ${
-                              isSpinning || isRevealing
+                              isSpinning || isRevealing || gameStatus === 'inactive'
                                 ? 'bg-gray-400 cursor-not-allowed' 
                                 : 'bg-orange-500 hover:bg-orange-600'
                             }`}
                           >
-                            {isSpinning ? 'La roue tourne...' : 'Tourner la roue !'}
+                            {isSpinning ? 'La roue tourne...' : gameStatus === 'inactive' ? 'Jeu non disponible' : 'Tourner la roue !'}
                           </button>
                           
                           <p className="text-center text-xs text-gray-500 mt-4">
@@ -426,36 +421,10 @@ export default function JeuRoue() {
                     </a>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
-          </section>
-        )}
-
-        {gameStatus === 'ended' && (
-          <section className="py-20">
-            <div className="container mx-auto px-4 text-center">
-              <div className="max-w-2xl mx-auto bg-gray-100 rounded-lg p-8">
-                <h2 className="text-2xl font-bold mb-4">
-                  🏁 Ce jeu est terminé
-                </h2>
-                <p className="text-gray-700 mb-6">
-                  Le budget de ce jeu a été épuisé. Suivez-nous sur Twitter pour le prochain !
-                </p>
-                <a
-                  href="https://twitter.com/rounders_pro"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800"
-                >
-                  Suivre @rounders_pro
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </section>
-        )}
+          </div>
+        </section>
 
         {/* Section Gagnants du jour */}
         <section className="py-16 bg-white">

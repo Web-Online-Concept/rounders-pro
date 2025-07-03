@@ -3,20 +3,38 @@ import { Redis } from '@upstash/redis';
 
 const redis = Redis.fromEnv();
 
+// Obtenir la date de Paris (pas UTC)
+function getParisDate() {
+  const parisDate = new Date().toLocaleString('en-CA', { 
+    timeZone: 'Europe/Paris',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).split(',')[0];
+  
+  return parisDate; // Format: YYYY-MM-DD
+}
+
 export async function GET() {
   try {
     // Récupérer le statut du jeu
-    const status = await redis.get('game:roue:status');
-    
-    if (!status) {
-      return NextResponse.json({
-        todayWinners: [],
-        reason: 'manual'
-      });
-    }
+    const status = await redis.get('game:roue:status') || {
+      dailyBudget: 0,
+      mode: 'all',
+      probabilities: {
+        "0": 0.60,
+        "1": 0.20,
+        "2": 0.10,
+        "3": 0.05,
+        "4": 0.025,
+        "5": 0.015,
+        "10": 0.008,
+        "50": 0.002
+      }
+    };
 
     // Vérifier le budget du jour
-    const today = new Date().toISOString().split('T')[0];
+    const today = getParisDate();
     let budgetData = await redis.get(`budget:${today}`);
     
     // Gérer l'ancien format (nombre) et le nouveau format (objet)
@@ -34,29 +52,21 @@ export async function GET() {
           .filter(w => w.amount > 0)
           .map(w => ({
             pseudo: w.pseudo.substring(0, 3) + '***',
-            amount: w.amount + '€',  // Ajouter le symbole €
+            amount: w.amount + '€',
             time: w.time
           }))
       : [];
 
-    // Déterminer le statut réel du jeu
-    let isActive = status.isActive;
-    let reason = null;
-    
-    if (!status.isActive) {
-      reason = 'manual';
-    } else if (remainingBudget <= 0) {
-      reason = 'budget';
-      // Note: on ne change pas isActive ici, mais on indique la raison
-    }
+    // SIMPLIFICATION : Le jeu est actif si budget > 0
+    const isActive = remainingBudget > 0;
 
     return NextResponse.json({
       isActive,
-      remainingBudget,
+      remainingBudget: Math.max(0, remainingBudget),
       dailyBudget: status.dailyBudget,
       mode: status.mode,
       todayWinners,
-      reason
+      reason: remainingBudget <= 0 ? 'budget' : null
     });
 
   } catch (error) {

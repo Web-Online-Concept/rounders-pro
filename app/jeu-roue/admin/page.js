@@ -81,25 +81,6 @@ export default function AdminPage() {
   };
 
   // Actions admin
-  const toggleGame = async () => {
-    setIsUpdating(true);
-    try {
-      const response = await fetch('/api/jeu-roue/admin/manage', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'toggle' })
-      });
-      
-      if (response.ok) {
-        await checkAuthAndLoadData();
-      }
-    } catch (error) {
-      console.error('Erreur:', error);
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
   const updateBudget = async () => {
     if (!newBudget || isNaN(newBudget) || Number(newBudget) < 0) {
       alert('Budget invalide');
@@ -294,29 +275,22 @@ export default function AdminPage() {
                 <h2 className="text-xl font-bold text-white mb-4">État du jeu</h2>
                 <div className="grid md:grid-cols-3 gap-4">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-white">
-                      {gameData.status.isActive ? '✅ Actif' : '❌ Inactif'}
+                    <div className="text-sm text-gray-400">Budget actuel</div>
+                    <div className="text-3xl font-bold text-[#ff6b00]">
+                      {gameData.status.dailyBudget}€
                     </div>
-                    <button
-                      onClick={toggleGame}
-                      disabled={isUpdating}
-                      className={`mt-2 px-4 py-2 rounded-lg font-bold transition-colors ${
-                        gameData.status.isActive 
-                          ? 'bg-red-600 hover:bg-red-700 text-white'
-                          : 'bg-green-600 hover:bg-green-700 text-white'
-                      } ${isUpdating ? 'opacity-50' : ''}`}
-                    >
-                      {gameData.status.isActive ? 'Désactiver' : 'Activer'}
-                    </button>
+                    <div className="text-sm text-gray-400 mt-2">
+                      {gameData.remainingBudget > 0 ? '✅ Jeu actif' : '❌ Jeu fermé'}
+                    </div>
                   </div>
                   
                   <div className="text-center">
                     <div className="text-sm text-gray-400">Budget restant</div>
-                    <div className="text-3xl font-bold text-[#ff6b00]">
+                    <div className="text-3xl font-bold text-white">
                       {gameData.remainingBudget}€
                     </div>
                     <div className="text-sm text-gray-400">
-                      sur {gameData.status.dailyBudget}€
+                      Dépensé : {gameData.status.dailyBudget - gameData.remainingBudget}€
                     </div>
                   </div>
                   
@@ -344,21 +318,17 @@ export default function AdminPage() {
                       onChange={(e) => setNewBudget(e.target.value)}
                       className="w-full px-4 py-2 bg-[#1a0f1a] text-white rounded-lg border border-[#ff6b00]/20 focus:border-[#ff6b00] focus:outline-none"
                     />
+                    <p className="text-xs text-gray-400 mt-1">
+                      Mettez 0 pour fermer le jeu, ou un montant pour l&apos;activer/réactiver
+                    </p>
                   </div>
-                  <div className="flex gap-2 items-end">
+                  <div className="flex items-end">
                     <button
                       onClick={updateBudget}
                       disabled={isUpdating}
                       className="bg-[#ff6b00] text-white font-bold py-2 px-6 rounded-lg hover:bg-[#ff8533] transition-colors disabled:opacity-50"
                     >
-                      Mettre à jour
-                    </button>
-                    <button
-                      onClick={startNewGame}
-                      disabled={isUpdating}
-                      className="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-                    >
-                      Nouveau Jeu
+                      Mettre à jour le budget
                     </button>
                   </div>
                 </div>

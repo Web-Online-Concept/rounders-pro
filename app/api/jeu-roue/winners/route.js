@@ -3,6 +3,18 @@ import { Redis } from '@upstash/redis';
 
 const redis = Redis.fromEnv();
 
+// Obtenir la date de Paris (pas UTC)
+function getParisDate() {
+  const parisDate = new Date().toLocaleString('en-CA', { 
+    timeZone: 'Europe/Paris',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).split(',')[0];
+  
+  return parisDate; // Format: YYYY-MM-DD
+}
+
 export async function GET() {
   try {
     const allWinners = [];
@@ -11,7 +23,12 @@ export async function GET() {
     for (let i = 0; i < 30; i++) {
       const date = new Date();
       date.setDate(date.getDate() - i);
-      const dateStr = date.toISOString().split('T')[0];
+      const dateStr = date.toLocaleString('en-CA', { 
+        timeZone: 'Europe/Paris',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).split(',')[0];
       
       const dayData = await redis.get(`budget:${dateStr}`);
       
@@ -22,7 +39,7 @@ export async function GET() {
             allWinners.push({
               date: dateStr,
               pseudo: winner.pseudo.substring(0, 3) + '***', // Masquer le pseudo
-              amount: winner.amount,
+              amount: winner.amount,  // Garder en nombre pour les calculs
               time: winner.time
             });
           });
