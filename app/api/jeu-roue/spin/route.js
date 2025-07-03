@@ -122,7 +122,8 @@ export async function POST(request) {
         value: result.value,
         label: result.label,
         index: result.index
-      }
+      },
+      remainingBudget: status.dailyBudget - todayBudget.spent
     });
 
   } catch (error) {
