@@ -1,39 +1,40 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { AFFILIATE_LINK } from '../config/affiliate';
+import { getSession } from 'next-auth/react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Head from 'next/head';
 
-export default function JeuRoue() {
-  const [gameStatus, setGameStatus] = useState('loading'); // loading, inactive, active
+export default function JeuRouePage() {
+  const [isLoading, setIsLoading] = useState(true);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [isRevealing, setIsRevealing] = useState(false);
-  const [result, setResult] = useState(null);
+  const [rotation, setRotation] = useState(0);
+  const [pseudo, setPseudo] = useState('');
   const [hasPlayed, setHasPlayed] = useState(false);
-  const [formData, setFormData] = useState({
-    stakeUsername: ''
-  });
-  
-  // Gagnants du jour (chargés depuis l'API)
+  const [result, setResult] = useState(null);
+  const [gameStatus, setGameStatus] = useState('loading');
+  const [remainingBudget, setRemainingBudget] = useState(0);
   const [todayWinners, setTodayWinners] = useState([]);
-  const [remainingBudget, setRemainingBudget] = useState(null);
+  const [dailyBudget, setDailyBudget] = useState(0);
+  const [showResult, setShowResult] = useState(false);
 
   const segments = [
-    { value: 0, color: '#EF4444', label: '0€' },
-    { value: 1, color: '#F59E0B', label: '1€' },
-    { value: 2, color: '#10B981', label: '2€' },
-    { value: 3, color: '#3B82F6', label: '3€' },
-    { value: 4, color: '#8B5CF6', label: '4€' },
-    { value: 5, color: '#EC4899', label: '5€' },
-    { value: 10, color: '#14B8A6', label: '10€' },
-    { value: 50, color: '#F97316', label: '50€' }
+    { value: 0, label: '0€', color: '#FF6B6B' },
+    { value: 5, label: '5€', color: '#4ECDC4' },
+    { value: 0, label: '0€', color: '#45B7D1' },
+    { value: 1, label: '1€', color: '#96CEB4' },
+    { value: 0, label: '0€', color: '#FFEAA7' },
+    { value: 3, label: '3€', color: '#DDA0DD' },
+    { value: 0, label: '0€', color: '#98D8C8' },
+    { value: 50, label: '50€', color: '#FFD700' },
+    { value: 0, label: '0€', color: '#F7DC6F' },
+    { value: 10, label: '10€', color: '#BB8FCE' }
   ];
 
   useEffect(() => {
-    // Charger l'état du jeu depuis l'API
     checkGameStatus();
+    const interval = setInterval(checkGameStatus, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   const checkGameStatus = async () => {
@@ -41,527 +42,351 @@ export default function JeuRoue() {
       const response = await fetch('/api/jeu-roue/status');
       const data = await response.json();
       
-      console.log('Status API response:', data); // Debug
-      
       setGameStatus(data.isActive ? 'active' : 'inactive');
       setRemainingBudget(data.remainingBudget || 0);
+      setDailyBudget(data.dailyBudget || 0);
+      setTodayWinners(data.todayWinners || []);
       
-      // Charger les gagnants du jour
-      if (data.todayWinners) {
-        setTodayWinners(data.todayWinners);
+      if (data.hasPlayed) {
+        setHasPlayed(true);
       }
+      
+      setIsLoading(false);
     } catch (error) {
-      console.error('Erreur lors du chargement:', error);
-      setGameStatus('inactive');
+      console.error('Erreur:', error);
+      setIsLoading(false);
     }
   };
 
-  const handleSpin = async (e) => {
-    e.preventDefault();
-    
-    if (!formData.stakeUsername) {
-      alert('Veuillez entrer votre pseudo Stake');
+  const handleSpin = async () => {
+    if (!pseudo.trim() || pseudo.length < 3) {
+      alert('Veuillez entrer un pseudo valide (minimum 3 caractères)');
       return;
     }
 
+    if (isSpinning || hasPlayed) return;
+
     setIsSpinning(true);
-    
+    setShowResult(false);
+
     try {
-      // Appeler l'API pour obtenir le résultat
       const response = await fetch('/api/jeu-roue/spin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          pseudo: formData.stakeUsername  // CHANGÉ ICI : pseudo au lieu de stakeUsername
-        })
+        body: JSON.stringify({ pseudo: pseudo.trim() }),
       });
 
       const data = await response.json();
 
-      if (!data.success) {
-        alert(data.error || 'Une erreur est survenue');
-        setIsSpinning(false);
-        return;
+      if (!response.ok) {
+        throw new Error(data.error || 'Erreur lors du tirage');
       }
 
-      // Utiliser le résultat de l'API
-      const selectedSegment = segments[data.result.index];
+      // Animation de la roue
+      const segmentAngle = 360 / segments.length;
+      const targetAngle = data.result.index * segmentAngle;
+      const extraSpins = 5;
+      const totalRotation = rotation + (extraSpins * 360) + (360 - targetAngle);
       
-      if (!selectedSegment) {
-        console.error('Segment non trouvé:', data.result);
-        alert('Erreur: résultat invalide');
-        setIsSpinning(false);
-        return;
-      }
-      
-      // Calculer l'angle pour s'arrêter sur le bon segment
-      const segmentAngle = 360 / segments.length; // 45° par segment
-      
-      // Position initiale : le triangle est entre le segment 7 (50€) et le segment 0 (0€)
-      // Pour centrer le segment 0 sous le triangle, il faut tourner de segmentAngle/2 (22.5°)
-      // Pour centrer n'importe quel segment X sous le triangle :
-      // rotation = (X * segmentAngle) + (segmentAngle/2)
-      
-      // Mais comme on tourne dans le sens horaire et que les segments sont numérotés
-      // dans le sens horaire, pour amener le segment X en haut, on doit tourner de :
-      const baseRotation = -(data.result.index * segmentAngle + segmentAngle/2);
-      
-      // Ajouter plusieurs tours complets pour l'animation
-      const spins = 5;
-      
-      // Ajouter un peu d'aléatoire dans le segment (zone sûre pour éviter les bords)
-      const randomOffset = (Math.random() - 0.5) * segmentAngle * 0.4;
-      
-      // Rotation finale
-      const finalRotation = (spins * 360) + baseRotation + randomOffset;
-      
-      // Animation de rotation
-      const wheel = document.getElementById('wheel');
-      wheel.style.transform = `rotate(${finalRotation}deg)`;
-      
-      // Durée de l'animation
-      const spinDuration = 4000;
-      
+      setRotation(totalRotation);
+
       setTimeout(() => {
-        setResult(selectedSegment);
+        setResult(data.result);
+        setHasPlayed(true);
+        setShowResult(true);
         setIsSpinning(false);
-        setIsRevealing(true);
+        checkGameStatus();
         
-        // Attendre 5 secondes avant d'afficher le résultat
-        setTimeout(() => {
-          setHasPlayed(true);
-          setIsRevealing(false);
-          
-          // Ajouter le gagnant à la liste seulement si gain > 0
-          if (selectedSegment.value > 0) {
-            const newWinner = {
-              pseudo: formData.stakeUsername.substring(0, 3) + '***',
-              amount: selectedSegment.label,
-              time: new Date().toLocaleTimeString('fr-FR', { 
-                hour: '2-digit', 
-                minute: '2-digit',
-                timeZone: 'Europe/Paris'
-              })
-            };
-            setTodayWinners(prev => [newWinner, ...prev]);
-          }
-          
-          // Si le budget est épuisé, actualiser le statut
-          if (data.remainingBudget === 0) {
-            setGameStatus('inactive');
-            setRemainingBudget(0);
-          } else if (data.remainingBudget !== undefined) {
-            setRemainingBudget(data.remainingBudget);
-          }
-        }, 5000);
-      }, spinDuration);
-      
+        if (data.remainingBudget === 0) {
+          setGameStatus('inactive');
+          setRemainingBudget(0);
+        } else if (data.remainingBudget !== undefined) {
+          setRemainingBudget(data.remainingBudget);
+        }
+      }, 4000);
+
     } catch (error) {
       console.error('Erreur:', error);
-      alert('Une erreur est survenue. Veuillez réessayer.');
+      alert(error.message);
       setIsSpinning(false);
     }
   };
 
-  // Données structurées pour le SEO
-  const jsonLdData = {
-    "@context": "https://schema.org",
-    "@type": "Game",
-    "name": "Roue de la Fortune Rounders",
-    "description": "Tentez votre chance à la Roue de la Fortune et gagnez jusqu'à 50€ en cash ! Jeu gratuit quotidien pour les joueurs Stake.",
-    "url": "https://www.rounders.pro/jeu-roue",
-    "image": "https://www.rounders.pro/images/roue-fortune.jpg",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Rounders.pro",
-      "url": "https://www.rounders.pro"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "EUR",
-      "availability": "https://schema.org/InStock"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1247",
-      "bestRating": "5",
-      "worstRating": "1"
-    }
-  };
-
-  if (gameStatus === 'loading') {
+  if (isLoading) {
     return (
-      <>
-        <Head>
-          <title>Chargement - Roue de la Fortune | Rounders.pro</title>
-        </Head>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
         <Header />
-        <main className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
-            <p className="mt-4">Chargement...</p>
+        <main className="container mx-auto px-4 py-8">
+          <div className="flex justify-center items-center h-96">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-yellow-400"></div>
           </div>
         </main>
         <Footer />
-      </>
+      </div>
     );
   }
 
   return (
-    <>
-      <Head>
-        <title>Roue de la Fortune Stake - Gagnez jusqu'à 50€ | Rounders.pro</title>
-        <meta name="description" content="Jouez gratuitement à la Roue de la Fortune Rounders et gagnez jusqu'à 50€ en cash ! Une chance par jour pour tous les joueurs Stake. Tentez votre chance maintenant !" />
-        <meta name="keywords" content="roue de la fortune, stake, gagner argent, jeu gratuit, casino en ligne, rounders, bonus stake, jeu chance" />
-        <link rel="canonical" href="https://www.rounders.pro/jeu-roue" />
-        
-        {/* Open Graph */}
-        <meta property="og:title" content="Roue de la Fortune Stake - Gagnez jusqu'à 50€" />
-        <meta property="og:description" content="Jouez gratuitement et gagnez jusqu'à 50€ ! Une chance par jour pour tous les joueurs Stake." />
-        <meta property="og:url" content="https://www.rounders.pro/jeu-roue" />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://www.rounders.pro/images/roue-fortune-og.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:site_name" content="Rounders.pro" />
-        <meta property="og:locale" content="fr_FR" />
-        
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Roue de la Fortune - Gagnez jusqu'à 50€" />
-        <meta name="twitter:description" content="Tentez votre chance gratuitement ! Une participation par jour." />
-        <meta name="twitter:image" content="https://www.rounders.pro/images/roue-fortune-twitter.jpg" />
-        <meta name="twitter:site" content="@rounders_pro" />
-        
-        {/* Autres métadonnées */}
-        <meta name="robots" content="index, follow" />
-        <meta name="author" content="Rounders.pro" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#ff6b00" />
-        
-        {/* JSON-LD */}
-        <script 
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
-        />
-      </Head>
-      
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
       <Header />
       
-      <main className="pb-16 md:pb-0 min-h-screen bg-gray-50">
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-orange-500 to-orange-600 text-white py-12">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              🎡 Roue de la Fortune Rounders
+      <main className="container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto">
+          {/* Titre et statut */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold text-yellow-400 mb-4">
+              🎰 Roue de la Fortune Stake
             </h1>
-            <p className="text-xl opacity-90">
-              Tentez votre chance et gagnez jusqu&apos;à 50€ en cash !
-            </p>
-            {remainingBudget !== null && (
-              <div className="mt-4">
-                <div className="inline-flex items-center gap-2 bg-white/20 px-6 py-3 rounded-full backdrop-blur">
-                  <span className="text-lg font-semibold">
-                    💰 {remainingBudget > 0 
-                      ? `Il reste encore ${remainingBudget}€ à gagner !` 
-                      : 'Budget épuisé - Revenez plus tard !'}
-                  </span>
-                </div>
+            
+            {gameStatus === 'active' && remainingBudget > 0 ? (
+              <div className="bg-green-500/20 border border-green-500 rounded-lg p-4 inline-block">
+                <p className="text-green-400 text-xl font-semibold">
+                  ✅ Jeu actif - Budget disponible : {remainingBudget}€
+                </p>
+              </div>
+            ) : (
+              <div className="bg-red-500/20 border border-red-500 rounded-lg p-4 inline-block">
+                <p className="text-red-400 text-xl font-semibold">
+                  ❌ Jeu fermé - Revenez plus tard
+                </p>
               </div>
             )}
           </div>
-        </section>
 
-        {/* Jeu principal - Toujours visible */}
-        <section className="py-12">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              {gameStatus === 'inactive' && !hasPlayed && (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8 text-center">
-                  <p className="text-yellow-800 text-lg">
-                    🚫 Jeu non accessible actuellement. Revenez plus tard ou surveillez nos publications sur Twitter !
-                  </p>
-                  <a
-                    href="https://twitter.com/rounders_pro"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 mt-4"
-                    aria-label="Suivez-nous sur Twitter"
-                  >
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                    </svg>
-                    @rounders_pro
-                  </a>
-                </div>
-              )}
-              
-              {!hasPlayed && (
-                <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center">
-                  {/* Roue - Sur mobile elle sera en bas grâce à flex-col-reverse */}
-                  <div className="relative">
-                    <div className="relative w-80 h-80 mx-auto">
-                      {/* Flèche indicatrice */}
-                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 z-10">
-                        <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[40px] border-t-red-600"></div>
-                      </div>
-                      
-                      {/* Roue */}
-                      <svg
-                        id="wheel"
-                        className="w-full h-full transition-transform duration-[4000ms] ease-out"
-                        viewBox="0 0 200 200"
-                        style={{ transform: 'rotate(0deg)' }}
-                        aria-label="Roue de la fortune avec 8 segments"
-                      >
-                        {segments.map((segment, index) => {
-                          const angle = (360 / segments.length);
-                          const startAngle = angle * index - 90;
-                          const endAngle = startAngle + angle;
-                          
-                          const x1 = 100 + 90 * Math.cos(startAngle * Math.PI / 180);
-                          const y1 = 100 + 90 * Math.sin(startAngle * Math.PI / 180);
-                          const x2 = 100 + 90 * Math.cos(endAngle * Math.PI / 180);
-                          const y2 = 100 + 90 * Math.sin(endAngle * Math.PI / 180);
-                          
-                          const labelAngle = startAngle + angle / 2;
-                          const labelX = 100 + 60 * Math.cos(labelAngle * Math.PI / 180);
-                          const labelY = 100 + 60 * Math.sin(labelAngle * Math.PI / 180);
-                          
-                          return (
-                            <g key={index}>
-                              <path
-                                d={`M 100 100 L ${x1} ${y1} A 90 90 0 0 1 ${x2} ${y2} Z`}
-                                fill={segment.color}
-                                stroke="white"
-                                strokeWidth="2"
-                              />
-                              <text
-                                x={labelX}
-                                y={labelY}
-                                fill="white"
-                                fontSize="16"
-                                fontWeight="bold"
-                                textAnchor="middle"
-                                dominantBaseline="middle"
-                                transform={`rotate(${labelAngle + 90}, ${labelX}, ${labelY})`}
-                              >
-                                {segment.label}
-                              </text>
-                            </g>
-                          );
-                        })}
-                        
-                        {/* Centre de la roue */}
-                        <circle cx="100" cy="100" r="20" fill="white" />
-                        <circle cx="100" cy="100" r="15" fill="#1F2937" />
-                      </svg>
-                    </div>
+          {/* Liste des gagnants du jour */}
+          {todayWinners.length > 0 && (
+            <div className="bg-gray-800 rounded-lg p-6 mb-8">
+              <h2 className="text-2xl font-bold text-yellow-400 mb-4">
+                🏆 Gagnants d'aujourd'hui
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {todayWinners.slice(0, 6).map((winner, index) => (
+                  <div key={index} className="bg-gray-700 rounded p-3 flex justify-between items-center">
+                    <span className="text-gray-300">{winner.pseudo}</span>
+                    <span className="text-green-400 font-bold">{winner.amount}</span>
                   </div>
-
-                  {/* Formulaire - Sur mobile il sera en haut */}
-                  <div className="bg-white p-6 rounded-lg shadow-lg">
-                    {!isRevealing ? (
-                      <>
-                        <h2 className="text-2xl font-bold mb-6">Participez au jeu !</h2>
-                        
-                        {remainingBudget !== null && (
-                          <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 mb-4 text-center">
-                            <p className="text-sm font-semibold text-orange-800">
-                              🎯 Budget restant : {remainingBudget}€
-                            </p>
-                          </div>
-                        )}
-                        
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                          <p className="text-sm text-blue-800">
-                            <strong>📢 Ouvert à tous les joueurs Stake !</strong><br/>
-                            Les gains seront versés via le système de pourboires Stake.
-                            Assurez-vous d&apos;avoir un compte actif pour recevoir vos gains.
-                          </p>
-                        </div>
-                        
-                        <form onSubmit={handleSpin}>
-                          <div className="mb-6">
-                            <label htmlFor="stakeUsername" className="block text-sm font-medium text-gray-700 mb-2">
-                              Votre pseudo Stake
-                            </label>
-                            <input
-                              type="text"
-                              id="stakeUsername"
-                              name="stakeUsername"
-                              placeholder="Entrez votre pseudo exact (sensible à la casse)"
-                              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                              value={formData.stakeUsername}
-                              onChange={(e) => setFormData({...formData, stakeUsername: e.target.value})}
-                              disabled={isSpinning || isRevealing || gameStatus === 'inactive'}
-                              required
-                              aria-label="Entrez votre pseudo Stake"
-                            />
-                            <p className="text-xs text-gray-500 mt-1">
-                              ⚠️ Attention : Entrez votre pseudo EXACTEMENT comme sur Stake
-                            </p>
-                          </div>
-
-                          <button
-                            type="submit"
-                            disabled={isSpinning || isRevealing || gameStatus === 'inactive'}
-                            className={`w-full py-3 rounded-lg font-bold text-white transition-colors ${
-                              isSpinning || isRevealing || gameStatus === 'inactive'
-                                ? 'bg-gray-400 cursor-not-allowed' 
-                                : 'bg-orange-500 hover:bg-orange-600'
-                            }`}
-                            aria-label="Lancer la roue de la fortune"
-                          >
-                            {isSpinning ? 'La roue tourne...' : gameStatus === 'inactive' ? 'Jeu non disponible' : 'Tourner la roue !'}
-                          </button>
-                          
-                          <p className="text-center text-xs text-gray-500 mt-4">
-                            Pas encore sur Stake ? 
-                            <a 
-                              href={AFFILIATE_LINK} 
-                              target="_blank" 
-                              rel="noopener noreferrer sponsored" 
-                              className="text-blue-600 hover:underline ml-1"
-                            >
-                              Créez votre compte
-                            </a>
-                          </p>
-                        </form>
-                      </>
-                    ) : (
-                      <div className="text-center py-12">
-                        <div className="animate-pulse">
-                          <h2 className="text-3xl font-bold mb-4">🎲 Résultat en cours...</h2>
-                          <p className="text-gray-600 text-lg">Voyons ce que vous avez gagné !</p>
-                          <div className="mt-8">
-                            <div className="inline-flex space-x-2">
-                              <div className="w-3 h-3 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                              <div className="w-3 h-3 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                              <div className="w-3 h-3 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                ))}
+              </div>
+              {todayWinners.length > 6 && (
+                <a href="/gagnants" className="text-yellow-400 hover:text-yellow-300 text-center block mt-4">
+                  Voir tous les gagnants →
+                </a>
               )}
             </div>
-          </div>
-        </section>
+          )}
 
-        {/* Résultat */}
-        {hasPlayed && result && (
-          <section className="py-12">
-            <div className="container mx-auto px-4">
-              <div className="max-w-2xl mx-auto text-center">
-                <div className={`bg-white rounded-lg shadow-lg p-8 ${result.value === 0 ? 'border-2 border-red-500' : 'border-2 border-green-500'}`}>
-                  <h2 className="text-3xl font-bold mb-4">
-                    {result.value === 0 ? '😔 Dommage !' : '🎉 Félicitations !'}
-                  </h2>
-                  <p className="text-xl mb-6">
-                    {result.value === 0 
-                      ? 'Vous n\'avez rien gagné cette fois-ci.' 
-                      : `Vous avez gagné ${result.label} !`
-                    }
-                  </p>
-                  {result.value > 0 && (
-                    <div className="bg-green-50 p-4 rounded-lg mb-6">
-                      <p className="text-green-800">
-                        Votre gain sera envoyé via pourboire sur Stake.<br/>
-                        <strong>Partagez votre résultat sur Twitter avec #RoundersWin</strong>
-                      </p>
-                    </div>
-                  )}
-                  <a
-                    href={`https://twitter.com/intent/tweet?text=Je viens de ${result.value === 0 ? 'tenter ma chance' : `gagner ${result.label}`} sur la roue @rounders_pro ! %23RoundersWin`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800"
-                    aria-label="Partager sur Twitter"
+          {/* Message si fermé */}
+          {gameStatus === 'inactive' && (
+            <div className="text-center py-12">
+              <div className="bg-red-500/10 border-2 border-red-500 rounded-lg p-8 max-w-2xl mx-auto">
+                <h2 className="text-3xl font-bold text-red-400 mb-4">
+                  🔒 Jeu temporairement fermé
+                </h2>
+                <p className="text-gray-300 text-lg mb-4">
+                  Le budget du jour est épuisé ou le jeu est en maintenance.
+                </p>
+                <p className="text-gray-400">
+                  Revenez plus tard pour tenter votre chance !
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Jeu actif */}
+          {gameStatus === 'active' && remainingBudget > 0 && (
+            <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center">
+              {/* Roue */}
+              <div className="relative">
+                <div className="relative w-80 h-80 mx-auto">
+                  <svg
+                    className="w-full h-full transform transition-transform duration-[4000ms] ease-out"
+                    style={{ transform: `rotate(${rotation}deg)` }}
+                    viewBox="0 0 200 200"
                   >
-                    Partager sur X
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                    </svg>
-                  </a>
-                  
-                  <div className="mt-6 pt-6 border-t border-gray-200">
-                    <a
-                      href="/jeu-roue"
-                      className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-2"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-                      </svg>
-                      Retour sur la Roue de la Fortune
-                    </a>
+                    {segments.map((segment, index) => {
+                      const angle = (360 / segments.length) * index;
+                      const angleRad = (angle * Math.PI) / 180;
+                      const nextAngleRad = ((angle + 360 / segments.length) * Math.PI) / 180;
+                      const x1 = 100 + 90 * Math.cos(angleRad);
+                      const y1 = 100 + 90 * Math.sin(angleRad);
+                      const x2 = 100 + 90 * Math.cos(nextAngleRad);
+                      const y2 = 100 + 90 * Math.sin(nextAngleRad);
+                      const largeArcFlag = 0;
+
+                      return (
+                        <g key={index}>
+                          <path
+                            d={`M 100 100 L ${x1} ${y1} A 90 90 0 ${largeArcFlag} 1 ${x2} ${y2} Z`}
+                            fill={segment.color}
+                            stroke="#2a2a2a"
+                            strokeWidth="2"
+                          />
+                          <text
+                            x={100 + 60 * Math.cos((angleRad + nextAngleRad) / 2)}
+                            y={100 + 60 * Math.sin((angleRad + nextAngleRad) / 2)}
+                            fill="white"
+                            fontSize="14"
+                            fontWeight="bold"
+                            textAnchor="middle"
+                            dominantBaseline="middle"
+                            transform={`rotate(${angle + 360 / segments.length / 2}, ${100 + 60 * Math.cos((angleRad + nextAngleRad) / 2)}, ${100 + 60 * Math.sin((angleRad + nextAngleRad) / 2)})`}
+                          >
+                            {segment.label}
+                          </text>
+                        </g>
+                      );
+                    })}
+                    <circle cx="100" cy="100" r="15" fill="#FFD700" stroke="#FFA500" strokeWidth="3" />
+                  </svg>
+
+                  {/* Flèche indicatrice */}
+                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2">
+                    <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[40px] border-b-red-500"></div>
                   </div>
                 </div>
+
+                {/* Budget restant */}
+                <div className="text-center mt-6">
+                  <p className="text-yellow-400 text-xl font-semibold">
+                    💰 Il reste encore {remainingBudget}€ à gagner !
+                  </p>
+                </div>
+              </div>
+
+              {/* Formulaire */}
+              <div className="bg-gray-800 rounded-lg p-6">
+                {!hasPlayed ? (
+                  <>
+                    <h2 className="text-2xl font-bold text-yellow-400 mb-6">
+                      Tentez votre chance !
+                    </h2>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-gray-300 mb-2">
+                          Votre pseudo Stake
+                        </label>
+                        <input
+                          type="text"
+                          value={pseudo}
+                          onChange={(e) => setPseudo(e.target.value)}
+                          placeholder="Entrez votre pseudo"
+                          className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                          disabled={isSpinning}
+                        />
+                      </div>
+
+                      <button
+                        onClick={handleSpin}
+                        disabled={isSpinning || !pseudo.trim()}
+                        className={`w-full py-4 rounded-lg font-bold text-lg transition-all ${
+                          isSpinning || !pseudo.trim()
+                            ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                            : 'bg-yellow-500 hover:bg-yellow-400 text-gray-900 transform hover:scale-105'
+                        }`}
+                      >
+                        {isSpinning ? (
+                          <span className="flex items-center justify-center">
+                            <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            La roue tourne...
+                          </span>
+                        ) : (
+                          '🎰 Tourner la roue !'
+                        )}
+                      </button>
+
+                      <p className="text-gray-400 text-sm text-center">
+                        Une seule participation par jour
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-center">
+                    {showResult && result && (
+                      <div className={`p-6 rounded-lg ${
+                        result.value > 0 ? 'bg-green-500/20 border-2 border-green-500' : 'bg-red-500/20 border-2 border-red-500'
+                      }`}>
+                        <h3 className="text-2xl font-bold mb-2">
+                          {result.value > 0 ? '🎉 Félicitations !' : '😢 Dommage !'}
+                        </h3>
+                        <p className="text-3xl font-bold mb-4">
+                          {result.value > 0 ? (
+                            <span className="text-green-400">Vous avez gagné {result.value}€ !</span>
+                          ) : (
+                            <span className="text-red-400">Vous n'avez rien gagné</span>
+                          )}
+                        </p>
+                        {result.value > 0 && (
+                          <p className="text-gray-300">
+                            Vos gains seront crédités sur votre compte Stake sous 24-48h
+                          </p>
+                        )}
+                      </div>
+                    )}
+                    
+                    <div className="mt-6 space-y-4">
+                      <p className="text-gray-400">
+                        Vous avez déjà joué aujourd'hui. Revenez demain !
+                      </p>
+                      <a
+                        href="https://stake.com/?c=ROUNDERS"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105"
+                      >
+                        Jouer sur Stake →
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Comment ça marche */}
+          <section className="mt-16 bg-gray-800 rounded-lg p-8">
+            <h2 className="text-3xl font-bold text-yellow-400 mb-6 text-center">
+              Comment ça marche ?
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="bg-yellow-500 text-gray-900 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                  1
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">Inscrivez-vous</h3>
+                <p className="text-gray-400">
+                  Créez votre compte sur Stake avec notre lien affilié
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-yellow-500 text-gray-900 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                  2
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">Tournez la roue</h3>
+                <p className="text-gray-400">
+                  Une chance par jour de gagner jusqu'à 50€
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-yellow-500 text-gray-900 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                  3
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">Recevez vos gains</h3>
+                <p className="text-gray-400">
+                  Les gains sont versés sur votre compte Stake sous 24-48h
+                </p>
               </div>
             </div>
           </section>
-        )}
-
-        {/* Section Gagnants du jour */}
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
-                🏆 Gagnants du jour
-              </h2>
-              
-              {todayWinners.length > 0 ? (
-                <div className="bg-gray-50 rounded-lg p-6 mb-6">
-                  <div className="space-y-3">
-                    {todayWinners.map((winner, index) => (
-                      <div key={index} className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm">
-                        <div className="flex items-center gap-4">
-                          <span className="text-2xl">
-                            {winner.amount === '10€' || winner.amount === '50€' ? '🎉' : '✨'}
-                          </span>
-                          <div>
-                            <span className="font-semibold">{winner.pseudo}</span>
-                            <span className="text-gray-500 text-sm ml-2">{winner.time}</span>
-                          </div>
-                        </div>
-                        <span className={`font-bold ${
-                          parseInt(winner.amount) >= 10 ? 'text-green-600 text-lg' : 'text-gray-700'
-                        }`}>
-                          +{winner.amount}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div className="text-center text-gray-500">
-                  <p>Aucun gagnant pour le moment aujourd&apos;hui</p>
-                </div>
-              )}
-              
-              <div className="text-center">
-                <a
-                  href="/gagnants"
-                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  Voir tous les gagnants
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
+        </div>
       </main>
 
       <Footer />
-    </>
+    </div>
   );
 }
