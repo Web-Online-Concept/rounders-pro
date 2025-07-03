@@ -8,7 +8,7 @@ export default function JeuRouePage() {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
+    <div className="min-h-screen bg-gray-900">
       <Header />
       
       <main className="container mx-auto px-4 py-8">
