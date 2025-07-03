@@ -11,10 +11,25 @@ export default function RoueFortunePage() {
   const [dailyBudget, setDailyBudget] = useState(0);
   const [todayWinners, setTodayWinners] = useState([]);
   const [pseudo, setPseudo] = useState('');
+  const [isSpinning, setIsSpinning] = useState(false);
+  const [rotation, setRotation] = useState(0);
+
+  // Segments de la roue
+  const segments = [
+    { value: 0, label: '0€', color: '#FF6B6B' },
+    { value: 5, label: '5€', color: '#4ECDC4' },
+    { value: 0, label: '0€', color: '#45B7D1' },
+    { value: 1, label: '1€', color: '#96CEB4' },
+    { value: 0, label: '0€', color: '#FFEAA7' },
+    { value: 3, label: '3€', color: '#DDA0DD' },
+    { value: 0, label: '0€', color: '#98D8C8' },
+    { value: 50, label: '50€', color: '#FFD700' },
+    { value: 0, label: '0€', color: '#F7DC6F' },
+    { value: 10, label: '10€', color: '#BB8FCE' }
+  ];
 
   useEffect(() => {
     checkGameStatus();
-    // Rafraîchir toutes les 30 secondes
     const interval = setInterval(checkGameStatus, 30000);
     return () => clearInterval(interval);
   }, []);
@@ -34,6 +49,12 @@ export default function RoueFortunePage() {
       setGameStatus('inactive');
       setIsLoading(false);
     }
+  };
+
+  const handleSpin = () => {
+    if (!pseudo.trim() || pseudo.length < 3 || isSpinning) return;
+    
+    alert('API spin pas encore créée - on va le faire à l\'étape suivante !');
   };
 
   return (
@@ -95,12 +116,57 @@ export default function RoueFortunePage() {
         {/* Zone du jeu */}
         {!isLoading && gameStatus === 'active' && (
           <div className="grid md:grid-cols-2 gap-8 items-center">
-            {/* Roue (placeholder) */}
-            <div className="bg-gray-100 rounded-xl p-8 text-center">
-              <div className="w-64 h-64 bg-gray-300 rounded-full mx-auto flex items-center justify-center">
-                <p className="text-gray-600">La roue ici</p>
+            {/* Roue */}
+            <div className="relative">
+              <div className="relative w-80 h-80 mx-auto">
+                <svg
+                  className="w-full h-full transform transition-transform duration-[4000ms] ease-out"
+                  style={{ transform: `rotate(${rotation}deg)` }}
+                  viewBox="0 0 200 200"
+                >
+                  {segments.map((segment, index) => {
+                    const angle = (360 / segments.length) * index;
+                    const angleRad = (angle * Math.PI) / 180;
+                    const nextAngleRad = ((angle + 360 / segments.length) * Math.PI) / 180;
+                    const x1 = 100 + 90 * Math.cos(angleRad);
+                    const y1 = 100 + 90 * Math.sin(angleRad);
+                    const x2 = 100 + 90 * Math.cos(nextAngleRad);
+                    const y2 = 100 + 90 * Math.sin(nextAngleRad);
+                    const largeArcFlag = 0;
+
+                    return (
+                      <g key={index}>
+                        <path
+                          d={`M 100 100 L ${x1} ${y1} A 90 90 0 ${largeArcFlag} 1 ${x2} ${y2} Z`}
+                          fill={segment.color}
+                          stroke="#2a2a2a"
+                          strokeWidth="2"
+                        />
+                        <text
+                          x={100 + 60 * Math.cos((angleRad + nextAngleRad) / 2)}
+                          y={100 + 60 * Math.sin((angleRad + nextAngleRad) / 2)}
+                          fill="white"
+                          fontSize="14"
+                          fontWeight="bold"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          transform={`rotate(${angle + 360 / segments.length / 2}, ${100 + 60 * Math.cos((angleRad + nextAngleRad) / 2)}, ${100 + 60 * Math.sin((angleRad + nextAngleRad) / 2)})`}
+                        >
+                          {segment.label}
+                        </text>
+                      </g>
+                    );
+                  })}
+                  <circle cx="100" cy="100" r="15" fill="#FFD700" stroke="#FFA500" strokeWidth="3" />
+                </svg>
+
+                {/* Flèche indicatrice - POINTE VERS LE BAS */}
+                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-2">
+                  <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[40px] border-t-red-500"></div>
+                </div>
               </div>
-              <p className="text-yellow-600 font-semibold mt-4">
+
+              <p className="text-yellow-600 font-semibold mt-6 text-center">
                 💰 Il reste {remainingBudget}€ à gagner !
               </p>
             </div>
@@ -122,6 +188,7 @@ export default function RoueFortunePage() {
                     onChange={(e) => setPseudo(e.target.value)}
                     placeholder="Entrez votre pseudo"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    disabled={isSpinning}
                   />
                   <p className="text-gray-500 text-sm mt-2">
                     ⚠️ Entrez votre pseudo EXACTEMENT comme sur Stake (respectez les majuscules/minuscules)
@@ -129,14 +196,25 @@ export default function RoueFortunePage() {
                 </div>
 
                 <button
-                  disabled={!pseudo.trim() || pseudo.length < 3}
+                  onClick={handleSpin}
+                  disabled={!pseudo.trim() || pseudo.length < 3 || isSpinning}
                   className={`w-full py-4 rounded-lg font-bold text-lg transition-all ${
-                    pseudo.trim() && pseudo.length >= 3
-                      ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                    pseudo.trim() && pseudo.length >= 3 && !isSpinning
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white transform hover:scale-105'
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   }`}
                 >
-                  🎰 Tourner la roue !
+                  {isSpinning ? (
+                    <span className="flex items-center justify-center">
+                      <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      La roue tourne...
+                    </span>
+                  ) : (
+                    '🎰 Tourner la roue !'
+                  )}
                 </button>
 
                 <p className="text-gray-500 text-sm text-center">
