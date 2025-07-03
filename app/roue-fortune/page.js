@@ -290,7 +290,7 @@ export default function RoueFortunePage() {
                     <p className="text-gray-600">
                       Vous avez déjà joué aujourd&apos;hui. Revenez demain !
                     </p>
-                    
+                    <a 
                       href="https://stake.com/?c=ROUNDERS"
                       target="_blank"
                       rel="noopener noreferrer"
