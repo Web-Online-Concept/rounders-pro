@@ -307,7 +307,7 @@ export default function RoueFortunePage() {
                       rel="noopener noreferrer"
                       className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all"
                     >
-                      Jouer sur Stake →
+                      Jouer sur Stake &rarr;
                     </a>
                   </div>
                 </div>
@@ -332,7 +332,7 @@ export default function RoueFortunePage() {
                 rel="noopener noreferrer"
                 className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all"
               >
-                Jouer sur Stake →
+                Jouer sur Stake &rarr;
               </a>
             </div>
           </div>
