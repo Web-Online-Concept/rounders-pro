@@ -76,13 +76,13 @@ export async function POST(request) {
       }, { status: 400 });
     }
 
-    // Vérifier si l'utilisateur a déjà joué aujourd'hui
-    const participationKey = `participation:${today}:${clientIp}:${pseudo}`;
+    // Vérifier si l'utilisateur a déjà joué aujourd'hui (PAR IP SEULEMENT)
+    const participationKey = `participation:${today}:${clientIp}`;
     const hasPlayed = await redis.get(participationKey);
     
-    // Vérifier aussi dans la liste des gagnants du jour (au cas où)
+    // Vérifier aussi dans la liste des gagnants du jour (par IP)
     const hasWonToday = todayBudget.winners && todayBudget.winners.some(
-      w => w.pseudo === pseudo || w.ip === clientIp
+      w => w.ip === clientIp
     );
     
     if (hasPlayed || hasWonToday) {
@@ -95,7 +95,7 @@ export async function POST(request) {
     // Calculer le résultat avec probabilités ajustées
     const result = calculateResult(status.probabilities, remainingBudget);
 
-    // Enregistrer la participation
+    // Enregistrer la participation (SANS LE PSEUDO)
     await redis.set(participationKey, true, { ex: 86400 }); // Expire après 24h
 
     // Mettre à jour le budget
