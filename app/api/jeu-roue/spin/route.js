@@ -1,14 +1,4 @@
-function getParisDate() {
-  // Obtenir la date actuelle en Europe/Paris
-  const parisDate = new Date().toLocaleString('en-CA', { 
-    timeZone: 'Europe/Paris',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit'
-  }).split(',')[0];
-  
-  return parisDate; // Format: YYYY-MM-DD
-}import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { Redis } from '@upstash/redis';
 import { headers } from 'next/headers';
 

@@ -369,10 +369,10 @@ export default function JeuRoue() {
                     )}
                   </div>
                 </div>
-              </div>
+              )}
             </div>
-          </section>
-        )}
+          </div>
+        </section>
 
         {/* Résultat */}
         {hasPlayed && result && (
@@ -421,10 +421,10 @@ export default function JeuRoue() {
                     </a>
                   </div>
                 </div>
-              )}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Section Gagnants du jour */}
         <section className="py-16 bg-white">
