@@ -18,7 +18,7 @@ export default function GagnantsPage() {
 
   useEffect(() => {
     fetchWinners();
-  }, []);
+  }, [fetchWinners]);
 
   const fetchWinners = useCallback(async () => {
     try {
@@ -77,7 +77,7 @@ export default function GagnantsPage() {
     yesterday.setDate(yesterday.getDate() - 1);
     
     if (dateStr === today.toISOString().split('T')[0]) {
-      return "Aujourd'hui";
+      return "Aujourd&apos;hui";
     } else if (dateStr === yesterday.toISOString().split('T')[0]) {
       return "Hier";
     }
@@ -381,7 +381,7 @@ export default function GagnantsPage() {
               Tentez votre chance !
             </h2>
             <p className="text-gray-600 mb-6">
-              Jouez gratuitement à la Roue de la Fortune et gagnez jusqu'à 50€
+              Jouez gratuitement à la Roue de la Fortune et gagnez jusqu&apos;à 50€
             </p>
             <Link
               href="/jeu-roue"
