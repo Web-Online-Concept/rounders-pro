@@ -119,7 +119,7 @@ export default function RoueFortunePage() {
             🎰 Roue de la Fortune Stake
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Tentez votre chance et gagnez jusqu'à 50€ par jour !
+            Tentez votre chance et gagnez jusqu&apos;à 50€ par jour !
           </p>
         </div>
 
@@ -150,7 +150,7 @@ export default function RoueFortunePage() {
             {todayWinners.length > 0 && (
               <div className="bg-gray-50 rounded-lg p-6 mb-8 max-w-2xl mx-auto">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
-                  🏆 Gagnants d'aujourd'hui
+                  🏆 Gagnants d&apos;aujourd&apos;hui
                 </h3>
                 <div className="space-y-2">
                   {todayWinners.slice(0, 5).map((winner, index) => (
@@ -289,7 +289,7 @@ export default function RoueFortunePage() {
                         {result.value > 0 ? (
                           <span className="text-green-600">Vous avez gagné {result.value}€ !</span>
                         ) : (
-                          <span className="text-red-600">Vous n'avez rien gagné</span>
+                          <span className="text-red-600">Vous n&apos;avez rien gagné</span>
                         )}
                       </p>
                       {result.value > 0 && (
@@ -302,7 +302,7 @@ export default function RoueFortunePage() {
                   
                   <div className="space-y-4">
                     <p className="text-gray-600">
-                      Vous avez déjà joué aujourd'hui. Revenez demain !
+                      Vous avez déjà joué aujourd&apos;hui. Revenez demain !
                     </p>
                     
                       href="https://stake.com/?c=ROUNDERS"
