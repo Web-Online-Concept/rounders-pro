@@ -38,7 +38,7 @@ export default function GagnantsPage() {
     const diffTime = Math.abs(now - date);
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     
-    if (diffDays === 0) return "Aujourd'hui";
+    if (diffDays === 0) return "Aujourd&apos;hui";
     if (diffDays === 1) return "Hier";
     if (diffDays < 7) return `Il y a ${diffDays} jours`;
     
@@ -125,9 +125,9 @@ export default function GagnantsPage() {
             </div>
             <div className="bg-gray-800 rounded-lg p-6 text-center">
               <div className="text-3xl font-bold text-blue-400 mb-2">
-                {filteredWinners.filter(w => formatDate(w.date) === "Aujourd'hui").length}
+                {filteredWinners.filter(w => formatDate(w.date) === "Aujourd&apos;hui").length}
               </div>
-              <div className="text-gray-400">Gagnants aujourd'hui</div>
+              <div className="text-gray-400">Gagnants aujourd&apos;hui</div>
             </div>
           </div>
 
@@ -151,7 +151,7 @@ export default function GagnantsPage() {
                   : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
               }`}
             >
-              Aujourd'hui
+              Aujourd&apos;hui
             </button>
             <button
               onClick={() => setFilter('yesterday')}
@@ -247,7 +247,7 @@ export default function GagnantsPage() {
               Tentez votre chance vous aussi !
             </h2>
             <p className="text-gray-400 mb-6">
-              Une chance par jour de gagner jusqu'à 50€
+              Une chance par jour de gagner jusqu&apos;à 50€
             </p>
             <a 
               href="/jeu-roue"
