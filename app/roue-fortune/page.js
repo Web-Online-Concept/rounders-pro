@@ -273,7 +273,7 @@ export default function RoueFortunePage() {
                     </p>
                   </div>
                 </>
-              ) : (
+) : (
                 <div className="text-center">
                   {showResult && result && (
                     <div className={`p-6 rounded-lg mb-6 ${
