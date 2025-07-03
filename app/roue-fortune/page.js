@@ -162,7 +162,7 @@ export default function RoueFortunePage() {
 
                 {/* Flèche indicatrice - EN HAUT, POINTE VERS LE BAS */}
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2">
-                  <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[40px] border-b-red-500"></div>
+                  <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[40px] border-t-red-500"></div>
                 </div>
               </div>
 
