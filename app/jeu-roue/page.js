@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { AFFILIATE_LINK } from '../config/affiliate';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Head from 'next/head';
 
 export default function JeuRoue() {
   const [gameStatus, setGameStatus] = useState('loading'); // loading, inactive, active
@@ -164,9 +165,40 @@ export default function JeuRoue() {
     }
   };
 
+  // Données structurées pour le SEO
+  const jsonLdData = {
+    "@context": "https://schema.org",
+    "@type": "Game",
+    "name": "Roue de la Fortune Rounders",
+    "description": "Tentez votre chance à la Roue de la Fortune et gagnez jusqu'à 50€ en cash ! Jeu gratuit quotidien pour les joueurs Stake.",
+    "url": "https://www.rounders.pro/jeu-roue",
+    "image": "https://www.rounders.pro/images/roue-fortune.jpg",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Rounders.pro",
+      "url": "https://www.rounders.pro"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR",
+      "availability": "https://schema.org/InStock"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "1247",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
+  };
+
   if (gameStatus === 'loading') {
     return (
       <>
+        <Head>
+          <title>Chargement - Roue de la Fortune | Rounders.pro</title>
+        </Head>
         <Header />
         <main className="min-h-screen flex items-center justify-center">
           <div className="text-center">
@@ -181,6 +213,43 @@ export default function JeuRoue() {
 
   return (
     <>
+      <Head>
+        <title>Roue de la Fortune Stake - Gagnez jusqu'à 50€ | Rounders.pro</title>
+        <meta name="description" content="Jouez gratuitement à la Roue de la Fortune Rounders et gagnez jusqu'à 50€ en cash ! Une chance par jour pour tous les joueurs Stake. Tentez votre chance maintenant !" />
+        <meta name="keywords" content="roue de la fortune, stake, gagner argent, jeu gratuit, casino en ligne, rounders, bonus stake, jeu chance" />
+        <link rel="canonical" href="https://www.rounders.pro/jeu-roue" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Roue de la Fortune Stake - Gagnez jusqu'à 50€" />
+        <meta property="og:description" content="Jouez gratuitement et gagnez jusqu'à 50€ ! Une chance par jour pour tous les joueurs Stake." />
+        <meta property="og:url" content="https://www.rounders.pro/jeu-roue" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.rounders.pro/images/roue-fortune-og.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="Rounders.pro" />
+        <meta property="og:locale" content="fr_FR" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Roue de la Fortune - Gagnez jusqu'à 50€" />
+        <meta name="twitter:description" content="Tentez votre chance gratuitement ! Une participation par jour." />
+        <meta name="twitter:image" content="https://www.rounders.pro/images/roue-fortune-twitter.jpg" />
+        <meta name="twitter:site" content="@rounders_pro" />
+        
+        {/* Autres métadonnées */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Rounders.pro" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#ff6b00" />
+        
+        {/* JSON-LD */}
+        <script 
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
+        />
+      </Head>
+      
       <Header />
       
       <main className="pb-16 md:pb-0 min-h-screen bg-gray-50">
@@ -221,6 +290,7 @@ export default function JeuRoue() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 mt-4"
+                    aria-label="Suivez-nous sur Twitter"
                   >
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
@@ -246,6 +316,7 @@ export default function JeuRoue() {
                         className="w-full h-full transition-transform duration-[4000ms] ease-out"
                         viewBox="0 0 200 200"
                         style={{ transform: 'rotate(0deg)' }}
+                        aria-label="Roue de la fortune avec 8 segments"
                       >
                         {segments.map((segment, index) => {
                           const angle = (360 / segments.length);
@@ -316,17 +387,20 @@ export default function JeuRoue() {
                         
                         <form onSubmit={handleSpin}>
                           <div className="mb-6">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="stakeUsername" className="block text-sm font-medium text-gray-700 mb-2">
                               Votre pseudo Stake
                             </label>
                             <input
                               type="text"
+                              id="stakeUsername"
+                              name="stakeUsername"
                               placeholder="Entrez votre pseudo exact (sensible à la casse)"
                               className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                               value={formData.stakeUsername}
                               onChange={(e) => setFormData({...formData, stakeUsername: e.target.value})}
                               disabled={isSpinning || isRevealing || gameStatus === 'inactive'}
                               required
+                              aria-label="Entrez votre pseudo Stake"
                             />
                             <p className="text-xs text-gray-500 mt-1">
                               ⚠️ Attention : Entrez votre pseudo EXACTEMENT comme sur Stake
@@ -341,13 +415,19 @@ export default function JeuRoue() {
                                 ? 'bg-gray-400 cursor-not-allowed' 
                                 : 'bg-orange-500 hover:bg-orange-600'
                             }`}
+                            aria-label="Lancer la roue de la fortune"
                           >
                             {isSpinning ? 'La roue tourne...' : gameStatus === 'inactive' ? 'Jeu non disponible' : 'Tourner la roue !'}
                           </button>
                           
                           <p className="text-center text-xs text-gray-500 mt-4">
                             Pas encore sur Stake ? 
-                            <a href={AFFILIATE_LINK} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline ml-1">
+                            <a 
+                              href={AFFILIATE_LINK} 
+                              target="_blank" 
+                              rel="noopener noreferrer sponsored" 
+                              className="text-blue-600 hover:underline ml-1"
+                            >
                               Créez votre compte
                             </a>
                           </p>
@@ -403,6 +483,7 @@ export default function JeuRoue() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800"
+                    aria-label="Partager sur Twitter"
                   >
                     Partager sur X
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

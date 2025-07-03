@@ -1,233 +1,398 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import Head from 'next/head';
 
 export default function GagnantsPage() {
   const [winners, setWinners] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('all'); // all, today, yesterday, week
   const [stats, setStats] = useState({
     totalDistributed: 0,
     totalWinners: 0,
-    biggestWin: 0,
-    averageWin: 0
+    biggestWin: 0
   });
 
   useEffect(() => {
-    loadWinners();
+    fetchWinners();
   }, []);
 
-  const loadWinners = async () => {
+  const fetchWinners = async () => {
     try {
-      // Appeler l'API publique pour récupérer les gagnants
       const response = await fetch('/api/jeu-roue/winners');
-      if (response.ok) {
-        const data = await response.json();
+      const data = await response.json();
+      
+      if (data.success) {
         setWinners(data.winners);
-        setStats(data.stats);
+        calculateStats(data.winners);
       }
     } catch (error) {
       console.error('Erreur lors du chargement des gagnants:', error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  // Grouper les gagnants par date
-  const groupedWinners = winners.reduce((groups, winner) => {
-    const date = winner.date;
-    if (!groups[date]) {
-      groups[date] = [];
-    }
-    groups[date].push(winner);
-    return groups;
-  }, {});
+  const calculateStats = (winnersData) => {
+    const total = winnersData.reduce((sum, w) => sum + w.amount, 0);
+    const count = winnersData.length;
+    const biggest = Math.max(...winnersData.map(w => w.amount), 0);
+    
+    setStats({
+      totalDistributed: total,
+      totalWinners: count,
+      biggestWin: biggest
+    });
+  };
 
-  // Formater la date pour l'affichage
+  const getFilteredWinners = () => {
+    const today = new Date().toISOString().split('T')[0];
+    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+    const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0];
+
+    switch (filter) {
+      case 'today':
+        return winners.filter(w => w.date === today);
+      case 'yesterday':
+        return winners.filter(w => w.date === yesterday);
+      case 'week':
+        return winners.filter(w => w.date >= weekAgo);
+      default:
+        return winners;
+    }
+  };
+
+  const maskPseudo = (pseudo) => {
+    if (!pseudo || pseudo.length <= 3) return pseudo;
+    return pseudo.substring(0, 3) + '***';
+  };
+
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
     const today = new Date();
-    const yesterday = new Date();
+    const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
     
-    // Reset les heures pour comparer uniquement les dates
-    today.setHours(0, 0, 0, 0);
-    yesterday.setHours(0, 0, 0, 0);
-    date.setHours(0, 0, 0, 0);
-    
-    if (date.getTime() === today.getTime()) {
+    if (dateStr === today.toISOString().split('T')[0]) {
       return "Aujourd'hui";
-    } else if (date.getTime() === yesterday.getTime()) {
+    } else if (dateStr === yesterday.toISOString().split('T')[0]) {
       return "Hier";
-    } else {
-      return date.toLocaleDateString('fr-FR', { 
-        day: 'numeric', 
-        month: 'long', 
-        year: 'numeric' 
-      });
     }
+    
+    return date.toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long'
+    });
   };
 
-  // Calculer le total par jour
-  const getDayTotal = (dayWinners) => {
-    return dayWinners.reduce((sum, winner) => sum + winner.amount, 0);
+  const filteredWinners = getFilteredWinners();
+
+  // Données structurées pour le SEO
+  const jsonLdData = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Gagnants de la Roue de la Fortune Rounders",
+    "description": "Liste complète des gagnants de la Roue de la Fortune Rounders. Découvrez qui a gagné et combien !",
+    "url": "https://www.rounders.pro/gagnants",
+    "numberOfItems": winners.length,
+    "itemListElement": winners.slice(0, 10).map((winner, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Person",
+        "name": winner.pseudo,
+        "award": `${winner.amount}€`,
+        "datePublished": winner.date
+      }
+    }))
   };
 
-  // Obtenir l'emoji selon le montant
-  const getEmoji = (amount) => {
-    if (amount === 50) return '👑';
-    if (amount === 10) return '🎉';
-    if (amount >= 3) return '💰';
-    return '✨';
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Accueil",
+        "item": "https://www.rounders.pro"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Roue de la Fortune",
+        "item": "https://www.rounders.pro/jeu-roue"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Gagnants",
+        "item": "https://www.rounders.pro/gagnants"
+      }
+    ]
   };
-
-  if (isLoading) {
-    return (
-      <>
-        <Header />
-        <main className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
-            <p className="mt-4 text-gray-700">Chargement des gagnants...</p>
-          </div>
-        </main>
-        <Footer />
-      </>
-    );
-  }
 
   return (
     <>
-      <Header />
+      <Head>
+        <title>Gagnants de la Roue de la Fortune - Historique Complet | Rounders.pro</title>
+        <meta name="description" content={`Découvrez les ${stats.totalWinners} gagnants de la Roue de la Fortune Rounders ! Plus de ${stats.totalDistributed}€ distribués. Consultez l'historique complet des gains.`} />
+        <meta name="keywords" content="gagnants roue fortune, historique gains, winners stake, rounders gagnants, liste gagnants, gains casino" />
+        <link rel="canonical" href="https://www.rounders.pro/gagnants" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Gagnants Roue de la Fortune - Historique Complet" />
+        <meta property="og:description" content={`Plus de ${stats.totalDistributed}€ distribués à ${stats.totalWinners} gagnants ! Consultez la liste complète.`} />
+        <meta property="og:url" content="https://www.rounders.pro/gagnants" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.rounders.pro/images/gagnants-og.jpg" />
+        <meta property="og:site_name" content="Rounders.pro" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Gagnants Roue de la Fortune Rounders" />
+        <meta name="twitter:description" content={`${stats.totalDistributed}€ distribués ! Découvrez tous les gagnants.`} />
+        <meta name="twitter:image" content="https://www.rounders.pro/images/gagnants-twitter.jpg" />
+        <meta name="twitter:site" content="@rounders_pro" />
+        
+        {/* Autres métadonnées */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Rounders.pro" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        {/* JSON-LD */}
+        <script 
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
+        />
+        <script 
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbData) }}
+        />
+      </Head>
       
-      <main className="pb-16 md:pb-0 min-h-screen bg-gray-50">
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-[#ff6b00] to-[#ff8533] text-white py-16">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              🏆 Tous les Gagnants
+      <Navbar />
+      
+      <main className="min-h-screen bg-gray-50 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* En-tête avec breadcrumb */}
+          <nav className="flex mb-8 text-sm" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-1 md:space-x-3">
+              <li className="inline-flex items-center">
+                <a href="/" className="text-gray-700 hover:text-blue-600">
+                  Accueil
+                </a>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <svg className="w-3 h-3 text-gray-400 mx-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <a href="/jeu-roue" className="text-gray-700 hover:text-blue-600 ml-1">
+                    Roue de la Fortune
+                  </a>
+                </div>
+              </li>
+              <li aria-current="page">
+                <div className="flex items-center">
+                  <svg className="w-3 h-3 text-gray-400 mx-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-gray-500 ml-1">Gagnants</span>
+                </div>
+              </li>
+            </ol>
+          </nav>
+
+          {/* Titre principal */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              🏆 Historique des Gagnants
             </h1>
-            <p className="text-xl opacity-90">
-              Historique des gagnants à la Roue de la Fortune
+            <p className="text-xl text-gray-600">
+              Découvrez tous les gagnants de la Roue de la Fortune Rounders
             </p>
           </div>
-        </section>
 
-        {/* Statistiques */}
-        <section className="py-8 -mt-8">
-          <div className="container mx-auto px-4">
-            <div className="bg-white rounded-lg shadow-xl p-6 max-w-4xl mx-auto">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <div>
-                  <div className="text-3xl font-bold text-[#ff6b00]">{stats.totalDistributed}€</div>
-                  <div className="text-sm text-gray-600">Total Distribué</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-gray-900">{stats.totalWinners}</div>
-                  <div className="text-sm text-gray-600">Total Gagnants</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-green-500">{stats.biggestWin}€</div>
-                  <div className="text-sm text-gray-600">Plus Gros Gain</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-blue-500">{stats.averageWin}€</div>
-                  <div className="text-sm text-gray-600">Gain Moyen</div>
-                </div>
+          {/* Statistiques */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white rounded-lg shadow p-6 text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">
+                {stats.totalDistributed}€
               </div>
+              <p className="text-gray-600">Total distribué</p>
+            </div>
+            <div className="bg-white rounded-lg shadow p-6 text-center">
+              <div className="text-3xl font-bold text-green-600 mb-2">
+                {stats.totalWinners}
+              </div>
+              <p className="text-gray-600">Gagnants au total</p>
+            </div>
+            <div className="bg-white rounded-lg shadow p-6 text-center">
+              <div className="text-3xl font-bold text-purple-600 mb-2">
+                {stats.biggestWin}€
+              </div>
+              <p className="text-gray-600">Plus gros gain</p>
             </div>
           </div>
-        </section>
 
-        {/* Retour au jeu */}
-        <section className="py-4">
-          <div className="container mx-auto px-4 text-center">
-            <a 
-              href="/jeu-roue" 
-              className="inline-flex items-center gap-2 text-[#ff6b00] hover:text-[#ff8533] font-medium transition-colors"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-              </svg>
-              Retour au jeu
-            </a>
+          {/* Filtres */}
+          <div className="bg-white rounded-lg shadow p-4 mb-6">
+            <div className="flex flex-wrap gap-2 justify-center">
+              <button
+                onClick={() => setFilter('all')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  filter === 'all' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+                aria-label="Voir tous les gagnants"
+              >
+                Tous les gagnants
+              </button>
+              <button
+                onClick={() => setFilter('today')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  filter === 'today' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+                aria-label="Voir les gagnants d'aujourd'hui"
+              >
+                Aujourd'hui
+              </button>
+              <button
+                onClick={() => setFilter('yesterday')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  filter === 'yesterday' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+                aria-label="Voir les gagnants d'hier"
+              >
+                Hier
+              </button>
+              <button
+                onClick={() => setFilter('week')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  filter === 'week' 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+                aria-label="Voir les gagnants de la semaine"
+              >
+                Cette semaine
+              </button>
+            </div>
           </div>
-        </section>
 
-        {/* Liste des gagnants */}
-        <section className="py-8">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto space-y-8">
-              {Object.keys(groupedWinners).length === 0 ? (
-                <div className="text-center text-gray-500 py-12">
-                  <p className="text-xl">Aucun gagnant pour le moment</p>
-                  <p className="mt-2">Soyez le premier à tenter votre chance !</p>
-                </div>
-              ) : (
-                Object.entries(groupedWinners)
-                  .sort(([dateA], [dateB]) => new Date(dateB) - new Date(dateA))
-                  .map(([date, dayWinners]) => (
-                    <div key={date} className="bg-white rounded-lg shadow p-6">
-                      <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-xl font-bold text-gray-900">
-                          📅 {formatDate(date)}
-                        </h3>
-                        <span className="text-[#ff6b00] font-bold">
-                          Total: {getDayTotal(dayWinners)}€
-                        </span>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        {dayWinners.map((winner, index) => (
-                          <div 
-                            key={index} 
-                            className="flex items-center justify-between bg-gray-50 p-3 rounded-lg"
-                          >
-                            <div className="flex items-center gap-3">
-                              <span className="text-2xl">{getEmoji(winner.amount)}</span>
-                              <div>
-                                <span className="font-medium text-gray-900">{winner.pseudo}</span>
-                                <span className="text-gray-500 text-sm ml-2">{winner.time}</span>
-                              </div>
-                            </div>
-                            <span className={`font-bold ${
-                              winner.amount >= 10 ? 'text-green-600 text-lg' : 'text-gray-700'
-                            }`}>
-                              +{winner.amount}€
+          {/* Liste des gagnants */}
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+              <p className="mt-4 text-gray-600">Chargement des gagnants...</p>
+            </div>
+          ) : filteredWinners.length > 0 ? (
+            <div className="bg-white rounded-lg shadow overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Date
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Pseudo
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Heure
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Gain
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {filteredWinners.map((winner, index) => (
+                      <tr key={index} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {formatDate(winner.date)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <span className="text-sm font-medium text-gray-900">
+                              {maskPseudo(winner.pseudo)}
                             </span>
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))
-              )}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {winner.time}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                            winner.amount >= 50 
+                              ? 'bg-yellow-100 text-yellow-800' 
+                              : winner.amount >= 10 
+                              ? 'bg-green-100 text-green-800' 
+                              : 'bg-blue-100 text-blue-800'
+                          }`}>
+                            {winner.amount >= 50 && '🏆 '}
+                            {winner.amount >= 10 && winner.amount < 50 && '🥈 '}
+                            {winner.amount}€
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        </section>
+          ) : (
+            <div className="bg-white rounded-lg shadow p-12 text-center">
+              <p className="text-gray-500 text-lg">
+                {filter === 'all' 
+                  ? "Aucun gagnant pour le moment."
+                  : `Aucun gagnant ${
+                      filter === 'today' ? "aujourd'hui" : 
+                      filter === 'yesterday' ? "hier" : 
+                      "cette semaine"
+                    }.`
+                }
+              </p>
+              <a
+                href="/jeu-roue"
+                className="inline-flex items-center mt-4 text-blue-600 hover:text-blue-700 font-medium"
+              >
+                Tentez votre chance !
+                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          )}
 
-        {/* CTA Final */}
-        <section className="py-12 bg-white">
-          <div className="container mx-auto px-4 text-center">
+          {/* CTA */}
+          <div className="mt-12 text-center">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Tentez votre chance !
             </h2>
             <p className="text-gray-600 mb-6">
-              Suivez @rounders_pro sur Twitter pour ne rater aucun jeu
+              Jouez gratuitement à la Roue de la Fortune et gagnez jusqu'à 50€
             </p>
             <a
-              href="https://twitter.com/rounders_pro"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#ff6b00] text-white px-6 py-3 rounded-lg hover:bg-[#ff8533] transition-colors"
+              href="/jeu-roue"
+              className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Suivre @rounders_pro
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              Jouer maintenant
+              <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </a>
           </div>
-        </section>
+        </div>
       </main>
 
       <Footer />
