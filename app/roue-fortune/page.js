@@ -13,6 +13,9 @@ export default function RoueFortunePage() {
   const [pseudo, setPseudo] = useState('');
   const [isSpinning, setIsSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
+  const [hasPlayed, setHasPlayed] = useState(false);
+  const [result, setResult] = useState(null);
+  const [showResult, setShowResult] = useState(false);
 
   // Segments de la roue
   const segments = [
@@ -51,10 +54,59 @@ export default function RoueFortunePage() {
     }
   };
 
-  const handleSpin = () => {
-    if (!pseudo.trim() || pseudo.length < 3 || isSpinning) return;
-    
-    alert('API spin pas encore créée - on va le faire à l\'étape suivante !');
+  const handleSpin = async () => {
+    if (!pseudo.trim() || pseudo.length < 3 || isSpinning || hasPlayed) return;
+
+    setIsSpinning(true);
+    setShowResult(false);
+
+    try {
+      const response = await fetch('/api/roue-fortune/spin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ pseudo: pseudo.trim() }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erreur lors du tirage');
+      }
+
+      // Animation de la roue
+      const segmentAngle = 360 / segments.length;
+      const targetAngle = data.result.index * segmentAngle;
+      const extraSpins = 5; // 5 tours complets
+      const totalRotation = rotation + (extraSpins * 360) + (360 - targetAngle);
+      
+      setRotation(totalRotation);
+
+      // Attendre la fin de l'animation (4 secondes)
+      setTimeout(() => {
+        setResult(data.result);
+        setHasPlayed(true);
+        setShowResult(true);
+        setIsSpinning(false);
+        
+        // Mettre à jour le budget restant
+        if (data.remainingBudget !== undefined) {
+          setRemainingBudget(data.remainingBudget);
+          if (data.remainingBudget === 0) {
+            setGameStatus('inactive');
+          }
+        }
+        
+        // Rafraîchir le statut
+        checkGameStatus();
+      }, 4000);
+
+    } catch (error) {
+      console.error('Erreur:', error);
+      alert(error.message);
+      setIsSpinning(false);
+    }
   };
 
   return (
@@ -160,7 +212,7 @@ export default function RoueFortunePage() {
                   <circle cx="100" cy="100" r="15" fill="#FFD700" stroke="#FFA500" strokeWidth="3" />
                 </svg>
 
-                {/* Flèche indicatrice - EN HAUT, POINTE VERS LE BAS */}
+                {/* Flèche indicatrice */}
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2">
                   <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[40px] border-t-red-500"></div>
                 </div>
@@ -171,56 +223,98 @@ export default function RoueFortunePage() {
               </p>
             </div>
 
-            {/* Formulaire */}
+            {/* Formulaire ou Résultat */}
             <div className="bg-white rounded-xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                Tentez votre chance !
-              </h2>
-              
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-gray-700 mb-2">
-                    Votre pseudo Stake
-                  </label>
-                  <input
-                    type="text"
-                    value={pseudo}
-                    onChange={(e) => setPseudo(e.target.value)}
-                    placeholder="Entrez votre pseudo"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    disabled={isSpinning}
-                  />
-                  <p className="text-gray-500 text-sm mt-2">
-                    ⚠️ Entrez votre pseudo EXACTEMENT comme sur Stake (respectez les majuscules/minuscules)
-                  </p>
-                </div>
+              {!hasPlayed ? (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                    Tentez votre chance !
+                  </h2>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-gray-700 mb-2">
+                        Votre pseudo Stake
+                      </label>
+                      <input
+                        type="text"
+                        value={pseudo}
+                        onChange={(e) => setPseudo(e.target.value)}
+                        placeholder="Entrez votre pseudo"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        disabled={isSpinning}
+                      />
+                      <p className="text-gray-500 text-sm mt-2">
+                        ⚠️ Entrez votre pseudo EXACTEMENT comme sur Stake (respectez les majuscules/minuscules)
+                      </p>
+                    </div>
 
-                <button
-                  onClick={handleSpin}
-                  disabled={!pseudo.trim() || pseudo.length < 3 || isSpinning}
-                  className={`w-full py-4 rounded-lg font-bold text-lg transition-all ${
-                    pseudo.trim() && pseudo.length >= 3 && !isSpinning
-                      ? 'bg-blue-600 hover:bg-blue-700 text-white transform hover:scale-105'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  }`}
-                >
-                  {isSpinning ? (
-                    <span className="flex items-center justify-center">
-                      <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      La roue tourne...
-                    </span>
-                  ) : (
-                    '🎰 Tourner la roue !'
+                    <button
+                      onClick={handleSpin}
+                      disabled={!pseudo.trim() || pseudo.length < 3 || isSpinning}
+                      className={`w-full py-4 rounded-lg font-bold text-lg transition-all ${
+                        pseudo.trim() && pseudo.length >= 3 && !isSpinning
+                          ? 'bg-blue-600 hover:bg-blue-700 text-white transform hover:scale-105'
+                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      }`}
+                    >
+                      {isSpinning ? (
+                        <span className="flex items-center justify-center">
+                          <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          La roue tourne...
+                        </span>
+                      ) : (
+                        '🎰 Tourner la roue !'
+                      )}
+                    </button>
+
+                    <p className="text-gray-500 text-sm text-center">
+                      Une seule participation par jour
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <div className="text-center">
+                  {showResult && result && (
+                    <div className={`p-6 rounded-lg mb-6 ${
+                      result.value > 0 ? 'bg-green-50 border-2 border-green-200' : 'bg-red-50 border-2 border-red-200'
+                    }`}>
+                      <h3 className="text-2xl font-bold mb-2">
+                        {result.value > 0 ? '🎉 Félicitations !' : '😢 Dommage !'}
+                      </h3>
+                      <p className="text-3xl font-bold mb-4">
+                        {result.value > 0 ? (
+                          <span className="text-green-600">Vous avez gagné {result.value}€ !</span>
+                        ) : (
+                          <span className="text-red-600">Vous n'avez rien gagné</span>
+                        )}
+                      </p>
+                      {result.value > 0 && (
+                        <p className="text-gray-600">
+                          Vos gains seront crédités sur votre compte Stake sous 24-48h
+                        </p>
+                      )}
+                    </div>
                   )}
-                </button>
-
-                <p className="text-gray-500 text-sm text-center">
-                  Une seule participation par jour
-                </p>
-              </div>
+                  
+                  <div className="space-y-4">
+                    <p className="text-gray-600">
+                      Vous avez déjà joué aujourd'hui. Revenez demain !
+                    </p>
+                    
+                      href="https://stake.com/?c=ROUNDERS"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all"
+                    >
+                      Jouer sur Stake →
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
