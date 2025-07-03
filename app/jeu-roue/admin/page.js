@@ -82,7 +82,7 @@ export default function AdminPage() {
 
   // Actions admin
   const updateBudget = async () => {
-    if (!newBudget || isNaN(newBudget) || Number(newBudget) < 0) {
+    if (newBudget === '' || isNaN(newBudget) || Number(newBudget) < 0) {
       alert('Budget invalide');
       return;
     }
@@ -104,6 +104,7 @@ export default function AdminPage() {
       }
     } catch (error) {
       console.error('Erreur:', error);
+      alert('Erreur lors de la mise à jour');
     } finally {
       setIsUpdating(false);
     }
