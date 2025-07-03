@@ -150,7 +150,8 @@ export default function JeuRoue() {
           // Si le budget est épuisé, actualiser le statut
           if (data.remainingBudget === 0) {
             setGameStatus('inactive');
-          } else {
+            setRemainingBudget(0);
+          } else if (data.remainingBudget !== undefined) {
             setRemainingBudget(data.remainingBudget);
           }
         }, 5000);
@@ -230,8 +231,8 @@ export default function JeuRoue() {
               )}
               
               {!hasPlayed && (
-                <div className="grid md:grid-cols-2 gap-8 items-center">
-                  {/* Roue */}
+                <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center">
+                  {/* Roue - Sur mobile elle sera en bas grâce à flex-col-reverse */}
                   <div className="relative">
                     <div className="relative w-80 h-80 mx-auto">
                       {/* Flèche indicatrice */}
@@ -291,7 +292,7 @@ export default function JeuRoue() {
                     </div>
                   </div>
 
-                  {/* Formulaire */}
+                  {/* Formulaire - Sur mobile il sera en haut */}
                   <div className="bg-white p-6 rounded-lg shadow-lg">
                     {!isRevealing ? (
                       <>
