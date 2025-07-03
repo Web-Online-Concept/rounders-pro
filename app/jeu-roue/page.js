@@ -195,7 +195,7 @@ export default function JeuRouePage() {
 
           {/* Jeu actif */}
           {gameStatus === 'active' && remainingBudget > 0 && (
-            <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 items-center">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
               {/* Roue */}
               <div className="relative">
                 <div className="relative w-80 h-80 mx-auto">
@@ -275,6 +275,9 @@ export default function JeuRouePage() {
                           className="w-full px-4 py-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
                           disabled={isSpinning}
                         />
+                        <p className="text-gray-400 text-sm mt-2">
+                          ⚠️ Entrez votre pseudo EXACTEMENT comme sur Stake (respectez les majuscules/minuscules)
+                        </p>
                       </div>
 
                       <button
