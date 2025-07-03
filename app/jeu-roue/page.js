@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getSession } from 'next-auth/react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
