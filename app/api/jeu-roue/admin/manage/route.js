@@ -158,10 +158,20 @@ export async function POST(request) {
         status.dailyBudget = budget;
         await redis.set('game:roue:status', status);
 
+        // Nouveau jeu = remettre spent à 0 mais garder les winners
+        const today = getParisDate();
+        let budgetData = await redis.get(`budget:${today}`);
+        
+        if (budgetData) {
+          // On garde les winners mais on remet spent à 0
+          budgetData.spent = 0;
+          await redis.set(`budget:${today}`, budgetData);
+        }
+
         return NextResponse.json({
           success: true,
           dailyBudget: budget,
-          message: `Budget mis à jour : ${budget}€`
+          message: `Nouveau jeu lancé avec ${budget}€ !`
         });
       }
 
