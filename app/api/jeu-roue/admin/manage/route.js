@@ -147,7 +147,7 @@ export async function POST(request) {
       case 'update-budget': {
         // Modifier le budget
         const { budget } = params;
-        if (!budget || budget < 0) {
+        if (budget === undefined || budget === null || budget < 0) {
           return NextResponse.json(
             { success: false, error: 'Budget invalide' },
             { status: 400 }
