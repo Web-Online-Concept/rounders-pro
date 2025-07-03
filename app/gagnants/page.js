@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Head from 'next/head';
+import Link from 'next/link';
 
 export default function GagnantsPage() {
   const [winners, setWinners] = useState([]);
@@ -19,7 +20,7 @@ export default function GagnantsPage() {
     fetchWinners();
   }, []);
 
-  const fetchWinners = async () => {
+  const fetchWinners = useCallback(async () => {
     try {
       const response = await fetch('/api/jeu-roue/winners');
       const data = await response.json();
@@ -33,7 +34,7 @@ export default function GagnantsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const calculateStats = (winnersData) => {
     const total = winnersData.reduce((sum, w) => sum + w.amount, 0);
@@ -182,18 +183,18 @@ export default function GagnantsPage() {
           <nav className="flex mb-8 text-sm" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-1 md:space-x-3">
               <li className="inline-flex items-center">
-                <a href="/" className="text-gray-700 hover:text-blue-600">
+                <Link href="/" className="text-gray-700 hover:text-blue-600">
                   Accueil
-                </a>
+                </Link>
               </li>
               <li>
                 <div className="flex items-center">
                   <svg className="w-3 h-3 text-gray-400 mx-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                   </svg>
-                  <a href="/jeu-roue" className="text-gray-700 hover:text-blue-600 ml-1">
+                  <Link href="/jeu-roue" className="text-gray-700 hover:text-blue-600 ml-1">
                     Roue de la Fortune
-                  </a>
+                  </Link>
                 </div>
               </li>
               <li aria-current="page">
@@ -260,7 +261,7 @@ export default function GagnantsPage() {
                     ? 'bg-blue-600 text-white' 
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
-                aria-label="Voir les gagnants d'aujourd'hui"
+                aria-label="Voir les gagnants d&apos;aujourd&apos;hui"
               >
                 Aujourd'hui
               </button>
@@ -271,7 +272,7 @@ export default function GagnantsPage() {
                     ? 'bg-blue-600 text-white' 
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
-                aria-label="Voir les gagnants d'hier"
+                aria-label="Voir les gagnants d&apos;hier"
               >
                 Hier
               </button>
@@ -356,13 +357,13 @@ export default function GagnantsPage() {
                 {filter === 'all' 
                   ? "Aucun gagnant pour le moment."
                   : `Aucun gagnant ${
-                      filter === 'today' ? "aujourd'hui" : 
+                      filter === 'today' ? "aujourd&apos;hui" : 
                       filter === 'yesterday' ? "hier" : 
                       "cette semaine"
                     }.`
                 }
               </p>
-              <a
+              <Link
                 href="/jeu-roue"
                 className="inline-flex items-center mt-4 text-blue-600 hover:text-blue-700 font-medium"
               >
@@ -370,7 +371,7 @@ export default function GagnantsPage() {
                 <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                 </svg>
-              </a>
+              </Link>
             </div>
           )}
 
@@ -382,7 +383,7 @@ export default function GagnantsPage() {
             <p className="text-gray-600 mb-6">
               Jouez gratuitement à la Roue de la Fortune et gagnez jusqu'à 50€
             </p>
-            <a
+            <Link
               href="/jeu-roue"
               className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
             >
@@ -390,7 +391,7 @@ export default function GagnantsPage() {
               <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
-            </a>
+            </Link>
           </div>
         </div>
       </main>
