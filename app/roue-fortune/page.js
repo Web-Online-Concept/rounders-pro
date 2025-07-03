@@ -78,19 +78,17 @@ export default function RoueFortunePage() {
       // Animation de la roue
       const segmentAngle = 360 / segments.length;
       const targetAngle = data.result.index * segmentAngle;
-      const extraSpins = 5; // 5 tours complets
+      const extraSpins = 5;
       const totalRotation = rotation + (extraSpins * 360) + (360 - targetAngle);
       
       setRotation(totalRotation);
 
-      // Attendre la fin de l'animation (4 secondes)
       setTimeout(() => {
         setResult(data.result);
         setHasPlayed(true);
         setShowResult(true);
         setIsSpinning(false);
         
-        // Mettre à jour le budget restant
         if (data.remainingBudget !== undefined) {
           setRemainingBudget(data.remainingBudget);
           if (data.remainingBudget === 0) {
@@ -98,7 +96,6 @@ export default function RoueFortunePage() {
           }
         }
         
-        // Rafraîchir le statut
         checkGameStatus();
       }, 4000);
 
@@ -165,7 +162,7 @@ export default function RoueFortunePage() {
           </>
         )}
 
-        {/* Zone du jeu */}
+        {/* Zone du jeu ACTIVE */}
         {!isLoading && gameStatus === 'active' && (
           <div className="grid md:grid-cols-2 gap-8 items-center">
             {/* Roue */}
@@ -319,7 +316,7 @@ export default function RoueFortunePage() {
           </div>
         )}
 
-        {/* Message si fermé */}
+        {/* Zone du jeu INACTIVE */}
         {!isLoading && gameStatus === 'inactive' && (
           <div className="text-center py-12">
             <div className="bg-red-50 border-2 border-red-200 rounded-lg p-8 max-w-2xl mx-auto">
