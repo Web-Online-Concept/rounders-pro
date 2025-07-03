@@ -196,6 +196,38 @@ export default function AdminPage() {
     }
   };
 
+  const deleteWinner = async (winner) => {
+    const confirmMsg = winner.paid 
+      ? `Êtes-vous sûr de vouloir supprimer ${winner.pseudo} (${winner.amount}€) ?\n⚠️ Ce gagnant est marqué comme PAYÉ !`
+      : `Êtes-vous sûr de vouloir supprimer ${winner.pseudo} (${winner.amount}€) ?\nLe montant sera récupéré dans le budget.`;
+    
+    if (!confirm(confirmMsg)) {
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/jeu-roue/admin/manage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'delete-winner',
+          date: winner.date,
+          pseudo: winner.pseudo,
+          time: winner.time
+        })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        await checkAuthAndLoadData();
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+      alert('Erreur lors de la suppression');
+    }
+  };
+
   if (isLoading) {
     return (
       <>
@@ -360,6 +392,7 @@ export default function AdminPage() {
                         <th className="text-left py-2">Heure</th>
                         <th className="text-center py-2">Statut</th>
                         <th className="text-center py-2">Payé le</th>
+                        <th className="text-center py-2">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -387,6 +420,15 @@ export default function AdminPage() {
                             </td>
                             <td className="py-2 text-center text-sm text-gray-400">
                               {winner.paidAt ? new Date(winner.paidAt).toLocaleString('fr-FR') : '-'}
+                            </td>
+                            <td className="py-2 text-center">
+                              <button
+                                onClick={() => deleteWinner(winner)}
+                                className="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-sm transition-colors"
+                                title="Supprimer ce gagnant"
+                              >
+                                🗑️
+                              </button>
                             </td>
                           </tr>
                         ))}

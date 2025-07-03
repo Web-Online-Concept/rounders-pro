@@ -235,6 +235,51 @@ export async function POST(request) {
         });
       }
 
+      case 'delete-winner': {
+        // Supprimer un gagnant
+        const { date, pseudo, time } = params;
+        
+        const dayData = await redis.get(`budget:${date}`);
+        if (!dayData || !dayData.winners) {
+          return NextResponse.json(
+            { success: false, error: 'Gagnant introuvable' },
+            { status: 404 }
+          );
+        }
+
+        // Trouver le gagnant à supprimer
+        const winnerToDelete = dayData.winners.find(
+          winner => winner.pseudo === pseudo && winner.time === time
+        );
+
+        if (!winnerToDelete) {
+          return NextResponse.json(
+            { success: false, error: 'Gagnant introuvable' },
+            { status: 404 }
+          );
+        }
+
+        // Retirer le gagnant de la liste
+        const updatedWinners = dayData.winners.filter(
+          winner => !(winner.pseudo === pseudo && winner.time === time)
+        );
+
+        // Recalculer le spent (on retire le montant du gagnant supprimé)
+        const newSpent = Math.max(0, dayData.spent - winnerToDelete.amount);
+
+        // Sauvegarder
+        await redis.set(`budget:${date}`, {
+          ...dayData,
+          spent: newSpent,
+          winners: updatedWinners
+        });
+
+        return NextResponse.json({
+          success: true,
+          message: `Gagnant supprimé. ${winnerToDelete.amount}€ récupérés dans le budget.`
+        });
+      }
+
       case 'export-winners': {
         // Exporter les gagnants pour paiement
         const { startDate, endDate } = params;
