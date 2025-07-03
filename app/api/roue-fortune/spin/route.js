@@ -45,12 +45,10 @@ export async function POST(request) {
       probabilities: {
         "0": 0.60,
         "1": 0.20,
-        "2": 0.10,
-        "3": 0.05,
-        "4": 0.025,
-        "5": 0.015,
-        "10": 0.008,
-        "50": 0.002
+        "3": 0.10,
+        "5": 0.05,
+        "10": 0.04,
+        "50": 0.01
       }
     };
 
@@ -94,6 +92,9 @@ export async function POST(request) {
     // Calculer le résultat avec probabilités ajustées
     const result = calculateResult(status.probabilities, remainingBudget);
 
+    // VÉRIFICATION CRITIQUE : Log pour debug
+    console.log('Résultat tiré:', result);
+
     // Enregistrer les participations
     await redis.set(ipParticipationKey, true, { ex: 86400 }); // 24h
     await redis.set(pseudoParticipationKey, true, { ex: 86400 }); // 24h
@@ -120,7 +121,8 @@ export async function POST(request) {
       result: {
         value: result.value,
         label: result.label,
-        index: result.index
+        index: result.index,
+        segmentAngle: result.segmentAngle // Ajout pour debug
       },
       remainingBudget: status.dailyBudget - todayBudget.spent
     });
@@ -135,17 +137,19 @@ export async function POST(request) {
 }
 
 function calculateResult(probabilities, remainingBudget) {
+  // SEGMENTS DANS L'ORDRE EXACT DE LA ROUE (0° = 3 heures)
+  // La roue commence à droite (3h) et tourne dans le sens horaire
   const segments = [
-    { value: 0, label: '0€', index: 0 },
-    { value: 5, label: '5€', index: 1 },
-    { value: 0, label: '0€', index: 2 },
-    { value: 1, label: '1€', index: 3 },
-    { value: 0, label: '0€', index: 4 },
-    { value: 3, label: '3€', index: 5 },
-    { value: 0, label: '0€', index: 6 },
-    { value: 50, label: '50€', index: 7 },
-    { value: 0, label: '0€', index: 8 },
-    { value: 10, label: '10€', index: 9 }
+    { value: 0, label: '0€', index: 0 },    // 0° - 36°
+    { value: 5, label: '5€', index: 1 },    // 36° - 72°
+    { value: 0, label: '0€', index: 2 },    // 72° - 108°
+    { value: 1, label: '1€', index: 3 },    // 108° - 144°
+    { value: 0, label: '0€', index: 4 },    // 144° - 180°
+    { value: 3, label: '3€', index: 5 },    // 180° - 216°
+    { value: 0, label: '0€', index: 6 },    // 216° - 252°
+    { value: 50, label: '50€', index: 7 },  // 252° - 288°
+    { value: 0, label: '0€', index: 8 },    // 288° - 324°
+    { value: 10, label: '10€', index: 9 }   // 324° - 360°
   ];
 
   // Ajuster les probabilités selon le budget
@@ -169,10 +173,18 @@ function calculateResult(probabilities, remainingBudget) {
     adjustedProbs['50'] = 0;
   }
 
+  // Si budget < 3€, limiter à 3€ max
+  if (remainingBudget < 3) {
+    adjustedProbs['3'] = 0;
+    adjustedProbs['5'] = 0;
+    adjustedProbs['10'] = 0;
+    adjustedProbs['50'] = 0;
+  }
+
   // Augmenter les chances de 0€ si budget faible
   if (remainingBudget < 20) {
     const reduction = 0.2;
-    adjustedProbs['0'] += reduction;
+    adjustedProbs['0'] = (adjustedProbs['0'] || 0.6) + reduction;
     // Réduire proportionnellement les autres
     Object.keys(adjustedProbs).forEach(key => {
       if (key !== '0') {
@@ -190,21 +202,27 @@ function calculateResult(probabilities, remainingBudget) {
   // Tirer au sort
   const random = Math.random();
   let cumulative = 0;
+  let selectedValue = 0;
   
-  // Créer un tableau de segments avec leurs probabilités
-  const segmentsWithProbs = segments.map(segment => ({
-    ...segment,
-    probability: adjustedProbs[segment.value.toString()] || 0
-  }));
-
-  // Trouver le segment gagnant
-  for (const segment of segmentsWithProbs) {
-    cumulative += segment.probability;
+  // D'abord, sélectionner la valeur gagnée
+  for (const [value, probability] of Object.entries(adjustedProbs)) {
+    cumulative += probability;
     if (random < cumulative) {
-      return segment;
+      selectedValue = parseInt(value);
+      break;
     }
   }
 
-  // Par sécurité, retourner 0€
-  return segments[0];
+  // Ensuite, trouver un segment avec cette valeur
+  const possibleSegments = segments.filter(s => s.value === selectedValue);
+  const selectedSegment = possibleSegments[Math.floor(Math.random() * possibleSegments.length)];
+
+  // Calculer l'angle exact du centre du segment
+  const segmentAngle = 36; // 360 / 10 segments
+  const centerAngle = selectedSegment.index * segmentAngle + (segmentAngle / 2);
+
+  return {
+    ...selectedSegment,
+    segmentAngle: centerAngle
+  };
 }

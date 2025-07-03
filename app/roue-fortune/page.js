@@ -74,13 +74,33 @@ export default function RoueFortunePage() {
         throw new Error(data.error || 'Erreur lors du tirage');
       }
 
-      const segmentAngle = 360 / segments.length;
-      const targetAngle = data.result.index * segmentAngle;
-      const extraSpins = 5;
-      const totalRotation = rotation + (extraSpins * 360) + (360 - targetAngle);
+      // Animation de la roue - CORRECTION CRITIQUE
+      const segmentAngle = 360 / segments.length; // 36°
+      
+      // La flèche est en HAUT (midi/12h), donc on doit ajuster
+      // Pour qu'un segment soit sous la flèche, il doit être à 270° (car 0° = 3h)
+      // On veut que le segment gagnant soit à 270° (sous la flèche)
+      const winningSegmentStartAngle = data.result.index * segmentAngle;
+      const winningSegmentCenterAngle = winningSegmentStartAngle + (segmentAngle / 2);
+      
+      // Calculer combien il faut tourner pour que le centre du segment soit sous la flèche
+      const targetRotation = 270 - winningSegmentCenterAngle;
+      
+      // Ajouter des tours complets + la rotation finale
+      const extraSpins = 5; // 5 tours complets
+      const totalRotation = rotation + (extraSpins * 360) + targetRotation;
+      
+      console.log('Debug rotation:', {
+        index: data.result.index,
+        value: data.result.value,
+        winningSegmentCenterAngle,
+        targetRotation,
+        totalRotation
+      });
       
       setRotation(totalRotation);
 
+      // Attendre la fin de l'animation
       setTimeout(() => {
         setResult(data.result);
         setHasPlayed(true);
