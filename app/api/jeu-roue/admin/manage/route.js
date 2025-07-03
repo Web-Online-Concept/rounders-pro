@@ -60,7 +60,7 @@ export async function GET() {
       budgetData = { spent: 0, winners: [] };
     }
     
-    const remainingBudget = status.dailyBudget - budgetData.spent;
+    const remainingBudget = Math.max(0, status.dailyBudget - budgetData.spent);
 
     // Récupérer tous les gagnants (non masqués)
     const allWinners = [];
