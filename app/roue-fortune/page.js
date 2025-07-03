@@ -17,7 +17,6 @@ export default function RoueFortunePage() {
   const [result, setResult] = useState(null);
   const [showResult, setShowResult] = useState(false);
 
-  // Segments de la roue
   const segments = [
     { value: 0, label: '0€', color: '#FF6B6B' },
     { value: 5, label: '5€', color: '#4ECDC4' },
@@ -75,7 +74,6 @@ export default function RoueFortunePage() {
         throw new Error(data.error || 'Erreur lors du tirage');
       }
 
-      // Animation de la roue
       const segmentAngle = 360 / segments.length;
       const targetAngle = data.result.index * segmentAngle;
       const extraSpins = 5;
@@ -106,11 +104,24 @@ export default function RoueFortunePage() {
     }
   };
 
+  if (isLoading) {
+    return (
+      <>
+        <Header />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24 md:pb-16">
+          <div className="flex justify-center items-center h-96">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-yellow-400"></div>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
       <Header />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24 md:pb-16">
-        {/* Hero Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             🎰 Roue de la Fortune Stake
@@ -120,52 +131,40 @@ export default function RoueFortunePage() {
           </p>
         </div>
 
-        {/* État du jeu */}
-        {isLoading ? (
-          <div className="flex justify-center items-center h-96">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-yellow-400"></div>
-          </div>
-        ) : (
-          <>
-            <div className="text-center mb-8">
-              {gameStatus === 'active' ? (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4 inline-block">
-                  <p className="text-green-800 text-lg font-semibold">
-                    ✅ Jeu actif - Budget disponible : {remainingBudget}€ sur {dailyBudget}€
-                  </p>
-                </div>
-              ) : (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4 inline-block">
-                  <p className="text-red-800 text-lg font-semibold">
-                    ❌ Jeu fermé - Budget épuisé
-                  </p>
-                </div>
-              )}
+        <div className="text-center mb-8">
+          {gameStatus === 'active' ? (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4 inline-block">
+              <p className="text-green-800 text-lg font-semibold">
+                ✅ Jeu actif - Budget disponible : {remainingBudget}€ sur {dailyBudget}€
+              </p>
             </div>
+          ) : (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 inline-block">
+              <p className="text-red-800 text-lg font-semibold">
+                ❌ Jeu fermé - Budget épuisé
+              </p>
+            </div>
+          )}
+        </div>
 
-            {/* Liste des gagnants du jour */}
-            {todayWinners.length > 0 && (
-              <div className="bg-gray-50 rounded-lg p-6 mb-8 max-w-2xl mx-auto">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
-                  🏆 Gagnants d&apos;aujourd&apos;hui
-                </h3>
-                <div className="space-y-2">
-                  {todayWinners.slice(0, 5).map((winner, index) => (
-                    <div key={index} className="flex justify-between items-center bg-white p-3 rounded">
-                      <span className="text-gray-700">{winner.pseudo}</span>
-                      <span className="text-green-600 font-bold">{winner.amount}</span>
-                    </div>
-                  ))}
+        {todayWinners.length > 0 && (
+          <div className="bg-gray-50 rounded-lg p-6 mb-8 max-w-2xl mx-auto">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">
+              🏆 Gagnants d&apos;aujourd&apos;hui
+            </h3>
+            <div className="space-y-2">
+              {todayWinners.slice(0, 5).map((winner, index) => (
+                <div key={index} className="flex justify-between items-center bg-white p-3 rounded">
+                  <span className="text-gray-700">{winner.pseudo}</span>
+                  <span className="text-green-600 font-bold">{winner.amount}</span>
                 </div>
-              </div>
-            )}
-          </>
+              ))}
+            </div>
+          </div>
         )}
 
-        {/* Zone du jeu ACTIVE */}
-        {!isLoading && gameStatus === 'active' && (
+        {gameStatus === 'active' && (
           <div className="grid md:grid-cols-2 gap-8 items-center">
-            {/* Roue */}
             <div className="relative">
               <div className="relative w-80 h-80 mx-auto">
                 <svg
@@ -209,7 +208,6 @@ export default function RoueFortunePage() {
                   <circle cx="100" cy="100" r="15" fill="#FFD700" stroke="#FFA500" strokeWidth="3" />
                 </svg>
 
-                {/* Flèche indicatrice */}
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2">
                   <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[40px] border-t-red-500"></div>
                 </div>
@@ -220,10 +218,9 @@ export default function RoueFortunePage() {
               </p>
             </div>
 
-            {/* Formulaire ou Résultat */}
             <div className="bg-white rounded-xl shadow-lg p-8">
-              {!hasPlayed ? (
-                <>
+              {!hasPlayed && (
+                <div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">
                     Tentez votre chance !
                   </h2>
@@ -255,25 +252,17 @@ export default function RoueFortunePage() {
                           : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       }`}
                     >
-                      {isSpinning ? (
-                        <span className="flex items-center justify-center">
-                          <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          La roue tourne...
-                        </span>
-                      ) : (
-                        '🎰 Tourner la roue !'
-                      )}
+                      {isSpinning ? 'La roue tourne...' : '🎰 Tourner la roue !'}
                     </button>
 
                     <p className="text-gray-500 text-sm text-center">
                       Une seule participation par jour
                     </p>
                   </div>
-                </>
-) : (
+                </div>
+              )}
+
+              {hasPlayed && (
                 <div className="text-center">
                   {showResult && result && (
                     <div className={`p-6 rounded-lg mb-6 ${
@@ -307,7 +296,7 @@ export default function RoueFortunePage() {
                       rel="noopener noreferrer"
                       className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all"
                     >
-                      Jouer sur Stake &rarr;
+                      Jouer sur Stake
                     </a>
                   </div>
                 </div>
@@ -316,8 +305,7 @@ export default function RoueFortunePage() {
           </div>
         )}
 
-        {/* Zone du jeu INACTIVE */}
-        {!isLoading && gameStatus === 'inactive' && (
+        {gameStatus === 'inactive' && (
           <div className="text-center py-12">
             <div className="bg-red-50 border-2 border-red-200 rounded-lg p-8 max-w-2xl mx-auto">
               <h2 className="text-2xl font-bold text-red-800 mb-4">
@@ -332,7 +320,7 @@ export default function RoueFortunePage() {
                 rel="noopener noreferrer"
                 className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all"
               >
-                Jouer sur Stake &rarr;
+                Jouer sur Stake
               </a>
             </div>
           </div>
