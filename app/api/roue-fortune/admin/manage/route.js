@@ -25,7 +25,7 @@ export async function POST(request) {
         const currentStatus = await redis.get('game:roue:status') || {};
         const updatedStatus = {
           ...currentStatus,
-          dailyBudget: params.dailyBudget || 50
+          dailyBudget: params.dailyBudget !== undefined ? params.dailyBudget : 50
         };
         await redis.set('game:roue:status', updatedStatus);
         
