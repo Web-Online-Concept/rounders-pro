@@ -6,37 +6,6 @@ import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-export const metadata = {
-  title: 'Rounders Pro - Gagnants Roue de la Fortune',
-  description: 'Découvrez l’historique des gagnants de la Roue de la Fortune Rounders Pro. Statistiques, gains et bonus en temps réel.',
-  keywords: 'gagnants roue fortune, rounders pro gagnants, stake roue fortune, bonus gagnants',
-  openGraph: {
-    title: 'Rounders Pro - Gagnants Roue de la Fortune',
-    description: 'Découvrez l’historique des gagnants de la Roue de la Fortune Rounders Pro. Statistiques, gains et bonus en temps réel.',
-    url: 'https://www.rounders.pro/gagnants',
-    siteName: 'Rounders Pro',
-    images: [
-      {
-        url: '/images/og-rounders-stake.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Rounders Pro - Gagnants Roue de la Fortune',
-      }
-    ],
-    locale: 'fr_FR',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Rounders Pro - Gagnants Roue de la Fortune',
-    description: 'Historique des gagnants de la Roue de la Fortune Rounders Pro. Stats et gains en temps réel.',
-    images: ['/images/og-rounders-stake.jpg'],
-  },
-  alternates: {
-    canonical: 'https://www.rounders.pro/gagnants',
-  },
-};
-
 export default function GagnantsPage() {
   const [allWinners, setAllWinners] = useState([]);
   const [filteredWinners, setFilteredWinners] = useState([]);

@@ -6,37 +6,6 @@ import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-export const metadata = {
-  title: 'Rounders Pro - Jeux Exclusifs et Roue de la Fortune',
-  description: 'Participez aux jeux exclusifs Rounders Pro sur Twitter X et gagnez des bonus cash avec la Roue de la Fortune Stake. Jusqu’à 50€ par jour !',
-  keywords: 'jeux rounders, roue fortune stake, bonus cash, twitter x rounders, stake jeux',
-  openGraph: {
-    title: 'Rounders Pro - Jeux Exclusifs et Roue de la Fortune',
-    description: 'Participez aux jeux exclusifs Rounders Pro sur Twitter X et gagnez des bonus cash avec la Roue de la Fortune Stake. Jusqu’à 50€ par jour !',
-    url: 'https://www.rounders.pro/nos-jeux',
-    siteName: 'Rounders Pro',
-    images: [
-      {
-        url: '/images/og-rounders-stake.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Rounders Pro - Jeux Exclusifs et Roue de la Fortune',
-      }
-    ],
-    locale: 'fr_FR',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Rounders Pro - Jeux Exclusifs et Roue de la Fortune',
-    description: 'Gagnez des bonus cash avec les jeux Rounders Pro sur Twitter X et la Roue de la Fortune.',
-    images: ['/images/og-rounders-stake.jpg'],
-  },
-  alternates: {
-    canonical: 'https://www.rounders.pro/nos-jeux',
-  },
-};
-
 export default function NosJeux() {
   const [stats, setStats] = useState({
     totalDistributed: 0,
@@ -245,7 +214,7 @@ export default function NosJeux() {
                 <div className="bg-white p-6 rounded-xl shadow-lg">
                   <div className="text-4xl mb-4">🔔</div>
                   <h3 className="font-bold text-xl mb-3">Notifications instant</h3>
-                  <p className="text-gray-600">Ne ratez jamais une opportunité de gagner</p>
+                  <p className="text-gray-600">Ne ratez jamais une opportun1043ité de gagner</p>
                 </div>
               </div>
             </div>
