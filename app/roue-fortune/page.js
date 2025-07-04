@@ -146,9 +146,9 @@ export default function RoueFortunePage() {
     );
   }
 
-  // Composant formulaire pour pouvoir le réutiliser
-  const FormComponent = () => (
-    <div className="bg-white rounded-xl shadow-lg p-8">
+  // Contenu du formulaire
+  const formContent = (
+    <>
       {!hasPlayed && (
         <div>
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
@@ -254,7 +254,7 @@ export default function RoueFortunePage() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 
   return (
@@ -290,7 +290,9 @@ export default function RoueFortunePage() {
           <>
             {/* Version mobile : formulaire avant la roue */}
             <div className="md:hidden mb-8">
-              <FormComponent />
+              <div className="bg-white rounded-xl shadow-lg p-8">
+                {formContent}
+              </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 items-center mb-12">
@@ -349,7 +351,9 @@ export default function RoueFortunePage() {
 
               {/* Version desktop : formulaire à côté de la roue */}
               <div className="hidden md:block">
-                <FormComponent />
+                <div className="bg-white rounded-xl shadow-lg p-8">
+                  {formContent}
+                </div>
               </div>
             </div>
           </>
