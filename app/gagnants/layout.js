@@ -1,10 +1,10 @@
 export const metadata = {
-  title: 'Gagnants Rounders Pro | +15,000€ de Bonus Distribués',
-  description: 'Tableau des gagnants en temps réel : découvrez qui a reçu les bonus VIP Stake aujourd\'hui. Plus de 15,000€ distribués, paiements vérifiés.',
+  title: 'Gagnants Rounders Pro | Retrouvez la liste complète de nos gagnants',
+  description: 'Tableau des gagnants en temps réel : découvrez qui a reçu les bonus VIP Stake aujourd\'hui. Paiements vérifiés.',
   keywords: 'gagnants rounders, bonus stake payés, winners rounders pro',
   openGraph: {
-    title: 'Gagnants Rounders Pro | +15,000€ de Bonus Distribués',
-    description: 'Tableau des gagnants en temps réel : découvrez qui a reçu les bonus VIP Stake aujourd\'hui. Plus de 15,000€ distribués, paiements vérifiés.',
+    title: 'Gagnants Rounders Pro | Retrouvez la liste complète des gagnants à nos jeux',
+    description: 'Tableau des gagnants en temps réel : découvrez qui a reçu les bonus VIP Stake aujourd\'hui. Paiements vérifiés.',
     url: 'https://www.rounders.pro/gagnants',
     siteName: 'Rounders Pro',
     images: [
