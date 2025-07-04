@@ -146,8 +146,107 @@ export default function RoueFortunePage() {
     );
   }
 
-  // Contenu du formulaire
-  const formContent = (
+  // Contenu du formulaire pour mobile (sans la section paiement)
+  const formContentMobile = (
+    <>
+      {!hasPlayed && (
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Tentez votre chance !
+          </h2>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block text-gray-700 mb-2">
+                Votre pseudo Stake
+              </label>
+              <input
+                type="text"
+                value={pseudo}
+                onChange={(e) => setPseudo(e.target.value)}
+                placeholder="Entrez votre pseudo"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={isSpinning}
+              />
+              <p className="text-gray-500 text-sm mt-2">
+                ⚠️ Entrez votre pseudo EXACTEMENT comme sur Stake (respectez les majuscules/minuscules)
+              </p>
+            </div>
+
+            <button
+              onClick={handleSpin}
+              disabled={!pseudo.trim() || pseudo.length < 3 || isSpinning}
+              className={`w-full py-4 rounded-lg font-bold text-lg transition-all ${
+                pseudo.trim() && pseudo.length >= 3 && !isSpinning
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white transform hover:scale-105'
+                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
+            >
+              {isSpinning ? 'La roue tourne...' : '🎰 Tourner la roue !'}
+            </button>
+
+            <p className="text-gray-500 text-sm text-center">
+              Une seule participation par jour
+            </p>
+          </div>
+        </div>
+      )}
+
+      {hasPlayed && (
+        <div className="text-center">
+          {showResult && result && (
+            <div className={`p-6 rounded-lg mb-6 ${
+              result.value > 0 ? 'bg-green-50 border-2 border-green-200' : 'bg-red-50 border-2 border-red-200'
+            }`}>
+              <h3 className="text-2xl font-bold mb-2">
+                {result.value > 0 ? '🎉 Félicitations !' : '😢 Dommage !'}
+              </h3>
+              <p className="text-3xl font-bold mb-4">
+                {result.value > 0 ? (
+                  <span className="text-green-600">Vous avez gagné {result.value}€ !</span>
+                ) : (
+                  <span className="text-red-600">Vous n&apos;avez rien gagné</span>
+                )}
+              </p>
+              {result.value > 0 && (
+                <p className="text-gray-600">
+                  Vos gains seront versés sur votre compte Stake sous 24-48h via le système de pourboire
+                </p>
+              )}
+            </div>
+          )}
+          
+          <div className="space-y-4">
+            <p className="text-gray-600">
+              Vous avez déjà joué aujourd&apos;hui. Revenez demain !
+            </p>
+            
+            <button
+              onClick={shareOnX}
+              className="w-full bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+              Partager sur X
+            </button>
+
+            <a 
+              href="https://stake.com/?c=ROUNDERS"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all"
+            >
+              Jouer sur Stake
+            </a>
+          </div>
+        </div>
+      )}
+    </>
+  );
+
+  // Contenu du formulaire pour desktop (avec la section paiement)
+  const formContentDesktop = (
     <>
       {!hasPlayed && (
         <div>
@@ -291,7 +390,7 @@ export default function RoueFortunePage() {
             {/* Version mobile : formulaire avant la roue */}
             <div className="md:hidden mb-8">
               <div className="bg-white rounded-xl shadow-lg p-8">
-                {formContent}
+                {formContentMobile}
               </div>
             </div>
 
@@ -352,7 +451,7 @@ export default function RoueFortunePage() {
               {/* Version desktop : formulaire à côté de la roue */}
               <div className="hidden md:block">
                 <div className="bg-white rounded-xl shadow-lg p-8">
-                  {formContent}
+                  {formContentDesktop}
                 </div>
               </div>
             </div>
@@ -382,6 +481,20 @@ export default function RoueFortunePage() {
             <li>✅ Une participation gratuite par jour pour tout le monde</li>
           </ul>
         </div>
+
+        {/* Section paiement mobile seulement - affichée après le bloc info */}
+        {gameStatus === 'active' && !hasPlayed && (
+          <div className="md:hidden bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8">
+            <h3 className="font-semibold text-yellow-900 mb-2 text-lg">
+              💸 Comment recevez-vous vos gains ?
+            </h3>
+            <p className="text-sm text-yellow-800">
+              Les gains sont versés via le système de pourboire (tip) de Stake directement sur votre compte. 
+              <strong> Attention :</strong> Assurez-vous d&apos;entrer votre pseudo EXACTEMENT comme sur Stake. 
+              Toute erreur de saisie empêchera le versement et nous ne pourrons pas être tenus responsables.
+            </p>
+          </div>
+        )}
 
         {/* Pub X */}
         <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg p-6 mb-8 max-w-4xl mx-auto text-center">
