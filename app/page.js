@@ -4,9 +4,9 @@ import Footer from './components/Footer';
 import { AFFILIATE_LINK, AFFILIATE_CODE } from './config/affiliate';
 
 export const metadata = {
-  title: 'Rounders Pro - Jeux gratuits & Guide Stake | Bonus sans obligation',
-  description: 'Participez à nos jeux gratuits (Roue de la Fortune, concours) et découvrez notre guide complet de Stake. Bonus offerts sans obligation, à notre discrétion.',
-  keywords: 'rounders pro, stake, jeux gratuits, roue fortune, guide stake, bonus gratuits',
+  title: 'Rounders Pro - Affiliation & Guide Stake | Jeux gratuits & Bonus offerts',
+  description: 'Découvrez notre guide complet de Stake & les avantages de devenir affilié Rounders. Retrouvez l\'ensemble de nos jeux gratuits',
+  keywords: 'rounders pro, stake, guide stake, affiliation stake, bonus gratuits',
 };
 
 export default function Home() {
