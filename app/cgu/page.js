@@ -1,8 +1,5 @@
-export const metadata = {
-  title: 'CGU - Conditions Générales | Rounders Pro - Jeux gratuits sans obligation',
-  description: 'Conditions d\'utilisation de Rounders Pro. Jeux et bonus gratuits offerts sans obligation. Participation à vos risques et périls.',
-};
-
+// app/cgu/page.js
+import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -12,7 +9,7 @@ export default function CGU() {
       <Header />
       <main className="min-h-screen bg-gray-50 py-12 pb-24 md:pb-12">
         <div className="container mx-auto px-4 max-w-4xl">
-          <h1 className="text-4xl font-bold mb-8">Conditions Générales d&apos;Utilisation</h1>
+          <h1 className="text-4xl font-bold mb-8">Conditions Générales d'Utilisation</h1>
           
           <div className="bg-white rounded-lg shadow-md p-8 space-y-8">
             {/* Avertissement important */}
@@ -37,7 +34,7 @@ export default function CGU() {
               <h2 className="text-2xl font-semibold mb-4">Article 1 - Objet et acceptation</h2>
               <div className="space-y-4 text-gray-600">
                 <p>
-                  Les présentes CGU régissent l&apos;utilisation du site Rounders.pro et la participation à tous les jeux organisés par Web Online Concept.
+                  Les présentes CGU régissent l'utilisation du site Rounders.pro et la participation à tous les jeux organisés par Web Online Concept.
                 </p>
                 <p className="font-semibold">
                   En participant à nos jeux (sur le site, Twitter/X ou toute autre plateforme), vous acceptez INTÉGRALEMENT et SANS RÉSERVE ces conditions.
@@ -127,12 +124,15 @@ export default function CGU() {
               </div>
             </section>
 
-            {/* Article 5 - Données et vie privée */}
+            {/* Article 5 - Données personnelles */}
             <section>
               <h2 className="text-2xl font-semibold mb-4">Article 5 - Données personnelles</h2>
               <p className="text-gray-600">
-                En participant, vous acceptez notre <a href="/politique-confidentialite" className="text-blue-600 hover:underline">Politique de Confidentialité</a>. 
-                Nous pouvons utiliser vos données pour accepter ou refuser votre participation à notre entière discrétion.
+                En participant, vous acceptez notre{' '}
+                <Link href="/politique-confidentialite" className="text-blue-600 hover:underline">
+                  Politique de Confidentialité
+                </Link>
+                . Nous pouvons utiliser vos données pour accepter ou refuser votre participation à notre entière discrétion.
               </p>
             </section>
 
