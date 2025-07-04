@@ -124,6 +124,14 @@ export default function RoueFortunePage() {
     }
   };
 
+  const shareOnX = () => {
+    const text = result.value > 0 
+      ? `Je viens de gagner ${result.value}€ sur la Roue de la Fortune @rounders_pro ! 🎰💰`
+      : `Je viens de tenter ma chance sur la Roue de la Fortune @rounders_pro ! 🎰`;
+    const url = 'https://www.rounders.pro/roue-fortune';
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+  };
+
   if (isLoading) {
     return (
       <>
@@ -149,6 +157,18 @@ export default function RoueFortunePage() {
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Tentez votre chance et gagnez jusqu&apos;à 50€ par jour !
           </p>
+        </div>
+
+        {/* Nouvelle section d'information */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 max-w-4xl mx-auto">
+          <h2 className="text-xl font-bold text-blue-900 mb-3">
+            ℹ️ Jeu ouvert à TOUS les joueurs Stake !
+          </h2>
+          <ul className="space-y-2 text-blue-800">
+            <li>✅ Vous avez un compte Stake ? Vous pouvez participer !</li>
+            <li>✅ Pas besoin d&apos;être affilié ou inscrit via notre lien</li>
+            <li>✅ Une participation gratuite par jour pour tout le monde</li>
+          </ul>
         </div>
 
         <div className="text-center mb-8">
@@ -279,6 +299,18 @@ export default function RoueFortunePage() {
                       Une seule participation par jour
                     </p>
                   </div>
+
+                  {/* Section paiement */}
+                  <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <h3 className="font-semibold text-yellow-900 mb-2">
+                      💸 Comment recevez-vous vos gains ?
+                    </h3>
+                    <p className="text-sm text-yellow-800">
+                      Les gains sont versés via le système de pourboire (tip) de Stake directement sur votre compte. 
+                      <strong> Attention :</strong> Assurez-vous d&apos;entrer votre pseudo EXACTEMENT comme sur Stake. 
+                      Toute erreur de saisie empêchera le versement et nous ne pourrons pas être tenus responsables.
+                    </p>
+                  </div>
                 </div>
               )}
 
@@ -300,7 +332,7 @@ export default function RoueFortunePage() {
                       </p>
                       {result.value > 0 && (
                         <p className="text-gray-600">
-                          Vos gains seront crédités sur votre compte Stake sous 24-48h
+                          Vos gains seront versés sur votre compte Stake sous 24-48h via le système de pourboire
                         </p>
                       )}
                     </div>
@@ -310,6 +342,17 @@ export default function RoueFortunePage() {
                     <p className="text-gray-600">
                       Vous avez déjà joué aujourd&apos;hui. Revenez demain !
                     </p>
+                    
+                    <button
+                      onClick={shareOnX}
+                      className="w-full bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
+                    >
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                      </svg>
+                      Partager sur X
+                    </button>
+
                     <a 
                       href="https://stake.com/?c=ROUNDERS"
                       target="_blank"
