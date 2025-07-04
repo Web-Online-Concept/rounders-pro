@@ -1,3 +1,4 @@
+// app/roue-fortune/admin/page.js
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -15,15 +16,15 @@ export default function AdminRouePage() {
   // État du jeu
   const [dailyBudget, setDailyBudget] = useState(50);
   const [todaySpent, setTodaySpent] = useState(0);
-  const [allWinners, setAllWinners] = useState([]); // Tous les gagnants
-  const [filteredWinners, setFilteredWinners] = useState([]); // Gagnants filtrés
+  const [allWinners, setAllWinners] = useState([]);
+  const [filteredWinners, setFilteredWinners] = useState([]);
   const [stats, setStats] = useState({
     totalWinners: 0,
     totalDistributed: 0
   });
 
   // Filtres
-  const [filterPeriod, setFilterPeriod] = useState('30'); // '7', '30', 'month', 'year', 'all'
+  const [filterPeriod, setFilterPeriod] = useState('30');
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [availableMonths, setAvailableMonths] = useState([]);
@@ -193,7 +194,7 @@ export default function AdminRouePage() {
 
       if (response.ok) {
         alert('Gagnant supprimé avec succès');
-        await loadAdminData(); // Recharger les données
+        await loadAdminData();
       } else {
         const error = await response.json();
         alert(`Erreur: ${error.error}`);
@@ -219,7 +220,7 @@ export default function AdminRouePage() {
         <Header />
         <div className="max-w-md mx-auto px-4 py-12">
           <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-            Administration - Roue de la Fortune
+            Administration - Roue de la Fortune Rounders
           </h1>
           
           <form onSubmit={handleLogin} className="bg-white rounded-lg shadow-lg p-6">
@@ -255,7 +256,7 @@ export default function AdminRouePage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24 md:pb-16">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Administration - Roue de la Fortune
+            Administration - Roue de la Fortune Rounders
           </h1>
           <button
             onClick={() => {
