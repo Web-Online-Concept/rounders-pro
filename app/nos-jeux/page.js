@@ -62,7 +62,7 @@ export default function NosJeux() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 
-                  href="https://twitter.com/rounders_pro"
+                <ahref="https://twitter.com/rounders_pro"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-black text-white px-8 py-4 rounded-lg font-bold hover:bg-gray-900 transition-colors inline-flex items-center justify-center gap-2"
@@ -73,7 +73,7 @@ export default function NosJeux() {
                   </svg>
                 </a>
                 
-                  href="/avantages-rounders"
+                <ahref="/avantages-rounders"
                   className="bg-white text-orange-500 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors"
                 >
                   Devenir Affilié Rounders
