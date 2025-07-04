@@ -1,6 +1,8 @@
+// app/roue-fortune/page.js
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -205,7 +207,7 @@ export default function RoueFortunePage() {
                 {result.value > 0 ? (
                   <span className="text-green-600">Vous avez gagné {result.value}€ !</span>
                 ) : (
-                  <span className="text-red-600">Vous n&apos;avez rien gagné</span>
+                  <span className="text-red-600">Vous n'avez rien gagné</span>
                 )}
               </p>
               {result.value > 0 && (
@@ -218,7 +220,7 @@ export default function RoueFortunePage() {
           
           <div className="space-y-4">
             <p className="text-gray-600">
-              Vous avez déjà joué aujourd&apos;hui. Revenez demain !
+              Vous avez déjà joué aujourd'hui. Revenez demain !
             </p>
             
             <button
@@ -231,14 +233,14 @@ export default function RoueFortunePage() {
               Partager sur X
             </button>
 
-            <a 
+            <Link 
               href="https://stake.com/?c=ROUNDERS"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all"
             >
               Jouer sur Stake
-            </a>
+            </Link>
           </div>
         </div>
       )}
@@ -251,10 +253,10 @@ export default function RoueFortunePage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24 md:pb-16">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            🎰 Roue de la Fortune Stake
+            🎰 Roue de la Fortune Rounders
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Tentez votre chance et gagnez jusqu&apos;à 50€ par jour !
+            Tentez votre chance et gagnez jusqu'à 50€ par jour !
           </p>
         </div>
 
@@ -348,7 +350,7 @@ export default function RoueFortunePage() {
                     </h3>
                     <p className="text-sm text-yellow-800">
                       Les gains sont versés via le système de pourboire (tip) de Stake directement sur votre compte. 
-                      <strong> Attention :</strong> Assurez-vous d&apos;entrer votre pseudo EXACTEMENT comme sur Stake. 
+                      <strong> Attention :</strong> Assurez-vous d'entrer votre pseudo EXACTEMENT comme sur Stake. 
                       Toute erreur de saisie empêchera le versement et nous ne pourrons pas être tenus responsables.
                     </p>
                   </div>
@@ -365,7 +367,7 @@ export default function RoueFortunePage() {
           </h2>
           <ul className="space-y-2 text-blue-800">
             <li>✅ Vous avez un compte Stake ? Vous pouvez participer !</li>
-            <li>✅ Pas besoin d&apos;être affilié ou inscrit via notre lien</li>
+            <li>✅ Pas besoin d'être affilié ou inscrit via notre lien</li>
             <li>✅ Une participation gratuite par jour pour tout le monde</li>
           </ul>
         </div>
@@ -377,7 +379,7 @@ export default function RoueFortunePage() {
           </h2>
           <ul className="space-y-2 text-blue-800">
             <li>✅ Vous avez un compte Stake ? Vous pouvez participer !</li>
-            <li>✅ Pas besoin d&apos;être affilié ou inscrit via notre lien</li>
+            <li>✅ Pas besoin d'être affilié ou inscrit via notre lien</li>
             <li>✅ Une participation gratuite par jour pour tout le monde</li>
           </ul>
         </div>
@@ -389,7 +391,7 @@ export default function RoueFortunePage() {
           </h3>
           <p className="text-sm text-yellow-800">
             Les gains sont versés via le système de pourboire (tip) de Stake directement sur votre compte. 
-            <strong> Attention :</strong> Assurez-vous d&apos;entrer votre pseudo EXACTEMENT comme sur Stake. 
+            <strong> Attention :</strong> Assurez-vous d'entrer votre pseudo EXACTEMENT comme sur Stake. 
             Toute erreur de saisie empêchera le versement et nous ne pourrons pas être tenus responsables.
           </p>
         </div>
@@ -402,20 +404,20 @@ export default function RoueFortunePage() {
           <p className="text-gray-300 mb-4">
             Suivez @rounders_pro pour participer à tous nos jeux et concours exclusifs
           </p>
-          <a 
+          <Link 
             href="https://x.com/rounders_pro"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-white text-gray-900 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-all"
           >
             Suivre sur X
-          </a>
+          </Link>
         </div>
 
         {/* Gagnants du jour */}
         <div className="bg-gray-50 rounded-lg p-6 max-w-4xl mx-auto mb-8">
           <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-            🏆 Tous les gagnants d&apos;aujourd&apos;hui
+            🏆 Tous les gagnants d'aujourd'hui
           </h3>
           
           {todayWinners.length > 0 ? (
@@ -436,7 +438,7 @@ export default function RoueFortunePage() {
               </div>
               <div className="text-center">
                 <p className="text-gray-600 mb-4">
-                  Total distribué aujourd&apos;hui : <span className="font-bold text-gray-900">{dailyBudget - remainingBudget}€</span>
+                  Total distribué aujourd'hui : <span className="font-bold text-gray-900">{dailyBudget - remainingBudget}€</span>
                 </p>
               </div>
             </>
@@ -449,12 +451,12 @@ export default function RoueFortunePage() {
           )}
           
           <div className="text-center">
-            <a 
+            <Link 
               href="/gagnants"
               className="inline-block bg-gray-700 hover:bg-gray-800 text-white px-6 py-2 rounded-lg font-semibold transition-all"
             >
-              Voir l&apos;historique complet des gagnants →
-            </a>
+              Voir l'historique complet des gagnants →
+            </Link>
           </div>
         </div>
 
@@ -467,14 +469,14 @@ export default function RoueFortunePage() {
               <p className="text-gray-700 mb-4">
                 Le budget du jour est épuisé. Revenez demain pour tenter votre chance !
               </p>
-              <a 
+              <Link 
                 href="https://stake.com/?c=ROUNDERS"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all"
               >
                 Jouer sur Stake
-              </a>
+              </Link>
             </div>
           </div>
         )}

@@ -1,10 +1,11 @@
+// app/roue-fortune/layout.js
 export const metadata = {
-  title: 'Roue de la Fortune Gratuite | Gagnez jusqu\'à 50€ par Jour',
-  description: 'Tournez gratuitement toutes les 24h et gagnez des bonus cash pour Stake. Jackpot jusqu\'à 50€, gains instantanés. Ouvert à tous possesseurs d\'un compte Stake.',
-  keywords: 'roue fortune stake, gagner bonus quotidien, wheel fortune gratuit',
+  title: 'Roue de la Fortune Rounders - Jusqu’à 50€ par Jour',
+  description: 'Tournez la Roue de la Fortune Rounders gratuitement toutes les 24h et gagnez des bonus cash jusqu’à 50€ pour Stake. Ouvert à tous les joueurs !',
+  keywords: 'roue fortune rounders, bonus cash stake, jeux gratuits rounders, twitter x jeux, rounders pro',
   openGraph: {
-    title: 'Roue de la Fortune Gratuite | Gagnez jusqu\'à 50€ par Jour',
-    description: 'Tournez gratuitement toutes les 24h et gagnez des bonus cash pour Stake. Jackpot jusqu\'à 50€, gains instantanés. Ouvert à tous possesseurs d\'un compte Stake.',
+    title: 'Roue de la Fortune Rounders - Jusqu’à 50€ par Jour',
+    description: 'Tournez la Roue de la Fortune Rounders gratuitement toutes les 24h et gagnez des bonus cash jusqu’à 50€ pour Stake. Ouvert à tous les joueurs !',
     url: 'https://www.rounders.pro/roue-fortune',
     siteName: 'Rounders Pro',
     images: [
@@ -20,8 +21,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Roue de la Fortune Gratuite | Gagnez jusqu\'à 50€ par Jour',
-    description: 'Tournez gratuitement toutes les 24h et gagnez des bonus cash. Jackpot jusqu\'à 50€.',
+    title: 'Roue de la Fortune Rounders - Jusqu’à 50€ par Jour',
+    description: 'Tournez la Roue de la Fortune Rounders et gagnez jusqu’à 50€ de bonus cash pour Stake !',
     images: ['/images/og-rounders-stake.jpg'],
   },
   alternates: {
