@@ -2,37 +2,6 @@
 import Link from 'next/link';
 import { AFFILIATE_LINK } from '../config/affiliate';
 
-export const metadata = {
-  title: 'Guide Ultime Stake - Casino, Sport & Crypto | Par Rounders Pro',
-  description: 'Guide complet de Stake : inscription, bonus, stratégies VIP, rakeback. Maîtrisez la plateforme n°1 de casino et paris sportifs crypto.',
-  keywords: 'guide stake, stake casino, stake tutorial, stake france',
-  openGraph: {
-    title: 'Guide Ultime Stake - Casino, Sport & Crypto | Par Rounders Pro',
-    description: 'Guide complet de Stake : inscription, bonus, stratégies VIP, rakeback. Maîtrisez la plateforme n°1 de casino et paris sportifs crypto.',
-    url: 'https://www.rounders.pro/guide-stake',
-    siteName: 'Rounders Pro',
-    images: [
-      {
-        url: '/images/og-rounders-stake.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Rounders Pro - Guide Stake',
-      }
-    ],
-    locale: 'fr_FR',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Guide Ultime Stake - Casino, Sport & Crypto | Par Rounders Pro',
-    description: 'Guide complet de Stake : inscription, bonus, stratégies VIP, rakeback.',
-    images: ['/images/og-rounders-stake.jpg'],
-  },
-  alternates: {
-    canonical: 'https://www.rounders.pro/guide-stake',
-  },
-};
-
 export default function GuideStakePage() {
   const sections = [
     {
