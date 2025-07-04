@@ -160,7 +160,7 @@ export default function RoueFortunePage() {
         </div>
 
         {/* Nouvelle section d'information */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 max-w-4xl mx-auto">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 max-w-4xl mx-auto text-center">
           <h2 className="text-xl font-bold text-blue-900 mb-3">
             ℹ️ Jeu ouvert à TOUS les joueurs Stake !
           </h2>
@@ -175,7 +175,7 @@ export default function RoueFortunePage() {
           {gameStatus === 'active' ? (
             <div className="bg-green-50 border border-green-200 rounded-lg p-4 inline-block">
               <p className="text-green-800 text-lg font-semibold">
-                ✅ Jeu actif - Budget disponible : {remainingBudget}€ sur {dailyBudget}€
+                ✅ Jeu en cours - Reste à gagner : {remainingBudget}€ sur {dailyBudget}€
               </p>
             </div>
           ) : (
@@ -353,32 +353,41 @@ export default function RoueFortunePage() {
         )}
 
         {/* Gagnants du jour - TOUJOURS AFFICHÉS */}
-        {todayWinners.length > 0 && (
-          <div className="bg-gray-50 rounded-lg p-6 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-              🏆 Tous les gagnants d&apos;aujourd&apos;hui
-            </h3>
-            <div className="grid gap-3 md:grid-cols-2">
-              {todayWinners.map((winner, index) => (
-                <div key={index} className="flex justify-between items-center bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl font-bold text-gray-400">#{index + 1}</span>
-                    <div>
-                      <p className="font-semibold text-gray-900">{winner.pseudo}</p>
-                      <p className="text-sm text-gray-500">{winner.time}</p>
+        <div className="bg-gray-50 rounded-lg p-6 max-w-4xl mx-auto">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+            🏆 Tous les gagnants d&apos;aujourd&apos;hui
+          </h3>
+          
+          {todayWinners.length > 0 ? (
+            <>
+              <div className="grid gap-3 md:grid-cols-2">
+                {todayWinners.map((winner, index) => (
+                  <div key={index} className="flex justify-between items-center bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl font-bold text-gray-400">#{index + 1}</span>
+                      <div>
+                        <p className="font-semibold text-gray-900">{winner.pseudo}</p>
+                        <p className="text-sm text-gray-500">{winner.time}</p>
+                      </div>
                     </div>
+                    <span className="text-xl font-bold text-green-600">{winner.amount}</span>
                   </div>
-                  <span className="text-xl font-bold text-green-600">{winner.amount}</span>
-                </div>
-              ))}
-            </div>
-            <div className="mt-6 text-center">
-              <p className="text-gray-600">
-                Total distribué aujourd&apos;hui : <span className="font-bold text-gray-900">{dailyBudget - remainingBudget}€</span>
+                ))}
+              </div>
+              <div className="mt-6 text-center">
+                <p className="text-gray-600">
+                  Total distribué aujourd&apos;hui : <span className="font-bold text-gray-900">{dailyBudget - remainingBudget}€</span>
+                </p>
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-gray-500 text-lg">
+                Aucun gagnant pour le moment. Soyez le premier !
               </p>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {gameStatus === 'inactive' && (
           <div className="text-center py-12">
