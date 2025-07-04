@@ -11,8 +11,7 @@ export default function GagnantsPage() {
     totalDistributed: 0,
     averageWin: 0,
     totalWinners: 0,
-    biggestWin: 0,
-    dailyStats: []
+    biggestWin: 0
   });
 
   useEffect(() => {
@@ -29,38 +28,20 @@ export default function GagnantsPage() {
       // Calculer les statistiques
       let totalAmount = 0;
       let biggestWin = 0;
-      const dailyData = {};
 
       winnersData.forEach(winner => {
         const amount = parseInt(winner.amount.replace('€', ''));
         totalAmount += amount;
         if (amount > biggestWin) biggestWin = amount;
-
-        // Grouper par date
-        if (!dailyData[winner.date]) {
-          dailyData[winner.date] = {
-            date: winner.date,
-            winners: 0,
-            total: 0
-          };
-        }
-        dailyData[winner.date].winners++;
-        dailyData[winner.date].total += amount;
       });
 
       const averageWin = winnersData.length > 0 ? totalAmount / winnersData.length : 0;
-      const dailyStats = Object.values(dailyData).sort((a, b) => {
-        const [dayA, monthA, yearA] = a.date.split('/');
-        const [dayB, monthB, yearB] = b.date.split('/');
-        return new Date(yearB, monthB - 1, dayB) - new Date(yearA, monthA - 1, dayA);
-      });
 
       setStats({
         totalDistributed: totalAmount,
         averageWin: averageWin.toFixed(2),
         totalWinners: winnersData.length,
-        biggestWin,
-        dailyStats
+        biggestWin
       });
 
       setIsLoading(false);
@@ -70,16 +51,52 @@ export default function GagnantsPage() {
     }
   };
 
+  // Grouper les gagnants par date pour afficher les totaux
+  const getWinnersGroupedByDate = () => {
+    const grouped = [];
+    let currentDate = '';
+    let dayTotal = 0;
+
+    winners.forEach((winner, index) => {
+      if (winner.date !== currentDate && currentDate !== '') {
+        // Ajouter une ligne de total pour la date précédente
+        grouped.push({
+          isTotal: true,
+          date: currentDate,
+          total: dayTotal
+        });
+        dayTotal = 0;
+      }
+      
+      currentDate = winner.date;
+      const amount = parseInt(winner.amount.replace('€', ''));
+      dayTotal += amount;
+      
+      grouped.push(winner);
+      
+      // Si c'est le dernier élément, ajouter le total
+      if (index === winners.length - 1) {
+        grouped.push({
+          isTotal: true,
+          date: currentDate,
+          total: dayTotal
+        });
+      }
+    });
+
+    return grouped;
+  };
+
   return (
     <>
       <Header />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24 md:pb-16">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            🏆 Historique complet des gagnants
+            🎰 Roue de la Fortune Stake
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Roue de la Fortune Stake
+            Historique complet des gagnants
           </p>
         </div>
 
@@ -112,22 +129,7 @@ export default function GagnantsPage() {
               </div>
             </div>
 
-            {/* Stats par jour */}
-            <div className="bg-gray-50 rounded-lg p-6 mb-12">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">📊 Statistiques par jour</h2>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {stats.dailyStats.map((day, index) => (
-                  <div key={index} className="bg-white rounded-lg p-4 shadow">
-                    <h4 className="font-semibold text-gray-900">{day.date}</h4>
-                    <p className="text-sm text-gray-600">
-                      {day.winners} gagnant{day.winners > 1 ? 's' : ''} • Total: {day.total}€
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Liste des gagnants */}
+            {/* Liste des gagnants avec totaux par jour */}
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="p-6 border-b">
                 <h2 className="text-2xl font-bold text-gray-900">
@@ -155,21 +157,32 @@ export default function GagnantsPage() {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {winners.length > 0 ? (
-                      winners.map((winner, index) => (
-                        <tr key={index} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {winner.date}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {winner.time}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {winner.pseudo}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">
-                            {winner.amount}
-                          </td>
-                        </tr>
+                      getWinnersGroupedByDate().map((item, index) => (
+                        item.isTotal ? (
+                          <tr key={`total-${index}`} className="bg-gray-100 font-bold">
+                            <td colSpan="3" className="px-6 py-3 text-right text-gray-900">
+                              Total du {item.date} :
+                            </td>
+                            <td className="px-6 py-3 text-green-600">
+                              {item.total}€
+                            </td>
+                          </tr>
+                        ) : (
+                          <tr key={index} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {item.date}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {item.time}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {item.pseudo}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">
+                              {item.amount}
+                            </td>
+                          </tr>
+                        )
                       ))
                     ) : (
                       <tr>

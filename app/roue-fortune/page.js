@@ -159,22 +159,16 @@ export default function RoueFortunePage() {
           </p>
         </div>
 
-        {/* Nouvelle pub pour X */}
-        <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg p-6 mb-8 max-w-4xl mx-auto text-center">
-          <h2 className="text-xl font-bold text-white mb-2">
-            🚀 Rejoignez-nous sur X !
+        {/* Section info au lieu de pub X */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 max-w-4xl mx-auto text-center">
+          <h2 className="text-xl font-bold text-blue-900 mb-3">
+            ℹ️ Jeu ouvert à TOUS les joueurs Stake !
           </h2>
-          <p className="text-gray-300 mb-4">
-            Suivez @rounders_pro pour participer à tous nos jeux et concours exclusifs
-          </p>
-          <a 
-            href="https://x.com/rounders_pro"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-white text-gray-900 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-all"
-          >
-            Suivre sur X
-          </a>
+          <ul className="space-y-2 text-blue-800">
+            <li>✅ Vous avez un compte Stake ? Vous pouvez participer !</li>
+            <li>✅ Pas besoin d&apos;être affilié ou inscrit via notre lien</li>
+            <li>✅ Une participation gratuite par jour pour tout le monde</li>
+          </ul>
         </div>
 
         <div className="text-center mb-8">
@@ -358,16 +352,22 @@ export default function RoueFortunePage() {
           </div>
         )}
 
-        {/* Section info déplacée ici */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 max-w-4xl mx-auto text-center">
-          <h2 className="text-xl font-bold text-blue-900 mb-3">
-            ℹ️ Jeu ouvert à TOUS les joueurs Stake !
+        {/* Pub X au lieu de section info */}
+        <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg p-6 mb-8 max-w-4xl mx-auto text-center">
+          <h2 className="text-xl font-bold text-white mb-2">
+            🚀 Rejoignez-nous sur X !
           </h2>
-          <ul className="space-y-2 text-blue-800">
-            <li>✅ Vous avez un compte Stake ? Vous pouvez participer !</li>
-            <li>✅ Pas besoin d&apos;être affilié ou inscrit via notre lien</li>
-            <li>✅ Une participation gratuite par jour pour tout le monde</li>
-          </ul>
+          <p className="text-gray-300 mb-4">
+            Suivez @rounders_pro pour participer à tous nos jeux et concours exclusifs
+          </p>
+          <a 
+            href="https://x.com/rounders_pro"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-white text-gray-900 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-all"
+          >
+            Suivre sur X
+          </a>
         </div>
 
         {/* Gagnants du jour */}
