@@ -4,7 +4,7 @@ import { AFFILIATE_LINK } from '../../config/affiliate';
 
 export default function GuideFAQ() {
   return (
-    <>
+    <div className="pb-20 md:pb-0">
       <h1 className="text-4xl font-bold mb-8">FAQ - Questions Fréquentes</h1>
       
       <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
@@ -37,7 +37,7 @@ export default function GuideFAQ() {
               <h3 className="font-semibold mb-2">Comment réclamer mon bonus Rounders ?</h3>
               <p className="text-gray-600">
                 1. Prenez une capture d'écran de votre niveau VIP<br/>
-                2. Allez sur notre <Link href="/affiliates" className="text-blue-600 hover:underline">Espace Affiliés</Link><br/>
+                2. Allez sur notre <Link href="/affilies" className="text-blue-600 hover:underline">Espace Affiliés</Link><br/>
                 3. Remplissez le formulaire avec votre crypto préférée<br/>
                 4. Recevez votre paiement sous 24-48h
               </p>
@@ -197,6 +197,6 @@ export default function GuideFAQ() {
           </ul>
         </div>
       </div>
-    </>
+    </div>
   );
 }
