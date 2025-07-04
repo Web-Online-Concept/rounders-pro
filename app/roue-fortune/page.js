@@ -270,23 +270,11 @@ export default function RoueFortunePage() {
           </p>
         </div>
 
-        {/* Section info - visible en desktop seulement */}
-        <div className="hidden md:block bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 max-w-4xl mx-auto text-center">
-          <h2 className="text-xl font-bold text-blue-900 mb-3">
-            ℹ️ Jeu ouvert à TOUS les joueurs Stake !
-          </h2>
-          <ul className="space-y-2 text-blue-800">
-            <li>✅ Vous avez un compte Stake ? Vous pouvez participer !</li>
-            <li>✅ Pas besoin d&apos;être affilié ou inscrit via notre lien</li>
-            <li>✅ Une participation gratuite par jour pour tout le monde</li>
-          </ul>
-        </div>
-
         <div className="text-center mb-8">
           {gameStatus === 'active' ? (
             <div className="bg-green-50 border border-green-200 rounded-lg p-4 inline-block">
               <p className="text-green-800 text-lg font-semibold">
-                ✅ En cours - A gagner : {remainingBudget}€ sur {dailyBudget}€
+                ✅ Jeu en cours - {remainingBudget}€ sur {dailyBudget}€ restants
               </p>
             </div>
           ) : (
@@ -367,7 +355,19 @@ export default function RoueFortunePage() {
           </>
         )}
 
-        {/* Section info - visible en mobile seulement */}
+        {/* Section info - visible en desktop uniquement, sous la roue */}
+        <div className="hidden md:block bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 max-w-4xl mx-auto text-center">
+          <h2 className="text-xl font-bold text-blue-900 mb-3">
+            ℹ️ Jeu ouvert à TOUS les joueurs Stake !
+          </h2>
+          <ul className="space-y-2 text-blue-800">
+            <li>✅ Vous avez un compte Stake ? Vous pouvez participer !</li>
+            <li>✅ Pas besoin d&apos;être affilié ou inscrit via notre lien</li>
+            <li>✅ Une participation gratuite par jour pour tout le monde</li>
+          </ul>
+        </div>
+
+        {/* Section info - visible en mobile uniquement */}
         <div className="md:hidden bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 text-center">
           <h2 className="text-xl font-bold text-blue-900 mb-3">
             ℹ️ Jeu ouvert à TOUS les joueurs Stake !
