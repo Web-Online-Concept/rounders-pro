@@ -33,7 +33,7 @@ export default function AdminRouePage() {
   const handleLogin = (e) => {
     e.preventDefault();
     // Remplacez 'VotreMotDePasse' par votre vrai mot de passe
-    if (password === 'VotreMotDePasse') {
+    if (password === 'test') {
       sessionStorage.setItem('adminAuth', 'true');
       setIsAuthenticated(true);
       loadAdminData();
