@@ -4,7 +4,7 @@ import { AFFILIATE_LINK, AFFILIATE_CODE } from '../../config/affiliate';
 
 export const metadata = {
   title: 'Comment s\'inscrire sur Stake - Guide étape par étape | Rounders',
-  description: 'Tutoriel complet pour créer un compte Stake. Inscription rapide, vérification KYC, premiers pas. Guide officiel Rounders Pro.',
+  description: 'Tutoriel complet pour créer un compte Stake en 2025. Inscription rapide, vérification KYC, premiers pas. Guide officiel Rounders Pro.',
   keywords: 'inscription stake, créer compte stake, stake registration',
 };
 
@@ -67,6 +67,7 @@ export default function GuideInscriptionPage() {
                 
                   href={AFFILIATE_LINK}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition"
                 >
                   Ouvrir Stake avec bonus →
@@ -319,6 +320,7 @@ export default function GuideInscriptionPage() {
         
           href={AFFILIATE_LINK}
           target="_blank"
+          rel="noopener noreferrer"
           className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
         >
           S&apos;inscrire maintenant →

@@ -106,6 +106,7 @@ export default function GuideStakePage() {
           
             href={AFFILIATE_LINK}
             target="_blank"
+            rel="noopener noreferrer"
             className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg text-center"
           >
             Commencer sur Stake →
@@ -188,6 +189,7 @@ export default function GuideStakePage() {
         
           href={AFFILIATE_LINK}
           target="_blank"
+          rel="noopener noreferrer"
           className="inline-block bg-white text-gray-900 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg"
         >
           Inscription avec Bonus →
