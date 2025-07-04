@@ -3,9 +3,34 @@ import Link from 'next/link';
 import { AFFILIATE_LINK } from '../config/affiliate';
 
 export const metadata = {
-  title: 'Guide Stake 2025 - Casino, Sport & Crypto | Par Rounders Pro',
-  description: 'Guide complet de Stake : inscription, bonus, stratégies, VIP. Tout pour maîtriser la plateforme de casino et paris sportifs crypto.',
+  title: 'Guide Ultime Stake - Casino, Sport & Crypto | Par Rounders Pro',
+  description: 'Guide complet de Stake : inscription, bonus, stratégies VIP, rakeback. Maîtrisez la plateforme n°1 de casino et paris sportifs crypto.',
   keywords: 'guide stake, stake casino, stake tutorial, stake france',
+  openGraph: {
+    title: 'Guide Ultime Stake - Casino, Sport & Crypto | Par Rounders Pro',
+    description: 'Guide complet de Stake : inscription, bonus, stratégies VIP, rakeback. Maîtrisez la plateforme n°1 de casino et paris sportifs crypto.',
+    url: 'https://www.rounders.pro/guide-stake',
+    siteName: 'Rounders Pro',
+    images: [
+      {
+        url: '/images/og-rounders-stake.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Rounders Pro - Guide Stake',
+      }
+    ],
+    locale: 'fr_FR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Guide Ultime Stake - Casino, Sport & Crypto | Par Rounders Pro',
+    description: 'Guide complet de Stake : inscription, bonus, stratégies VIP, rakeback.',
+    images: ['/images/og-rounders-stake.jpg'],
+  },
+  alternates: {
+    canonical: 'https://www.rounders.pro/guide-stake',
+  },
 };
 
 export default function GuideStakePage() {
@@ -96,21 +121,21 @@ export default function GuideStakePage() {
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-8 mb-8">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          Guide Ultime Stake 2025
+          Guide Ultime Stake
         </h1>
         <p className="text-xl text-gray-600 mb-6">
           Le guide le plus complet en français pour maîtriser Stake et maximiser vos gains.
           Écrit par des experts, mis à jour quotidiennement.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
-          <Link
+          
             href={AFFILIATE_LINK}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg text-center"
           >
             Commencer sur Stake →
-          </Link>
+          </a>
           <Link
             href="/guide-stake/france"
             className="inline-block bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition shadow-lg text-center"
@@ -131,8 +156,8 @@ export default function GuideStakePage() {
           <div className="text-sm text-gray-600">Conseils</div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 text-center">
-          <div className="text-2xl font-bold text-amber-600">2025</div>
-          <div className="text-sm text-gray-600">Mis à jour</div>
+          <div className="text-2xl font-bold text-amber-600">MAJ</div>
+          <div className="text-sm text-gray-600">Quotidienne</div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 text-center">
           <div className="text-2xl font-bold text-red-600">🇫🇷</div>
@@ -186,14 +211,14 @@ export default function GuideStakePage() {
         <p className="text-gray-300 mb-6">
           Inscrivez-vous via notre lien pour bénéficier de tous les avantages exclusifs Rounders Pro
         </p>
-        <Link
+        
           href={AFFILIATE_LINK}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block bg-white text-gray-900 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg"
         >
           Inscription avec Bonus →
-        </Link>
+        </a>
       </div>
     </div>
   );
