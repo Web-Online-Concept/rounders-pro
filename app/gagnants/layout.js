@@ -1,10 +1,11 @@
+// app/gagnants/layout.js
 export const metadata = {
-  title: 'Gagnants Rounders Pro | Retrouvez la liste complète de nos gagnants',
-  description: 'Tableau des gagnants en temps réel : découvrez qui a reçu les bonus VIP Stake aujourd\'hui. Paiements vérifiés.',
-  keywords: 'gagnants rounders, bonus stake payés, winners rounders pro',
+  title: 'Rounders Pro - Gagnants des Bonus VIP',
+  description: 'Consultez l’historique des gagnants des bonus VIP et de la Roue de la Fortune sur Rounders Pro. Statistiques et paiements vérifiés en temps réel.',
+  keywords: 'gagnants rounders, roue fortune gagnants, stake bonus, rounders pro gagnants, bonus vip',
   openGraph: {
-    title: 'Gagnants Rounders Pro | Retrouvez la liste complète des gagnants à nos jeux',
-    description: 'Tableau des gagnants en temps réel : découvrez qui a reçu les bonus VIP Stake aujourd\'hui. Paiements vérifiés.',
+    title: 'Rounders Pro - Gagnants des Bonus VIP',
+    description: 'Consultez l’historique des gagnants des bonus VIP et de la Roue de la Fortune sur Rounders Pro. Statistiques et paiements vérifiés en temps réel.',
     url: 'https://www.rounders.pro/gagnants',
     siteName: 'Rounders Pro',
     images: [
@@ -20,8 +21,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Gagnants Rounders Pro | +15,000€ de Bonus Distribués',
-    description: 'Tableau des gagnants en temps réel. Plus de 15,000€ distribués, paiements vérifiés.',
+    title: 'Rounders Pro - Gagnants des Bonus VIP',
+    description: 'Historique des gagnants des bonus VIP et Roue de la Fortune sur Rounders Pro.',
     images: ['/images/og-rounders-stake.jpg'],
   },
   alternates: {
