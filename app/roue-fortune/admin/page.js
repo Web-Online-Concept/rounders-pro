@@ -10,6 +10,7 @@ export default function AdminRouePage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [deletingIndex, setDeletingIndex] = useState(null);
   
   // État du jeu
   const [dailyBudget, setDailyBudget] = useState(50);
@@ -71,6 +72,49 @@ export default function AdminRouePage() {
       console.error('Erreur chargement admin:', error);
     }
     setIsLoading(false);
+  };
+
+  const deleteWinner = async (winner, index) => {
+    if (!confirm(`Supprimer le gain de ${winner.pseudo} (${winner.amount}) ?`)) {
+      return;
+    }
+
+    setDeletingIndex(index);
+    
+    try {
+      // Convertir la date au format YYYY-MM-DD
+      const [day, month, year] = winner.date.split('/');
+      const dateFormatted = `${year}-${month}-${day}`;
+
+      const response = await fetch('/api/roue-fortune/admin/manage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'deleteWinner',
+          date: dateFormatted,
+          winnerIndex: winners.findIndex(w => 
+            w.pseudo === winner.pseudo && 
+            w.time === winner.time && 
+            w.date === winner.date
+          )
+        }),
+      });
+
+      if (response.ok) {
+        alert('Gagnant supprimé avec succès');
+        await loadAdminData(); // Recharger les données
+      } else {
+        const error = await response.json();
+        alert(`Erreur: ${error.error}`);
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+      alert('Erreur lors de la suppression');
+    }
+    
+    setDeletingIndex(null);
   };
 
   if (!isAuthenticated) {
@@ -258,10 +302,13 @@ export default function AdminRouePage() {
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Gain
                       </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {winners.slice(0, 20).map((winner, index) => (
+                    {winners.slice(0, 50).map((winner, index) => (
                       <tr key={index}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           {winner.date}
@@ -274,6 +321,15 @@ export default function AdminRouePage() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">
                           {winner.amount}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <button
+                            onClick={() => deleteWinner(winner, index)}
+                            disabled={deletingIndex === index}
+                            className="text-red-600 hover:text-red-800 font-medium disabled:opacity-50"
+                          >
+                            {deletingIndex === index ? 'Suppression...' : 'Supprimer'}
+                          </button>
                         </td>
                       </tr>
                     ))}

@@ -51,6 +51,63 @@ export async function POST(request) {
           message: 'Budget du jour réinitialisé' 
         });
 
+      case 'deleteWinner':
+        // Supprimer un gagnant spécifique
+        if (!params.date || params.winnerIndex === undefined) {
+          return NextResponse.json({ 
+            success: false, 
+            error: 'Paramètres manquants' 
+          }, { status: 400 });
+        }
+
+        // Récupérer les données du jour
+        const budgetData = await redis.get(`budget:${params.date}`);
+        
+        if (!budgetData || !budgetData.winners) {
+          return NextResponse.json({ 
+            success: false, 
+            error: 'Aucune donnée trouvée' 
+          }, { status: 404 });
+        }
+
+        // Vérifier que l'index est valide
+        if (params.winnerIndex < 0 || params.winnerIndex >= budgetData.winners.length) {
+          return NextResponse.json({ 
+            success: false, 
+            error: 'Index invalide' 
+          }, { status: 400 });
+        }
+
+        // Récupérer le gagnant à supprimer
+        const winnerToDelete = budgetData.winners[params.winnerIndex];
+        const amountToRefund = parseInt(winnerToDelete.amount.replace('€', ''));
+
+        // Supprimer le gagnant de la liste
+        budgetData.winners.splice(params.winnerIndex, 1);
+
+        // Recalculer le budget dépensé
+        budgetData.spent = Math.max(0, budgetData.spent - amountToRefund);
+
+        // Sauvegarder les modifications
+        await redis.set(`budget:${params.date}`, budgetData);
+
+        // Si c'est aujourd'hui, supprimer aussi les clés de participation
+        const todayDate = getParisDate();
+        if (params.date === todayDate) {
+          // Supprimer la participation par pseudo
+          await redis.del(`participation:${todayDate}:pseudo:${winnerToDelete.pseudo.toLowerCase()}`);
+          // Supprimer la participation par IP si elle existe
+          if (winnerToDelete.ip) {
+            await redis.del(`participation:${todayDate}:ip:${winnerToDelete.ip}`);
+          }
+        }
+
+        return NextResponse.json({ 
+          success: true, 
+          message: 'Gagnant supprimé avec succès',
+          refundedAmount: amountToRefund
+        });
+
       case 'toggleGame':
         // Activer/désactiver le jeu
         const status = await redis.get('game:roue:status') || {};

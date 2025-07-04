@@ -187,24 +187,8 @@ export default function RoueFortunePage() {
           )}
         </div>
 
-        {todayWinners.length > 0 && (
-          <div className="bg-gray-50 rounded-lg p-6 mb-8 max-w-2xl mx-auto">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">
-              🏆 Gagnants d&apos;aujourd&apos;hui
-            </h3>
-            <div className="space-y-2">
-              {todayWinners.slice(0, 5).map((winner, index) => (
-                <div key={index} className="flex justify-between items-center bg-white p-3 rounded">
-                  <span className="text-gray-700">{winner.pseudo}</span>
-                  <span className="text-green-600 font-bold">{winner.amount}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {gameStatus === 'active' && (
-          <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div className="grid md:grid-cols-2 gap-8 items-center mb-12">
             <div className="relative">
               <div className="relative w-80 h-80 mx-auto">
                 <svg
@@ -364,6 +348,34 @@ export default function RoueFortunePage() {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Gagnants du jour - TOUJOURS AFFICHÉS */}
+        {todayWinners.length > 0 && (
+          <div className="bg-gray-50 rounded-lg p-6 max-w-4xl mx-auto">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              🏆 Tous les gagnants d&apos;aujourd&apos;hui
+            </h3>
+            <div className="grid gap-3 md:grid-cols-2">
+              {todayWinners.map((winner, index) => (
+                <div key={index} className="flex justify-between items-center bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl font-bold text-gray-400">#{index + 1}</span>
+                    <div>
+                      <p className="font-semibold text-gray-900">{winner.pseudo}</p>
+                      <p className="text-sm text-gray-500">{winner.time}</p>
+                    </div>
+                  </div>
+                  <span className="text-xl font-bold text-green-600">{winner.amount}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 text-center">
+              <p className="text-gray-600">
+                Total distribué aujourd&apos;hui : <span className="font-bold text-gray-900">{dailyBudget - remainingBudget}€</span>
+              </p>
             </div>
           </div>
         )}
