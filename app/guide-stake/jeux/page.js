@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { AFFILIATE_LINK } from '../../config/affiliate';
 
 export const metadata = {
-  title: 'Jeux Stake - Casino, Slots, Originals | Guide complet 2025',
+  title: 'Jeux Stake - Casino, Slots, Originals | Guide complet',
   description: 'Découvrez tous les jeux Stake : Originals (Dice, Plinko, Mines), slots, live casino. Règles, RTP et stratégies de base.',
   keywords: 'jeux stake, stake originals, stake casino games',
 };
