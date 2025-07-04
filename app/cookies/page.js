@@ -1,8 +1,5 @@
-export const metadata = {
-  title: 'Politique de Cookies - Rounders Pro | Utilisation des cookies',
-  description: 'Politique de cookies de Rounders Pro. Comment nous utilisons les cookies pour améliorer votre expérience sur nos jeux gratuits.',
-};
-
+// app/cookies/page.js
+import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -21,13 +18,13 @@ export default function Cookies() {
                 Cette politique explique comment Rounders.pro utilise les cookies dans le cadre de ses jeux gratuits et animations marketing.
               </p>
               <p className="text-gray-600">
-                En continuant à utiliser notre site et à participer à nos jeux, vous acceptez l&apos;utilisation de cookies conformément à cette politique.
+                En continuant à utiliser notre site et à participer à nos jeux, vous acceptez l'utilisation de cookies conformément à cette politique.
               </p>
             </section>
 
             {/* Qu'est-ce qu'un cookie */}
             <section>
-              <h2 className="text-2xl font-semibold mb-4">1. Qu&apos;est-ce qu&apos;un cookie ?</h2>
+              <h2 className="text-2xl font-semibold mb-4">1. Qu'est-ce qu'un cookie ?</h2>
               <p className="text-gray-600">
                 Un cookie est un petit fichier texte stocké sur votre appareil. Dans le contexte de nos jeux, ils nous permettent notamment de vérifier que vous ne participez qu'une fois par jour.
               </p>
@@ -54,7 +51,7 @@ export default function Cookies() {
                 </div>
                 
                 <div>
-                  <h3 className="font-semibold mb-2">2.3 Cookies d&apos;affiliation</h3>
+                  <h3 className="font-semibold mb-2">2.3 Cookies d'affiliation</h3>
                   <p>Pour suivre les inscriptions Stake via nos liens (programme d'affiliation).</p>
                 </div>
               </div>
@@ -108,10 +105,46 @@ export default function Cookies() {
                 <div>
                   <p className="font-semibold mb-2">Paramètres par navigateur :</p>
                   <ul className="list-disc list-inside ml-4">
-                    <li><a href="https://support.google.com/chrome/answer/95647" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Chrome</a></li>
-                    <li><a href="https://support.mozilla.org/fr/kb/cookies-informations-sites-enregistrent" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Firefox</a></li>
-                    <li><a href="https://support.apple.com/fr-fr/guide/safari/sfri11471/mac" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Safari</a></li>
-                    <li><a href="https://support.microsoft.com/fr-fr/help/17442" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Edge</a></li>
+                    <li>
+                      <Link
+                        href="https://support.google.com/chrome/answer/95647"
+                        className="text-blue-600 hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Chrome
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="https://support.mozilla.org/fr/kb/cookies-informations-sites-enregistrent"
+                        className="text-blue-600 hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Firefox
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="https://support.apple.com/fr-fr/guide/safari/sfri11471/mac"
+                        className="text-blue-600 hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Safari
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="https://support.microsoft.com/fr-fr/help/17442"
+                        className="text-blue-600 hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Edge
+                      </Link>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -138,7 +171,7 @@ export default function Cookies() {
             <section>
               <h2 className="text-2xl font-semibold mb-4">7. Votre consentement</h2>
               <p className="text-gray-600">
-                En participant à nos jeux, vous acceptez l&apos;utilisation de cookies. Si vous refusez, vous ne pourrez pas participer aux jeux nécessitant des cookies.
+                En participant à nos jeux, vous acceptez l'utilisation de cookies. Si vous refusez, vous ne pourrez pas participer aux jeux nécessitant des cookies.
               </p>
             </section>
 
