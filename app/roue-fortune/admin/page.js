@@ -33,7 +33,7 @@ export default function AdminRouePage() {
   const handleLogin = (e) => {
     e.preventDefault();
     // Remplacez 'VotreMotDePasse' par votre vrai mot de passe
-    if (password === 'test') {
+    if (password === 'VotreMotDePasse') {
       sessionStorage.setItem('adminAuth', 'true');
       setIsAuthenticated(true);
       loadAdminData();
@@ -52,19 +52,23 @@ export default function AdminRouePage() {
       setDailyBudget(statusData.dailyBudget || 50);
       setTodaySpent(statusData.dailyBudget - statusData.remainingBudget);
       
-      // Charger les gagnants
-      const winnersRes = await fetch('/api/roue-fortune/winners');
-      const winnersData = await winnersRes.json();
+      // Charger TOUS les gagnants historiques pour les stats
+      const allWinnersRes = await fetch('/api/roue-fortune/winners?limit=all');
+      const allWinnersData = await allWinnersRes.json();
       
-      setWinners(winnersData.winners || []);
+      // Charger les gagnants récents pour l'affichage (50 derniers)
+      const recentWinnersRes = await fetch('/api/roue-fortune/winners?limit=30');
+      const recentWinnersData = await recentWinnersRes.json();
       
-      // Calculer les stats
-      const totalDistributed = winnersData.winners.reduce((sum, w) => {
+      setWinners(recentWinnersData.winners || []);
+      
+      // Calculer les stats sur TOUT l'historique
+      const totalDistributed = allWinnersData.winners.reduce((sum, w) => {
         return sum + parseInt(w.amount.replace('€', ''));
       }, 0);
       
       setStats({
-        totalWinners: winnersData.winners.length,
+        totalWinners: allWinnersData.winners.length,
         totalDistributed
       });
       
@@ -200,7 +204,7 @@ export default function AdminRouePage() {
                   {stats.totalWinners}
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
-                  Sur 7 jours
+                  Historique complet
                 </p>
               </div>
               
@@ -212,7 +216,7 @@ export default function AdminRouePage() {
                   {stats.totalDistributed}€
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
-                  Sur 7 jours
+                  Historique complet
                 </p>
               </div>
             </div>
@@ -282,7 +286,7 @@ export default function AdminRouePage() {
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="p-6 border-b">
                 <h2 className="text-xl font-bold text-gray-900">
-                  Gagnants récents
+                  Gagnants récents (30 derniers jours)
                 </h2>
               </div>
               

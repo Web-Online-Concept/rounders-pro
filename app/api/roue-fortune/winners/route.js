@@ -21,42 +21,64 @@ function formatDateFr(dateStr) {
   return `${day}/${month}/${year}`;
 }
 
-export async function GET() {
+export async function GET(request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const limit = searchParams.get('limit') || '7'; // Par défaut 7 jours, mais peut être 'all'
+    
     const allWinners = [];
     
-    // Récupérer les gagnants des 7 derniers jours
-    for (let i = 0; i < 7; i++) {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
+    if (limit === 'all') {
+      // Récupérer TOUTES les clés budget:*
+      const budgetKeys = await redis.keys('budget:*');
       
-      const dateStr = date.toLocaleString('en-CA', { 
-        timeZone: 'Europe/Paris',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-      }).split(',')[0];
-      
-      const budgetData = await redis.get(`budget:${dateStr}`);
-      
-      if (budgetData && budgetData.winners && budgetData.winners.length > 0) {
-        // Ajouter la date à chaque gagnant
-        const winnersWithDate = budgetData.winners.map(winner => ({
-          ...winner,
-          date: formatDateFr(dateStr),
-          dateSort: dateStr
-        }));
+      for (const key of budgetKeys) {
+        const budgetData = await redis.get(key);
+        const dateStr = key.replace('budget:', '');
         
-        allWinners.push(...winnersWithDate);
+        if (budgetData && budgetData.winners && budgetData.winners.length > 0) {
+          const winnersWithDate = budgetData.winners.map(winner => ({
+            ...winner,
+            date: formatDateFr(dateStr),
+            dateSort: dateStr
+          }));
+          
+          allWinners.push(...winnersWithDate);
+        }
+      }
+    } else {
+      // Récupérer les X derniers jours
+      const days = parseInt(limit);
+      for (let i = 0; i < days; i++) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        
+        const dateStr = date.toLocaleString('en-CA', { 
+          timeZone: 'Europe/Paris',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }).split(',')[0];
+        
+        const budgetData = await redis.get(`budget:${dateStr}`);
+        
+        if (budgetData && budgetData.winners && budgetData.winners.length > 0) {
+          const winnersWithDate = budgetData.winners.map(winner => ({
+            ...winner,
+            date: formatDateFr(dateStr),
+            dateSort: dateStr
+          }));
+          
+          allWinners.push(...winnersWithDate);
+        }
       }
     }
     
-    // Trier par date décroissante (plus récent en premier)
+    // Trier par date décroissante
     allWinners.sort((a, b) => {
       if (a.dateSort !== b.dateSort) {
         return b.dateSort.localeCompare(a.dateSort);
       }
-      // Si même date, trier par heure décroissante
       return b.time.localeCompare(a.time);
     });
     
