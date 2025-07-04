@@ -1,3 +1,8 @@
+export const metadata = {
+  title: 'Mentions Légales - Rounders Pro | Jeux gratuits sans obligation',
+  description: 'Mentions légales de Rounders Pro. Jeux et bonus offerts à titre gracieux sans aucune obligation. Site d\'information sur Stake édité par Web Online Concept.',
+};
+
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -10,6 +15,16 @@ export default function MentionsLegales() {
           <h1 className="text-4xl font-bold mb-8">Mentions Légales</h1>
           
           <div className="bg-white rounded-lg shadow-md p-8 space-y-8">
+            {/* Avertissement préliminaire */}
+            <section className="bg-red-50 border-2 border-red-400 p-6">
+              <h2 className="text-2xl font-bold mb-4 text-red-800">⚠️ AVERTISSEMENT IMPORTANT</h2>
+              <div className="space-y-4 text-red-700 font-semibold">
+                <p>TOUS LES JEUX, BONUS ET RÉCOMPENSES MENTIONNÉS SUR CE SITE SONT OFFERTS À TITRE PUREMENT GRACIEUX ET VOLONTAIRE.</p>
+                <p>WEB ONLINE CONCEPT N'A AUCUNE OBLIGATION CONTRACTUELLE OU LÉGALE DE VERSER QUELQUE SOMME QUE CE SOIT.</p>
+                <p>NOUS NOUS RÉSERVONS LE DROIT DE MODIFIER, SUSPENDRE OU ANNULER TOUT JEU OU BONUS À TOUT MOMENT, SANS PRÉAVIS NI JUSTIFICATION.</p>
+              </div>
+            </section>
+
             {/* Éditeur du site */}
             <section>
               <h2 className="text-2xl font-semibold mb-4">Éditeur du site</h2>
@@ -20,6 +35,24 @@ export default function MentionsLegales() {
                 <p><strong>Site web :</strong> <a href="https://web-online-concept.com" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">web-online-concept.com</a></p>
                 <p><strong>SIRET :</strong> 510 583 800 00048</p>
                 <p><strong>Directeur de publication :</strong> Le représentant légal de Web Online Concept</p>
+              </div>
+            </section>
+
+            {/* Nature du site */}
+            <section className="bg-orange-50 border-l-4 border-orange-400 p-6">
+              <h2 className="text-2xl font-semibold mb-4">Nature du site et des services</h2>
+              <div className="space-y-4 text-gray-700">
+                <p><strong>Rounders.pro est un site d'information et de divertissement gratuit.</strong></p>
+                <p>Les jeux proposés (Roue de la Fortune, tirages au sort, concours Twitter, etc.) sont des animations marketing offertes sans contrepartie et sans obligation de résultat.</p>
+                <p>Nous participons au programme d'affiliation de Stake mais restons totalement indépendants dans l'organisation de nos jeux.</p>
+                <p className="font-semibold">Les participants reconnaissent que :</p>
+                <ul className="list-disc list-inside ml-4">
+                  <li>La participation est gratuite et volontaire</li>
+                  <li>Aucun achat n'est nécessaire</li>
+                  <li>Les gains annoncés sont indicatifs et non contractuels</li>
+                  <li>Nous pouvons disqualifier tout participant sans justification</li>
+                  <li>Les jeux peuvent être annulés à tout moment</li>
+                </ul>
               </div>
             </section>
 
@@ -44,37 +77,35 @@ export default function MentionsLegales() {
               </p>
             </section>
 
-            {/* Avertissements importants */}
-            <section className="bg-red-50 border-l-4 border-red-400 p-6">
-              <h2 className="text-2xl font-semibold mb-4 text-red-800">Avertissements importants</h2>
-              <div className="space-y-4 text-red-700">
-                <p>
-                  <strong>Nature du service :</strong> Rounders.pro est un site d&apos;information et de recommandation. Les bonus mentionnés sont offerts à titre gracieux, sans aucune obligation contractuelle de notre part.
-                </p>
-                <p>
-                  <strong>Absence de garantie :</strong> Web Online Concept se réserve le droit de modifier, suspendre ou cesser tout ou partie de ses services à tout moment, sans préavis ni indemnité.
-                </p>
-                <p>
-                  <strong>Jeux d&apos;argent :</strong> Les jeux d&apos;argent comportent des risques financiers et peuvent créer une dépendance. Ils sont interdits aux mineurs. Jouez responsable.
-                </p>
-                <p>
-                  <strong>Affiliation :</strong> Rounders.pro participe au programme d&apos;affiliation de Stake et peut percevoir des commissions sur les inscriptions réalisées via nos liens.
-                </p>
+            {/* Limitation de responsabilité */}
+            <section className="bg-gray-100 p-6 rounded-lg">
+              <h2 className="text-2xl font-semibold mb-4">Limitation totale de responsabilité</h2>
+              <div className="space-y-4 text-gray-700">
+                <p className="font-semibold">Web Online Concept ne saurait être tenu responsable de :</p>
+                <ul className="list-disc list-inside ml-4 space-y-2">
+                  <li>L'absence de gain lors de la participation aux jeux</li>
+                  <li>La modification ou l'annulation de tout jeu ou bonus</li>
+                  <li>Les erreurs techniques empêchant la participation</li>
+                  <li>Les décisions de refus de paiement, quelle qu'en soit la raison</li>
+                  <li>Les pertes financières liées aux jeux d'argent sur Stake</li>
+                  <li>L'impossibilité de participer aux jeux pour quelque raison que ce soit</li>
+                  <li>La fermeture temporaire ou définitive du site</li>
+                </ul>
               </div>
             </section>
 
-            {/* Limitation de responsabilité */}
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">Limitation de responsabilité</h2>
-              <div className="space-y-4 text-gray-600">
-                <p>
-                  Web Online Concept ne saurait être tenu responsable des dommages directs ou indirects résultant de l&apos;utilisation ou de l&apos;impossibilité d&apos;utiliser ce site.
+            {/* Jeux d'argent */}
+            <section className="bg-red-50 border-l-4 border-red-400 p-6">
+              <h2 className="text-2xl font-semibold mb-4 text-red-800">Avertissement jeux d'argent</h2>
+              <div className="space-y-4 text-red-700">
+                <p className="font-semibold">
+                  Les jeux d'argent comportent des risques : endettement, isolement, dépendance.
                 </p>
                 <p>
-                  Les informations fournies le sont à titre indicatif et ne constituent en aucun cas des conseils personnalisés. L&apos;utilisateur reste seul responsable de ses décisions.
+                  <strong>Interdiction formelle aux mineurs de moins de 18 ans.</strong>
                 </p>
                 <p>
-                  Web Online Concept décline toute responsabilité concernant les sites tiers vers lesquels des liens sont établis.
+                  Nos jeux gratuits ne doivent pas inciter aux jeux d'argent. L'utilisateur est seul responsable de ses décisions de jeu sur Stake ou toute autre plateforme.
                 </p>
               </div>
             </section>
@@ -83,13 +114,16 @@ export default function MentionsLegales() {
             <section>
               <h2 className="text-2xl font-semibold mb-4">Contact</h2>
               <p className="text-gray-600">
-                Pour toute question concernant ces mentions légales, vous pouvez nous contacter à : web.online.concept@gmail.com
+                Pour toute question concernant ces mentions légales : web.online.concept@gmail.com
+              </p>
+              <p className="text-gray-600 mt-2 text-sm">
+                Note : Les réclamations concernant les jeux ne sont pas garanties d'obtenir une réponse.
               </p>
             </section>
 
             {/* Date de mise à jour */}
             <section className="text-sm text-gray-500 pt-4 border-t">
-              <p>Dernière mise à jour : Décembre 2024</p>
+              <p>Dernière mise à jour : Janvier 2025</p>
             </section>
           </div>
         </div>
