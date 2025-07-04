@@ -4,8 +4,8 @@ import Footer from './components/Footer';
 import { AFFILIATE_LINK, AFFILIATE_CODE } from './config/affiliate';
 
 export const metadata = {
-  title: 'Rounders Pro - Affiliation & Guide Stake | Jeux gratuits & Bonus offerts',
-  description: 'Découvrez notre guide complet de Stake & les avantages de devenir affilié Rounders. Retrouvez l\'ensemble de nos jeux gratuits',
+  title: 'Rounders Pro - Bonus Stake jusqu\'à 200€ | Code Promo & Guide VIP',
+  description: 'Débloquez jusqu\'à 200€ de bonus cash + 10% rakeback sur Stake avec le code rounders. Guide VIP complet, stratégies gagnantes et cashback exclusif.',
   keywords: 'rounders pro, stake, guide stake, affiliation stake, bonus gratuits',
 };
 
