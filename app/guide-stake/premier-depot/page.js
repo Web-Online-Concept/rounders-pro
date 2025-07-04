@@ -1,3 +1,10 @@
+// app/guide-stake/premier-depot/page.js
+export const metadata = {
+  title: 'Premier dépôt Stake - Crypto et méthodes | Guide 2025',
+  description: 'Comment effectuer votre premier dépôt sur Stake. Cryptomonnaies acceptées, montants minimum, bonus de bienvenue. Tutoriel complet.',
+  keywords: 'dépôt stake, stake deposit, crypto stake',
+};
+
 export default function PremierDepot() {
   return (
     <div className="max-w-4xl mx-auto">

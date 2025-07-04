@@ -3,9 +3,9 @@ import Link from 'next/link';
 import { AFFILIATE_LINK } from '../../config/affiliate';
 
 export const metadata = {
-  title: 'Guide des Jeux Stake - Casino, Slots, Sports et Originals | Rounders Pro',
-  description: 'Découvrez tous les jeux disponibles sur Stake : slots, live casino, Stake Originals, paris sportifs. RTP, stratégies et recommandations.',
-  keywords: 'stake jeux, stake games, stake casino, stake slots, stake originals, stake sports',
+  title: 'Jeux Stake - Casino, Slots, Originals | Guide complet 2025',
+  description: 'Découvrez tous les jeux Stake : Originals (Dice, Plinko, Mines), slots, live casino. Règles, RTP et stratégies de base.',
+  keywords: 'jeux stake, stake originals, stake casino games',
 };
 
 export default function GuideJeuxPage() {
@@ -340,7 +340,7 @@ export default function GuideJeuxPage() {
           sur tous vos paris avec notre code affilié.
         </p>
         
-        <a
+        
           href={AFFILIATE_LINK}
           target="_blank"
           className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
