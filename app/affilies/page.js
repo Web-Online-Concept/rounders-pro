@@ -1,14 +1,17 @@
+// app/affilies/page.js
+'use client';
+import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { AFFILIATE_LINK } from '../config/affiliate';
 
 export const metadata = {
-  title: 'Espace Membres Rounders | Réclamez 200€ de Bonus VIP Stake',
-  description: 'Tableau de bord affiliés : réclamez instantanément vos bonus VIP jusqu\'à 200€. Suivi en temps réel, paiement crypto sous 48h. Réservé aux membres Rounders.',
-  keywords: 'bonus rounders, affiliation stake, bonus vip stake, rewards rounders',
+  title: 'Rounders Pro - Espace Affiliés Bonus VIP 200€',
+  description: 'Réclamez jusqu’à 200€ de bonus VIP dans l’espace affiliés Rounders Pro. Suivi en temps réel, paiement crypto 48h.',
+  keywords: 'espace affiliés, bonus rounders, bonus vip stake, rewards rounders, bonus cash stake',
   openGraph: {
-    title: 'Espace Membres Rounders | Réclamez 200€ de Bonus VIP Stake',
-    description: 'Tableau de bord affiliés : réclamez instantanément vos bonus VIP jusqu\'à 200€. Suivi en temps réel, paiement crypto sous 48h. Réservé aux membres Rounders.',
+    title: 'Rounders Pro - Espace Affiliés Bonus VIP 200€',
+    description: 'Réclamez jusqu’à 200€ de bonus VIP dans l’espace affiliés Rounders Pro. Suivi en temps réel, paiement crypto 48h.',
     url: 'https://www.rounders.pro/affilies',
     siteName: 'Rounders Pro',
     images: [
@@ -16,7 +19,7 @@ export const metadata = {
         url: '/images/og-rounders-stake.jpg',
         width: 1200,
         height: 630,
-        alt: 'Rounders Pro - Espace Membres VIP',
+        alt: 'Rounders Pro - Espace Affiliés VIP',
       }
     ],
     locale: 'fr_FR',
@@ -24,8 +27,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Espace Membres Rounders | Réclamez 200€ de Bonus VIP Stake',
-    description: 'Tableau de bord affiliés : réclamez instantanément vos bonus VIP jusqu\'à 200€.',
+    title: 'Rounders Pro - Espace Affiliés Bonus VIP 200€',
+    description: 'Réclamez jusqu’à 200€ de bonus VIP dans l’espace affiliés Rounders Pro.',
     images: ['/images/og-rounders-stake.jpg'],
   },
   alternates: {
@@ -45,7 +48,7 @@ export default function Affilies() {
               💰 Réclamez votre Bonus Cash Rounders
             </h1>
             <p className="text-xl text-gray-600">
-              Jusqu&apos;à 200€ selon votre niveau VIP atteint sur Stake
+              Jusqu'à 200€ selon votre niveau VIP atteint sur Stake
             </p>
           </div>
 
@@ -128,7 +131,8 @@ export default function Affilies() {
 
               {/* Crypto préférée */}
               <div>
-                <label htmlFor="crypto" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="crypto" className="block text-sm font-medium text-gray-7
+System: 00 mb-2">
                   Crypto préférée pour le bonus *
                 </label>
                 <select
@@ -182,15 +186,15 @@ export default function Affilies() {
               {/* Lien capture d'écran */}
               <div>
                 <label htmlFor="screenshotLink" className="block text-sm font-medium text-gray-700 mb-2">
-                  Lien vers votre capture d&apos;écran de votre niveau VIP atteint *
+                  Lien vers votre capture d'écran de votre niveau VIP atteint *
                 </label>
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
                   <p className="text-sm text-blue-800">
                     <strong>📸 Comment faire :</strong>
                   </p>
                   <ol className="text-sm text-blue-700 mt-2 space-y-1">
-                    <li>1. Uploadez votre capture sur <a href="https://imgur.com/upload" target="_blank" rel="noopener noreferrer" className="underline font-semibold">Imgur.com</a> (gratuit, sans inscription)</li>
-                    <li>2. Copiez le lien de l&apos;image</li>
+                    <li>1. Uploadez votre capture sur <Link href="https://imgur.com/upload" target="_blank" rel="noopener noreferrer" className="underline font-semibold">Imgur.com</Link> (gratuit, sans inscription)</li>
+                    <li>2. Copiez le lien de l'image</li>
                     <li>3. Collez-le ci-dessous</li>
                   </ol>
                 </div>
@@ -222,7 +226,7 @@ export default function Affilies() {
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
                 <h3 className="font-semibold text-amber-900 mb-2">Conditions importantes :</h3>
                 <ul className="text-sm text-amber-800 space-y-1">
-                  <li>• Être inscrit via notre lien d&apos;affiliation <a href={AFFILIATE_LINK} target="_blank" rel="noopener noreferrer" className="text-orange-600 underline font-semibold hover:text-orange-700">stake.bet/?c=rounders&offer=rounders</a></li>
+                  <li>• Être inscrit via notre lien d'affiliation <Link href={AFFILIATE_LINK} target="_blank" rel="noopener noreferrer" className="text-orange-600 underline font-semibold hover:text-orange-700">stake.bet/?c=rounders&offer=rounders</Link></li>
                   <li>• Un seul bonus par personne et par niveau</li>
                   <li>• Délai de traitement : 24-48h</li>
                   <li>• Minimum 100$ de wager sur les 30 derniers jours</li>
@@ -247,7 +251,7 @@ export default function Affilies() {
             <div className="space-y-4 text-gray-700">
               <p>
                 Ce formulaire est <strong>exclusivement réservé</strong> aux joueurs qui se sont inscrits sur Stake 
-                via notre lien d&apos;affiliation Rounders. Si vous n&apos;êtes pas encore inscrit ou si vous avez utilisé 
+                via notre lien d'affiliation Rounders. Si vous n'êtes pas encore inscrit ou si vous avez utilisé 
                 un autre lien, vous ne pourrez pas bénéficier de ces bonus exclusifs.
               </p>
 
@@ -260,7 +264,7 @@ export default function Affilies() {
 
               <h3 className="text-xl font-semibold mt-6 mb-3">Comment ça fonctionne ?</h3>
               <ol className="list-decimal list-inside space-y-2">
-                <li>Vous devez être inscrit sur Stake via notre lien d&apos;affiliation</li>
+                <li>Vous devez être inscrit sur Stake via notre lien d'affiliation</li>
                 <li>Atteindre un niveau VIP (Bronze minimum)</li>
                 <li>Avoir au moins 100$ de wager sur les 30 derniers jours</li>
                 <li>Remplir le formulaire ci-dessus avec vos informations</li>
@@ -307,9 +311,9 @@ export default function Affilies() {
 
           {/* IMAGE EXEMPLE - A LA FIN */}
           <div className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-bold mb-6">Exemple de capture d&apos;écran à fournir</h2>
+            <h2 className="text-2xl font-bold mb-6">Exemple de capture d'écran à fournir</h2>
             <p className="text-gray-600 mb-6">
-              Voici ce que nous attendons comme capture d&apos;écran. Votre niveau VIP atteint doit être clairement visible.
+              Voici ce que nous attendons comme capture d'écran. Votre niveau VIP atteint doit être clairement visible.
               <strong> Uploadez-la sur Imgur.com puis collez le lien dans le formulaire.</strong>
             </p>
             <div className="text-center">
