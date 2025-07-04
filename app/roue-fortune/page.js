@@ -159,16 +159,22 @@ export default function RoueFortunePage() {
           </p>
         </div>
 
-        {/* Nouvelle section d'information */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 max-w-4xl mx-auto text-center">
-          <h2 className="text-xl font-bold text-blue-900 mb-3">
-            ℹ️ Jeu ouvert à TOUS les joueurs Stake !
+        {/* Nouvelle pub pour X */}
+        <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg p-6 mb-8 max-w-4xl mx-auto text-center">
+          <h2 className="text-xl font-bold text-white mb-2">
+            🚀 Rejoignez-nous sur X !
           </h2>
-          <ul className="space-y-2 text-blue-800">
-            <li>✅ Vous avez un compte Stake ? Vous pouvez participer !</li>
-            <li>✅ Pas besoin d&apos;être affilié ou inscrit via notre lien</li>
-            <li>✅ Une participation gratuite par jour pour tout le monde</li>
-          </ul>
+          <p className="text-gray-300 mb-4">
+            Suivez @rounders_pro pour participer à tous nos jeux et concours exclusifs
+          </p>
+          <a 
+            href="https://x.com/rounders_pro"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-white text-gray-900 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-all"
+          >
+            Suivre sur X
+          </a>
         </div>
 
         <div className="text-center mb-8">
@@ -352,15 +358,27 @@ export default function RoueFortunePage() {
           </div>
         )}
 
-        {/* Gagnants du jour - TOUJOURS AFFICHÉS */}
-        <div className="bg-gray-50 rounded-lg p-6 max-w-4xl mx-auto">
+        {/* Section info déplacée ici */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 max-w-4xl mx-auto text-center">
+          <h2 className="text-xl font-bold text-blue-900 mb-3">
+            ℹ️ Jeu ouvert à TOUS les joueurs Stake !
+          </h2>
+          <ul className="space-y-2 text-blue-800">
+            <li>✅ Vous avez un compte Stake ? Vous pouvez participer !</li>
+            <li>✅ Pas besoin d&apos;être affilié ou inscrit via notre lien</li>
+            <li>✅ Une participation gratuite par jour pour tout le monde</li>
+          </ul>
+        </div>
+
+        {/* Gagnants du jour */}
+        <div className="bg-gray-50 rounded-lg p-6 max-w-4xl mx-auto mb-8">
           <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             🏆 Tous les gagnants d&apos;aujourd&apos;hui
           </h3>
           
           {todayWinners.length > 0 ? (
             <>
-              <div className="grid gap-3 md:grid-cols-2">
+              <div className="grid gap-3 md:grid-cols-2 mb-6">
                 {todayWinners.map((winner, index) => (
                   <div key={index} className="flex justify-between items-center bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow">
                     <div className="flex items-center gap-3">
@@ -374,19 +392,28 @@ export default function RoueFortunePage() {
                   </div>
                 ))}
               </div>
-              <div className="mt-6 text-center">
-                <p className="text-gray-600">
+              <div className="text-center">
+                <p className="text-gray-600 mb-4">
                   Total distribué aujourd&apos;hui : <span className="font-bold text-gray-900">{dailyBudget - remainingBudget}€</span>
                 </p>
               </div>
             </>
           ) : (
             <div className="text-center py-8">
-              <p className="text-gray-500 text-lg">
+              <p className="text-gray-500 text-lg mb-4">
                 Aucun gagnant pour le moment. Soyez le premier !
               </p>
             </div>
           )}
+          
+          <div className="text-center">
+            <a 
+              href="/gagnants"
+              className="inline-block bg-gray-700 hover:bg-gray-800 text-white px-6 py-2 rounded-lg font-semibold transition-all"
+            >
+              Voir l&apos;historique complet des gagnants →
+            </a>
+          </div>
         </div>
 
         {gameStatus === 'inactive' && (
