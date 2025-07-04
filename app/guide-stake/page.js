@@ -128,14 +128,14 @@ export default function GuideStakePage() {
           Écrit par des experts, mis à jour quotidiennement.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
-          
+          <Link
             href={AFFILIATE_LINK}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg text-center"
           >
             Commencer sur Stake →
-          </a>
+          </Link>
           <Link
             href="/guide-stake/france"
             className="inline-block bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition shadow-lg text-center"
@@ -211,14 +211,14 @@ export default function GuideStakePage() {
         <p className="text-gray-300 mb-6">
           Inscrivez-vous via notre lien pour bénéficier de tous les avantages exclusifs Rounders Pro
         </p>
-        
+        <Link
           href={AFFILIATE_LINK}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block bg-white text-gray-900 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg"
         >
           Inscription avec Bonus →
-        </a>
+        </Link>
       </div>
     </div>
   );
