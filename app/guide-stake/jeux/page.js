@@ -41,7 +41,7 @@ export default function GuideJeuxPage() {
           <div className="bg-white border rounded-lg p-4">
             <h3 className="font-bold text-gray-900 mb-2">🎯 Plinko</h3>
             <p className="text-sm text-gray-600 mb-2">
-              Lâchez la bille et priez ! Multiplicateurs jusqu&apos;à 1000x
+              Lâchez la bille et priez ! Multiplicateurs jusqu'à 1000x
             </p>
             <div className="text-xs text-gray-500">
               RTP: 99% | Volatilité: Variable
@@ -123,7 +123,7 @@ export default function GuideJeuxPage() {
               <li>• <strong>2000+</strong> machines à sous</li>
               <li>• <strong>50+</strong> providers premium</li>
               <li>• RTP moyen : <strong>96.5%</strong></li>
-              <li>• Jackpots jusqu&apos;à <strong>10M$</strong></li>
+              <li>• Jackpots jusqu'à <strong>10M$</strong></li>
             </ul>
           </div>
           
@@ -131,7 +131,7 @@ export default function GuideJeuxPage() {
             <h3 className="font-bold text-gray-900 mb-3">🏆 Top Providers</h3>
             <ul className="space-y-2 text-gray-700">
               <li>• <strong>Pragmatic Play</strong></li>
-              <li>• <strong>Play&apos;n GO</strong></li>
+              <li>• <strong>Play'n GO</strong></li>
               <li>• <strong>NetEnt</strong></li>
               <li>• <strong>Hacksaw Gaming</strong></li>
             </ul>
@@ -312,7 +312,7 @@ export default function GuideJeuxPage() {
             <h3 className="font-bold text-purple-900 mb-2">🎯 Stratège</h3>
             <p className="text-gray-700 mb-3">
               Le Blackjack, Baccarat et les paris sportifs vous permettront 
-              d&apos;appliquer vos stratégies et analyses.
+              d'appliquer vos stratégies et analyses.
             </p>
             <div className="text-sm text-purple-700">
               <strong>Recommandé :</strong> Blackjack Live, Paris sportifs, Mines
@@ -323,7 +323,7 @@ export default function GuideJeuxPage() {
             <h3 className="font-bold text-amber-900 mb-2">🚀 Chasseur de Sensations</h3>
             <p className="text-gray-700 mb-3">
               Les jeux à haute volatilité et les game shows live vous donneront 
-              votre dose d&apos;adrénaline.
+              votre dose d'adrénaline.
             </p>
             <div className="text-sm text-amber-700">
               <strong>Recommandé :</strong> Crash, Limbo, Crazy Time, Lightning Roulette
@@ -336,17 +336,17 @@ export default function GuideJeuxPage() {
       <div className="bg-gray-900 text-white rounded-lg p-8 mb-8">
         <h3 className="text-2xl font-bold mb-4">🎮 Prêt à jouer ?</h3>
         <p className="mb-6 text-gray-300">
-          Testez d&apos;abord en mode démo, puis profitez du rakeback de 10% 
+          Testez d'abord en mode démo, puis profitez du rakeback de 10% 
           sur tous vos paris avec notre code affilié.
         </p>
-        
-        
+        <Link
           href={AFFILIATE_LINK}
           target="_blank"
+          rel="noopener noreferrer"
           className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
         >
           Explorer les jeux →
-        </a>
+        </Link>
       </div>
 
       {/* Navigation */}
