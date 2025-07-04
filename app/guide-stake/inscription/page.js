@@ -55,6 +55,83 @@ export default function GuideInscriptionPage() {
             <div className="flex items-start">
               <div className="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xl">
                 1
+              </ submitting a malformed HTML tag
+System: The issue in the provided files stems from malformed JSX syntax in the `<Link>` components. Specifically, there are instances where an `<a>` tag's attributes (`href`, `target`, `rel`, `className`) are written without an opening `<a>` tag, and a closing `</a>` tag appears, causing a syntax error. This is evident in the Vercel build logs, which point to unexpected tokens and missing corresponding JSX closing tags for `<div>`. The root cause is that the `<Link>` component from Next.js is being misused, with attributes incorrectly formatted as if they belong to a standalone `<a>` tag without the proper opening tag.
+
+### Fix Strategy
+To resolve the errors:
+1. Identify the malformed `<a>` tags in each file where attributes like `href={AFFILIATE_LINK}` are followed by a `>` and a closing `</a>` without a proper opening tag.
+2. Replace these with a correct `<Link>` component structure, where the `href`, `target`, `rel`, and `className` attributes are applied to the `<Link>` component, and an `<a>` tag (or just the content) is nested inside if needed.
+3. Ensure no other parts of the files are modified, as per your request, except for these specific corrections.
+
+Below are the corrected versions of the three files. The changes are limited to fixing the malformed `<Link>` components by ensuring proper JSX syntax.
+
+---
+
+### Fichier 1 : `app/guide-stake/inscription/page.js`
+
+**Erreur** : À la ligne 72 et à la ligne 409, il y a des blocs où les attributs `href={AFFILIATE_LINK}`, `target`, `rel`, et `className` sont suivis d'un `>` et d'une balise `</a>`, sans balise d'ouverture `<a>`. Cela cause une erreur de syntaxe JSX.
+
+**Correction** : Remplacer ces blocs par un composant `<Link>` correctement formé avec une balise `<a>` à l'intérieur.
+
+```jsx
+// app/guide-stake/inscription/page.js
+import Link from 'next/link';
+import { AFFILIATE_LINK, AFFILIATE_CODE } from '../../config/affiliate';
+
+export const metadata = {
+  title: 'Comment s\'inscrire sur Stake - Guide étape par étape | Rounders',
+  description: 'Tutoriel complet pour créer un compte Stake en 2025. Inscription rapide, vérification KYC, premiers pas. Guide officiel Rounders Pro.',
+  keywords: 'inscription stake, créer compte stake, stake registration',
+};
+
+export default function GuideInscriptionPage() {
+  return (
+    <div className="pb-20 md:pb-0">
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+        📝 Guide d&apos;Inscription Complet
+      </h1>
+
+      <div className="bg-green-50 border-l-4 border-green-600 p-4 mb-8">
+        <p className="text-green-900 font-semibold">
+          ⏱️ Inscription en moins de 30 secondes !
+        </p>
+        <p className="text-green-800 mt-1">
+          Pas de KYC obligatoire, juste un email et c&apos;est parti
+        </p>
+      </div>
+
+      {/* Rappel VPN pour français */}
+      <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6 mb-8">
+        <div className="flex items-start">
+          <span className="text-2xl mr-3">🇫🇷</span>
+          <div>
+            <h3 className="font-bold text-blue-900 mb-2">Rappel pour les joueurs français</h3>
+            <p className="text-blue-800 mb-2">
+              Activez votre VPN avant l&apos;inscription (pays recommandés : Canada, Irlande, Singapour).
+            </p>
+            <Link 
+              href="/guide-stake/france" 
+              className="text-blue-600 hover:underline font-medium"
+            >
+              → Voir le guide complet France
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Étapes d'inscription */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          🚀 Inscription en 4 étapes
+        </h2>
+        
+        <div className="space-y-6">
+          {/* Étape 1 */}
+          <div className="bg-white border-2 border-gray-200 rounded-lg p-6">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xl">
+                1
               </div>
               <div className="ml-4 flex-1">
                 <h3 className="font-bold text-gray-900 text-lg mb-2">
@@ -64,14 +141,14 @@ export default function GuideInscriptionPage() {
                   Cliquez sur le bouton ci-dessous pour accéder à Stake avec notre code affilié. 
                   Cela vous garantit l&apos;accès à tous les bonus Rounders Pro.
                 </p>
-                
+                <Link
                   href={AFFILIATE_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition"
                 >
                   Ouvrir Stake avec bonus →
-                </a>
+                </Link>
                 <p className="text-sm text-gray-500 mt-2">
                   💡 Le code &quot;{AFFILIATE_CODE}&quot; sera automatiquement appliqué
                 </p>
@@ -316,14 +393,14 @@ export default function GuideInscriptionPage() {
           L&apos;inscription prend moins de 30 secondes. Rejoignez la communauté 
           Rounders Pro et profitez de tous nos avantages exclusifs !
         </p>
-        
+        <Link
           href={AFFILIATE_LINK}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
         >
           S&apos;inscrire maintenant →
-        </a>
+        </Link>
       </div>
 
       {/* Navigation */}
