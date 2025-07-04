@@ -2,12 +2,6 @@
 import Link from 'next/link';
 import { AFFILIATE_LINK } from '../../config/affiliate';
 
-export const metadata = {
-  title: 'Programme VIP Stake - 15 Niveaux et Récompenses | Rounders Pro',
-  description: 'Guide complet du programme VIP Stake : Bronze à Obsidienne. Bonus, rakeback, reload quotidien. Plus bonus cash exclusifs Rounders Pro.',
-  keywords: 'stake vip, stake programme vip, stake niveaux, stake bronze, stake platine, stake diamant',
-};
-
 export default function GuideVIPPage() {
   const vipLevels = [
     { name: 'Bronze', points: '10,000', rakeback: '5%+', bonus: 'Hebdo + Mensuel', color: 'amber' },
@@ -52,10 +46,10 @@ export default function GuideVIPPage() {
           <div className="bg-green-50 border border-green-200 rounded-lg p-4 md:p-6">
             <h3 className="font-bold text-green-900 mb-3 text-base md:text-lg">🎊 Offre de Bienvenue</h3>
             <p className="text-green-800 mb-3 text-sm md:text-base">
-              Utilisez un code d&apos;affiliation dans les 24h après inscription pour débloquer :
+              Utilisez un code d'affiliation dans les 24h après inscription pour débloquer :
             </p>
             <ul className="space-y-2 text-green-700 text-sm md:text-base">
-              <li>• <strong>5% de rakeback instantané</strong> avant même d&apos;être Bronze</li>
+              <li>• <strong>5% de rakeback instantané</strong> avant même d'être Bronze</li>
               <li>• Accès anticipé aux récompenses VIP</li>
               <li>• Code à saisir : <strong className="text-green-900">rounders</strong></li>
             </ul>
@@ -79,7 +73,7 @@ export default function GuideVIPPage() {
           <h3 className="font-bold text-amber-900 mb-3 text-base md:text-lg">🎯 Autres Bonus Disponibles</h3>
           <div className="grid md:grid-cols-2 gap-4 text-amber-800">
             <div>
-              <p className="font-semibold text-sm md:text-base">🎂 Bonus d&apos;anniversaire</p>
+              <p className="font-semibold text-sm md:text-base">🎂 Bonus d'anniversaire</p>
               <p className="text-xs md:text-sm">Email avec coupon valable 7 jours</p>
             </div>
             <div>
@@ -282,11 +276,11 @@ export default function GuideVIPPage() {
               </li>
               <li className="flex items-start text-sm md:text-base">
                 <span className="font-bold mr-2">3.</span>
-                <span>Prenez une capture d&apos;écran de votre niveau</span>
+                <span>Prenez une capture d'écran de votre niveau</span>
               </li>
               <li className="flex items-start text-sm md:text-base">
                 <span className="font-bold mr-2">4.</span>
-                <span>Réclamez votre bonus dans l&apos;Espace Affiliés</span>
+                <span>Réclamez votre bonus dans l'Espace Affiliés</span>
               </li>
             </ol>
             
@@ -339,8 +333,8 @@ export default function GuideVIPPage() {
               Comment est calculé le rakeback ?
             </summary>
             <p className="mt-3 text-gray-700 text-sm md:text-base">
-              Le rakeback est un pourcentage de l&apos;edge de la maison qui vous est retourné. 
-              Par exemple, avec 5% de rakeback sur un pari de 100$ avec 2% d&apos;edge, vous recevez 0.10$ instantanément
+              Le rakeback est un pourcentage de l'edge de la maison qui vous est retourné. 
+              Par exemple, avec 5% de rakeback sur un pari de 100$ avec 2% d'edge, vous recevez 0.10$ instantanément
               (100$ × 2% edge × 5% rakeback = 0.10$), que vous gagniez ou perdiez.
             </p>
           </details>
@@ -376,18 +370,19 @@ export default function GuideVIPPage() {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4">
-          <a
+          <Link
             href={AFFILIATE_LINK}
             target="_blank"
+            rel="noopener noreferrer"
             className="inline-block bg-white text-gray-900 px-6 md:px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition text-center text-sm md:text-base"
           >
-            S&apos;inscrire sur Stake →
-          </a>
+            S'inscrire sur Stake →
+          </Link>
           <Link
             href="/affilies"
             className="inline-block bg-green-600 text-white px-6 md:px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition text-center text-sm md:text-base"
           >
-            Voir l&apos;Espace Affiliés →
+            Voir l'Espace Affiliés →
           </Link>
         </div>
       </div>
