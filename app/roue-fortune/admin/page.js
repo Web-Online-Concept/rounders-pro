@@ -62,7 +62,7 @@ export default function AdminRouePage() {
       const statusRes = await fetch('/api/roue-fortune/status');
       const statusData = await statusRes.json();
       
-      setDailyBudget(statusData.dailyBudget || 50);
+      setDailyBudget(statusData.dailyBudget || 0);
       setTodaySpent(statusData.dailyBudget - statusData.remainingBudget);
       
       // Charger TOUS les gagnants historiques
@@ -328,7 +328,7 @@ export default function AdminRouePage() {
                     type="number"
                     value={dailyBudget}
                     onChange={(e) => setDailyBudget(e.target.value)}
-                    min="10"
+                    min="0"
                     max="500"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
@@ -336,7 +336,13 @@ export default function AdminRouePage() {
                 
                 <button
                   onClick={async () => {
-                    if (confirm(`Lancer un nouveau jeu avec ${dailyBudget}€ de budget ?`)) {
+                    const budgetValue = parseInt(dailyBudget);
+                    if (isNaN(budgetValue) || budgetValue < 0) {
+                      alert('Veuillez entrer un budget valide (0€ ou plus)');
+                      return;
+                    }
+                    
+                    if (confirm(`Lancer un nouveau jeu avec ${budgetValue}€ de budget ?`)) {
                       try {
                         // D'abord réinitialiser
                         await fetch('/api/roue-fortune/admin/manage', {
@@ -351,7 +357,7 @@ export default function AdminRouePage() {
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify({ 
                             action: 'updateBudget',
-                            dailyBudget: parseInt(dailyBudget)
+                            dailyBudget: budgetValue
                           })
                         });
                         
