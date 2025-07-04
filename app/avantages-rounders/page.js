@@ -2,6 +2,12 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { AFFILIATE_LINK, AFFILIATE_CODE } from '../config/affiliate';
 
+export const metadata = {
+  title: 'Avantages Rounders Pro - Bonus exclusifs | Offerts sans garantie',
+  description: 'Découvrez les avantages exclusifs Rounders : jeux gratuits, bonus spéciaux, guide VIP. Tous les bonus sont offerts gracieusement sans obligation.',
+  keywords: 'avantages rounders, bonus exclusifs, rounders pro benefits',
+};
+
 export default function AvantagesRounders() {
   return (
     <>
