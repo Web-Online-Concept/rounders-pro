@@ -1,9 +1,5 @@
 // app/guide-stake/premier-depot/page.js
-export const metadata = {
-  title: 'Premier dépôt Stake - Crypto et méthodes | Guide 2025',
-  description: 'Comment effectuer votre premier dépôt sur Stake. Cryptomonnaies acceptées, montants minimum, bonus de bienvenue. Tutoriel complet.',
-  keywords: 'dépôt stake, stake deposit, crypto stake',
-};
+import Link from 'next/link';
 
 export default function PremierDepot() {
   return (
@@ -27,7 +23,7 @@ export default function PremierDepot() {
             <div className="ml-3">
               <p className="text-green-800">
                 <strong>Rappel :</strong> Vous devez vous être inscrit via notre lien Rounders pour bénéficier 
-                de nos bonus exclusifs. <a href="/avantages-rounders" className="underline">Voir les bonus</a>
+                de nos bonus exclusifs. <Link href="/avantages-rounders" className="underline">Voir les bonus</Link>
               </p>
             </div>
           </div>
@@ -69,15 +65,15 @@ export default function PremierDepot() {
             <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">1</div>
             <div>
               <h3 className="font-semibold mb-2">Accédez à la caisse</h3>
-              <p className="text-gray-700">Cliquez sur le bouton &quot;Wallet&quot; en haut à droite de l&apos;écran</p>
+              <p className="text-gray-700">Cliquez sur le bouton "Wallet" en haut à droite de l'écran</p>
             </div>
           </div>
 
           <div className="flex gap-4">
             <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">2</div>
             <div>
-              <h3 className="font-semibold mb-2">Sélectionnez &quot;Deposit&quot;</h3>
-              <p className="text-gray-700">Choisissez l&apos;onglet dépôt dans votre wallet</p>
+              <h3 className="font-semibold mb-2">Sélectionnez "Deposit"</h3>
+              <p className="text-gray-700">Choisissez l'onglet dépôt dans votre wallet</p>
             </div>
           </div>
 
@@ -92,8 +88,8 @@ export default function PremierDepot() {
           <div className="flex gap-4">
             <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">4</div>
             <div>
-              <h3 className="font-semibold mb-2">Copiez l&apos;adresse</h3>
-              <p className="text-gray-700">Copiez l&apos;adresse de dépôt ou scannez le QR code</p>
+              <h3 className="font-semibold mb-2">Copiez l'adresse</h3>
+              <p className="text-gray-700">Copiez l'adresse de dépôt ou scannez le QR code</p>
             </div>
           </div>
 
@@ -107,9 +103,9 @@ export default function PremierDepot() {
         </div>
 
         <div className="bg-yellow-50 border border-yellow-200 p-6 rounded-lg mb-8">
-          <h3 className="font-bold text-yellow-800 mb-2">⚠️ Points d&apos;attention importants</h3>
+          <h3 className="font-bold text-yellow-800 mb-2">⚠️ Points d'attention importants</h3>
           <ul className="space-y-2 text-yellow-700">
-            <li>• <strong>Vérifiez toujours l&apos;adresse</strong> avant d&apos;envoyer</li>
+            <li>• <strong>Vérifiez toujours l'adresse</strong> avant d'envoyer</li>
             <li>• <strong>Respectez le réseau</strong> (ERC-20, TRC-20, etc.)</li>
             <li>• <strong>Montant minimum :</strong> Varie selon la crypto (vérifiez sur Stake)</li>
             <li>• <strong>Confirmations :</strong> 1-3 pour BTC, variable selon la crypto</li>
@@ -134,14 +130,14 @@ export default function PremierDepot() {
             </li>
             <li className="flex items-start">
               <span className="text-green-500 mr-2">✓</span>
-              <span><strong>Sauvegardez l&apos;adresse :</strong> Pour vos futurs dépôts</span>
+              <span><strong>Sauvegardez l'adresse :</strong> Pour vos futurs dépôts</span>
             </li>
           </ul>
         </div>
 
         <h2 className="text-2xl font-bold mt-8 mb-4">Acheter des cryptos pour déposer</h2>
         <p className="mb-4">
-          Si vous n&apos;avez pas encore de cryptomonnaies, voici les meilleures options :
+          Si vous n'avez pas encore de cryptomonnaies, voici les meilleures options :
         </p>
 
         <div className="grid md:grid-cols-3 gap-4 mb-8">
@@ -200,9 +196,9 @@ export default function PremierDepot() {
             Une fois votre dépôt confirmé, vous pouvez immédiatement commencer à jouer et progresser 
             dans le programme VIP pour débloquer vos bonus Rounders !
           </p>
-          <a href="/guide-stake/jeux" className="text-blue-600 underline">
+          <Link href="/guide-stake/jeux" className="text-blue-600 underline">
             Découvrir les jeux disponibles →
-          </a>
+          </Link>
         </div>
       </div>
     </div>
