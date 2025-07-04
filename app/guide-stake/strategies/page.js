@@ -2,12 +2,6 @@
 import Link from 'next/link';
 import { AFFILIATE_LINK } from '../../config/affiliate';
 
-export const metadata = {
-  title: 'Stratégies et Conseils Stake - Maximisez vos Gains | Rounders Pro',
-  description: 'Stratégies avancées pour Stake : gestion de bankroll, stratégies par jeu, martingale, conseils pros. Jouez intelligemment.',
-  keywords: 'stake stratégies, stake conseils, stake tips, stake bankroll, stake martingale',
-};
-
 export default function GuideStrategiesPage() {
   return (
     <div className="pb-20 md:pb-0">
@@ -53,7 +47,7 @@ export default function GuideStrategiesPage() {
           <div className="bg-white border-2 border-green-200 rounded-lg p-6">
             <h3 className="font-bold text-green-900 mb-3">🎯 Sessions limitées</h3>
             <p className="text-gray-700 mb-3">
-              Fixez-vous des limites de temps ET d&apos;argent par session.
+              Fixez-vous des limites de temps ET d'argent par session.
             </p>
             <div className="bg-green-50 rounded p-3">
               <p className="text-sm text-green-800">
@@ -68,7 +62,7 @@ export default function GuideStrategiesPage() {
           <ul className="space-y-1 text-red-800 text-sm">
             <li>• Courir après ses pertes (chasing losses)</li>
             <li>• Augmenter les mises en tilt</li>
-            <li>• Jouer avec l&apos;argent du loyer</li>
+            <li>• Jouer avec l'argent du loyer</li>
             <li>• Ignorer ses limites prédéfinies</li>
           </ul>
         </div>
@@ -125,7 +119,7 @@ export default function GuideStrategiesPage() {
                 <p className="font-semibold text-amber-800 mb-2">⚠️ Attention</p>
                 <p className="text-sm text-amber-700">
                   La Martingale peut vider votre bankroll rapidement. 
-                  Ne l&apos;utilisez qu&apos;avec 1% de votre capital max.
+                  Ne l'utilisez qu'avec 1% de votre capital max.
                 </p>
               </div>
             </div>
@@ -168,7 +162,7 @@ export default function GuideStrategiesPage() {
           <h3 className="font-bold text-purple-900 mb-3">🎯 La Méthode du Budget Fixe</h3>
           <div className="space-y-3 text-purple-800">
             <p>1. <strong>Définissez votre budget</strong> (ex: 100$)</p>
-            <p>2. <strong>Choisissez votre mise</strong> = Budget ÷ 200 (0.50$ dans l&apos;exemple)</p>
+            <p>2. <strong>Choisissez votre mise</strong> = Budget ÷ 200 (0.50$ dans l'exemple)</p>
             <p>3. <strong>200 spins garantis</strong> pour attraper les bonus</p>
             <p>4. <strong>Stop à +50% ou -100%</strong> du budget initial</p>
           </div>
@@ -207,7 +201,7 @@ export default function GuideStrategiesPage() {
             </p>
             <p className="text-sm text-gray-600">
               <strong>Exemple :</strong> Si vous estimez 60% de chances mais la cote est à 2.00 (50%), 
-              c&apos;est un value bet.
+              c'est un value bet.
             </p>
           </div>
           
@@ -309,13 +303,14 @@ export default function GuideStrategiesPage() {
           </p>
         </div>
         
-        <a
+        <Link
           href={AFFILIATE_LINK}
           target="_blank"
+          rel="noopener noreferrer"
           className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
         >
           Appliquer ces stratégies →
-        </a>
+        </Link>
       </div>
 
       {/* Navigation */}
