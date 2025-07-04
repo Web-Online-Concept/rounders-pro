@@ -1,12 +1,6 @@
 // app/guide-stake/astuces/page.js
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'Astuces Pro Stake - Affichage Euros, Coffre, 2FA | Rounders Pro',
-  description: 'Découvrez les astuces cachées de Stake : afficher en euros, utiliser le coffre-fort, système de pourboires, double authentification.',
-  keywords: 'stake astuces, stake euros, stake coffre, stake 2fa, stake tips',
-};
-
 export default function GuideAstucesPage() {
   return (
     <div className="pb-20 md:pb-0">
@@ -50,7 +44,7 @@ export default function GuideAstucesPage() {
                   1
                 </span>
                 <p className="text-gray-700">
-                  En haut de la page, à gauche du bouton &quot;Wallet&quot;, cliquez sur votre solde
+                  En haut de la page, à gauche du bouton "Wallet", cliquez sur votre solde
                 </p>
               </div>
               
@@ -77,7 +71,7 @@ export default function GuideAstucesPage() {
                   4
                 </span>
                 <p className="text-gray-700">
-                  Votre solde s&apos;affiche maintenant en euros !
+                  Votre solde s'affiche maintenant en euros !
                 </p>
               </div>
             </div>
@@ -107,7 +101,7 @@ export default function GuideAstucesPage() {
           <div className="p-6">
             <div className="bg-green-50 rounded-lg p-4 mb-6">
               <p className="text-green-900 font-semibold">
-                🔐 Protégez vos gains du tilt ! Le coffre vous permet de mettre de l&apos;argent de côté.
+                🔐 Protégez vos gains du tilt ! Le coffre vous permet de mettre de l'argent de côté.
               </p>
             </div>
 
@@ -117,7 +111,7 @@ export default function GuideAstucesPage() {
               <li className="flex items-start">
                 <span className="text-green-500 mr-2">✓</span>
                 <span className="text-gray-700">
-                  <strong>Protéger vos gains :</strong> L&apos;argent dans le coffre ne peut pas être misé
+                  <strong>Protéger vos gains :</strong> L'argent dans le coffre ne peut pas être misé
                 </span>
               </li>
               <li className="flex items-start">
@@ -134,11 +128,11 @@ export default function GuideAstucesPage() {
               </li>
             </ul>
 
-            <h3 className="font-bold text-gray-900 mb-4">Comment l&apos;utiliser :</h3>
+            <h3 className="font-bold text-gray-900 mb-4">Comment l'utiliser :</h3>
             
             <div className="bg-gray-100 rounded-lg p-4">
               <ol className="list-decimal list-inside space-y-2 text-gray-700">
-                <li>Allez dans &quot;Wallet&quot; → &quot;Vault&quot;</li>
+                <li>Allez dans "Wallet" → "Vault"</li>
                 <li>Choisissez le montant à mettre de côté</li>
                 <li>Définissez une durée de verrouillage (24h minimum)</li>
                 <li>Confirmez avec votre 2FA</li>
@@ -149,7 +143,7 @@ export default function GuideAstucesPage() {
               <p className="text-amber-900 font-semibold mb-2">💡 Stratégie Pro :</p>
               <p className="text-amber-800 text-sm">
                 Après chaque grosse victoire, mettez 50% dans le coffre pour 7 jours. 
-                Vous serez content de l&apos;avoir fait si vous perdez le reste !
+                Vous serez content de l'avoir fait si vous perdez le reste !
               </p>
             </div>
           </div>
@@ -171,7 +165,7 @@ export default function GuideAstucesPage() {
           <div className="p-6">
             <div className="bg-purple-50 rounded-lg p-4 mb-6">
               <p className="text-purple-900 font-semibold">
-                💸 Envoyez et recevez des pourboires instantanément avec d&apos;autres joueurs !
+                💸 Envoyez et recevez des pourboires instantanément avec d'autres joueurs !
               </p>
             </div>
 
@@ -231,7 +225,7 @@ export default function GuideAstucesPage() {
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
               <p className="text-blue-800">
                 <strong>📊 Info :</strong> Les tips sont gratuits et instantanés. 
-                Aucune commission n&apos;est prélevée par Stake.
+                Aucune commission n'est prélevée par Stake.
               </p>
             </div>
           </div>
@@ -253,7 +247,7 @@ export default function GuideAstucesPage() {
           <div className="p-6">
             <div className="bg-red-50 rounded-lg p-4 mb-6">
               <p className="text-red-900 font-semibold">
-                🔒 ESSENTIEL : Protégez votre compte avec la 2FA. C&apos;est votre meilleure défense !
+                🔒 ESSENTIEL : Protégez votre compte avec la 2FA. C'est votre meilleure défense !
               </p>
             </div>
 
@@ -266,7 +260,7 @@ export default function GuideAstucesPage() {
                   <li>• Protection maximale du compte</li>
                   <li>• Sécurise connexions et retraits</li>
                   <li>• Bloque les accès non autorisés</li>
-                  <li>• Tranquillité d&apos;esprit totale</li>
+                  <li>• Tranquillité d'esprit totale</li>
                 </ul>
               </div>
               
@@ -303,7 +297,7 @@ export default function GuideAstucesPage() {
                 <div>
                   <p className="font-semibold text-gray-900">Allez dans Settings → Security</p>
                   <p className="text-gray-700 text-sm">
-                    Cliquez sur &quot;Enable 2FA&quot;
+                    Cliquez sur "Enable 2FA"
                   </p>
                 </div>
               </div>
@@ -315,7 +309,7 @@ export default function GuideAstucesPage() {
                 <div>
                   <p className="font-semibold text-gray-900">Scannez le QR Code</p>
                   <p className="text-gray-700 text-sm">
-                    Avec votre application d&apos;authentification
+                    Avec votre application d'authentification
                   </p>
                 </div>
               </div>
@@ -338,7 +332,7 @@ export default function GuideAstucesPage() {
                 ⚠️ ATTENTION CRITIQUE
               </p>
               <p className="text-amber-800 text-sm">
-                Sans vos codes de récupération, vous perdrez définitivement l&apos;accès à votre compte 
+                Sans vos codes de récupération, vous perdrez définitivement l'accès à votre compte 
                 si vous perdez votre téléphone. Imprimez-les ou stockez-les dans un coffre-fort numérique !
               </p>
             </div>
@@ -366,7 +360,7 @@ export default function GuideAstucesPage() {
           <div className="bg-gray-50 rounded-lg p-4">
             <h3 className="font-semibold text-gray-900 mb-2">🎨 Mode Sombre/Clair</h3>
             <p className="text-sm text-gray-700">
-              Cliquez sur l&apos;icône soleil/lune en bas à gauche pour changer le thème
+              Cliquez sur l'icône soleil/lune en bas à gauche pour changer le thème
             </p>
           </div>
           
@@ -389,21 +383,22 @@ export default function GuideAstucesPage() {
       {/* CTA Twitter */}
       <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg p-6 text-center">
         <h3 className="text-xl font-bold mb-3">
-          Plus d&apos;astuces exclusives ?
+          Plus d'astuces exclusives ?
         </h3>
         <p className="mb-4">
           Suivez-nous sur Twitter pour des tips quotidiens et des stratégies avancées
         </p>
-        <a
+        <Link
           href="https://x.com/rounders_pro"
           target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center bg-white text-blue-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
         >
           <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
           </svg>
           @rounders_pro
-        </a>
+        </Link>
       </div>
 
       {/* Navigation */}
