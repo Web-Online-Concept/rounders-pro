@@ -96,8 +96,8 @@ export default function NosJeux() {
                 </div>
                 <div className="bg-white p-6 rounded-xl shadow-lg text-center">
                   <div className="text-4xl mb-4">2️⃣</div>
-                  <h3 className="font-bold text-lg mb-2">Attendez l&apos;annonce</h3>
-                  <p className="text-gray-600">Un nouveau jeu surprise chaque jour</p>
+                  <h3 className="font-bold text-lg mb-2">Suivez nos publis Twitter X</h3>
+                  <p className="text-gray-600">Soyez averti dès qu&apos;un jeu est publié</p>
                 </div>
                 <div className="bg-white p-6 rounded-xl shadow-lg text-center">
                   <div className="text-4xl mb-4">3️⃣</div>
