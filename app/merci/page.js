@@ -3,9 +3,34 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export const metadata = {
-  title: 'Merci - Confirmation | Rounders Pro',
-  description: 'Merci pour votre participation. Rappel : tous nos jeux sont gratuits et les gains sont offerts sans obligation.',
+  title: 'Bienvenue chez Rounders Pro | Vos Bonus VIP Vous Attendent',
+  description: 'Inscription confirmée ! Découvrez comment réclamer jusqu\'à 200€ de bonus VIP et profiter du rakeback 10% sur Stake. Guide de démarrage inclus.',
   robots: 'noindex, nofollow',
+  openGraph: {
+    title: 'Bienvenue chez Rounders Pro | Vos Bonus VIP Vous Attendent',
+    description: 'Inscription confirmée ! Découvrez comment réclamer jusqu\'à 200€ de bonus VIP et profiter du rakeback 10% sur Stake. Guide de démarrage inclus.',
+    url: 'https://www.rounders.pro/merci',
+    siteName: 'Rounders Pro',
+    images: [
+      {
+        url: '/images/og-rounders-stake.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Rounders Pro - Bienvenue',
+      }
+    ],
+    locale: 'fr_FR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Bienvenue chez Rounders Pro | Vos Bonus VIP Vous Attendent',
+    description: 'Inscription confirmée ! Découvrez comment réclamer jusqu\'à 200€ de bonus VIP.',
+    images: ['/images/og-rounders-stake.jpg'],
+  },
+  alternates: {
+    canonical: 'https://www.rounders.pro/merci',
+  },
 };
 
 export default function Merci() {
