@@ -5,7 +5,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export default function GagnantsPage() {
-  const [winners, setWinners] = useState([]);
+  const [allWinners, setAllWinners] = useState([]);
+  const [filteredWinners, setFilteredWinners] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState({
     totalDistributed: 0,
@@ -13,19 +14,37 @@ export default function GagnantsPage() {
     totalWinners: 0,
     biggestWin: 0
   });
+  const [filteredStats, setFilteredStats] = useState({
+    totalDistributed: 0,
+    averageWin: 0,
+    totalWinners: 0,
+    biggestWin: 0
+  });
+
+  // Filtres
+  const [filterPeriod, setFilterPeriod] = useState('30'); // '7', '30', 'month', 'year', 'all'
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
+  const [availableMonths, setAvailableMonths] = useState([]);
+  const [availableYears, setAvailableYears] = useState([]);
 
   useEffect(() => {
     loadWinners();
   }, []);
 
+  // Appliquer les filtres quand ils changent
+  useEffect(() => {
+    applyFilters();
+  }, [filterPeriod, selectedMonth, selectedYear, allWinners]);
+
   const loadWinners = async () => {
     try {
-      const response = await fetch('/api/roue-fortune/winners');
+      const response = await fetch('/api/roue-fortune/winners?limit=all');
       const data = await response.json();
       const winnersData = data.winners || [];
-      setWinners(winnersData);
+      setAllWinners(winnersData);
 
-      // Calculer les statistiques
+      // Calculer les statistiques globales
       let totalAmount = 0;
       let biggestWin = 0;
 
@@ -44,11 +63,110 @@ export default function GagnantsPage() {
         biggestWin
       });
 
+      // Extraire les mois et années disponibles
+      const months = new Set();
+      const years = new Set();
+      
+      winnersData.forEach(winner => {
+        const [day, month, year] = winner.date.split('/');
+        months.add(`${year}-${month}`);
+        years.add(year);
+      });
+
+      setAvailableMonths(Array.from(months).sort().reverse());
+      setAvailableYears(Array.from(years).sort().reverse());
+
       setIsLoading(false);
     } catch (error) {
       console.error('Erreur:', error);
       setIsLoading(false);
     }
+  };
+
+  const applyFilters = () => {
+    if (!allWinners.length) {
+      setFilteredWinners([]);
+      return;
+    }
+
+    let filtered = [...allWinners];
+    const now = new Date();
+
+    switch (filterPeriod) {
+      case '7':
+        // 7 derniers jours
+        filtered = allWinners.filter(winner => {
+          const [day, month, year] = winner.date.split('/');
+          const winnerDate = new Date(year, month - 1, day);
+          const daysDiff = Math.floor((now - winnerDate) / (1000 * 60 * 60 * 24));
+          return daysDiff <= 7;
+        });
+        break;
+
+      case '30':
+        // 30 derniers jours
+        filtered = allWinners.filter(winner => {
+          const [day, month, year] = winner.date.split('/');
+          const winnerDate = new Date(year, month - 1, day);
+          const daysDiff = Math.floor((now - winnerDate) / (1000 * 60 * 60 * 24));
+          return daysDiff <= 30;
+        });
+        break;
+
+      case 'month':
+        // Mois spécifique
+        if (selectedMonth) {
+          const [yearPart, monthPart] = selectedMonth.split('-');
+          filtered = allWinners.filter(winner => {
+            const [day, month, year] = winner.date.split('/');
+            return year === yearPart && month === monthPart;
+          });
+        }
+        break;
+
+      case 'year':
+        // Année spécifique
+        if (selectedYear) {
+          filtered = allWinners.filter(winner => {
+            const [day, month, year] = winner.date.split('/');
+            return year === selectedYear;
+          });
+        }
+        break;
+
+      case 'all':
+        // Tous les gagnants
+        filtered = allWinners;
+        break;
+    }
+
+    setFilteredWinners(filtered);
+
+    // Calculer les stats pour la période filtrée
+    let filteredTotal = 0;
+    let filteredBiggest = 0;
+
+    filtered.forEach(winner => {
+      const amount = parseInt(winner.amount.replace('€', ''));
+      filteredTotal += amount;
+      if (amount > filteredBiggest) filteredBiggest = amount;
+    });
+
+    const filteredAverage = filtered.length > 0 ? filteredTotal / filtered.length : 0;
+
+    setFilteredStats({
+      totalDistributed: filteredTotal,
+      averageWin: filteredAverage.toFixed(2),
+      totalWinners: filtered.length,
+      biggestWin: filteredBiggest
+    });
+  };
+
+  const getMonthName = (monthYear) => {
+    const [year, month] = monthYear.split('-');
+    const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 
+                   'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+    return `${months[parseInt(month) - 1]} ${year}`;
   };
 
   // Grouper les gagnants par date pour afficher les totaux
@@ -57,7 +175,7 @@ export default function GagnantsPage() {
     let currentDate = '';
     let dayTotal = 0;
 
-    winners.forEach((winner, index) => {
+    filteredWinners.forEach((winner, index) => {
       if (winner.date !== currentDate && currentDate !== '') {
         // Ajouter une ligne de total pour la date précédente
         grouped.push({
@@ -75,7 +193,7 @@ export default function GagnantsPage() {
       grouped.push(winner);
       
       // Si c'est le dernier élément, ajouter le total
-      if (index === winners.length - 1) {
+      if (index === filteredWinners.length - 1) {
         grouped.push({
           isTotal: true,
           date: currentDate,
@@ -107,34 +225,109 @@ export default function GagnantsPage() {
         ) : (
           <>
             {/* Statistiques globales */}
-            <div className="grid md:grid-cols-4 gap-6 mb-12">
-              <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white">
-                <h3 className="text-lg font-semibold mb-2">Total distribué</h3>
-                <p className="text-3xl font-bold">{stats.totalDistributed}€</p>
-              </div>
-              
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
-                <h3 className="text-lg font-semibold mb-2">Nombre de gagnants</h3>
-                <p className="text-3xl font-bold">{stats.totalWinners}</p>
-              </div>
-              
-              <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
-                <h3 className="text-lg font-semibold mb-2">Gain moyen</h3>
-                <p className="text-3xl font-bold">{stats.averageWin}€</p>
-              </div>
-              
-              <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg shadow-lg p-6 text-white">
-                <h3 className="text-lg font-semibold mb-2">Plus gros gain</h3>
-                <p className="text-3xl font-bold">{stats.biggestWin}€</p>
+            <div className="bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg p-6 mb-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
+                📊 Statistiques globales (tout l'historique)
+              </h3>
+              <div className="grid md:grid-cols-4 gap-4">
+                <div className="bg-white rounded-lg shadow p-4 text-center">
+                  <p className="text-sm text-gray-600">Total distribué</p>
+                  <p className="text-2xl font-bold text-green-600">{stats.totalDistributed}€</p>
+                </div>
+                <div className="bg-white rounded-lg shadow p-4 text-center">
+                  <p className="text-sm text-gray-600">Nombre de gagnants</p>
+                  <p className="text-2xl font-bold text-blue-600">{stats.totalWinners}</p>
+                </div>
+                <div className="bg-white rounded-lg shadow p-4 text-center">
+                  <p className="text-sm text-gray-600">Gain moyen</p>
+                  <p className="text-2xl font-bold text-purple-600">{stats.averageWin}€</p>
+                </div>
+                <div className="bg-white rounded-lg shadow p-4 text-center">
+                  <p className="text-sm text-gray-600">Plus gros gain</p>
+                  <p className="text-2xl font-bold text-yellow-600">{stats.biggestWin}€</p>
+                </div>
               </div>
             </div>
 
-            {/* Liste des gagnants avec totaux par jour */}
+            {/* Liste des gagnants avec filtres */}
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="p-6 border-b">
-                <h2 className="text-2xl font-bold text-gray-900">
-                  📜 Tous les gagnants
-                </h2>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    📜 Gagnants ({filteredWinners.length})
+                  </h2>
+                  
+                  {/* Filtres */}
+                  <div className="flex flex-wrap gap-2 items-center">
+                    <select
+                      value={filterPeriod}
+                      onChange={(e) => {
+                        setFilterPeriod(e.target.value);
+                        setSelectedMonth('');
+                        setSelectedYear('');
+                      }}
+                      className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="7">7 derniers jours</option>
+                      <option value="30">30 derniers jours</option>
+                      <option value="month">Par mois</option>
+                      <option value="year">Par année</option>
+                      <option value="all">Tout l'historique</option>
+                    </select>
+
+                    {filterPeriod === 'month' && (
+                      <select
+                        value={selectedMonth}
+                        onChange={(e) => setSelectedMonth(e.target.value)}
+                        className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">Choisir un mois</option>
+                        {availableMonths.map(month => (
+                          <option key={month} value={month}>
+                            {getMonthName(month)}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+
+                    {filterPeriod === 'year' && (
+                      <select
+                        value={selectedYear}
+                        onChange={(e) => setSelectedYear(e.target.value)}
+                        className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">Choisir une année</option>
+                        {availableYears.map(year => (
+                          <option key={year} value={year}>
+                            {year}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  </div>
+                </div>
+
+                {/* Stats de la période filtrée */}
+                {filteredWinners.length > 0 && (
+                  <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+                    <div className="bg-gray-50 rounded p-2">
+                      <p className="text-xs text-gray-600">Total période</p>
+                      <p className="text-lg font-bold text-green-600">{filteredStats.totalDistributed}€</p>
+                    </div>
+                    <div className="bg-gray-50 rounded p-2">
+                      <p className="text-xs text-gray-600">Gagnants</p>
+                      <p className="text-lg font-bold text-blue-600">{filteredStats.totalWinners}</p>
+                    </div>
+                    <div className="bg-gray-50 rounded p-2">
+                      <p className="text-xs text-gray-600">Gain moyen</p>
+                      <p className="text-lg font-bold text-purple-600">{filteredStats.averageWin}€</p>
+                    </div>
+                    <div className="bg-gray-50 rounded p-2">
+                      <p className="text-xs text-gray-600">Plus gros gain</p>
+                      <p className="text-lg font-bold text-yellow-600">{filteredStats.biggestWin}€</p>
+                    </div>
+                  </div>
+                )}
               </div>
               
               <div className="overflow-x-auto">
@@ -156,7 +349,7 @@ export default function GagnantsPage() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {winners.length > 0 ? (
+                    {filteredWinners.length > 0 ? (
                       getWinnersGroupedByDate().map((item, index) => (
                         item.isTotal ? (
                           <tr key={`total-${index}`} className="bg-gray-100 font-bold">
@@ -187,7 +380,7 @@ export default function GagnantsPage() {
                     ) : (
                       <tr>
                         <td colSpan="4" className="px-6 py-4 text-center text-gray-500">
-                          Aucun gagnant pour le moment
+                          Aucun gagnant pour cette période
                         </td>
                       </tr>
                     )}
