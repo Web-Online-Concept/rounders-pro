@@ -1,11 +1,11 @@
 // app/guide-stake/responsable/layout.js
 export const metadata = {
-  title: 'Jeu Responsable Stake 2025 | Outils et Conseils - Rounders Pro',
-  description: 'Guide 2025 pour un jeu responsable sur Stake : outils de contrôle, limites, auto-évaluation, ressources d’aide. Conseils par Rounders Pro.',
-  keywords: 'jeu responsable, stake responsable, limites de jeu, auto-exclusion, rounders pro',
+  title: 'Jeu Responsable 2025 - Rounders Pro | Conseils et Ressources',
+  description: 'Guide 2025 pour jouer responsable sur Stake : conseils, outils, limites, et ressources d’aide contre l’addiction. Par Rounders Pro.',
+  keywords: 'jeu responsable, rounders pro, stake, addiction jeux, joueurs anonymes',
   openGraph: {
-    title: 'Jeu Responsable Stake 2025 | Outils et Conseils - Rounders Pro',
-    description: 'Guide 2025 pour jouer responsablement sur Stake : outils, limites, aide. Par Rounders Pro.',
+    title: 'Jeu Responsable 2025 - Rounders Pro | Conseils et Ressources',
+    description: 'Guide 2025 pour jouer responsable : conseils et aide. Par Rounders Pro.',
     url: 'https://www.rounders.pro/guide-stake/responsable',
     siteName: 'Rounders Pro',
     images: [
@@ -13,7 +13,7 @@ export const metadata = {
         url: '/images/og-rounders-stake.jpg',
         width: 1200,
         height: 630,
-        alt: 'Rounders Pro - Guide Jeu Responsable Stake',
+        alt: 'Rounders Pro - Jeu Responsable',
       }
     ],
     locale: 'fr_FR',
@@ -21,8 +21,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Jeu Responsable Stake 2025 | Outils et Conseils - Rounders Pro',
-    description: 'Guide 2025 pour jouer responsablement sur Stake : outils, limites, aide. Par Rounders Pro.',
+    title: 'Jeu Responsable 2025 - Rounders Pro | Conseils et Ressources',
+    description: 'Guide 2025 pour jouer responsable : conseils et aide. Par Rounders Pro.',
     images: ['/images/og-rounders-stake.jpg'],
   },
   alternates: {
