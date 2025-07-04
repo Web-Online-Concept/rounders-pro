@@ -230,10 +230,10 @@ export default function GuideIntroductionPage() {
         <div className="flex flex-col sm:flex-row gap-4">
           
             href={AFFILIATE_LINK}
-  target='_blank'
-  rel='noopener noreferrer'
-  className='inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition'
->
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition text-center"
+          >
             Commencer sur Stake →
           </a>
           <Link
