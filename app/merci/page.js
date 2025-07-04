@@ -1,37 +1,7 @@
+// app/merci/page.js
 import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-
-export const metadata = {
-  title: 'Bienvenue chez Rounders Pro | Vos Bonus VIP Vous Attendent',
-  description: 'Inscription confirmée ! Découvrez comment réclamer jusqu\'à 200€ de bonus VIP et profiter du rakeback 10% sur Stake. Guide de démarrage inclus.',
-  robots: 'noindex, nofollow',
-  openGraph: {
-    title: 'Bienvenue chez Rounders Pro | Vos Bonus VIP Vous Attendent',
-    description: 'Inscription confirmée ! Découvrez comment réclamer jusqu\'à 200€ de bonus VIP et profiter du rakeback 10% sur Stake. Guide de démarrage inclus.',
-    url: 'https://www.rounders.pro/merci',
-    siteName: 'Rounders Pro',
-    images: [
-      {
-        url: '/images/og-rounders-stake.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Rounders Pro - Bienvenue',
-      }
-    ],
-    locale: 'fr_FR',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Bienvenue chez Rounders Pro | Vos Bonus VIP Vous Attendent',
-    description: 'Inscription confirmée ! Découvrez comment réclamer jusqu\'à 200€ de bonus VIP.',
-    images: ['/images/og-rounders-stake.jpg'],
-  },
-  alternates: {
-    canonical: 'https://www.rounders.pro/merci',
-  },
-};
 
 export default function Merci() {
   return (
@@ -72,7 +42,7 @@ export default function Merci() {
               href="/"
               className="block w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
             >
-              Retour à l&apos;accueil
+              Retour à l'accueil
             </Link>
             
             <Link 
