@@ -4,37 +4,6 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { AFFILIATE_LINK, AFFILIATE_CODE } from '../config/affiliate';
 
-export const metadata = {
-  title: 'Rounders Pro - Bonus VIP Stake jusqu’à 200€',
-  description: 'Obtenez jusqu’à 200€ de bonus cash + 10% rakeback avec Rounders Pro sur Stake. Programme VIP exclusif, code rounders.',
-  keywords: 'avantages rounders, bonus vip stake, code rounders, rakeback stake, bonus exclusifs',
-  openGraph: {
-    title: 'Rounders Pro - Bonus VIP Stake jusqu’à 200€',
-    description: 'Obtenez jusqu’à 200€ de bonus cash + 10% rakeback avec Rounders Pro sur Stake. Programme VIP exclusif, code rounders.',
-    url: 'https://www.rounders.pro/avantages-rounders',
-    siteName: 'Rounders Pro',
-    images: [
-      {
-        url: '/images/og-rounders-stake.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Rounders Pro - Bonus VIP Stake',
-      }
-    ],
-    locale: 'fr_FR',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Rounders Pro - Bonus VIP Stake jusqu’à 200€',
-    description: 'Obtenez jusqu’à 200€ de bonus cash + 10% rakeback avec Rounders Pro sur Stake.',
-    images: ['/images/og-rounders-stake.jpg'],
-  },
-  alternates: {
-    canonical: 'https://www.rounders.pro/avantages-rounders',
-  },
-};
-
 export default function AvantagesRounders() {
   return (
     <>

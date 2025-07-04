@@ -1,62 +1,43 @@
-import { Inter } from 'next/font/google';
-import Script from 'next/script';
-import './globals.css';
-import BottomBar from './components/BottomBar'; // ✅ Ajout du menu mobile
-
-const inter = Inter({ subsets: ['latin'] });
+// app/layout.js
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 export const metadata = {
-  title: 'Rounders Pro - Bonus Cash Exclusifs Stake | 5%+ Rakeback',
-  description: "Obtenez jusqu'à 200€ de bonus cash exclusifs et 5%+ de rakeback instantané sur Stake. Guide complet, bonus VIP et code promo rounders.",
-  keywords: 'stake, stake bonus, stake france, rounders stake, stake rakeback, stake vip, bonus stake, code promo stake',
-  metadataBase: new URL('https://rounders.pro'),
-  alternates: { canonical: '/' },
+  title: 'Rounders Pro | Bonus Stake 200€ & Guide VIP 2025',
+  description: 'Obtenez jusqu’à 200€ de bonus cash et 10% de rakeback sur Stake avec Rounders Pro. Guide VIP, stratégies, et avantages exclusifs pour joueurs français.',
+  keywords: 'rounders pro, stake bonus, code promo stake, guide vip, affiliation stake, casino crypto',
   openGraph: {
-    title: 'Rounders Pro - Bonus Cash Exclusifs Stake',
-    description: "Obtenez jusqu'à 200€ de bonus cash exclusifs et 5%+ de rakeback sur Stake",
-    url: 'https://rounders.pro',
+    title: 'Rounders Pro | Bonus Stake 200€ & Guide VIP 2025',
+    description: 'Obtenez jusqu’à 200€ de bonus cash et 10% de rakeback sur Stake avec Rounders Pro. Guide complet pour joueurs français.',
+    url: 'https://www.rounders.pro',
     siteName: 'Rounders Pro',
+    images: [
+      {
+        url: '/images/og-rounders-stake.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Rounders Pro - Bonus Stake VIP',
+      }
+    ],
     locale: 'fr_FR',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Rounders Pro - Bonus Stake Exclusifs',
-    description: "Jusqu'à 200€ de bonus + 5% rakeback instantané",
-    creator: '@rounders_pro',
+    title: 'Rounders Pro | Bonus Stake 200€ & Guide VIP 2025',
+    description: 'Bonus jusqu’à 200€ et 10% rakeback sur Stake avec Rounders Pro.',
+    images: ['/images/og-rounders-stake.jpg'],
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-image-preview': 'large',
-    },
+  alternates: {
+    canonical: 'https://www.rounders.pro',
   },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="fr">
-      <head>
-        {/* Google Analytics */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-T2ZG9XKRVZ"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-T2ZG9XKRVZ');
-          `}
-        </Script>
-      </head>
-      <body className={inter.className}>
+      <body>
         {children}
-        <BottomBar /> {/* ✅ Menu mobile affiché sur toutes les pages */}
       </body>
     </html>
   );

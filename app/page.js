@@ -4,37 +4,6 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import { AFFILIATE_LINK, AFFILIATE_CODE } from './config/affiliate';
 
-export const metadata = {
-  title: 'Rounders Pro - Bonus Stake 200€ & Guide VIP',
-  description: 'Obtenez 200€ de bonus + 10% rakeback sur Stake avec le code rounders. Guide VIP, stratégies et cashback exclusif.',
-  keywords: 'rounders pro, stake bonus, code promo stake, guide vip, affiliation stake',
-  openGraph: {
-    title: 'Rounders Pro - Bonus Stake 200€ & Guide VIP',
-    description: 'Obtenez 200€ de bonus + 10% rakeback sur Stake avec le code rounders. Guide VIP, stratégies et cashback exclusif.',
-    url: 'https://www.rounders.pro',
-    siteName: 'Rounders Pro',
-    images: [
-      {
-        url: '/images/og-rounders-stake.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Rounders Pro - Bonus Stake VIP',
-      }
-    ],
-    locale: 'fr_FR',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Rounders Pro - Bonus Stake 200€ & Guide VIP',
-    description: 'Obtenez 200€ de bonus + 10% rakeback sur Stake avec le code rounders.',
-    images: ['/images/og-rounders-stake.jpg'],
-  },
-  alternates: {
-    canonical: 'https://www.rounders.pro',
-  },
-};
-
 export default function Home() {
   return (
     <>
@@ -162,7 +131,7 @@ export default function Home() {
                 />
                 <div className="p-6">
                   <h3 className="text-2xl font-bold mb-3">Avantages Exclusifs Rounders</h3>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-gray-600 bt">
                     Bonus cash de 10€ à 200€ offerts par Rounders selon votre niveau VIP. 
                     Ces bonus s'AJOUTENT à tous les avantages Stake !
                   </p>
@@ -205,7 +174,7 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8 mb-16">
               <div className="text-center">
                 <div className="bg-blue-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl font-bold text-blue-600">1</span>
+                  Cres  <span className="text-3xl font-bold text-blue-600">1</span>
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Inscrivez-vous</h3>
                 <p className="text-gray-600">
@@ -256,7 +225,7 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-center text-gray-600">
-                Ces bonus sont offerts par Rounders en plus de tous les avantages Stake !
+                Ces bonus sont offerts by Rounders en plus de tous les avantages Stake !
               </p>
             </div>
           </div>
