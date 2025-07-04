@@ -7,6 +7,31 @@ export const metadata = {
   title: 'Rounders Pro - Bonus Stake jusqu\'à 200€ | Code Promo & Guide VIP',
   description: 'Débloquez jusqu\'à 200€ de bonus cash + 10% rakeback sur Stake avec le code rounders. Guide VIP complet, stratégies gagnantes et cashback exclusif.',
   keywords: 'rounders pro, stake, guide stake, affiliation stake, bonus gratuits',
+  openGraph: {
+    title: 'Rounders Pro - Bonus Stake jusqu\'à 200€ | Code Promo & Guide VIP',
+    description: 'Débloquez jusqu\'à 200€ de bonus cash + 10% rakeback sur Stake avec le code rounders. Guide VIP complet, stratégies gagnantes et cashback exclusif.',
+    url: 'https://www.rounders.pro',
+    siteName: 'Rounders Pro',
+    images: [
+      {
+        url: '/images/og-rounders-stake.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Rounders Pro - Bonus Stake VIP',
+      }
+    ],
+    locale: 'fr_FR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Rounders Pro - Bonus Stake jusqu\'à 200€ | Code Promo & Guide VIP',
+    description: 'Débloquez jusqu\'à 200€ de bonus cash + 10% rakeback sur Stake avec le code rounders.',
+    images: ['/images/og-rounders-stake.jpg'],
+  },
+  alternates: {
+    canonical: 'https://www.rounders.pro',
+  },
 };
 
 export default function Home() {
