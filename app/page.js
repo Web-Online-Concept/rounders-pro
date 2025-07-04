@@ -1,10 +1,13 @@
-'use client';
-
-import { useState } from 'react';
 import Link from 'next/link';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { AFFILIATE_LINK, AFFILIATE_CODE } from './config/affiliate';
+
+export const metadata = {
+  title: 'Rounders Pro - Jeux gratuits & Guide Stake | Bonus sans obligation',
+  description: 'Participez à nos jeux gratuits (Roue de la Fortune, concours) et découvrez notre guide complet de Stake. Bonus offerts sans obligation, à notre discrétion.',
+  keywords: 'rounders pro, stake, jeux gratuits, roue fortune, guide stake, bonus gratuits',
+};
 
 export default function Home() {
   return (
