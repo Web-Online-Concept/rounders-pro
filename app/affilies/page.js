@@ -1,8 +1,12 @@
-'use client';
-
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { AFFILIATE_LINK } from '../config/affiliate';
+
+export const metadata = {
+  title: 'Réclamez votre Bonus Rounders - Jusqu\'à 200€ | Affiliés Stake',
+  description: 'Bonus cash exclusifs Rounders de 10€ à 200€ selon votre niveau VIP Stake. Réservé aux joueurs inscrits via notre lien d\'affiliation.',
+  keywords: 'bonus rounders, affiliation stake, bonus vip stake, rewards rounders',
+};
 
 export default function Affilies() {
   return (
