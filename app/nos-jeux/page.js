@@ -61,20 +61,18 @@ export default function NosJeux() {
                 Des bonus cash à gagner chaque jour sur Twitter X
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                
-                <ahref="https://twitter.com/rounders_pro"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-black text-white px-8 py-4 rounded-lg font-bold hover:bg-gray-900 transition-colors inline-flex items-center justify-center gap-2"
+                <a href="https://twitter.com/rounders_pro"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="bg-black text-white px-8 py-4 rounded-lg font-bold hover:bg-gray-900 transition-colors inline-flex items-center justify-center gap-2"
                 >
                   Suivre @rounders_pro
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                   </svg>
                 </a>
-                
-                <ahref="/avantages-rounders"
-                  className="bg-white text-orange-500 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors"
+                <a href="/avantages-rounders"
+                   className="bg-white text-orange-500 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors"
                 >
                   Devenir Affilié Rounders
                 </a>
@@ -244,20 +242,18 @@ export default function NosJeux() {
                 Ne manquez plus aucun jeu et maximisez vos gains sur Stake
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                
-                  href="https://twitter.com/rounders_pro"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
+                <a href="https://twitter.com/rounders_pro"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
                 >
                   Suivre @rounders_pro sur X
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                   </svg>
                 </a>
-                
-                  href="/avantages-rounders"
-                  className="bg-orange-500 text-white px-8 py-4 rounded-lg font-bold hover:bg-orange-600 transition-colors"
+                <a href="/avantages-rounders"
+                   className="bg-orange-500 text-white px-8 py-4 rounded-lg font-bold hover:bg-orange-600 transition-colors"
                 >
                   Devenir Affilié Rounders →
                 </a>
