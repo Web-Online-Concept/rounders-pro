@@ -1,8 +1,5 @@
-export const metadata = {
-  title: 'Interface Stake - Navigation et fonctionnalités | Guide complet',
-  description: 'Maîtrisez l\'interface de Stake : navigation, sections, paramètres. Guide visuel pour bien débuter sur la plateforme.',
-  keywords: 'interface stake, navigation stake, stake tutoriel',
-};
+// app/guide-stake/interface/page.js
+import Link from 'next/link';
 
 export default function Interface() {
   return (
@@ -11,24 +8,24 @@ export default function Interface() {
       
       <div className="prose prose-lg max-w-none">
         <p className="text-xl text-gray-600 mb-8">
-          Maîtrisez l&apos;interface de Stake pour une expérience de jeu optimale. 
+          Maîtrisez l'interface de Stake pour une expérience de jeu optimale. 
           Découvrez toutes les fonctionnalités et personnalisations disponibles.
         </p>
 
-        <h2 className="text-2xl font-bold mt-8 mb-4">Vue d&apos;ensemble de l&apos;interface</h2>
+        <h2 className="text-2xl font-bold mt-8 mb-4">Vue d'ensemble de l'interface</h2>
         <p className="mb-6">
-          L&apos;interface de Stake est conçue pour être intuitive et personnalisable, 
-          permettant à chaque joueur d&apos;adapter son expérience selon ses préférences.
+          L'interface de Stake est conçue pour être intuitive et personnalisable, 
+          permettant à chaque joueur d'adapter son expérience selon ses préférences.
         </p>
 
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
-          <h3 className="font-bold mb-4">🎯 Zones principales de l&apos;interface</h3>
+          <h3 className="font-bold mb-4">🎯 Zones principales de l'interface</h3>
           
           <div className="space-y-4">
             <div className="border-l-4 border-blue-500 pl-4">
               <h4 className="font-semibold">Barre de navigation supérieure</h4>
               <ul className="text-sm text-gray-600 mt-1 space-y-1">
-                <li>• Logo Stake (retour à l&apos;accueil)</li>
+                <li>• Logo Stake (retour à l'accueil)</li>
                 <li>• Casino / Sports / Promotions</li>
                 <li>• Barre de recherche</li>
                 <li>• Wallet (solde et transactions)</li>
@@ -94,7 +91,7 @@ export default function Interface() {
           </div>
         </div>
 
-        <h2 className="text-2xl font-bold mt-8 mb-4">Personnalisation de l&apos;interface</h2>
+        <h2 className="text-2xl font-bold mt-8 mb-4">Personnalisation de l'interface</h2>
         
         <div className="bg-yellow-50 border border-yellow-200 p-6 rounded-lg mb-8">
           <h3 className="font-bold text-yellow-800 mb-3">⚙️ Options de personnalisation</h3>
@@ -108,7 +105,7 @@ export default function Interface() {
               <p className="text-sm text-gray-600">20+ langues disponibles incluant le français</p>
             </div>
             <div>
-              <h4 className="font-semibold">Devise d&apos;affichage</h4>
+              <h4 className="font-semibold">Devise d'affichage</h4>
               <p className="text-sm text-gray-600">EUR, USD, ou crypto de votre choix</p>
             </div>
             <div>
@@ -132,7 +129,7 @@ export default function Interface() {
           <div className="border border-gray-200 rounded-lg p-4">
             <h3 className="font-bold mb-2">⭐ Système de favoris</h3>
             <p className="text-sm text-gray-600">
-              Cliquez sur l&apos;étoile d&apos;un jeu pour l&apos;ajouter à vos favoris. 
+              Cliquez sur l'étoile d'un jeu pour l'ajouter à vos favoris. 
               Retrouvez-les facilement dans le menu latéral.
             </p>
           </div>
@@ -141,7 +138,7 @@ export default function Interface() {
             <h3 className="font-bold mb-2">📊 Statistiques en temps réel</h3>
             <p className="text-sm text-gray-600">
               Consultez vos stats de jeu, historique des paris et performance globale 
-              dans la section &quot;Statistics&quot;.
+              dans la section "Statistics".
             </p>
           </div>
 
@@ -160,7 +157,7 @@ export default function Interface() {
           <h3 className="font-bold mb-3">⌨️ Navigation rapide</h3>
           <ul className="space-y-2">
             <li>• <strong>Double-clic sur le solde :</strong> Convertir entre devises</li>
-            <li>• <strong>Clic sur l&apos;avatar :</strong> Accès rapide au profil</li>
+            <li>• <strong>Clic sur l'avatar :</strong> Accès rapide au profil</li>
             <li>• <strong>Icône wallet :</strong> Dépôt/retrait rapide</li>
             <li>• <strong>Badge VIP :</strong> Voir vos avantages actuels</li>
             <li>• <strong>Cloche :</strong> Notifications et bonus disponibles</li>
@@ -169,7 +166,7 @@ export default function Interface() {
 
         <h2 className="text-2xl font-bold mt-8 mb-4">Interface mobile</h2>
         <p className="mb-4">
-          L&apos;application mobile Stake offre une expérience optimisée avec toutes 
+          L'application mobile Stake offre une expérience optimisée avec toutes 
           les fonctionnalités de la version desktop :
         </p>
 
@@ -188,7 +185,7 @@ export default function Interface() {
             <h3 className="font-bold text-pink-800 mb-2">💡 Astuces mobile</h3>
             <ul className="text-sm space-y-1">
               <li>• Swipe pour naviguer</li>
-              <li>• Tap &amp; hold pour les favoris</li>
+              <li>• Tap & hold pour les favoris</li>
               <li>• Shake pour support</li>
               <li>• Gestes personnalisables</li>
             </ul>
@@ -196,18 +193,18 @@ export default function Interface() {
         </div>
 
         <div className="bg-green-50 border border-green-200 p-6 rounded-lg">
-          <h3 className="font-bold text-green-800 mb-2">✅ Maîtrisez l&apos;interface = Jouez mieux</h3>
+          <h3 className="font-bold text-green-800 mb-2">✅ Maîtrisez l'interface = Jouez mieux</h3>
           <p className="text-green-700 mb-4">
-            Une bonne connaissance de l&apos;interface vous permet de jouer plus efficacement, 
+            Une bonne connaissance de l'interface vous permet de jouer plus efficacement, 
             de trouver rapidement vos jeux favoris et de ne manquer aucune opportunité de bonus !
           </p>
           <div className="flex gap-4">
-            <a href="/guide-stake/jeux" className="text-green-600 underline">
+            <Link href="/guide-stake/jeux" className="text-green-600 underline">
               Découvrir les jeux →
-            </a>
-            <a href="/guide-stake/bonus" className="text-green-600 underline">
+            </Link>
+            <Link href="/guide-stake/bonus" className="text-green-600 underline">
               Voir les bonus →
-            </a>
+            </Link>
           </div>
         </div>
       </div>
