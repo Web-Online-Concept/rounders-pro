@@ -3,12 +3,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { AFFILIATE_LINK } from '../../config/affiliate';
 
-export const metadata = {
-  title: 'Introduction à Stake - Présentation complète | Guide Rounders',
-  description: 'Découvrez Stake, la plateforme de casino et paris sportifs crypto. Histoire, fonctionnement, avantages. Guide objectif par Rounders Pro.',
-  keywords: 'stake introduction, qu\'est-ce que stake, stake présentation',
-};
-
 export default function GuideIntroductionPage() {
   return (
     <div className="pb-20 md:pb-0">
@@ -134,7 +128,9 @@ export default function GuideIntroductionPage() {
         </h2>
         
         <div className="space-y-4">
-          <div className="bg-blue-50 border-l-4 border-blue-600 p-4">
+          <div className="bg-blue-50 border-l-4 border-blue
+
+-600 p-4">
             <h3 className="font-bold text-blue-900">🎯 Stake Originals</h3>
             <p className="text-blue-800">
               Jeux exclusifs développés en interne : Plinko, Mines, Dice, Crash, Limbo... 
