@@ -2,12 +2,6 @@
 import Link from 'next/link';
 import { AFFILIATE_LINK } from '../../config/affiliate';
 
-export const metadata = {
-  title: 'Stake France - Comment Jouer depuis la France avec VPN | Rounders Pro',
-  description: 'Guide complet pour les joueurs français : méthode VPN pour Stake, inscription depuis la France, accès sans VPN après inscription.',
-  keywords: 'stake france, stake vpn, stake français, accès stake france, vpn stake',
-};
-
 export default function GuideFrancePage() {
   return (
     <div className="pb-20 md:pb-0">
@@ -21,7 +15,7 @@ export default function GuideFrancePage() {
           ⚡ Information Importante pour les Français
         </h2>
         <p className="text-red-800 font-semibold mb-4">
-          Stake n&apos;est pas accessible directement depuis la France. 
+          Stake n'est pas accessible directement depuis la France. 
           Voici la méthode simple et légale pour y accéder :
         </p>
       </div>
@@ -29,7 +23,7 @@ export default function GuideFrancePage() {
       {/* Method Section */}
       <div className="bg-gradient-to-r from-blue-100 to-red-100 rounded-lg p-8 mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          📋 Méthode d&apos;Accès en 3 Étapes
+          📋 Méthode d'Accès en 3 Étapes
         </h2>
 
         <div className="space-y-6">
@@ -44,7 +38,7 @@ export default function GuideFrancePage() {
                   Première Connexion avec VPN
                 </h3>
                 <p className="text-gray-700 mb-3">
-                  Pour votre première inscription, utilisez un VPN connecté à l&apos;un de ces pays :
+                  Pour votre première inscription, utilisez un VPN connecté à l'un de ces pays :
                 </p>
                 <div className="flex flex-wrap gap-3 mb-4">
                   <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-medium">
@@ -72,13 +66,14 @@ export default function GuideFrancePage() {
                     🇧🇷 Brésil
                   </span>
                 </div>
-                <a
+                <Link
                   href={AFFILIATE_LINK}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
                 >
-                  S&apos;inscrire sur Stake avec Bonus →
-                </a>
+                  S'inscrire sur Stake avec Bonus →
+                </Link>
               </div>
             </div>
           </div>
@@ -120,13 +115,14 @@ export default function GuideFrancePage() {
                   Après votre inscription, vous pouvez désactiver le VPN et vous connecter directement via :
                 </p>
                 <div className="bg-green-50 border-2 border-green-500 rounded-lg p-4">
-                  <a 
+                  <Link 
                     href={AFFILIATE_LINK}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="text-green-900 font-bold text-lg text-center block hover:underline"
                   >
                     www.stake.bet
-                  </a>
+                  </Link>
                   <p className="text-green-700 text-sm text-center mt-2">
                     ✅ Accès direct depuis la France sans VPN
                   </p>
@@ -141,7 +137,7 @@ export default function GuideFrancePage() {
       <div className="bg-blue-900 text-white rounded-lg p-6 mb-8">
         <h3 className="text-xl font-bold mb-3">🎁 Avantages Exclusifs Rounders Pro</h3>
         <p className="mb-4">
-          En vous inscrivant avec notre lien d&apos;affiliation, vous bénéficiez de :
+          En vous inscrivant avec notre lien d'affiliation, vous bénéficiez de :
         </p>
         <ul className="space-y-2">
           <li className="flex items-start">
@@ -178,7 +174,7 @@ export default function GuideFrancePage() {
         <div className="bg-gray-100 rounded-lg p-6">
           <h3 className="font-bold text-gray-900 mb-3">⚠️ Points Importants</h3>
           <ul className="space-y-2 text-gray-700">
-            <li>• VPN nécessaire <strong>UNIQUEMENT</strong> pour l&apos;inscription</li>
+            <li>• VPN nécessaire <strong>UNIQUEMENT</strong> pour l'inscription</li>
             <li>• Utilisez toujours <strong>stake.bet</strong> après inscription</li>
             <li>• Gardez vos identifiants en sécurité</li>
             <li>• Activez la 2FA dès que possible</li>
@@ -193,10 +189,10 @@ export default function GuideFrancePage() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-900 mb-2">
-              Est-ce légal d&apos;utiliser un VPN pour Stake ?
+              Est-ce légal d'utiliser un VPN pour Stake ?
             </h4>
             <p className="text-gray-700">
-              L&apos;utilisation d&apos;un VPN est parfaitement légale en France. 
+              L'utilisation d'un VPN est parfaitement légale en France. 
               Vous accédez simplement à un site international depuis un autre pays.
             </p>
           </div>
@@ -206,7 +202,7 @@ export default function GuideFrancePage() {
               Puis-je retirer mes gains en France ?
             </h4>
             <p className="text-gray-700">
-              Oui, les retraits en cryptomonnaies sont possibles vers n&apos;importe quel wallet. 
+              Oui, les retraits en cryptomonnaies sont possibles vers n'importe quel wallet. 
               Utilisez Coinbase ou Binance pour convertir en euros.
             </p>
           </div>
@@ -226,18 +222,19 @@ export default function GuideFrancePage() {
       {/* Community CTA */}
       <div className="text-center bg-gray-50 rounded-lg p-6">
         <p className="text-gray-600 mb-4">
-          Besoin d&apos;aide ? Rejoignez notre communauté française sur Twitter
+          Besoin d'aide ? Rejoignez notre communauté française sur Twitter
         </p>
-        <a
+        <Link
           href="https://x.com/rounders_pro"
           target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center text-blue-600 hover:underline font-medium"
         >
           <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
           </svg>
           @rounders_pro
-        </a>
+        </Link>
       </div>
 
       {/* Navigation */}
