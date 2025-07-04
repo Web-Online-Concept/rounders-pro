@@ -2,12 +2,6 @@
 import Link from 'next/link';
 import { AFFILIATE_LINK } from '../../config/affiliate';
 
-export const metadata = {
-  title: 'Jeux Stake - Casino, Slots, Originals | Guide complet',
-  description: 'Découvrez tous les jeux Stake : Originals (Dice, Plinko, Mines), slots, live casino. Règles, RTP et stratégies de base.',
-  keywords: 'jeux stake, stake originals, stake casino games',
-};
-
 export default function GuideJeuxPage() {
   return (
     <div className="pb-20 md:pb-0">
