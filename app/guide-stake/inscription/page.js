@@ -12,7 +12,7 @@ export default function GuideInscriptionPage() {
   return (
     <div className="pb-20 md:pb-0">
       <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-        📝 Guide d&apos;Inscription Complet
+        📝 Guide d'Inscription Complet
       </h1>
 
       <div className="bg-green-50 border-l-4 border-green-600 p-4 mb-8">
@@ -20,7 +20,7 @@ export default function GuideInscriptionPage() {
           ⏱️ Inscription en moins de 30 secondes !
         </p>
         <p className="text-green-800 mt-1">
-          Pas de KYC obligatoire, juste un email et c&apos;est parti
+          Pas de KYC obligatoire, juste un email et c'est parti
         </p>
       </div>
 
@@ -31,84 +31,7 @@ export default function GuideInscriptionPage() {
           <div>
             <h3 className="font-bold text-blue-900 mb-2">Rappel pour les joueurs français</h3>
             <p className="text-blue-800 mb-2">
-              Activez votre VPN avant l&apos;inscription (pays recommandés : Canada, Irlande, Singapour).
-            </p>
-            <Link 
-              href="/guide-stake/france" 
-              className="text-blue-600 hover:underline font-medium"
-            >
-              → Voir le guide complet France
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Étapes d'inscription */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          🚀 Inscription en 4 étapes
-        </h2>
-        
-        <div className="space-y-6">
-          {/* Étape 1 */}
-          <div className="bg-white border-2 border-gray-200 rounded-lg p-6">
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xl">
-                1
-              </ submitting a malformed HTML tag
-System: The issue in the provided files stems from malformed JSX syntax in the `<Link>` components. Specifically, there are instances where an `<a>` tag's attributes (`href`, `target`, `rel`, `className`) are written without an opening `<a>` tag, and a closing `</a>` tag appears, causing a syntax error. This is evident in the Vercel build logs, which point to unexpected tokens and missing corresponding JSX closing tags for `<div>`. The root cause is that the `<Link>` component from Next.js is being misused, with attributes incorrectly formatted as if they belong to a standalone `<a>` tag without the proper opening tag.
-
-### Fix Strategy
-To resolve the errors:
-1. Identify the malformed `<a>` tags in each file where attributes like `href={AFFILIATE_LINK}` are followed by a `>` and a closing `</a>` without a proper opening tag.
-2. Replace these with a correct `<Link>` component structure, where the `href`, `target`, `rel`, and `className` attributes are applied to the `<Link>` component, and an `<a>` tag (or just the content) is nested inside if needed.
-3. Ensure no other parts of the files are modified, as per your request, except for these specific corrections.
-
-Below are the corrected versions of the three files. The changes are limited to fixing the malformed `<Link>` components by ensuring proper JSX syntax.
-
----
-
-### Fichier 1 : `app/guide-stake/inscription/page.js`
-
-**Erreur** : À la ligne 72 et à la ligne 409, il y a des blocs où les attributs `href={AFFILIATE_LINK}`, `target`, `rel`, et `className` sont suivis d'un `>` et d'une balise `</a>`, sans balise d'ouverture `<a>`. Cela cause une erreur de syntaxe JSX.
-
-**Correction** : Remplacer ces blocs par un composant `<Link>` correctement formé avec une balise `<a>` à l'intérieur.
-
-```jsx
-// app/guide-stake/inscription/page.js
-import Link from 'next/link';
-import { AFFILIATE_LINK, AFFILIATE_CODE } from '../../config/affiliate';
-
-export const metadata = {
-  title: 'Comment s\'inscrire sur Stake - Guide étape par étape | Rounders',
-  description: 'Tutoriel complet pour créer un compte Stake en 2025. Inscription rapide, vérification KYC, premiers pas. Guide officiel Rounders Pro.',
-  keywords: 'inscription stake, créer compte stake, stake registration',
-};
-
-export default function GuideInscriptionPage() {
-  return (
-    <div className="pb-20 md:pb-0">
-      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-        📝 Guide d&apos;Inscription Complet
-      </h1>
-
-      <div className="bg-green-50 border-l-4 border-green-600 p-4 mb-8">
-        <p className="text-green-900 font-semibold">
-          ⏱️ Inscription en moins de 30 secondes !
-        </p>
-        <p className="text-green-800 mt-1">
-          Pas de KYC obligatoire, juste un email et c&apos;est parti
-        </p>
-      </div>
-
-      {/* Rappel VPN pour français */}
-      <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6 mb-8">
-        <div className="flex items-start">
-          <span className="text-2xl mr-3">🇫🇷</span>
-          <div>
-            <h3 className="font-bold text-blue-900 mb-2">Rappel pour les joueurs français</h3>
-            <p className="text-blue-800 mb-2">
-              Activez votre VPN avant l&apos;inscription (pays recommandés : Canada, Irlande, Singapour).
+              Activez votre VPN avant l'inscription (pays recommandés : Canada, Irlande, Singapour).
             </p>
             <Link 
               href="/guide-stake/france" 
@@ -139,7 +62,7 @@ export default function GuideInscriptionPage() {
                 </h3>
                 <p className="text-gray-700 mb-4">
                   Cliquez sur le bouton ci-dessous pour accéder à Stake avec notre code affilié. 
-                  Cela vous garantit l&apos;accès à tous les bonus Rounders Pro.
+                  Cela vous garantit l'accès à tous les bonus Rounders Pro.
                 </p>
                 <Link
                   href={AFFILIATE_LINK}
@@ -150,7 +73,7 @@ export default function GuideInscriptionPage() {
                   Ouvrir Stake avec bonus →
                 </Link>
                 <p className="text-sm text-gray-500 mt-2">
-                  💡 Le code &quot;{AFFILIATE_CODE}&quot; sera automatiquement appliqué
+                  💡 Le code "{AFFILIATE_CODE}" sera automatiquement appliqué
                 </p>
               </div>
             </div>
@@ -164,16 +87,16 @@ export default function GuideInscriptionPage() {
               </div>
               <div className="ml-4 flex-1">
                 <h3 className="font-bold text-gray-900 text-lg mb-2">
-                  Cliquez sur &quot;S&apos;inscrire&quot;
+                  Cliquez sur "S'inscrire"
                 </h3>
                 <p className="text-gray-700 mb-4">
-                  Le bouton vert &quot;S&apos;inscrire&quot; se trouve en haut à droite de la page. 
-                  Une fenêtre popup va s&apos;ouvrir avec le formulaire d&apos;inscription.
+                  Le bouton vert "S'inscrire" se trouve en haut à droite de la page. 
+                  Une fenêtre popup va s'ouvrir avec le formulaire d'inscription.
                 </p>
                 <div className="bg-gray-100 rounded-lg p-4">
                   <p className="text-sm text-gray-600">
-                    <strong>Note :</strong> Si vous voyez déjà un formulaire d&apos;inscription, 
-                    c&apos;est parfait ! Passez directement à l&apos;étape 3.
+                    <strong>Note :</strong> Si vous voyez déjà un formulaire d'inscription, 
+                    c'est parfait ! Passez directement à l'étape 3.
                   </p>
                 </div>
               </div>
@@ -198,7 +121,7 @@ export default function GuideInscriptionPage() {
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-800">👤 Nom d&apos;utilisateur</h4>
+                    <h4 className="font-semibold text-gray-800">👤 Nom d'utilisateur</h4>
                     <p className="text-gray-600">
                       Choisissez un pseudo unique (3-16 caractères)
                     </p>
@@ -237,7 +160,7 @@ export default function GuideInscriptionPage() {
                   Validez et commencez !
                 </h3>
                 <p className="text-gray-700 mb-4">
-                  Cochez les conditions d&apos;utilisation et cliquez sur &quot;Jouer maintenant&quot;. 
+                  Cochez les conditions d'utilisation et cliquez sur "Jouer maintenant". 
                   Félicitations, votre compte est créé !
                 </p>
                 <div className="bg-green-50 rounded-lg p-4">
@@ -265,7 +188,7 @@ export default function GuideInscriptionPage() {
             </p>
             <ol className="space-y-2 text-blue-700 text-sm">
               <li>1. Allez dans Paramètres → Sécurité</li>
-              <li>2. Cliquez sur &quot;Activer 2FA&quot;</li>
+              <li>2. Cliquez sur "Activer 2FA"</li>
               <li>3. Scannez le QR code avec Google Authenticator</li>
               <li>4. Entrez le code à 6 chiffres</li>
               <li>5. Sauvegardez le code de récupération !</li>
@@ -280,7 +203,7 @@ export default function GuideInscriptionPage() {
             <ul className="space-y-2 text-purple-700 text-sm">
               <li>• Utilisez un mot de passe unique</li>
               <li>• Activez la déconnexion automatique</li>
-              <li>• Vérifiez l&apos;historique des sessions</li>
+              <li>• Vérifiez l'historique des sessions</li>
               <li>• Ne partagez jamais vos identifiants</li>
               <li>• Méfiez-vous des sites de phishing</li>
             </ul>
@@ -298,14 +221,14 @@ export default function GuideInscriptionPage() {
           <div className="bg-white border-l-4 border-green-600 pl-6 py-4">
             <h3 className="font-bold text-gray-900 mb-1">1️⃣ Configurez votre profil</h3>
             <p className="text-gray-700">
-              Ajoutez un avatar, configurez votre fuseau horaire et choisissez votre devise d&apos;affichage
+              Ajoutez un avatar, configurez votre fuseau horaire et choisissez votre devise d'affichage
             </p>
           </div>
           
           <div className="bg-white border-l-4 border-blue-600 pl-6 py-4">
             <h3 className="font-bold text-gray-900 mb-1">2️⃣ Explorez les jeux gratuits</h3>
             <p className="text-gray-700">
-              Testez les jeux en mode démo pour vous familiariser sans risquer d&apos;argent
+              Testez les jeux en mode démo pour vous familiariser sans risquer d'argent
             </p>
           </div>
           
@@ -319,14 +242,14 @@ export default function GuideInscriptionPage() {
           <div className="bg-white border-l-4 border-amber-600 pl-6 py-4">
             <h3 className="font-bold text-gray-900 mb-1">4️⃣ Réclamez vos bonus</h3>
             <p className="text-gray-700">
-              N&apos;oubliez pas de réclamer vos bonus dans l&apos;espace affiliés Rounders Pro
+              N'oubliez pas de réclamer vos bonus dans l'espace affiliés Rounders Pro
             </p>
           </div>
           
           <div className="bg-white border-l-4 border-red-600 pl-6 py-4">
             <h3 className="font-bold text-gray-900 mb-1">5️⃣ Rejoignez la communauté</h3>
             <p className="text-gray-700">
-              Participez au chat, suivez les rain et connectez-vous avec d&apos;autres joueurs
+              Participez au chat, suivez les rain et connectez-vous avec d'autres joueurs
             </p>
           </div>
         </div>
@@ -341,7 +264,7 @@ export default function GuideInscriptionPage() {
         <div className="space-y-4">
           <details className="bg-gray-50 rounded-lg p-4">
             <summary className="font-bold text-gray-900 cursor-pointer">
-              Le site ne s&apos;affiche pas ou erreur de connexion
+              Le site ne s'affiche pas ou erreur de connexion
             </summary>
             <div className="mt-3 text-gray-700">
               <p className="mb-2">Solutions :</p>
@@ -349,7 +272,7 @@ export default function GuideInscriptionPage() {
                 <li>Vérifiez que votre VPN est bien activé (pays autorisé)</li>
                 <li>Essayez de vider le cache de votre navigateur</li>
                 <li>Utilisez un navigateur différent</li>
-                <li>Essayez l&apos;URL alternative : stake.bet</li>
+                <li>Essayez l'URL alternative : stake.bet</li>
               </ul>
             </div>
           </details>
@@ -361,10 +284,10 @@ export default function GuideInscriptionPage() {
             <div className="mt-3 text-gray-700">
               <p className="mb-2">Solutions :</p>
               <ul className="list-disc list-inside space-y-1 ml-4">
-                <li>Utilisez la fonction &quot;Mot de passe oublié&quot;</li>
-                <li>Vérifiez que vous n&apos;avez pas déjà un compte</li>
+                <li>Utilisez la fonction "Mot de passe oublié"</li>
+                <li>Vérifiez que vous n'avez pas déjà un compte</li>
                 <li>Utilisez une autre adresse email</li>
-                <li>Contactez le support si c&apos;est une erreur</li>
+                <li>Contactez le support si c'est une erreur</li>
               </ul>
             </div>
           </details>
@@ -376,8 +299,8 @@ export default function GuideInscriptionPage() {
             <div className="mt-3 text-gray-700">
               <p className="mb-2">Solutions :</p>
               <ul className="list-disc list-inside space-y-1 ml-4">
-                <li>Assurez-vous d&apos;utiliser : <strong>{AFFILIATE_CODE}</strong></li>
-                <li>Pas d&apos;espace avant ou après le code</li>
+                <li>Assurez-vous d'utiliser : <strong>{AFFILIATE_CODE}</strong></li>
+                <li>Pas d'espace avant ou après le code</li>
                 <li>Tout en minuscules</li>
                 <li>Si déjà inscrit, contactez-nous pour les bonus</li>
               </ul>
@@ -390,7 +313,7 @@ export default function GuideInscriptionPage() {
       <div className="bg-gray-900 text-white rounded-lg p-8 mb-8">
         <h3 className="text-2xl font-bold mb-4">✅ Prêt à vous inscrire ?</h3>
         <p className="mb-6 text-gray-300">
-          L&apos;inscription prend moins de 30 secondes. Rejoignez la communauté 
+          L'inscription prend moins de 30 secondes. Rejoignez la communauté 
           Rounders Pro et profitez de tous nos avantages exclusifs !
         </p>
         <Link
@@ -399,7 +322,7 @@ export default function GuideInscriptionPage() {
           rel="noopener noreferrer"
           className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition"
         >
-          S&apos;inscrire maintenant →
+          S'inscrire maintenant →
         </Link>
       </div>
 

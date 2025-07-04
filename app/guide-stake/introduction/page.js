@@ -28,7 +28,7 @@ export default function GuideIntroductionPage() {
       {/* Qu'est-ce que Stake */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          🤔 Qu&apos;est-ce que Stake ?
+          🤔 Qu'est-ce que Stake ?
         </h2>
         
         <div className="bg-gray-100 rounded-lg p-6 mb-6">
@@ -76,7 +76,7 @@ export default function GuideIntroductionPage() {
             <h3 className="font-bold text-gray-900 mb-2">Transactions instantanées</h3>
             <p className="text-gray-700">
               Dépôts et retraits en crypto traités en quelques secondes. 
-              Pas d&apos;attente, pas de vérification bancaire.
+              Pas d'attente, pas de vérification bancaire.
             </p>
           </div>
           
@@ -268,7 +268,7 @@ export default function GuideIntroductionPage() {
           href="/guide-stake/inscription"
           className="text-blue-600 hover:underline font-medium"
         >
-          Guide d&apos;inscription →
+          Guide d'inscription →
         </Link>
       </div>
     </div>
