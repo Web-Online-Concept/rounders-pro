@@ -4,9 +4,9 @@ import Image from 'next/image';
 import { AFFILIATE_LINK } from '../../config/affiliate';
 
 export const metadata = {
-  title: 'Introduction à Stake - Plateforme Casino & Paris Sportifs Crypto | Rounders Pro',
-  description: 'Découvrez Stake, le plus grand casino crypto au monde. Guide complet sur la plateforme, ses avantages, et pourquoi choisir Stake.',
-  keywords: 'stake casino, stake crypto, stake introduction, stake avis, stake presentation',
+  title: 'Introduction à Stake - Présentation complète | Guide Rounders',
+  description: 'Découvrez Stake, la plateforme de casino et paris sportifs crypto. Histoire, fonctionnement, avantages. Guide objectif par Rounders Pro.',
+  keywords: 'stake introduction, qu\'est-ce que stake, stake présentation',
 };
 
 export default function GuideIntroductionPage() {
@@ -228,7 +228,7 @@ export default function GuideIntroductionPage() {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4">
-          <a
+          
             href={AFFILIATE_LINK}
             target="_blank"
             className="inline-block bg-white text-gray-900 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition text-center"

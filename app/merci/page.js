@@ -2,6 +2,12 @@ import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
+export const metadata = {
+  title: 'Merci - Confirmation | Rounders Pro',
+  description: 'Merci pour votre participation. Rappel : tous nos jeux sont gratuits et les gains sont offerts sans obligation.',
+  robots: 'noindex, nofollow',
+};
+
 export default function Merci() {
   return (
     <>

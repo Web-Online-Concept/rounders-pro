@@ -3,9 +3,9 @@ import Link from 'next/link';
 import { AFFILIATE_LINK } from '../config/affiliate';
 
 export const metadata = {
-  title: 'Guide Complet Stake 2025 - Bonus, VIP, Stratégies | Rounders Pro',
-  description: 'Découvrez tout sur Stake : inscription, bonus exclusifs, programme VIP, stratégies gagnantes. Guide spécial joueurs français avec méthode VPN.',
-  keywords: 'stake, guide stake, stake france, stake vpn, stake bonus, stake vip, casino crypto',
+  title: 'Guide Stake 2025 - Casino, Sport & Crypto | Par Rounders Pro',
+  description: 'Guide complet de Stake : inscription, bonus, stratégies, VIP. Tout pour maîtriser la plateforme de casino et paris sportifs crypto.',
+  keywords: 'guide stake, stake casino, stake tutorial, stake france',
 };
 
 export default function GuideStakePage() {
@@ -103,7 +103,7 @@ export default function GuideStakePage() {
           Écrit par des experts, mis à jour quotidiennement.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
-          <a
+          
             href={AFFILIATE_LINK}
             target="_blank"
             className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg text-center"
@@ -185,7 +185,7 @@ export default function GuideStakePage() {
         <p className="text-gray-300 mb-6">
           Inscrivez-vous via notre lien pour bénéficier de tous les avantages exclusifs Rounders Pro
         </p>
-        <a
+        
           href={AFFILIATE_LINK}
           target="_blank"
           className="inline-block bg-white text-gray-900 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg"

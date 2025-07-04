@@ -1,3 +1,9 @@
+export const metadata = {
+  title: 'Interface Stake - Navigation et fonctionnalités | Guide complet',
+  description: 'Maîtrisez l\'interface de Stake : navigation, sections, paramètres. Guide visuel pour bien débuter sur la plateforme.',
+  keywords: 'interface stake, navigation stake, stake tutoriel',
+};
+
 export default function Interface() {
   return (
     <div className="max-w-4xl mx-auto">
