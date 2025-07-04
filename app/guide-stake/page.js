@@ -105,10 +105,10 @@ export default function GuideStakePage() {
         <div className="flex flex-col sm:flex-row gap-4">
           
             href={AFFILIATE_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg text-center"
-          >
+  target='_blank'
+  rel='noopener noreferrer'
+  className='inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition'
+>
             Commencer sur Stake →
           </a>
           <Link

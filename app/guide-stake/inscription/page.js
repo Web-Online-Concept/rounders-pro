@@ -66,10 +66,10 @@ export default function GuideInscriptionPage() {
                 </p>
                 
                   href={AFFILIATE_LINK}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition"
-                >
+  target='_blank'
+  rel='noopener noreferrer'
+  className='inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 transition'
+>
                   Ouvrir Stake avec bonus →
                 </a>
                 <p className="text-sm text-gray-500 mt-2">
