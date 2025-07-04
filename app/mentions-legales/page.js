@@ -1,8 +1,5 @@
-export const metadata = {
-  title: 'Mentions Légales - Rounders Pro | Jeux gratuits sans obligation',
-  description: 'Mentions légales de Rounders Pro. Jeux et bonus offerts à titre gracieux sans aucune obligation. Site d\'information sur Stake édité par Web Online Concept.',
-};
-
+// app/mentions-legales/page.js
+import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -32,7 +29,17 @@ export default function MentionsLegales() {
                 <p><strong>Société :</strong> Web Online Concept</p>
                 <p><strong>Adresse :</strong> Rue Paul Estival, 31200 Toulouse, France</p>
                 <p><strong>Email :</strong> web.online.concept@gmail.com</p>
-                <p><strong>Site web :</strong> <a href="https://web-online-concept.com" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">web-online-concept.com</a></p>
+                <p>
+                  <strong>Site web :</strong>{' '}
+                  <Link
+                    href="https://web-online-concept.com"
+                    className="text-blue-600 hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    web-online-concept.com
+                  </Link>
+                </p>
                 <p><strong>SIRET :</strong> 510 583 800 00048</p>
                 <p><strong>Directeur de publication :</strong> Le représentant légal de Web Online Concept</p>
               </div>
@@ -62,7 +69,17 @@ export default function MentionsLegales() {
               <div className="space-y-2 text-gray-600">
                 <p><strong>Hébergeur :</strong> Vercel Inc.</p>
                 <p><strong>Adresse :</strong> 340 S Lemon Ave #4133, Walnut, CA 91789, USA</p>
-                <p><strong>Site web :</strong> <a href="https://vercel.com" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">vercel.com</a></p>
+                <p>
+                  <strong>Site web :</strong>{' '}
+                  <Link
+                    href="https://vercel.com"
+                    className="text-blue-600 hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    vercel.com
+                  </Link>
+                </p>
               </div>
             </section>
 
@@ -70,7 +87,7 @@ export default function MentionsLegales() {
             <section>
               <h2 className="text-2xl font-semibold mb-4">Propriété intellectuelle</h2>
               <p className="text-gray-600 mb-4">
-                L&apos;ensemble du contenu de ce site (textes, images, vidéos) est la propriété exclusive de Web Online Concept ou de ses partenaires. Toute reproduction, même partielle, est strictement interdite sans autorisation préalable écrite.
+                L'ensemble du contenu de ce site (textes, images, vidéos) est la propriété exclusive de Web Online Concept ou de ses partenaires. Toute reproduction, même partielle, est strictement interdite sans autorisation préalable écrite.
               </p>
               <p className="text-gray-600">
                 La marque Rounders.pro est la propriété exclusive de Web Online Concept.
