@@ -73,59 +73,6 @@ export default function AdminRouePage() {
     setIsLoading(false);
   };
 
-  const updateDailyBudget = async () => {
-    if (confirm(`Êtes-vous sûr de vouloir changer le budget quotidien à ${dailyBudget}€ ?`)) {
-      try {
-        const response = await fetch('/api/roue-fortune/admin/manage', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            action: 'updateBudget',
-            dailyBudget: parseInt(dailyBudget)
-          }),
-        });
-
-        if (response.ok) {
-          alert('Budget mis à jour avec succès !');
-          loadAdminData();
-        } else {
-          alert('Erreur lors de la mise à jour');
-        }
-      } catch (error) {
-        console.error('Erreur:', error);
-        alert('Erreur lors de la mise à jour');
-      }
-    }
-  };
-
-  const resetDailyBudget = async () => {
-    if (confirm('Êtes-vous sûr de vouloir réinitialiser le budget du jour ?')) {
-      try {
-        const response = await fetch('/api/roue-fortune/admin/manage', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            action: 'resetDaily'
-          }),
-        });
-
-        if (response.ok) {
-          alert('Budget du jour réinitialisé !');
-          loadAdminData();
-        } else {
-          alert('Erreur lors de la réinitialisation');
-        }
-      } catch (error) {
-        console.error('Erreur:', error);
-        alert('Erreur lors de la réinitialisation');
-      }
-    }
-  };
-
   if (!isAuthenticated) {
     return (
       <>
@@ -229,44 +176,62 @@ export default function AdminRouePage() {
             {/* Gestion du budget */}
             <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
               <h2 className="text-xl font-bold text-gray-900 mb-4">
-                Gestion du budget
+                Lancer un nouveau jeu
               </h2>
               
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
+              <div className="flex items-end gap-4">
+                <div className="flex-1">
                   <label className="block text-gray-700 mb-2">
-                    Budget quotidien (€)
+                    Budget du nouveau jeu (€)
                   </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="number"
-                      value={dailyBudget}
-                      onChange={(e) => setDailyBudget(e.target.value)}
-                      min="10"
-                      max="500"
-                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <button
-                      onClick={updateDailyBudget}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition-all"
-                    >
-                      Mettre à jour
-                    </button>
-                  </div>
+                  <input
+                    type="number"
+                    value={dailyBudget}
+                    onChange={(e) => setDailyBudget(e.target.value)}
+                    min="10"
+                    max="500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
                 </div>
                 
-                <div>
-                  <label className="block text-gray-700 mb-2">
-                    Actions rapides
-                  </label>
-                  <button
-                    onClick={resetDailyBudget}
-                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition-all"
-                  >
-                    Réinitialiser le budget du jour
-                  </button>
-                </div>
+                <button
+                  onClick={async () => {
+                    if (confirm(`Lancer un nouveau jeu avec ${dailyBudget}€ de budget ?`)) {
+                      try {
+                        // D'abord réinitialiser
+                        await fetch('/api/roue-fortune/admin/manage', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ action: 'resetDaily' })
+                        });
+                        
+                        // Puis mettre à jour le budget
+                        await fetch('/api/roue-fortune/admin/manage', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ 
+                            action: 'updateBudget',
+                            dailyBudget: parseInt(dailyBudget)
+                          })
+                        });
+                        
+                        alert('Nouveau jeu lancé !');
+                        loadAdminData();
+                      } catch (error) {
+                        console.error('Erreur:', error);
+                        alert('Erreur lors du lancement du jeu');
+                      }
+                    }
+                  }}
+                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-bold text-lg transition-all"
+                >
+                  🎰 Nouveau Jeu
+                </button>
               </div>
+              
+              <p className="text-sm text-gray-500 mt-4">
+                Le jeu s'arrêtera automatiquement quand le budget sera épuisé
+              </p>
             </div>
 
             {/* Liste des gagnants récents */}
