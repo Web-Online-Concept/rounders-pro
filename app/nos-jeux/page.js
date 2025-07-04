@@ -125,7 +125,7 @@ export default function NosJeux() {
               <Link href="/roue-fortune" className="block group">
                 <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-8 md:p-12 text-white group-hover:shadow-2xl transition-shadow cursor-pointer">
                   <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
-                    🎡 La Roue de la Fortune Stake
+                    🎡 La Roue de la Fortune Rounders
                   </h2>
                   
                   {/* Statistiques globales */}
