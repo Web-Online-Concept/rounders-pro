@@ -20,7 +20,7 @@ export default function NosJeux() {
                 Des bonus cash à gagner chaque jour sur Twitter X
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
+                
                   href="https://twitter.com/rounders_pro"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -31,7 +31,7 @@ export default function NosJeux() {
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                   </svg>
                 </a>
-                <a
+                
                   href="/avantages-rounders"
                   className="bg-white text-orange-500 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors"
                 >
@@ -75,49 +75,51 @@ export default function NosJeux() {
           </div>
         </section>
 
-        {/* La Roue Quotidienne */}
+        {/* La Roue de la Fortune */}
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-8 md:p-12 text-white">
-                <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
-                  🎡 La Roue Quotidienne
-                </h2>
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <span className="text-2xl">💰</span>
-                      <div>
-                        <h3 className="font-bold text-lg mb-1">Gagnez jusqu&apos;à 50€</h3>
-                        <p className="opacity-90">Des gains en cash entre 0€ et 50€ à chaque tour</p>
+              <a href="/roue-fortune" className="block group">
+                <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-8 md:p-12 text-white group-hover:shadow-2xl transition-shadow cursor-pointer">
+                  <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
+                    🎡 La Roue de la Fortune Stake
+                  </h2>
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <span className="text-2xl">💰</span>
+                        <div>
+                          <h3 className="font-bold text-lg mb-1">Gagnez jusqu&apos;à 50€ à chaque Jeu proposé</h3>
+                          <p className="opacity-90">Des gains en cash entre 0€ et 50€ à chaque jeu</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <span className="text-2xl">🎯</span>
+                        <div>
+                          <h3 className="font-bold text-lg mb-1">Conditions variables</h3>
+                          <p className="opacity-90">Ouvert à tous les joueurs ayant un compte Stake</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <span className="text-2xl">🎯</span>
-                      <div>
-                        <h3 className="font-bold text-lg mb-1">Conditions variables</h3>
-                        <p className="opacity-90">Ouvert aux affiliés ou à tous selon les jeux</p>
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <span className="text-2xl">⏰</span>
+                        <div>
+                          <h3 className="font-bold text-lg mb-1">Une chance par jour</h3>
+                          <p className="opacity-90">Une seule participation autorisée par personne</p>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <span className="text-2xl">⏰</span>
-                      <div>
-                        <h3 className="font-bold text-lg mb-1">Une chance par jour</h3>
-                        <p className="opacity-90">Une seule participation autorisée par personne</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <span className="text-2xl">⚡</span>
-                      <div>
-                        <h3 className="font-bold text-lg mb-1">Paiement rapide</h3>
-                        <p className="opacity-90">Recevez vos gains rapidement et en toute sécurité</p>
+                      <div className="flex items-start gap-3">
+                        <span className="text-2xl">⚡</span>
+                        <div>
+                          <h3 className="font-bold text-lg mb-1">Paiement rapide sur Stake sous 48h</h3>
+                          <p className="opacity-90">Recevez vos gains rapidement et en toute sécurité</p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
         </section>
@@ -175,7 +177,7 @@ export default function NosJeux() {
                 Ne manquez plus aucun jeu et maximisez vos gains sur Stake
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
+                
                   href="https://twitter.com/rounders_pro"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -186,7 +188,7 @@ export default function NosJeux() {
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                   </svg>
                 </a>
-                <a
+                
                   href="/avantages-rounders"
                   className="bg-orange-500 text-white px-8 py-4 rounded-lg font-bold hover:bg-orange-600 transition-colors"
                 >
