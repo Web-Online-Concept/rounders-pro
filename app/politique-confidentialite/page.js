@@ -1,8 +1,5 @@
-export const metadata = {
-  title: 'Politique de Confidentialité - Rounders Pro | Protection des données',
-  description: 'Politique de confidentialité de Rounders Pro. Comment nous collectons et utilisons vos données pour nos jeux gratuits. Conforme RGPD.',
-};
-
+// app/politique-confidentialite/page.js
+import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -18,7 +15,7 @@ export default function PolitiqueConfidentialite() {
             {/* Introduction */}
             <section>
               <p className="text-gray-600 mb-4">
-                La présente politique de confidentialité s&apos;applique au site Rounders.pro et à tous les jeux organisés par Web Online Concept (ci-après &quot;nous&quot;, &quot;notre&quot; ou &quot;nos&quot;).
+                La présente politique de confidentialité s'applique au site Rounders.pro et à tous les jeux organisés par Web Online Concept (ci-après "nous", "notre" ou "nos").
               </p>
               <p className="text-gray-600">
                 Cette politique décrit comment nous collectons, utilisons et protégeons vos données personnelles dans le cadre de nos jeux gratuits et animations marketing.
@@ -118,12 +115,12 @@ export default function PolitiqueConfidentialite() {
               <div className="space-y-4 text-gray-600">
                 <p>Conformément au RGPD, vous disposez des droits suivants :</p>
                 <ul className="list-disc list-inside ml-4">
-                  <li>Droit d&apos;accès à vos données</li>
+                  <li>Droit d'accès à vos données</li>
                   <li>Droit de rectification</li>
-                  <li>Droit à l&apos;effacement</li>
+                  <li>Droit à l'effacement</li>
                   <li>Droit à la limitation du traitement</li>
                   <li>Droit à la portabilité</li>
-                  <li>Droit d&apos;opposition</li>
+                  <li>Droit d'opposition</li>
                 </ul>
                 <p className="mt-4">
                   Pour exercer ces droits : web.online.concept@gmail.com
@@ -140,7 +137,11 @@ export default function PolitiqueConfidentialite() {
             <section>
               <h2 className="text-2xl font-semibold mb-4">7. Cookies</h2>
               <p className="text-gray-600">
-                Nous utilisons des cookies essentiels et analytiques. Voir notre <a href="/cookies" className="text-blue-600 hover:underline">Politique de Cookies</a> pour plus de détails.
+                Nous utilisons des cookies essentiels et analytiques. Voir notre{' '}
+                <Link href="/cookies" className="text-blue-600 hover:underline">
+                  Politique de Cookies
+                </Link>{' '}
+                pour plus de détails.
               </p>
             </section>
 
