@@ -3,9 +3,34 @@ import Footer from '../components/Footer';
 import { AFFILIATE_LINK } from '../config/affiliate';
 
 export const metadata = {
-  title: 'Réclamez votre Bonus Rounders - Jusqu\'à 200€ | Affiliés Stake',
-  description: 'Bonus cash exclusifs Rounders de 10€ à 200€ selon votre niveau VIP Stake. Réservé aux joueurs inscrits via notre lien d\'affiliation.',
+  title: 'Espace Membres Rounders | Réclamez 200€ de Bonus VIP Stake',
+  description: 'Tableau de bord affiliés : réclamez instantanément vos bonus VIP jusqu\'à 200€. Suivi en temps réel, paiement crypto sous 48h. Réservé aux membres Rounders.',
   keywords: 'bonus rounders, affiliation stake, bonus vip stake, rewards rounders',
+  openGraph: {
+    title: 'Espace Membres Rounders | Réclamez 200€ de Bonus VIP Stake',
+    description: 'Tableau de bord affiliés : réclamez instantanément vos bonus VIP jusqu\'à 200€. Suivi en temps réel, paiement crypto sous 48h. Réservé aux membres Rounders.',
+    url: 'https://www.rounders.pro/affilies',
+    siteName: 'Rounders Pro',
+    images: [
+      {
+        url: '/images/og-rounders-stake.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Rounders Pro - Espace Membres VIP',
+      }
+    ],
+    locale: 'fr_FR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Espace Membres Rounders | Réclamez 200€ de Bonus VIP Stake',
+    description: 'Tableau de bord affiliés : réclamez instantanément vos bonus VIP jusqu\'à 200€.',
+    images: ['/images/og-rounders-stake.jpg'],
+  },
+  alternates: {
+    canonical: 'https://www.rounders.pro/affilies',
+  },
 };
 
 export default function Affilies() {
@@ -164,7 +189,7 @@ export default function Affilies() {
                     <strong>📸 Comment faire :</strong>
                   </p>
                   <ol className="text-sm text-blue-700 mt-2 space-y-1">
-                    <li>1. Uploadez votre capture sur <a href="https://imgur.com/upload" target="_blank" className="underline font-semibold">Imgur.com</a> (gratuit, sans inscription)</li>
+                    <li>1. Uploadez votre capture sur <a href="https://imgur.com/upload" target="_blank" rel="noopener noreferrer" className="underline font-semibold">Imgur.com</a> (gratuit, sans inscription)</li>
                     <li>2. Copiez le lien de l&apos;image</li>
                     <li>3. Collez-le ci-dessous</li>
                   </ol>
