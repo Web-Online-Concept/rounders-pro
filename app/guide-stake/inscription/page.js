@@ -2,12 +2,6 @@
 import Link from 'next/link';
 import { AFFILIATE_LINK, AFFILIATE_CODE } from '../../config/affiliate';
 
-export const metadata = {
-  title: 'Comment s\'inscrire sur Stake - Guide étape par étape | Rounders',
-  description: 'Tutoriel complet pour créer un compte Stake en 2025. Inscription rapide, vérification KYC, premiers pas. Guide officiel Rounders Pro.',
-  keywords: 'inscription stake, créer compte stake, stake registration',
-};
-
 export default function GuideInscriptionPage() {
   return (
     <div className="pb-20 md:pb-0">
