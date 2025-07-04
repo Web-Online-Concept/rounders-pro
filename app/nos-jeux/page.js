@@ -1,9 +1,50 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export default function NosJeux() {
+  const [stats, setStats] = useState({
+    totalDistributed: 0,
+    averageWin: 0,
+    totalWinners: 0,
+    biggestWin: 0
+  });
+
+  useEffect(() => {
+    loadStats();
+  }, []);
+
+  const loadStats = async () => {
+    try {
+      const response = await fetch('/api/roue-fortune/winners?limit=all');
+      const data = await response.json();
+      const winnersData = data.winners || [];
+
+      // Calculer les statistiques
+      let totalAmount = 0;
+      let biggestWin = 0;
+
+      winnersData.forEach(winner => {
+        const amount = parseInt(winner.amount.replace('€', ''));
+        totalAmount += amount;
+        if (amount > biggestWin) biggestWin = amount;
+      });
+
+      const averageWin = winnersData.length > 0 ? totalAmount / winnersData.length : 0;
+
+      setStats({
+        totalDistributed: totalAmount,
+        averageWin: averageWin.toFixed(2),
+        totalWinners: winnersData.length,
+        biggestWin
+      });
+    } catch (error) {
+      console.error('Erreur chargement stats:', error);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -84,6 +125,32 @@ export default function NosJeux() {
                   <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
                     🎡 La Roue de la Fortune Stake
                   </h2>
+                  
+                  {/* Statistiques globales */}
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 mb-8">
+                    <h3 className="text-xl font-bold text-white mb-4 text-center">
+                      📊 Statistiques globales
+                    </h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                      <div>
+                        <p className="text-sm opacity-90">Total distribué</p>
+                        <p className="text-2xl font-bold">{stats.totalDistributed}€</p>
+                      </div>
+                      <div>
+                        <p className="text-sm opacity-90">Nombre de gagnants</p>
+                        <p className="text-2xl font-bold">{stats.totalWinners}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm opacity-90">Gain moyen</p>
+                        <p className="text-2xl font-bold">{stats.averageWin}€</p>
+                      </div>
+                      <div>
+                        <p className="text-sm opacity-90">Plus gros gain</p>
+                        <p className="text-2xl font-bold">{stats.biggestWin}€</p>
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="grid md:grid-cols-2 gap-8">
                     <div className="space-y-4">
                       <div className="flex items-start gap-3">

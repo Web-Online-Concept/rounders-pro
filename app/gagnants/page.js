@@ -227,7 +227,7 @@ export default function GagnantsPage() {
             {/* Statistiques globales */}
             <div className="bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg p-6 mb-8">
               <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
-                📊 Statistiques globales (tout l'historique)
+                📊 Statistiques globales
               </h3>
               <div className="grid md:grid-cols-4 gap-4">
                 <div className="bg-white rounded-lg shadow p-4 text-center">
