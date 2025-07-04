@@ -15,11 +15,19 @@ export default function AdminRouePage() {
   // État du jeu
   const [dailyBudget, setDailyBudget] = useState(50);
   const [todaySpent, setTodaySpent] = useState(0);
-  const [winners, setWinners] = useState([]);
+  const [allWinners, setAllWinners] = useState([]); // Tous les gagnants
+  const [filteredWinners, setFilteredWinners] = useState([]); // Gagnants filtrés
   const [stats, setStats] = useState({
     totalWinners: 0,
     totalDistributed: 0
   });
+
+  // Filtres
+  const [filterPeriod, setFilterPeriod] = useState('30'); // '7', '30', 'month', 'year', 'all'
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
+  const [availableMonths, setAvailableMonths] = useState([]);
+  const [availableYears, setAvailableYears] = useState([]);
 
   // Vérifier l'authentification
   useEffect(() => {
@@ -30,10 +38,15 @@ export default function AdminRouePage() {
     }
   }, []);
 
+  // Appliquer les filtres quand ils changent
+  useEffect(() => {
+    applyFilters();
+  }, [filterPeriod, selectedMonth, selectedYear, allWinners]);
+
   const handleLogin = (e) => {
     e.preventDefault();
     // Remplacez 'VotreMotDePasse' par votre vrai mot de passe
-    if (password === 'test') {
+    if (password === 'VotreMotDePasse') {
       sessionStorage.setItem('adminAuth', 'true');
       setIsAuthenticated(true);
       loadAdminData();
@@ -52,15 +65,11 @@ export default function AdminRouePage() {
       setDailyBudget(statusData.dailyBudget || 50);
       setTodaySpent(statusData.dailyBudget - statusData.remainingBudget);
       
-      // Charger TOUS les gagnants historiques pour les stats
+      // Charger TOUS les gagnants historiques
       const allWinnersRes = await fetch('/api/roue-fortune/winners?limit=all');
       const allWinnersData = await allWinnersRes.json();
       
-      // Charger les gagnants récents pour l'affichage (50 derniers)
-      const recentWinnersRes = await fetch('/api/roue-fortune/winners?limit=30');
-      const recentWinnersData = await recentWinnersRes.json();
-      
-      setWinners(recentWinnersData.winners || []);
+      setAllWinners(allWinnersData.winners || []);
       
       // Calculer les stats sur TOUT l'historique
       const totalDistributed = allWinnersData.winners.reduce((sum, w) => {
@@ -71,11 +80,84 @@ export default function AdminRouePage() {
         totalWinners: allWinnersData.winners.length,
         totalDistributed
       });
+
+      // Extraire les mois et années disponibles
+      const months = new Set();
+      const years = new Set();
+      
+      allWinnersData.winners.forEach(winner => {
+        const [day, month, year] = winner.date.split('/');
+        months.add(`${year}-${month}`);
+        years.add(year);
+      });
+
+      setAvailableMonths(Array.from(months).sort().reverse());
+      setAvailableYears(Array.from(years).sort().reverse());
       
     } catch (error) {
       console.error('Erreur chargement admin:', error);
     }
     setIsLoading(false);
+  };
+
+  const applyFilters = () => {
+    if (!allWinners.length) {
+      setFilteredWinners([]);
+      return;
+    }
+
+    let filtered = [...allWinners];
+    const now = new Date();
+
+    switch (filterPeriod) {
+      case '7':
+        // 7 derniers jours
+        filtered = allWinners.filter(winner => {
+          const [day, month, year] = winner.date.split('/');
+          const winnerDate = new Date(year, month - 1, day);
+          const daysDiff = Math.floor((now - winnerDate) / (1000 * 60 * 60 * 24));
+          return daysDiff <= 7;
+        });
+        break;
+
+      case '30':
+        // 30 derniers jours
+        filtered = allWinners.filter(winner => {
+          const [day, month, year] = winner.date.split('/');
+          const winnerDate = new Date(year, month - 1, day);
+          const daysDiff = Math.floor((now - winnerDate) / (1000 * 60 * 60 * 24));
+          return daysDiff <= 30;
+        });
+        break;
+
+      case 'month':
+        // Mois spécifique
+        if (selectedMonth) {
+          const [yearPart, monthPart] = selectedMonth.split('-');
+          filtered = allWinners.filter(winner => {
+            const [day, month, year] = winner.date.split('/');
+            return year === yearPart && month === monthPart;
+          });
+        }
+        break;
+
+      case 'year':
+        // Année spécifique
+        if (selectedYear) {
+          filtered = allWinners.filter(winner => {
+            const [day, month, year] = winner.date.split('/');
+            return year === selectedYear;
+          });
+        }
+        break;
+
+      case 'all':
+        // Tous les gagnants
+        filtered = allWinners;
+        break;
+    }
+
+    setFilteredWinners(filtered);
   };
 
   const deleteWinner = async (winner, index) => {
@@ -90,6 +172,13 @@ export default function AdminRouePage() {
       const [day, month, year] = winner.date.split('/');
       const dateFormatted = `${year}-${month}-${day}`;
 
+      // Trouver l'index réel dans la liste complète
+      const realIndex = allWinners.findIndex(w => 
+        w.pseudo === winner.pseudo && 
+        w.time === winner.time && 
+        w.date === winner.date
+      );
+
       const response = await fetch('/api/roue-fortune/admin/manage', {
         method: 'POST',
         headers: {
@@ -98,11 +187,7 @@ export default function AdminRouePage() {
         body: JSON.stringify({
           action: 'deleteWinner',
           date: dateFormatted,
-          winnerIndex: winners.findIndex(w => 
-            w.pseudo === winner.pseudo && 
-            w.time === winner.time && 
-            w.date === winner.date
-          )
+          winnerIndex: realIndex
         }),
       });
 
@@ -119,6 +204,13 @@ export default function AdminRouePage() {
     }
     
     setDeletingIndex(null);
+  };
+
+  const getMonthName = (monthYear) => {
+    const [year, month] = monthYear.split('-');
+    const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 
+                   'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+    return `${months[parseInt(month) - 1]} ${year}`;
   };
 
   if (!isAuthenticated) {
@@ -282,12 +374,69 @@ export default function AdminRouePage() {
               </p>
             </div>
 
-            {/* Liste des gagnants récents */}
+            {/* Liste des gagnants avec filtres */}
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="p-6 border-b">
-                <h2 className="text-xl font-bold text-gray-900">
-                  Gagnants récents (30 derniers jours)
-                </h2>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <h2 className="text-xl font-bold text-gray-900">
+                    Gagnants ({filteredWinners.length})
+                  </h2>
+                  
+                  {/* Filtres */}
+                  <div className="flex flex-wrap gap-2 items-center">
+                    <select
+                      value={filterPeriod}
+                      onChange={(e) => {
+                        setFilterPeriod(e.target.value);
+                        setSelectedMonth('');
+                        setSelectedYear('');
+                      }}
+                      className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="7">7 derniers jours</option>
+                      <option value="30">30 derniers jours</option>
+                      <option value="month">Par mois</option>
+                      <option value="year">Par année</option>
+                      <option value="all">Tout l'historique</option>
+                    </select>
+
+                    {filterPeriod === 'month' && (
+                      <select
+                        value={selectedMonth}
+                        onChange={(e) => setSelectedMonth(e.target.value)}
+                        className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">Choisir un mois</option>
+                        {availableMonths.map(month => (
+                          <option key={month} value={month}>
+                            {getMonthName(month)}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+
+                    {filterPeriod === 'year' && (
+                      <select
+                        value={selectedYear}
+                        onChange={(e) => setSelectedYear(e.target.value)}
+                        className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">Choisir une année</option>
+                        {availableYears.map(year => (
+                          <option key={year} value={year}>
+                            {year}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+
+                    {filteredWinners.length > 0 && (
+                      <span className="text-sm text-gray-600 ml-2">
+                        Total période : {filteredWinners.reduce((sum, w) => sum + parseInt(w.amount.replace('€', '')), 0)}€
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
               
               <div className="overflow-x-auto">
@@ -312,31 +461,39 @@ export default function AdminRouePage() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {winners.slice(0, 50).map((winner, index) => (
-                      <tr key={index}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {winner.date}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {winner.time}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {winner.pseudo}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">
-                          {winner.amount}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm">
-                          <button
-                            onClick={() => deleteWinner(winner, index)}
-                            disabled={deletingIndex === index}
-                            className="text-red-600 hover:text-red-800 font-medium disabled:opacity-50"
-                          >
-                            {deletingIndex === index ? 'Suppression...' : 'Supprimer'}
-                          </button>
+                    {filteredWinners.length > 0 ? (
+                      filteredWinners.map((winner, index) => (
+                        <tr key={index}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {winner.date}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {winner.time}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {winner.pseudo}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">
+                            {winner.amount}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm">
+                            <button
+                              onClick={() => deleteWinner(winner, index)}
+                              disabled={deletingIndex === index}
+                              className="text-red-600 hover:text-red-800 font-medium disabled:opacity-50"
+                            >
+                              {deletingIndex === index ? 'Suppression...' : 'Supprimer'}
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
+                          Aucun gagnant pour cette période
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>
