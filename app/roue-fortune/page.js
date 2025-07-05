@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BottomBar from '../components/BottomBar';
 
 export default function RoueFortunePage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -482,6 +483,7 @@ export default function RoueFortunePage() {
         )}
       </div>
       <Footer />
+	  <BottomBar />
     </>
   );
 }
