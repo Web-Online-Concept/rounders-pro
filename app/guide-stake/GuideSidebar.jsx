@@ -26,15 +26,17 @@ export default function GuideSidebar() {
 
   return (
     <>
-      {/* Menu Mobile */}
-      <div className="md:hidden sticky top-0 bg-white z-50 border-b">
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="w-full py-3 px-4 bg-orange-600 text-white font-bold flex items-center justify-center hover:bg-orange-700 transition-colors"
-        >
-          <span className="mr-2">{mobileMenuOpen ? '✕' : '☰'}</span>
-          Menu Guide Stake
-        </button>
+      {/* Menu Mobile - Uniquement visible sur mobile */}
+      <div className="md:hidden">
+        <div className="sticky top-0 z-40">
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="w-full py-3 px-4 bg-orange-600 text-white font-bold flex items-center justify-center hover:bg-orange-700 transition-colors border-b"
+          >
+            <span className="mr-2">{mobileMenuOpen ? '✕' : '☰'}</span>
+            Menu Guide Stake
+          </button>
+        </div>
       </div>
 
       {/* Overlay et Menu Slide-in */}
@@ -173,8 +175,8 @@ export default function GuideSidebar() {
         </div>
       )}
       
-      {/* Sidebar desktop */}
-      <aside className="hidden md:block w-64 bg-gray-50 border-r border-gray-200">
+      {/* Sidebar desktop - Position absolue pour ne pas affecter le layout mobile */}
+      <aside className="hidden md:block md:fixed md:left-0 md:top-0 md:h-full md:w-64 bg-gray-50 border-r border-gray-200 md:pt-16">
         <div className="p-6">
           <h2 className="text-xl font-bold text-gray-800 mb-6">Guide Complet Stake</h2>
           <nav className="space-y-2">
