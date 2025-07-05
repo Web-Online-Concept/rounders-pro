@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BottomBar from '../components/BottomBar';
 import { AFFILIATE_LINK, AFFILIATE_CODE } from '../config/affiliate';
 
 export default function AvantagesRounders() {
@@ -217,6 +218,7 @@ export default function AvantagesRounders() {
         </div>
       </div>
       <Footer />
+	  <BottomBar />
     </>
   );
 }
