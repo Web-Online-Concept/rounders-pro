@@ -257,7 +257,7 @@ export default function RoueFortunePage() {
             🎰 Roue de la Fortune Rounders
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Tentez votre chance et gagnez jusqu'à 50€ par jour !
+            Tentez votre chance et gagnez jusqu'à 50€ par jeu !
           </p>
         </div>
 
