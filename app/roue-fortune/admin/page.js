@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import BottomBar from '../../components/BottomBar';
 
 export default function AdminRouePage() {
   const router = useRouter();
@@ -509,6 +510,7 @@ export default function AdminRouePage() {
         )}
       </div>
       <Footer />
+	  <BottomBar />
     </>
   );
 }
