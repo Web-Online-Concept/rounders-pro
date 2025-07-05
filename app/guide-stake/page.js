@@ -1,8 +1,5 @@
 // app/guide-stake/page.js
 import Link from 'next/link';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import BottomBar from '../components/BottomBar';
 import { AFFILIATE_LINK } from '../config/affiliate';
 
 export default function GuideStakePage() {
@@ -89,118 +86,109 @@ export default function GuideStakePage() {
   ];
 
   return (
-    <>
-      <Header />
-      
-      <main className="pb-16 md:pb-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Hero Section */}
-          <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-8 mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Guide Ultime Stake
-            </h1>
-            <p className="text-xl text-gray-600 mb-6">
-              Le guide le plus complet en français pour maîtriser Stake et maximiser vos gains.
-              Écrit par des experts, mis à jour quotidiennement.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href={AFFILIATE_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg text-center"
-              >
-                Commencer sur Stake →
-              </Link>
-              <Link
-                href="/guide-stake/france"
-                className="inline-block bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition shadow-lg text-center"
-              >
-                🇫🇷 Guide Français →
-              </Link>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div className="bg-white rounded-lg shadow p-4 text-center">
-              <div className="text-2xl font-bold text-blue-600">13</div>
-              <div className="text-sm text-gray-600">Sections</div>
-            </div>
-            <div className="bg-white rounded-lg shadow p-4 text-center">
-              <div className="text-2xl font-bold text-green-600">100+</div>
-              <div className="text-sm text-gray-600">Conseils</div>
-            </div>
-            <div className="bg-white rounded-lg shadow p-4 text-center">
-              <div className="text-2xl font-bold text-amber-600">MAJ</div>
-              <div className="text-sm text-gray-600">Quotidienne</div>
-            </div>
-            <div className="bg-white rounded-lg shadow p-4 text-center">
-              <div className="text-2xl font-bold text-red-600">🇫🇷</div>
-              <div className="text-sm text-gray-600">Français</div>
-            </div>
-          </div>
-
-          {/* Sections Grid */}
-          <div className="space-y-4">
-            {sections.map((section) => (
-              <Link
-                key={section.href}
-                href={section.href}
-                className={`block bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group ${
-                  section.highlight ? 'ring-2 ring-red-500' : ''
-                }`}
-              >
-                <div className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition">
-                        {section.title}
-                      </h2>
-                      <p className="text-gray-600">
-                        {section.description}
-                      </p>
-                    </div>
-                    <div className="ml-4 flex-shrink-0">
-                      <span className={`inline-block px-3 py-1 text-xs font-bold rounded-full ${
-                        section.highlight 
-                          ? 'bg-red-100 text-red-700' 
-                          : 'bg-blue-100 text-blue-700'
-                      }`}>
-                        {section.tag}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className={`h-1 ${
-                  section.highlight ? 'bg-red-500' : 'bg-blue-600'
-                } transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`} />
-              </Link>
-            ))}
-          </div>
-
-          {/* Bottom CTA */}
-          <div className="mt-12 bg-gray-900 text-white rounded-xl p-8 text-center">
-            <h3 className="text-2xl font-bold mb-4">
-              Prêt à commencer votre aventure Stake ?
-            </h3>
-            <p className="text-gray-300 mb-6">
-              Inscrivez-vous via notre lien pour bénéficier de tous les avantages exclusifs Rounders Pro
-            </p>
-            <Link
-              href={AFFILIATE_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-white text-gray-900 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg"
-            >
-              Inscription avec Bonus →
-            </Link>
-          </div>
+    <div className="pb-20 md:pb-0">
+      {/* Hero Section */}
+      <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-8 mb-8">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          Guide Ultime Stake
+        </h1>
+        <p className="text-xl text-gray-600 mb-6">
+          Le guide le plus complet en français pour maîtriser Stake et maximiser vos gains.
+          Écrit par des experts, mis à jour quotidiennement.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Link
+            href={AFFILIATE_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg text-center"
+          >
+            Commencer sur Stake →
+          </Link>
+          <Link
+            href="/guide-stake/france"
+            className="inline-block bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition shadow-lg text-center"
+          >
+            🇫🇷 Guide Français →
+          </Link>
         </div>
-      </main>
+      </div>
 
-      <Footer />
-      <BottomBar />
-    </>
+      {/* Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="bg-white rounded-lg shadow p-4 text-center">
+          <div className="text-2xl font-bold text-blue-600">13</div>
+          <div className="text-sm text-gray-600">Sections</div>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4 text-center">
+          <div className="text-2xl font-bold text-green-600">100+</div>
+          <div className="text-sm text-gray-600">Conseils</div>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4 text-center">
+          <div className="text-2xl font-bold text-amber-600">MAJ</div>
+          <div className="text-sm text-gray-600">Quotidienne</div>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4 text-center">
+          <div className="text-2xl font-bold text-red-600">🇫🇷</div>
+          <div className="text-sm text-gray-600">Français</div>
+        </div>
+      </div>
+
+      {/* Sections Grid */}
+      <div className="space-y-4">
+        {sections.map((section) => (
+          <Link
+            key={section.href}
+            href={section.href}
+            className={`block bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group ${
+              section.highlight ? 'ring-2 ring-red-500' : ''
+            }`}
+          >
+            <div className="p-6">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition">
+                    {section.title}
+                  </h2>
+                  <p className="text-gray-600">
+                    {section.description}
+                  </p>
+                </div>
+                <div className="ml-4 flex-shrink-0">
+                  <span className={`inline-block px-3 py-1 text-xs font-bold rounded-full ${
+                    section.highlight 
+                      ? 'bg-red-100 text-red-700' 
+                      : 'bg-blue-100 text-blue-700'
+                  }`}>
+                    {section.tag}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className={`h-1 ${
+              section.highlight ? 'bg-red-500' : 'bg-blue-600'
+            } transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`} />
+          </Link>
+        ))}
+      </div>
+
+      {/* Bottom CTA */}
+      <div className="mt-12 bg-gray-900 text-white rounded-xl p-8 text-center">
+        <h3 className="text-2xl font-bold mb-4">
+          Prêt à commencer votre aventure Stake ?
+        </h3>
+        <p className="text-gray-300 mb-6">
+          Inscrivez-vous via notre lien pour bénéficier de tous les avantages exclusifs Rounders Pro
+        </p>
+        <Link
+          href={AFFILIATE_LINK}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block bg-white text-gray-900 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg"
+        >
+          Inscription avec Bonus →
+        </Link>
+      </div>
+    </div>
   );
 }
