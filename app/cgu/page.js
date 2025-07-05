@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BottomBar from '../components/BottomBar';
 
 export default function CGU() {
   return (
@@ -251,6 +252,7 @@ export default function CGU() {
         </div>
       </main>
       <Footer />
+	  <BottomBar />
     </>
   );
 }

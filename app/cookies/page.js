@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BottomBar from '../components/BottomBar';
 
 export default function Cookies() {
   return (
@@ -199,6 +200,7 @@ export default function Cookies() {
         </div>
       </main>
       <Footer />
+	  <BottomBar />
     </>
   );
 }

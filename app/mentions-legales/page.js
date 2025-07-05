@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BottomBar from '../components/BottomBar';
 
 export default function MentionsLegales() {
   return (
@@ -146,6 +147,7 @@ export default function MentionsLegales() {
         </div>
       </main>
       <Footer />
+	  <BottomBar />
     </>
   );
 }

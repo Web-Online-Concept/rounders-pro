@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BottomBar from '../components/BottomBar';
 
 export default function PolitiqueConfidentialite() {
   return (
@@ -183,6 +184,7 @@ export default function PolitiqueConfidentialite() {
         </div>
       </main>
       <Footer />
+	  <BottomBar />
     </>
   );
 }
