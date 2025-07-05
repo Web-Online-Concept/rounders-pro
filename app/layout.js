@@ -5,11 +5,11 @@ import Footer from './components/Footer';
 
 export const metadata = {
   title: 'Rounders Pro | Bonus Stake 200€ & Guide VIP 2025',
-  description: 'Obtenez jusqu’à 200€ de bonus cash et 10% de rakeback sur Stake avec Rounders Pro. Guide VIP, stratégies, et avantages exclusifs pour joueurs français.',
+  description: 'Obtenez jusqu'à 200€ de bonus cash et 10% de rakeback sur Stake avec Rounders Pro. Guide VIP, stratégies, et avantages exclusifs pour joueurs français.',
   keywords: 'rounders pro, stake bonus, code promo stake, guide vip, affiliation stake, casino crypto',
   openGraph: {
     title: 'Rounders Pro | Bonus Stake 200€ & Guide VIP 2025',
-    description: 'Obtenez jusqu’à 200€ de bonus cash et 10% de rakeback sur Stake avec Rounders Pro. Guide complet pour joueurs français.',
+    description: 'Obtenez jusqu'à 200€ de bonus cash et 10% de rakeback sur Stake avec Rounders Pro. Guide complet pour joueurs français.',
     url: 'https://www.rounders.pro',
     siteName: 'Rounders Pro',
     images: [
@@ -26,7 +26,7 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Rounders Pro | Bonus Stake 200€ & Guide VIP 2025',
-    description: 'Bonus jusqu’à 200€ et 10% rakeback sur Stake avec Rounders Pro.',
+    description: 'Bonus jusqu'à 200€ et 10% rakeback sur Stake avec Rounders Pro.',
     images: ['/images/og-rounders-stake.jpg'],
   },
   alternates: {
@@ -38,7 +38,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="fr">
       <body>
-        {children}
+        <div className="min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Footer />
+        </div>
       </body>
     </html>
   );
