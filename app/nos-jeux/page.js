@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BottomBar from './components/BottomBar';
 
 export default function NosJeux() {
   const [stats, setStats] = useState({
@@ -270,6 +271,7 @@ export default function NosJeux() {
       </main>
 
       <Footer />
+	  <BottomBar />
     </>
   );
 }
