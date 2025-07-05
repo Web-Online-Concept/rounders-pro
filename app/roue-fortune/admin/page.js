@@ -221,8 +221,10 @@ export default function AdminRouePage() {
         <Header />
         <div className="max-w-md mx-auto px-4 py-12">
           <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-            Administration - Roue de la Fortune Rounders
-          </h1>
+			Administration
+			<br />
+			Roue de la Fortune Rounders
+		  </h1>
           
           <form onSubmit={handleLogin} className="bg-white rounded-lg shadow-lg p-6">
             <div className="mb-4">
