@@ -300,6 +300,7 @@ export default function Affilies() {
         </div>
       </main>
       <Footer />
+	  <BottomBar />
     </>
   );
 }
