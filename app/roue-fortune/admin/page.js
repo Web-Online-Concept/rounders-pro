@@ -21,15 +21,22 @@ export default function AdminRouePage() {
   const [filteredWinners, setFilteredWinners] = useState([]);
   const [stats, setStats] = useState({
     totalWinners: 0,
-    totalDistributed: 0
+    totalDistributed: 0,
+    totalUnpaid: 0,
+    unpaidCount: 0
   });
 
   // Filtres
   const [filterPeriod, setFilterPeriod] = useState('30');
+  const [filterPayment, setFilterPayment] = useState('all'); // 'all', 'paid', 'unpaid'
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [availableMonths, setAvailableMonths] = useState([]);
   const [availableYears, setAvailableYears] = useState([]);
+  
+  // Sélection multiple
+  const [selectedWinners, setSelectedWinners] = useState([]);
+  const [isUpdatingPayment, setIsUpdatingPayment] = useState(false);
 
   // Vérifier l'authentification
   useEffect(() => {
@@ -43,7 +50,7 @@ export default function AdminRouePage() {
   // Appliquer les filtres quand ils changent
   useEffect(() => {
     applyFilters();
-  }, [filterPeriod, selectedMonth, selectedYear, allWinners]);
+  }, [filterPeriod, filterPayment, selectedMonth, selectedYear, allWinners]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -74,13 +81,24 @@ export default function AdminRouePage() {
       setAllWinners(allWinnersData.winners || []);
       
       // Calculer les stats sur TOUT l'historique
-      const totalDistributed = allWinnersData.winners.reduce((sum, w) => {
-        return sum + parseInt(w.amount.replace('€', ''));
-      }, 0);
+      let totalDistributed = 0;
+      let totalUnpaid = 0;
+      let unpaidCount = 0;
+      
+      allWinnersData.winners.forEach(w => {
+        const amount = parseInt(w.amount.replace('€', ''));
+        totalDistributed += amount;
+        if (!w.paid) {
+          totalUnpaid += amount;
+          unpaidCount++;
+        }
+      });
       
       setStats({
         totalWinners: allWinnersData.winners.length,
-        totalDistributed
+        totalDistributed,
+        totalUnpaid,
+        unpaidCount
       });
 
       // Extraire les mois et années disponibles
@@ -111,9 +129,9 @@ export default function AdminRouePage() {
     let filtered = [...allWinners];
     const now = new Date();
 
+    // Filtre par période
     switch (filterPeriod) {
       case '7':
-        // 7 derniers jours
         filtered = allWinners.filter(winner => {
           const [day, month, year] = winner.date.split('/');
           const winnerDate = new Date(year, month - 1, day);
@@ -123,7 +141,6 @@ export default function AdminRouePage() {
         break;
 
       case '30':
-        // 30 derniers jours
         filtered = allWinners.filter(winner => {
           const [day, month, year] = winner.date.split('/');
           const winnerDate = new Date(year, month - 1, day);
@@ -133,7 +150,6 @@ export default function AdminRouePage() {
         break;
 
       case 'month':
-        // Mois spécifique
         if (selectedMonth) {
           const [yearPart, monthPart] = selectedMonth.split('-');
           filtered = allWinners.filter(winner => {
@@ -144,7 +160,6 @@ export default function AdminRouePage() {
         break;
 
       case 'year':
-        // Année spécifique
         if (selectedYear) {
           filtered = allWinners.filter(winner => {
             const [day, month, year] = winner.date.split('/');
@@ -154,12 +169,19 @@ export default function AdminRouePage() {
         break;
 
       case 'all':
-        // Tous les gagnants
         filtered = allWinners;
         break;
     }
 
+    // Filtre par statut de paiement
+    if (filterPayment === 'paid') {
+      filtered = filtered.filter(w => w.paid === true);
+    } else if (filterPayment === 'unpaid') {
+      filtered = filtered.filter(w => w.paid !== true);
+    }
+
     setFilteredWinners(filtered);
+    setSelectedWinners([]); // Réinitialiser la sélection
   };
 
   const deleteWinner = async (winner, index) => {
@@ -170,11 +192,9 @@ export default function AdminRouePage() {
     setDeletingIndex(index);
     
     try {
-      // Convertir la date au format YYYY-MM-DD
       const [day, month, year] = winner.date.split('/');
       const dateFormatted = `${year}-${month}-${day}`;
 
-      // Trouver l'index réel dans la liste complète
       const realIndex = allWinners.findIndex(w => 
         w.pseudo === winner.pseudo && 
         w.time === winner.time && 
@@ -206,6 +226,84 @@ export default function AdminRouePage() {
     }
     
     setDeletingIndex(null);
+  };
+
+  const markAsPaid = async (paid = true) => {
+    if (selectedWinners.length === 0) {
+      alert('Veuillez sélectionner au moins un gagnant');
+      return;
+    }
+
+    const action = paid ? 'payés' : 'non payés';
+    if (!confirm(`Marquer ${selectedWinners.length} gagnant(s) comme ${action} ?`)) {
+      return;
+    }
+
+    setIsUpdatingPayment(true);
+    
+    try {
+      // Grouper par date
+      const winnersByDate = {};
+      selectedWinners.forEach(selection => {
+        const winner = filteredWinners[selection];
+        const [day, month, year] = winner.date.split('/');
+        const dateFormatted = `${year}-${month}-${day}`;
+        
+        if (!winnersByDate[dateFormatted]) {
+          winnersByDate[dateFormatted] = [];
+        }
+        
+        const realIndex = allWinners.findIndex(w => 
+          w.pseudo === winner.pseudo && 
+          w.time === winner.time && 
+          w.date === winner.date
+        );
+        
+        winnersByDate[dateFormatted].push(realIndex);
+      });
+
+      // Envoyer les requêtes par date
+      for (const [date, indices] of Object.entries(winnersByDate)) {
+        await fetch('/api/roue-fortune/admin/manage', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'markAsPaid',
+            date: date,
+            winnerIndices: indices,
+            paid: paid
+          }),
+        });
+      }
+
+      alert(`${selectedWinners.length} gagnant(s) marqué(s) comme ${action}`);
+      await loadAdminData();
+      
+    } catch (error) {
+      console.error('Erreur:', error);
+      alert('Erreur lors de la mise à jour');
+    }
+    
+    setIsUpdatingPayment(false);
+  };
+
+  const toggleWinnerSelection = (index) => {
+    setSelectedWinners(prev => {
+      if (prev.includes(index)) {
+        return prev.filter(i => i !== index);
+      }
+      return [...prev, index];
+    });
+  };
+
+  const selectAll = () => {
+    if (selectedWinners.length === filteredWinners.length) {
+      setSelectedWinners([]);
+    } else {
+      setSelectedWinners(filteredWinners.map((_, index) => index));
+    }
   };
 
   const getMonthName = (monthYear) => {
@@ -279,7 +377,7 @@ export default function AdminRouePage() {
         ) : (
           <>
             {/* Statistiques */}
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
+            <div className="grid md:grid-cols-4 gap-6 mb-8">
               <div className="bg-white rounded-lg shadow p-6">
                 <h3 className="text-lg font-semibold text-gray-700 mb-2">
                   Budget du jour
@@ -315,6 +413,18 @@ export default function AdminRouePage() {
                   Historique complet
                 </p>
               </div>
+              
+              <div className="bg-white rounded-lg shadow p-6">
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                  À payer
+                </h3>
+                <p className="text-3xl font-bold text-orange-600">
+                  {stats.totalUnpaid}€
+                </p>
+                <p className="text-sm text-gray-500 mt-1">
+                  {stats.unpaidCount} gagnant(s)
+                </p>
+              </div>
             </div>
 
             {/* Gestion du budget */}
@@ -348,14 +458,12 @@ export default function AdminRouePage() {
                     
                     if (confirm(`Lancer un nouveau jeu avec ${budgetValue}€ de budget ?`)) {
                       try {
-                        // D'abord réinitialiser
                         await fetch('/api/roue-fortune/admin/manage', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify({ action: 'resetDaily' })
                         });
                         
-                        // Puis mettre à jour le budget
                         await fetch('/api/roue-fortune/admin/manage', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
@@ -440,6 +548,16 @@ export default function AdminRouePage() {
                       </select>
                     )}
 
+                    <select
+                      value={filterPayment}
+                      onChange={(e) => setFilterPayment(e.target.value)}
+                      className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="all">Tous</option>
+                      <option value="paid">Payés</option>
+                      <option value="unpaid">Non payés</option>
+                    </select>
+
                     {filteredWinners.length > 0 && (
                       <span className="text-sm text-gray-600 ml-2">
                         Total période : {filteredWinners.reduce((sum, w) => sum + parseInt(w.amount.replace('€', '')), 0)}€
@@ -447,12 +565,55 @@ export default function AdminRouePage() {
                     )}
                   </div>
                 </div>
+
+                {/* Actions de sélection multiple */}
+                {filteredWinners.length > 0 && (
+                  <div className="mt-4 flex flex-wrap gap-2 items-center">
+                    <button
+                      onClick={selectAll}
+                      className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                    >
+                      {selectedWinners.length === filteredWinners.length ? 'Tout désélectionner' : 'Tout sélectionner'}
+                    </button>
+                    
+                    {selectedWinners.length > 0 && (
+                      <>
+                        <span className="text-gray-500">•</span>
+                        <span className="text-sm text-gray-600">
+                          {selectedWinners.length} sélectionné(s)
+                        </span>
+                        <button
+                          onClick={() => markAsPaid(true)}
+                          disabled={isUpdatingPayment}
+                          className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white px-4 py-1 rounded text-sm font-medium transition-all"
+                        >
+                          ✓ Marquer comme payé(s)
+                        </button>
+                        <button
+                          onClick={() => markAsPaid(false)}
+                          disabled={isUpdatingPayment}
+                          className="bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 text-white px-4 py-1 rounded text-sm font-medium transition-all"
+                        >
+                          ✗ Marquer comme non payé(s)
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
               
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
+                      <th className="px-6 py-3 text-left">
+                        <input
+                          type="checkbox"
+                          checked={filteredWinners.length > 0 && selectedWinners.length === filteredWinners.length}
+                          onChange={selectAll}
+                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        />
+                      </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Date
                       </th>
@@ -466,6 +627,9 @@ export default function AdminRouePage() {
                         Gain
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Statut
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
@@ -473,7 +637,15 @@ export default function AdminRouePage() {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {filteredWinners.length > 0 ? (
                       filteredWinners.map((winner, index) => (
-                        <tr key={index}>
+                        <tr key={index} className={selectedWinners.includes(index) ? 'bg-blue-50' : ''}>
+                          <td className="px-6 py-4">
+                            <input
+                              type="checkbox"
+                              checked={selectedWinners.includes(index)}
+                              onChange={() => toggleWinnerSelection(index)}
+                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                            />
+                          </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             {winner.date}
                           </td>
@@ -485,6 +657,17 @@ export default function AdminRouePage() {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">
                             {winner.amount}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm">
+                            {winner.paid ? (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                ✓ Payé
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                ⏳ En attente
+                              </span>
+                            )}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm">
                             <button
@@ -499,7 +682,7 @@ export default function AdminRouePage() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
+                        <td colSpan="7" className="px-6 py-4 text-center text-gray-500">
                           Aucun gagnant pour cette période
                         </td>
                       </tr>

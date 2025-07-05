@@ -116,6 +116,43 @@ export async function POST(request) {
           refundedAmount: amountToRefund
         });
 
+      case 'markAsPaid':
+        // Marquer un ou plusieurs gagnants comme payés
+        if (!params.date || params.winnerIndices === undefined) {
+          return NextResponse.json({ 
+            success: false, 
+            error: 'Paramètres manquants' 
+          }, { status: 400 });
+        }
+
+        // Récupérer les données du jour
+        const budgetDataPaid = await redis.get(`budget:${params.date}`);
+        
+        if (!budgetDataPaid || !budgetDataPaid.winners) {
+          return NextResponse.json({ 
+            success: false, 
+            error: 'Aucune donnée trouvée' 
+          }, { status: 404 });
+        }
+
+        // Marquer les gagnants comme payés
+        let markedCount = 0;
+        params.winnerIndices.forEach(index => {
+          if (budgetDataPaid.winners[index]) {
+            budgetDataPaid.winners[index].paid = params.paid !== false;
+            markedCount++;
+          }
+        });
+
+        // Sauvegarder les modifications
+        await redis.set(`budget:${params.date}`, budgetDataPaid);
+
+        return NextResponse.json({ 
+          success: true, 
+          message: `${markedCount} gagnant(s) marqué(s) comme ${params.paid !== false ? 'payé(s)' : 'non payé(s)'}`,
+          markedCount
+        });
+
       case 'toggleGame':
         // Activer/désactiver le jeu
         const status = await redis.get('game:roue:status') || {};
