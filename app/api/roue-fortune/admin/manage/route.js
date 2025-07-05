@@ -21,11 +21,19 @@ export async function POST(request) {
 
     switch (action) {
       case 'updateBudget':
-        // Mettre à jour le budget quotidien
-        const currentStatus = await redis.get('game:roue:status') || {};
-        const updatedStatus = {
-          ...currentStatus,
-          dailyBudget: params.dailyBudget !== undefined ? params.dailyBudget : 50
+		// Mettre à jour le budget quotidien
+		const currentStatus = await redis.get('game:roue:status') || {};
+		const updatedStatus = {
+			...currentStatus,
+			dailyBudget: params.dailyBudget !== undefined ? params.dailyBudget : 50,
+			probabilities: {
+			"0": 0.50,
+			"1": 0.30,
+			"3": 0.10,
+			"5": 0.06,
+			"10": 0.03,
+			"50": 0.01
+		  }
         };
         await redis.set('game:roue:status', updatedStatus);
         

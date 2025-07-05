@@ -41,14 +41,14 @@ export async function POST(request) {
 
     // Vérifier le statut du jeu
     const status = await redis.get('game:roue:status') || {
-      dailyBudget: 50,
+	  dailyBudget: 50,
       probabilities: {
-        "0": 0.60,
-        "1": 0.20,
-        "3": 0.10,
-        "5": 0.05,
-        "10": 0.04,
-        "50": 0.01
+		"0": 0.50,   // Réduit de 60% à 50%
+		"1": 0.30,   // Augmenté de 20% à 30%
+		"3": 0.10,   // Inchangé
+		"5": 0.06,   // Légèrement augmenté
+		"10": 0.03,  // Légèrement réduit
+		"50": 0.01   // Inchangé
       }
     };
 
