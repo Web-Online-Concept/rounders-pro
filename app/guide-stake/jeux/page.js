@@ -11,10 +11,10 @@ export default function GuideJeuxPage() {
 
       <div className="bg-purple-50 border-l-4 border-purple-600 p-4 mb-8">
         <p className="text-purple-900 font-semibold">
-          🎯 Plus de 3000 jeux disponibles !
+          🎯 Plus de 3000 jeux disponibles + Poker !
         </p>
         <p className="text-purple-800 mt-1">
-          Slots, Live Casino, Stake Originals, Sports... Il y en a pour tous les goûts
+          Slots, Live Casino, Stake Originals, Sports, Poker... Il y en a pour tous les goûts
         </p>
       </div>
 
@@ -273,6 +273,136 @@ export default function GuideJeuxPage() {
         </div>
       </section>
 
+      {/* Poker */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          ♠️ Poker - Nouvelle Section
+        </h2>
+        
+        <div className="bg-gradient-to-r from-red-100 to-red-200 rounded-lg p-6 mb-6">
+          <p className="text-gray-800 mb-4">
+            Stake a lancé sa section poker en septembre 2024 ! Rejoignez des centaines 
+            de joueurs sur les tables de cash game et tournois.
+          </p>
+          <div className="flex items-center space-x-2">
+            <span className="bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">NOUVEAU</span>
+            <span className="text-red-900 font-medium">Section poker complète disponible</span>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6 mb-6">
+          <div className="bg-white border-2 border-red-200 rounded-lg p-6">
+            <h3 className="font-bold text-red-900 mb-3">🎯 Variantes Disponibles</h3>
+            <div className="space-y-3">
+              <div className="bg-red-50 rounded p-3">
+                <div className="font-semibold text-red-800">Texas Hold'em</div>
+                <div className="text-sm text-red-700">Le classique incontournable</div>
+              </div>
+              <div className="bg-red-50 rounded p-3">
+                <div className="font-semibold text-red-800">Pot Limit Omaha</div>
+                <div className="text-sm text-red-700">Pour les joueurs expérimentés</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white border-2 border-red-200 rounded-lg p-6">
+            <h3 className="font-bold text-red-900 mb-3">💰 Stakes & Limites</h3>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-700">Micro stakes:</span>
+                <span className="font-bold text-red-800">$0.01/$0.02</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-700">Low stakes:</span>
+                <span className="font-bold text-red-800">jusqu'à $0.50/$1</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-700">Tournois GTD:</span>
+                <span className="font-bold text-red-800">jusqu'à $2,000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gray-100 rounded-lg p-6 mb-6">
+          <h3 className="font-bold text-gray-900 mb-4">🎮 Formats de Jeu</h3>
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="bg-white rounded-lg p-4">
+              <h4 className="font-bold text-red-800 mb-2">💵 Cash Games</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Tables full-ring (9 joueurs)</li>
+                <li>• Action 24/7</li>
+                <li>• Jusqu'à 30 tables aux heures de pointe</li>
+              </ul>
+            </div>
+            
+            <div className="bg-white rounded-lg p-4">
+              <h4 className="font-bold text-red-800 mb-2">🏆 Tournois</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• MTT avec garanties</li>
+                <li>• Formats variés</li>
+                <li>• Buy-ins accessibles</li>
+              </ul>
+            </div>
+            
+            <div className="bg-white rounded-lg p-4">
+              <h4 className="font-bold text-red-800 mb-2">⚡ Sit & Go</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Démarrage rapide</li>
+                <li>• Différentes structures</li>
+                <li>• Idéal pour sessions courtes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <p className="text-yellow-900 font-semibold mb-2">🎯 Pourquoi jouer au poker sur Stake ?</p>
+            <ul className="space-y-1 text-yellow-800 text-sm">
+              <li>• Field très soft (joueurs casino récréatifs)</li>
+              <li>• 19 cryptomonnaies acceptées</li>
+              <li>• Intégré au programme VIP général</li>
+              <li>• Client web moderne et fluide</li>
+              <li>• Multi-tabling disponible</li>
+            </ul>
+          </div>
+
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <p className="text-green-900 font-semibold mb-2">🚀 Fonctionnalités Poker</p>
+            <ul className="space-y-1 text-green-800 text-sm">
+              <li>• Run it Twice disponible</li>
+              <li>• Affichage des stacks en BB</li>
+              <li>• Historique des mains</li>
+              <li>• Personnalisation du client</li>
+              <li>• Dépôts/retraits instantanés</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg p-6">
+          <h3 className="font-bold text-gray-900 mb-3">💡 Conseils pour débuter au poker Stake</h3>
+          <div className="grid md:grid-cols-2 gap-4 text-gray-700">
+            <div>
+              <p className="font-semibold mb-2">Pour les débutants :</p>
+              <ul className="text-sm space-y-1">
+                <li>• Commencez aux micro stakes ($0.01/$0.02)</li>
+                <li>• Privilégiez les tables full-ring</li>
+                <li>• Jouez serré au début</li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-semibold mb-2">Pour progresser :</p>
+              <ul className="text-sm space-y-1">
+                <li>• Utilisez l'historique des mains</li>
+                <li>• Observez les tendances des joueurs</li>
+                <li>• Profitez du field récréatif</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Recommandations par profil */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">
@@ -305,11 +435,11 @@ export default function GuideJeuxPage() {
           <div className="bg-white border-2 border-purple-200 rounded-lg p-6">
             <h3 className="font-bold text-purple-900 mb-2">🎯 Stratège</h3>
             <p className="text-gray-700 mb-3">
-              Le Blackjack, Baccarat et les paris sportifs vous permettront 
+              Le Poker, Blackjack, Baccarat et les paris sportifs vous permettront 
               d'appliquer vos stratégies et analyses.
             </p>
             <div className="text-sm text-purple-700">
-              <strong>Recommandé :</strong> Blackjack Live, Paris sportifs, Mines
+              <strong>Recommandé :</strong> Poker Texas Hold'em, Blackjack Live, Paris sportifs, Mines
             </div>
           </div>
           
@@ -321,6 +451,17 @@ export default function GuideJeuxPage() {
             </p>
             <div className="text-sm text-amber-700">
               <strong>Recommandé :</strong> Crash, Limbo, Crazy Time, Lightning Roulette
+            </div>
+          </div>
+          
+          <div className="bg-white border-2 border-red-200 rounded-lg p-6">
+            <h3 className="font-bold text-red-900 mb-2">♠️ Joueur de Poker</h3>
+            <p className="text-gray-700 mb-3">
+              Tables cash game et tournois vous attendent. Profitez d'un field soft 
+              avec de nombreux joueurs récréatifs venant du casino.
+            </p>
+            <div className="text-sm text-red-700">
+              <strong>Recommandé :</strong> Texas Hold'em cash games, MTT garantis, Omaha
             </div>
           </div>
         </div>
