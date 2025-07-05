@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import BottomBar from './components/BottomBar';
 import { AFFILIATE_LINK, AFFILIATE_CODE } from './config/affiliate';
 
 export default function Home() {
@@ -131,7 +132,7 @@ export default function Home() {
                 />
                 <div className="p-6">
                   <h3 className="text-2xl font-bold mb-3">Avantages Exclusifs Rounders</h3>
-                  <p className="text-gray-600 bt">
+                  <p className="text-gray-600 mb-4">
                     Bonus cash de 10€ à 200€ offerts par Rounders selon votre niveau VIP. 
                     Ces bonus s'AJOUTENT à tous les avantages Stake !
                   </p>
@@ -174,7 +175,7 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8 mb-16">
               <div className="text-center">
                 <div className="bg-blue-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                  Cres  <span className="text-3xl font-bold text-blue-600">1</span>
+                  <span className="text-3xl font-bold text-blue-600">1</span>
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Inscrivez-vous</h3>
                 <p className="text-gray-600">
@@ -279,6 +280,7 @@ export default function Home() {
       </main>
 
       <Footer />
+      <BottomBar />
     </>
   );
 }
