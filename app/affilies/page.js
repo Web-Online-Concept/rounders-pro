@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BottomBar from '../components/BottomBar';
 import { AFFILIATE_LINK } from '../config/affiliate';
 
 export default function Affilies() {
