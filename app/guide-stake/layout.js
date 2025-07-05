@@ -1,6 +1,7 @@
 // app/guide-stake/layout.js
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BottomBar from '../components/BottomBar';
 import GuideSidebar from './GuideSidebar';
 
 export const metadata = {
@@ -38,15 +39,14 @@ export default function GuideLayout({ children }) {
   return (
     <>
       <Header />
-      <div className="min-h-screen flex">
-        <GuideSidebar />
-        <main className="flex-1 bg-white pb-20 md:pb-0">
-          <div className="max-w-4xl mx-auto p-6">
-            {children}
-          </div>
-        </main>
-      </div>
+      <GuideSidebar />
+      <main className="min-h-screen bg-white pb-20 md:pb-0 md:ml-64">
+        <div className="max-w-4xl mx-auto p-6">
+          {children}
+        </div>
+      </main>
       <Footer />
+      <BottomBar />
     </>
   );
 }
