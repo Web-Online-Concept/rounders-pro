@@ -25,6 +25,17 @@ export default function SurebetCalculator() {
     GBP: '£',
   };
 
+  const symbol = currencySymbols[currency];
+
+  // Types de paris disponibles
+  const surebetTypes = [
+    { value: '1-2', label: '1-2' },
+    { value: '1-X-2', label: '1-X-2' },
+    { value: '1X-2', label: '1X-2' },
+    { value: 'H1-H2', label: 'H1() - H2()' },
+    { value: 'O-U', label: 'Plus que - Moins que' },
+  ];
+
   // Obtenir le label du bookmaker selon le type de pari et l'index
   const getBookmakerLabel = (index) => {
     if (surebetType === '1-X-2') {
@@ -39,15 +50,6 @@ export default function SurebetCalculator() {
       return ['1', '2'][index] || `Book ${index + 1}`;
     }
   };
-
-  // Types de paris disponibles
-  const surebetTypes = [
-    { value: '1-2', label: '1-2' },
-    { value: '1-X-2', label: '1-X-2' },
-    { value: '1X-2', label: '1X-2' },
-    { value: 'H1-H2', label: 'H1() - H2()' },
-    { value: 'O-U', label: 'Plus que - Moins que' },
-  ];
 
   // Calculer les résultats
   const calculateResults = () => {
@@ -119,7 +121,8 @@ export default function SurebetCalculator() {
       totalStake,
       minReturn,
       minProfit,
-      items: results
+      items: results,
+      symbol: symbol // Ajouter symbol dans les résultats
     };
   };
 
@@ -276,7 +279,7 @@ export default function SurebetCalculator() {
               </p>
               {results.isValid && results.totalStake > 0 && (
                 <p className="text-sm text-gray-600">
-                  {results.minProfit.toFixed(2)} {symbol}
+                  {results.minProfit.toFixed(2)} {results.symbol}
                 </p>
               )}
             </div>
