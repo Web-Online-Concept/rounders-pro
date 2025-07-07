@@ -1,23 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function SurebetCalculator() {
   const [outcomes, setOutcomes] = useState(2);
   const [surebetType, setSurebetType] = useState('1-2'); // Type de pari
-  const [currency, setCurrency] = useState('USD');
+  const [currency, setCurrency] = useState('EUR');
   const [roundStakes, setRoundStakes] = useState(false);
   const [roundTo, setRoundTo] = useState(1);
   
   // Initialiser avec des valeurs par défaut comme surebet.com
   const [data, setData] = useState([
-    { odds: '2.00', stake: '100.00', commission: '0' },
-    { odds: '2.00', stake: '100.00', commission: '0' },
+    { odds: '2.00', stake: '50.00', commission: '0' },
+    { odds: '2.00', stake: '50.00', commission: '0' },
     { odds: '', stake: '', commission: '0' },
     { odds: '', stake: '', commission: '0' },
   ]);
 
-  const [totalStakeInput, setTotalStakeInput] = useState('200.00');
+  const [totalStakeInput, setTotalStakeInput] = useState('100.00');
+  const redistributeTimer = useRef(null);
 
   const currencySymbols = {
     EUR: '€',
@@ -111,8 +112,11 @@ export default function SurebetCalculator() {
       profit: (item.stake * item.adjustedOdds) - totalStake
     }));
 
-    const minReturn = Math.min(...results.map(r => r.return));
-    const minProfit = Math.min(...results.map(r => r.profit));
+    const returnValues = results.map(r => r.return).filter(v => v > 0);
+    const profitValues = results.map(r => r.profit);
+    
+    const minReturn = returnValues.length > 0 ? Math.min(...returnValues) : 0;
+    const minProfit = profitValues.length > 0 ? Math.min(...profitValues) : 0;
 
     return {
       isValid: true,
@@ -121,21 +125,21 @@ export default function SurebetCalculator() {
       totalStake,
       minReturn,
       minProfit,
-      items: results,
-      symbol: symbol // Ajouter symbol dans les résultats
+      items: results
     };
   };
 
   // Mettre à jour les mises automatiquement
-  const redistributeStakes = (newTotalStake, excludeIndex = -1) => {
+  const redistributeStakes = (newTotalStake) => {
+    const currentData = [...data];
     const validOdds = [];
     let sumInverseOdds = 0;
 
     // Calculer la somme des inverses des cotes
     for (let i = 0; i < outcomes; i++) {
-      const odd = parseFloat(data[i].odds);
+      const odd = parseFloat(currentData[i].odds);
       if (odd > 1) {
-        const commission = parseFloat(data[i].commission) || 0;
+        const commission = parseFloat(currentData[i].commission) || 0;
         const adjustedOdd = commission !== 0
           ? (commission < 0 ? odd / (1 + Math.abs(commission) / 100) : odd * (1 - commission / 100))
           : odd;
@@ -147,9 +151,9 @@ export default function SurebetCalculator() {
     if (sumInverseOdds === 0) return;
 
     // Redistribuer les mises
-    const newData = [...data];
+    const newData = [...currentData];
     for (let i = 0; i < outcomes; i++) {
-      if (validOdds[i] && i !== excludeIndex) {
+      if (validOdds[i]) {
         let stake = (newTotalStake / sumInverseOdds) / validOdds[i];
         
         if (roundStakes && roundTo > 0) {
@@ -169,12 +173,20 @@ export default function SurebetCalculator() {
     newData[index].odds = value;
     setData(newData);
 
+    // Annuler le timer précédent
+    if (redistributeTimer.current) {
+      clearTimeout(redistributeTimer.current);
+    }
+
     // Redistribuer les mises après un délai
     const totalStake = newData.reduce((sum, item, i) => 
       i < outcomes ? sum + (parseFloat(item.stake) || 0) : sum, 0
     );
+    
     if (totalStake > 0 && value && parseFloat(value) > 1) {
-      setTimeout(() => redistributeStakes(totalStake), 500);
+      redistributeTimer.current = setTimeout(() => {
+        redistributeStakes(totalStake);
+      }, 500);
     }
   };
 
@@ -197,12 +209,20 @@ export default function SurebetCalculator() {
     newData[index].commission = value;
     setData(newData);
 
+    // Annuler le timer précédent
+    if (redistributeTimer.current) {
+      clearTimeout(redistributeTimer.current);
+    }
+
     // Recalculer les mises après un délai
     const totalStake = newData.reduce((sum, item, i) => 
       i < outcomes ? sum + (parseFloat(item.stake) || 0) : sum, 0
     );
+    
     if (totalStake > 0) {
-      setTimeout(() => redistributeStakes(totalStake), 500);
+      redistributeTimer.current = setTimeout(() => {
+        redistributeStakes(totalStake);
+      }, 500);
     }
   };
 
@@ -234,16 +254,14 @@ export default function SurebetCalculator() {
     }
   }, [surebetType]);
 
-  // Redistribuer les mises quand on change le nombre d'issues
+  // Cleanup timer on unmount
   useEffect(() => {
-    const currentTotal = data.reduce((sum, item, i) => 
-      i < outcomes ? sum + (parseFloat(item.stake) || 0) : sum, 0
-    );
-    
-    if (currentTotal > 0) {
-      redistributeStakes(currentTotal);
-    }
-  }, [outcomes]);
+    return () => {
+      if (redistributeTimer.current) {
+        clearTimeout(redistributeTimer.current);
+      }
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -279,7 +297,7 @@ export default function SurebetCalculator() {
               </p>
               {results.isValid && results.totalStake > 0 && (
                 <p className="text-sm text-gray-600">
-                  {results.minProfit.toFixed(2)} {results.symbol}
+                  {results.minProfit.toFixed(2)} {symbol}
                 </p>
               )}
             </div>
@@ -402,7 +420,7 @@ export default function SurebetCalculator() {
                     <input
                       type="text"
                       placeholder="0.00"
-                      value={data[index].odds}
+                      value={data[index]?.odds || ''}
                       onChange={(e) => handleOddsChange(index, e.target.value)}
                       className="w-24 sm:w-28 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base text-right"
                     />
@@ -411,7 +429,7 @@ export default function SurebetCalculator() {
                     <input
                       type="text"
                       placeholder="0"
-                      value={data[index].commission}
+                      value={data[index]?.commission || ''}
                       onChange={(e) => handleCommissionChange(index, e.target.value)}
                       className="w-24 sm:w-28 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base text-right"
                     />
@@ -420,7 +438,7 @@ export default function SurebetCalculator() {
                     <input
                       type="text"
                       placeholder="0.00"
-                      value={data[index].stake}
+                      value={data[index]?.stake || ''}
                       onChange={(e) => handleStakeChange(index, e.target.value)}
                       className="w-24 sm:w-28 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base text-right"
                     />
