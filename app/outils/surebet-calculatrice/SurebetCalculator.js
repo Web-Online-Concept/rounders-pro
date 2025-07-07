@@ -3,17 +3,18 @@
 import { useState, useEffect } from 'react';
 
 export default function SurebetCalculator() {
-  const [mode, setMode] = useState('global'); // 'global' ou 'individual'
   const [outcomes, setOutcomes] = useState(2);
-  const [totalStake, setTotalStake] = useState(100);
-  const [currency, setCurrency] = useState('EUR');
-  const [odds, setOdds] = useState(['', '', '']);
-  const [stakes, setStakes] = useState(['', '', '']);
-  const [commissions, setCommissions] = useState([0, 0, 0]);
+  const [currency, setCurrency] = useState('USD');
+  const [showCommission, setShowCommission] = useState(false);
   const [roundStakes, setRoundStakes] = useState(false);
   const [roundTo, setRoundTo] = useState(1);
-  const [showCommission, setShowCommission] = useState(false);
-  const [results, setResults] = useState(null);
+  
+  // Initialiser avec des valeurs par défaut comme surebet.com
+  const [data, setData] = useState([
+    { odds: '2.00', stake: '100.00', commission: 0 },
+    { odds: '2.00', stake: '100.00', commission: 0 },
+    { odds: '', stake: '', commission: 0 },
+  ]);
 
   const currencySymbols = {
     EUR: '€',
@@ -21,137 +22,179 @@ export default function SurebetCalculator() {
     GBP: '£',
   };
 
+  const symbol = currencySymbols[currency];
+
+  // Calculer les résultats
   const calculateResults = () => {
-    // Vérifier que toutes les cotes sont entrées
-    let validOdds = true;
-    const parsedOdds = [];
+    let validData = true;
+    let totalStake = 0;
+    const parsedData = [];
+
+    // Parser les données
     for (let i = 0; i < outcomes; i++) {
-      const odd = parseFloat(odds[i]);
-      if (!odd || odd <= 1) {
-        validOdds = false;
-        break;
+      const odd = parseFloat(data[i].odds) || 0;
+      const stake = parseFloat(data[i].stake) || 0;
+      const commission = showCommission ? (parseFloat(data[i].commission) || 0) : 0;
+
+      if (odd <= 1) {
+        validData = false;
       }
-      parsedOdds[i] = odd;
+
+      parsedData[i] = {
+        odds: odd,
+        stake: stake,
+        commission: commission,
+        adjustedOdds: commission !== 0 
+          ? (commission < 0 ? odd / (1 + Math.abs(commission) / 100) : odd * (1 - commission / 100))
+          : odd
+      };
+
+      totalStake += stake;
     }
 
-    if (!validOdds) {
-      setResults(null);
-      return;
+    if (!validData || totalStake === 0) {
+      return {
+        isValid: false,
+        totalStake: totalStake,
+        items: parsedData.map(item => ({
+          ...item,
+          return: 0,
+          profit: 0
+        }))
+      };
     }
 
-    // Ajuster les cotes avec les commissions
-    const adjustedOdds = parsedOdds.map((odd, i) => {
-      if (showCommission && commissions[i] !== 0) {
-        if (commissions[i] < 0) {
-          return odd / (1 + Math.abs(commissions[i]) / 100);
-        } else {
-          return odd * (1 - commissions[i] / 100);
-        }
-      }
-      return odd;
-    });
-
-    // Calculer la somme des probabilités implicites
+    // Calculer les probabilités implicites
     let impliedProbSum = 0;
     for (let i = 0; i < outcomes; i++) {
-      impliedProbSum += 1 / adjustedOdds[i];
+      if (parsedData[i].adjustedOdds > 1) {
+        impliedProbSum += 1 / parsedData[i].adjustedOdds;
+      }
     }
 
-    const isSurebet = impliedProbSum < 1;
-    const profitPercent = isSurebet 
-      ? ((1 - impliedProbSum) * 100) 
-      : (-(impliedProbSum - 1) * 100);
+    const isSurebet = impliedProbSum < 1 && impliedProbSum > 0;
+    const profitPercent = impliedProbSum > 0 
+      ? (isSurebet ? ((1 - impliedProbSum) * 100) : (-(impliedProbSum - 1) * 100))
+      : 0;
 
-    let calculatedStakes = [];
-    let calculatedReturns = [];
-    let calculatedProfits = [];
-    let actualTotalStake = 0;
+    // Calculer retours et profits
+    const results = parsedData.map(item => ({
+      ...item,
+      return: item.stake * item.adjustedOdds,
+      profit: (item.stake * item.adjustedOdds) - totalStake
+    }));
 
-    if (mode === 'global') {
-      // Mode mise globale : calculer la répartition optimale
-      if (totalStake <= 0) {
-        setResults(null);
-        return;
+    const minReturn = Math.min(...results.map(r => r.return));
+    const minProfit = Math.min(...results.map(r => r.profit));
+
+    return {
+      isValid: true,
+      isSurebet,
+      profitPercent,
+      totalStake,
+      minReturn,
+      minProfit,
+      items: results
+    };
+  };
+
+  // Mettre à jour les mises automatiquement quand on change une cote ou la mise totale
+  const redistributeStakes = (newTotalStake, excludeIndex = -1) => {
+    const validOdds = [];
+    let sumInverseOdds = 0;
+
+    // Calculer la somme des inverses des cotes
+    for (let i = 0; i < outcomes; i++) {
+      const odd = parseFloat(data[i].odds);
+      if (odd > 1) {
+        const adjustedOdd = showCommission && data[i].commission !== 0
+          ? (data[i].commission < 0 ? odd / (1 + Math.abs(data[i].commission) / 100) : odd * (1 - data[i].commission / 100))
+          : odd;
+        validOdds[i] = adjustedOdd;
+        sumInverseOdds += 1 / adjustedOdd;
       }
+    }
 
-      for (let i = 0; i < outcomes; i++) {
-        let stake = (totalStake / impliedProbSum) / adjustedOdds[i];
+    if (sumInverseOdds === 0) return;
+
+    // Redistribuer les mises
+    const newData = [...data];
+    for (let i = 0; i < outcomes; i++) {
+      if (validOdds[i] && i !== excludeIndex) {
+        let stake = (newTotalStake / sumInverseOdds) / validOdds[i];
         
         if (roundStakes && roundTo > 0) {
           stake = Math.round(stake / roundTo) * roundTo;
         }
         
-        calculatedStakes[i] = stake;
-        actualTotalStake += stake;
-      }
-
-      // Ajuster pour que le total corresponde
-      if (roundStakes && actualTotalStake !== totalStake) {
-        const diff = totalStake - actualTotalStake;
-        calculatedStakes[0] += diff;
-        actualTotalStake = totalStake;
-      }
-
-      // Mettre à jour les champs de mise
-      setStakes(calculatedStakes.map(s => s.toFixed(2)));
-    } else {
-      // Mode mise individuelle : utiliser les mises entrées
-      for (let i = 0; i < outcomes; i++) {
-        const stake = parseFloat(stakes[i]) || 0;
-        calculatedStakes[i] = stake;
-        actualTotalStake += stake;
+        newData[i].stake = stake.toFixed(2);
       }
     }
 
-    // Calculer les retours et profits pour chaque issue
-    for (let i = 0; i < outcomes; i++) {
-      calculatedReturns[i] = calculatedStakes[i] * adjustedOdds[i];
-      calculatedProfits[i] = calculatedReturns[i] - actualTotalStake;
-    }
-
-    setResults({
-      isSurebet,
-      profitPercent,
-      stakes: calculatedStakes,
-      returns: calculatedReturns,
-      profits: calculatedProfits,
-      totalStake: actualTotalStake,
-      minReturn: Math.min(...calculatedReturns),
-      minProfit: Math.min(...calculatedProfits),
-    });
-
-    // Mettre à jour la mise totale en mode individuel
-    if (mode === 'individual') {
-      setTotalStake(actualTotalStake);
-    }
+    setData(newData);
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      calculateResults();
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [odds, totalStake, outcomes, showCommission, commissions, roundStakes, roundTo, mode, stakes]);
-
+  // Gérer le changement de cote
   const handleOddsChange = (index, value) => {
-    const newOdds = [...odds];
-    newOdds[index] = value;
-    setOdds(newOdds);
+    const newData = [...data];
+    newData[index].odds = value;
+    setData(newData);
+
+    // Redistribuer les mises si toutes les cotes sont valides
+    const totalStake = newData.reduce((sum, item, i) => 
+      i < outcomes ? sum + (parseFloat(item.stake) || 0) : sum, 0
+    );
+    if (totalStake > 0) {
+      setTimeout(() => redistributeStakes(totalStake), 100);
+    }
   };
 
+  // Gérer le changement de mise
   const handleStakeChange = (index, value) => {
-    const newStakes = [...stakes];
-    newStakes[index] = value;
-    setStakes(newStakes);
+    const newData = [...data];
+    newData[index].stake = value;
+    setData(newData);
   };
 
+  // Gérer le changement de commission
   const handleCommissionChange = (index, value) => {
-    const newCommissions = [...commissions];
-    newCommissions[index] = parseFloat(value) || 0;
-    setCommissions(newCommissions);
+    const newData = [...data];
+    newData[index].commission = parseFloat(value) || 0;
+    setData(newData);
+
+    // Recalculer les mises
+    const totalStake = newData.reduce((sum, item, i) => 
+      i < outcomes ? sum + (parseFloat(item.stake) || 0) : sum, 0
+    );
+    if (totalStake > 0) {
+      setTimeout(() => redistributeStakes(totalStake), 100);
+    }
   };
 
-  const symbol = currencySymbols[currency];
+  // Gérer le changement de mise totale
+  const handleTotalStakeChange = (value) => {
+    const newTotalStake = parseFloat(value) || 0;
+    if (newTotalStake > 0) {
+      redistributeStakes(newTotalStake);
+    }
+  };
+
+  const results = calculateResults();
+
+  // Ajuster les données quand on change le nombre d'issues
+  useEffect(() => {
+    if (outcomes === 2 && data[2].stake) {
+      // Redistribuer la mise de la 3ème issue sur les 2 premières
+      const stake3 = parseFloat(data[2].stake) || 0;
+      if (stake3 > 0) {
+        const newData = [...data];
+        newData[0].stake = (parseFloat(newData[0].stake) || 0) + stake3 / 2;
+        newData[1].stake = (parseFloat(newData[1].stake) || 0) + stake3 / 2;
+        newData[2].stake = '';
+        setData(newData);
+      }
+    }
+  }, [outcomes]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -160,13 +203,13 @@ export default function SurebetCalculator() {
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="flex-1 text-center sm:text-left">
-              <h1 className="text-3xl font-bold text-indigo-900 mb-2">Calculateur de Surebets Rounders</h1>
+              <h1 className="text-3xl font-bold text-indigo-900 mb-2">Calculateur de Surebets</h1>
               <div className="text-sm text-gray-600">
                 <p className="font-semibold mb-1">Statut</p>
                 <p className={`text-base font-medium ${
-                  results?.isSurebet ? 'text-green-600' : 'text-gray-600'
+                  results.isSurebet ? 'text-green-600' : 'text-gray-600'
                 }`}>
-                  {!results ? 'Entrez les cotes et mises pour calculer le surebet' :
+                  {!results.isValid ? 'Entrez les cotes et mises pour calculer le surebet' :
                    results.isSurebet ? 'Surebet détecté ! Profit garanti.' : 
                    'Pas de surebet. Perte garantie.'}
                 </p>
@@ -175,11 +218,11 @@ export default function SurebetCalculator() {
             <div className="bg-gray-50 rounded-lg px-6 py-4 text-center">
               <p className="text-sm text-gray-600 mb-1">Profit</p>
               <p className={`text-2xl font-bold ${
-                results?.isSurebet ? 'text-green-600' : 'text-gray-600'
+                results.isSurebet ? 'text-green-600' : 'text-gray-600'
               }`}>
-                {results ? `${results.profitPercent.toFixed(2)}%` : '0.00%'}
+                {results.isValid ? `${results.profitPercent.toFixed(2)}%` : '0.00%'}
               </p>
-              {results && (
+              {results.isValid && results.totalStake > 0 && (
                 <p className="text-xs text-gray-600 mt-1">
                   {results.minProfit.toFixed(2)} {symbol}
                 </p>
@@ -224,11 +267,8 @@ export default function SurebetCalculator() {
               <input
                 id="totalStake"
                 type="number"
-                value={totalStake}
-                onChange={(e) => {
-                  setTotalStake(parseFloat(e.target.value) || 0);
-                  setMode('global');
-                }}
+                value={results.totalStake.toFixed(2)}
+                onChange={(e) => handleTotalStakeChange(e.target.value)}
                 min="0"
                 step="0.01"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
@@ -255,11 +295,14 @@ export default function SurebetCalculator() {
 
         {/* Calculator Table */}
         <div className="bg-white rounded-lg shadow-sm p-3 sm:p-6 mb-6 overflow-x-auto">
-          <table className="w-full min-w-[500px]">
+          <table className="w-full min-w-[600px]">
             <thead>
               <tr className="border-b-2 border-gray-200">
                 <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Bookmaker</th>
                 <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Cote</th>
+                {showCommission && (
+                  <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Commission %</th>
+                )}
                 <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Mise</th>
                 <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Retour</th>
                 <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Profit</th>
@@ -275,58 +318,82 @@ export default function SurebetCalculator() {
                       step="0.01"
                       min="1.01"
                       placeholder="0.00"
-                      value={odds[index]}
+                      value={data[index].odds}
                       onChange={(e) => handleOddsChange(index, e.target.value)}
-                      className="w-24 sm:w-32 px-2 sm:px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
+                      className="w-20 sm:w-24 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
                     />
                   </td>
+                  {showCommission && (
+                    <td className="px-2 sm:px-4 py-3 sm:py-4">
+                      <input
+                        type="number"
+                        step="0.1"
+                        min="-10"
+                        max="10"
+                        placeholder="0"
+                        value={data[index].commission}
+                        onChange={(e) => handleCommissionChange(index, e.target.value)}
+                        className="w-20 sm:w-24 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
+                      />
+                    </td>
+                  )}
                   <td className="px-2 sm:px-4 py-3 sm:py-4">
                     <input
                       type="number"
                       step="0.01"
                       min="0"
                       placeholder="0.00"
-                      value={stakes[index]}
-                      onChange={(e) => {
-                        handleStakeChange(index, e.target.value);
-                        setMode('individual');
-                      }}
-                      className="w-24 sm:w-32 px-2 sm:px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
+                      value={data[index].stake}
+                      onChange={(e) => handleStakeChange(index, e.target.value)}
+                      className="w-20 sm:w-24 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
                     />
                   </td>
                   <td className="px-2 sm:px-4 py-3 sm:py-4 font-medium text-sm sm:text-base">
-                    {results && results.stakes[index] > 0 ? `${results.returns[index].toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
+                    {results.items[index]?.return > 0 ? `${results.items[index].return.toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
                   </td>
                   <td className={`px-2 sm:px-4 py-3 sm:py-4 font-medium text-sm sm:text-base ${
-                    results?.profits[index] >= 0 ? 'text-green-600' : 'text-red-600'
+                    results.items[index]?.profit >= 0 ? 'text-green-600' : 'text-red-600'
                   }`}>
-                    {results && results.stakes[index] > 0 ? `${results.profits[index].toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
+                    {results.items[index]?.profit !== 0 ? `${results.items[index].profit.toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
                   </td>
                 </tr>
               ))}
               <tr className="bg-gray-50 font-semibold">
-                <td colSpan="2" className="px-2 sm:px-4 py-3 sm:py-4 text-sm sm:text-base">Total</td>
+                <td colSpan={showCommission ? 3 : 2} className="px-2 sm:px-4 py-3 sm:py-4 text-sm sm:text-base">Total</td>
                 <td className="px-2 sm:px-4 py-3 sm:py-4 text-sm sm:text-base">
-                  {results ? `${results.totalStake.toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
+                  {results.totalStake.toFixed(2)} {symbol}
                 </td>
                 <td className="px-2 sm:px-4 py-3 sm:py-4 text-sm sm:text-base">
-                  {results && results.totalStake > 0 ? `${results.minReturn.toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
+                  {results.minReturn > 0 ? `${results.minReturn.toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
                 </td>
                 <td className={`px-2 sm:px-4 py-3 sm:py-4 text-sm sm:text-base ${
-                  results?.minProfit >= 0 ? 'text-green-600' : 'text-red-600'
+                  results.minProfit >= 0 ? 'text-green-600' : 'text-red-600'
                 }`}>
-                  {results && results.totalStake > 0 ? `${results.minProfit.toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
+                  {results.totalStake > 0 ? `${results.minProfit.toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        {/* Advanced Settings */}
+        {/* Options avancées */}
         <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
           <h3 className="text-lg font-semibold text-indigo-900 mb-4">Options avancées</h3>
           
           <div className="space-y-4">
+            <div className="flex items-center">
+              <input
+                id="showCommission"
+                type="checkbox"
+                checked={showCommission}
+                onChange={(e) => setShowCommission(e.target.checked)}
+                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+              />
+              <label htmlFor="showCommission" className="ml-2 text-xs sm:text-sm text-gray-700">
+                Afficher les commissions dans le tableau
+              </label>
+            </div>
+
             <div className="flex items-center">
               <input
                 id="roundStakes"
@@ -349,54 +416,11 @@ export default function SurebetCalculator() {
               />
             </div>
 
-            <div className="flex items-center">
-              <input
-                id="showCommission"
-                type="checkbox"
-                checked={showCommission}
-                onChange={(e) => setShowCommission(e.target.checked)}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-              />
-              <label htmlFor="showCommission" className="ml-2 text-xs sm:text-sm text-gray-700">
-                Inclure les commissions
-              </label>
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <p className="text-xs text-gray-500">
+                Commissions positives = réduction des gains | Commissions négatives = augmentation des cotes
+              </p>
             </div>
-
-            {showCommission && (
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {[...Array(outcomes)].map((_, index) => (
-                    <div key={index} className="flex items-center">
-                      <label className="text-xs sm:text-sm text-gray-700 mr-2">
-                        Commission Book {index + 1} :
-                      </label>
-                      <input
-                        type="number"
-                        value={commissions[index]}
-                        onChange={(e) => handleCommissionChange(index, e.target.value)}
-                        min="-10"
-                        max="10"
-                        step="0.1"
-                        className="w-20 px-2 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                      <span className="ml-1 text-xs sm:text-sm text-gray-700">%</span>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-xs text-gray-500 mt-2">
-                  Commissions positives = réduction des gains | Commissions négatives = augmentation des cotes
-                </p>
-              </div>
-            )}
-          </div>
-
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <h4 className="text-xs sm:text-sm font-semibold text-gray-700 mb-2">Mode de calcul</h4>
-            <p className="text-xs text-gray-500">
-              {mode === 'global' 
-                ? "Mode mise globale : Entrez la mise totale et la calculatrice répartit automatiquement les mises optimales."
-                : "Mode mise individuelle : Entrez vos mises manuellement pour chaque bookmaker."}
-            </p>
           </div>
         </div>
       </div>
