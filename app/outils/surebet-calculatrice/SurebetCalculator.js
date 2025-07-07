@@ -128,6 +128,7 @@ export default function SurebetCalculator() {
     let sumInverseOdds = 0;
     const adjustedOdds = [];
 
+    // Calculer la somme des inverses des cotes ajustées
     for (let i = 0; i < outcomes; i++) {
       const odd = oddsArray[i];
       const commission = commissionsArray[i];
@@ -148,9 +149,9 @@ export default function SurebetCalculator() {
 
     if (sumInverseOdds === 0) return;
 
-    // Calculer les nouvelles mises
+    // Calculer les nouvelles mises avec la bonne formule
     if (outcomes >= 1 && adjustedOdds[0]) {
-      let stake = (newTotalStake / sumInverseOdds) / adjustedOdds[0];
+      let stake = newTotalStake * (1 / adjustedOdds[0]) / sumInverseOdds;
       if (roundStakes && roundTo > 0) {
         stake = Math.round(stake / roundTo) * roundTo;
       }
@@ -158,7 +159,7 @@ export default function SurebetCalculator() {
     }
 
     if (outcomes >= 2 && adjustedOdds[1]) {
-      let stake = (newTotalStake / sumInverseOdds) / adjustedOdds[1];
+      let stake = newTotalStake * (1 / adjustedOdds[1]) / sumInverseOdds;
       if (roundStakes && roundTo > 0) {
         stake = Math.round(stake / roundTo) * roundTo;
       }
@@ -166,7 +167,7 @@ export default function SurebetCalculator() {
     }
 
     if (outcomes >= 3 && adjustedOdds[2]) {
-      let stake = (newTotalStake / sumInverseOdds) / adjustedOdds[2];
+      let stake = newTotalStake * (1 / adjustedOdds[2]) / sumInverseOdds;
       if (roundStakes && roundTo > 0) {
         stake = Math.round(stake / roundTo) * roundTo;
       }
