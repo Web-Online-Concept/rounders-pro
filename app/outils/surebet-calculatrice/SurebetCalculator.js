@@ -66,6 +66,11 @@ export default function SurebetCalculator() {
     let impliedProbSum = 0;
     const results = [];
 
+    // Calculer le total des mises actuelles
+    for (let i = 0; i < outcomes; i++) {
+      totalStake += stakesArray[i];
+    }
+
     for (let i = 0; i < outcomes; i++) {
       const odd = oddsArray[i];
       const stake = stakesArray[i];
@@ -84,10 +89,8 @@ export default function SurebetCalculator() {
         impliedProbSum += 1 / adjustedOdd;
       }
 
-      totalStake += stake;
-
       const returnValue = stake * adjustedOdd;
-      const profit = returnValue - totalStake;
+      const profit = totalStake > 0 ? returnValue - totalStake : 0;
 
       results.push({
         odd,
@@ -196,14 +199,12 @@ export default function SurebetCalculator() {
     else if (index === 1) setStake2(value);
     else if (index === 2) setStake3(value);
 
-    // Mettre à jour le total
-    setTimeout(() => {
-      const s1 = index === 0 ? parseFloat(value) || 0 : parseFloat(stake1) || 0;
-      const s2 = index === 1 ? parseFloat(value) || 0 : parseFloat(stake2) || 0;
-      const s3 = index === 2 ? parseFloat(value) || 0 : parseFloat(stake3) || 0;
-      const total = s1 + s2 + (outcomes >= 3 ? s3 : 0);
-      setTotalStakeInput(total > 0 ? total.toFixed(2) : '');
-    }, 100);
+    // Calculer et mettre à jour le total immédiatement
+    const s1 = index === 0 ? parseFloat(value) || 0 : parseFloat(stake1) || 0;
+    const s2 = index === 1 ? parseFloat(value) || 0 : parseFloat(stake2) || 0;
+    const s3 = index === 2 ? parseFloat(value) || 0 : parseFloat(stake3) || 0;
+    const total = s1 + s2 + (outcomes >= 3 ? s3 : 0);
+    setTotalStakeInput(total > 0 ? total.toFixed(2) : '0.00');
   };
 
   // Gérer les changements de commissions
@@ -232,23 +233,44 @@ export default function SurebetCalculator() {
 
   // Ajuster le nombre d'issues selon le type de pari
   useEffect(() => {
+    const previousOutcomes = outcomes;
+    let newOutcomes = 2;
+    
     switch(surebetType) {
       case '1-2':
       case 'H1-H2':
       case 'O-U':
-        setOutcomes(2);
+        newOutcomes = 2;
+        if (previousOutcomes === 3) {
+          // Redistribuer les mises sur 2 issues
+          const total = (parseFloat(stake1) || 0) + (parseFloat(stake2) || 0) + (parseFloat(stake3) || 0);
+          if (total > 0) {
+            setTimeout(() => redistributeStakes(total), 100);
+          }
+        }
         setOdds3('');
         setStake3('');
         break;
       case '1-X-2':
       case '1X-2':
-        setOutcomes(3);
+        newOutcomes = 3;
         if (!odds3) setOdds3('3.00');
         break;
       default:
-        setOutcomes(2);
+        newOutcomes = 2;
     }
+    
+    setOutcomes(newOutcomes);
   }, [surebetType]);
+
+  // Mettre à jour la mise totale quand les mises individuelles changent
+  useEffect(() => {
+    const s1 = parseFloat(stake1) || 0;
+    const s2 = parseFloat(stake2) || 0;
+    const s3 = parseFloat(stake3) || 0;
+    const total = s1 + s2 + (outcomes >= 3 ? s3 : 0);
+    setTotalStakeInput(total > 0 ? total.toFixed(2) : '0.00');
+  }, [stake1, stake2, stake3, outcomes]);
 
   const results = calculateResults();
   
