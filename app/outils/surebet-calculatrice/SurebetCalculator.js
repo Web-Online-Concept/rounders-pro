@@ -123,7 +123,7 @@ export default function SurebetCalculator() {
       <div className="max-w-[980px] mx-auto">
         {/* Header */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <h1 className="text-3xl font-bold text-indigo-900">Calculateur de Surebets</h1>
+          <h1 className="text-3xl font-bold text-indigo-900">Calculateur de Surebets Rounders</h1>
           <div className="bg-gray-50 rounded-lg px-6 py-4 text-center">
             <p className="text-sm text-gray-600 mb-1">Profit</p>
             <p className={`text-2xl font-bold ${
