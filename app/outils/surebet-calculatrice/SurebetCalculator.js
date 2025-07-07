@@ -1,24 +1,28 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function SurebetCalculator() {
   const [outcomes, setOutcomes] = useState(2);
-  const [surebetType, setSurebetType] = useState('1-2'); // Type de pari
+  const [surebetType, setSurebetType] = useState('1-2');
   const [currency, setCurrency] = useState('EUR');
   const [roundStakes, setRoundStakes] = useState(false);
   const [roundTo, setRoundTo] = useState(1);
   
-  // Initialiser avec des valeurs par défaut comme surebet.com
-  const [data, setData] = useState([
-    { odds: '2.00', stake: '50.00', commission: '0' },
-    { odds: '2.00', stake: '50.00', commission: '0' },
-    { odds: '', stake: '', commission: '0' },
-    { odds: '', stake: '', commission: '0' },
-  ]);
+  // État pour chaque ligne
+  const [odds1, setOdds1] = useState('2.00');
+  const [odds2, setOdds2] = useState('2.00');
+  const [odds3, setOdds3] = useState('');
+  
+  const [stake1, setStake1] = useState('50.00');
+  const [stake2, setStake2] = useState('50.00');
+  const [stake3, setStake3] = useState('');
+  
+  const [commission1, setCommission1] = useState('0');
+  const [commission2, setCommission2] = useState('0');
+  const [commission3, setCommission3] = useState('0');
 
   const [totalStakeInput, setTotalStakeInput] = useState('100.00');
-  const redistributeTimer = useRef(null);
 
   const currencySymbols = {
     EUR: '€',
@@ -54,50 +58,44 @@ export default function SurebetCalculator() {
 
   // Calculer les résultats
   const calculateResults = () => {
-    let validData = true;
+    const oddsArray = [parseFloat(odds1) || 0, parseFloat(odds2) || 0, parseFloat(odds3) || 0];
+    const stakesArray = [parseFloat(stake1) || 0, parseFloat(stake2) || 0, parseFloat(stake3) || 0];
+    const commissionsArray = [parseFloat(commission1) || 0, parseFloat(commission2) || 0, parseFloat(commission3) || 0];
+
     let totalStake = 0;
-    const parsedData = [];
+    let impliedProbSum = 0;
+    const results = [];
 
-    // Parser les données
     for (let i = 0; i < outcomes; i++) {
-      const odd = parseFloat(data[i].odds) || 0;
-      const stake = parseFloat(data[i].stake) || 0;
-      const commission = parseFloat(data[i].commission) || 0;
+      const odd = oddsArray[i];
+      const stake = stakesArray[i];
+      const commission = commissionsArray[i];
 
-      if (odd <= 1) {
-        validData = false;
+      let adjustedOdd = odd;
+      if (odd > 1 && commission !== 0) {
+        if (commission < 0) {
+          adjustedOdd = odd / (1 + Math.abs(commission) / 100);
+        } else {
+          adjustedOdd = odd * (1 - commission / 100);
+        }
       }
 
-      parsedData[i] = {
-        odds: odd,
-        stake: stake,
-        commission: commission,
-        adjustedOdds: commission !== 0 
-          ? (commission < 0 ? odd / (1 + Math.abs(commission) / 100) : odd * (1 - commission / 100))
-          : odd
-      };
+      if (adjustedOdd > 1) {
+        impliedProbSum += 1 / adjustedOdd;
+      }
 
       totalStake += stake;
-    }
 
-    if (!validData || totalStake === 0) {
-      return {
-        isValid: false,
-        totalStake: totalStake,
-        items: parsedData.map(item => ({
-          ...item,
-          return: 0,
-          profit: 0
-        }))
-      };
-    }
+      const returnValue = stake * adjustedOdd;
+      const profit = returnValue - totalStake;
 
-    // Calculer les probabilités implicites
-    let impliedProbSum = 0;
-    for (let i = 0; i < outcomes; i++) {
-      if (parsedData[i].adjustedOdds > 1) {
-        impliedProbSum += 1 / parsedData[i].adjustedOdds;
-      }
+      results.push({
+        odd,
+        stake,
+        adjustedOdd,
+        return: returnValue,
+        profit
+      });
     }
 
     const isSurebet = impliedProbSum < 1 && impliedProbSum > 0;
@@ -105,21 +103,12 @@ export default function SurebetCalculator() {
       ? (isSurebet ? ((1 - impliedProbSum) * 100) : (-(impliedProbSum - 1) * 100))
       : 0;
 
-    // Calculer retours et profits
-    const results = parsedData.map(item => ({
-      ...item,
-      return: item.stake * item.adjustedOdds,
-      profit: (item.stake * item.adjustedOdds) - totalStake
-    }));
-
-    const returnValues = results.map(r => r.return).filter(v => v > 0);
-    const profitValues = results.map(r => r.profit);
-    
-    const minReturn = returnValues.length > 0 ? Math.min(...returnValues) : 0;
-    const minProfit = profitValues.length > 0 ? Math.min(...profitValues) : 0;
+    const validReturns = results.filter(r => r.return > 0).map(r => r.return);
+    const minReturn = validReturns.length > 0 ? Math.min(...validReturns) : 0;
+    const minProfit = totalStake > 0 ? minReturn - totalStake : 0;
 
     return {
-      isValid: true,
+      isValid: totalStake > 0 && results.some(r => r.odd > 1),
       isSurebet,
       profitPercent,
       totalStake,
@@ -129,113 +118,116 @@ export default function SurebetCalculator() {
     };
   };
 
-  // Mettre à jour les mises automatiquement
+  // Redistribuer les mises
   const redistributeStakes = (newTotalStake) => {
-    const currentData = [...data];
-    const validOdds = [];
-    let sumInverseOdds = 0;
+    if (!newTotalStake || newTotalStake <= 0) return;
 
-    // Calculer la somme des inverses des cotes
+    const oddsArray = [parseFloat(odds1) || 0, parseFloat(odds2) || 0, parseFloat(odds3) || 0];
+    const commissionsArray = [parseFloat(commission1) || 0, parseFloat(commission2) || 0, parseFloat(commission3) || 0];
+    
+    let sumInverseOdds = 0;
+    const adjustedOdds = [];
+
     for (let i = 0; i < outcomes; i++) {
-      const odd = parseFloat(currentData[i].odds);
+      const odd = oddsArray[i];
+      const commission = commissionsArray[i];
+      
       if (odd > 1) {
-        const commission = parseFloat(currentData[i].commission) || 0;
-        const adjustedOdd = commission !== 0
-          ? (commission < 0 ? odd / (1 + Math.abs(commission) / 100) : odd * (1 - commission / 100))
-          : odd;
-        validOdds[i] = adjustedOdd;
+        let adjustedOdd = odd;
+        if (commission !== 0) {
+          if (commission < 0) {
+            adjustedOdd = odd / (1 + Math.abs(commission) / 100);
+          } else {
+            adjustedOdd = odd * (1 - commission / 100);
+          }
+        }
+        adjustedOdds[i] = adjustedOdd;
         sumInverseOdds += 1 / adjustedOdd;
       }
     }
 
     if (sumInverseOdds === 0) return;
 
-    // Redistribuer les mises
-    const newData = [...currentData];
-    for (let i = 0; i < outcomes; i++) {
-      if (validOdds[i]) {
-        let stake = (newTotalStake / sumInverseOdds) / validOdds[i];
-        
-        if (roundStakes && roundTo > 0) {
-          stake = Math.round(stake / roundTo) * roundTo;
-        }
-        
-        newData[i].stake = stake.toFixed(2);
+    // Calculer les nouvelles mises
+    if (outcomes >= 1 && adjustedOdds[0]) {
+      let stake = (newTotalStake / sumInverseOdds) / adjustedOdds[0];
+      if (roundStakes && roundTo > 0) {
+        stake = Math.round(stake / roundTo) * roundTo;
       }
+      setStake1(stake.toFixed(2));
     }
 
-    setData(newData);
+    if (outcomes >= 2 && adjustedOdds[1]) {
+      let stake = (newTotalStake / sumInverseOdds) / adjustedOdds[1];
+      if (roundStakes && roundTo > 0) {
+        stake = Math.round(stake / roundTo) * roundTo;
+      }
+      setStake2(stake.toFixed(2));
+    }
+
+    if (outcomes >= 3 && adjustedOdds[2]) {
+      let stake = (newTotalStake / sumInverseOdds) / adjustedOdds[2];
+      if (roundStakes && roundTo > 0) {
+        stake = Math.round(stake / roundTo) * roundTo;
+      }
+      setStake3(stake.toFixed(2));
+    }
   };
 
-  // Gérer le changement de cote
+  // Gérer les changements de cotes
   const handleOddsChange = (index, value) => {
-    const newData = [...data];
-    newData[index].odds = value;
-    setData(newData);
+    if (index === 0) setOdds1(value);
+    else if (index === 1) setOdds2(value);
+    else if (index === 2) setOdds3(value);
 
-    // Annuler le timer précédent
-    if (redistributeTimer.current) {
-      clearTimeout(redistributeTimer.current);
-    }
-
-    // Redistribuer les mises après un délai
-    const totalStake = newData.reduce((sum, item, i) => 
-      i < outcomes ? sum + (parseFloat(item.stake) || 0) : sum, 0
-    );
-    
-    if (totalStake > 0 && value && parseFloat(value) > 1) {
-      redistributeTimer.current = setTimeout(() => {
-        redistributeStakes(totalStake);
-      }, 500);
-    }
+    // Redistribuer après un délai
+    setTimeout(() => {
+      const total = (parseFloat(stake1) || 0) + (parseFloat(stake2) || 0) + (parseFloat(stake3) || 0);
+      if (total > 0) {
+        redistributeStakes(total);
+      }
+    }, 500);
   };
 
-  // Gérer le changement de mise
+  // Gérer les changements de mises
   const handleStakeChange = (index, value) => {
-    const newData = [...data];
-    newData[index].stake = value;
-    setData(newData);
+    if (index === 0) setStake1(value);
+    else if (index === 1) setStake2(value);
+    else if (index === 2) setStake3(value);
 
     // Mettre à jour le total
-    const newTotal = newData.reduce((sum, item, i) => 
-      i < outcomes ? sum + (parseFloat(item.stake) || 0) : sum, 0
-    );
-    setTotalStakeInput(newTotal > 0 ? newTotal.toFixed(2) : '');
+    setTimeout(() => {
+      const s1 = index === 0 ? parseFloat(value) || 0 : parseFloat(stake1) || 0;
+      const s2 = index === 1 ? parseFloat(value) || 0 : parseFloat(stake2) || 0;
+      const s3 = index === 2 ? parseFloat(value) || 0 : parseFloat(stake3) || 0;
+      const total = s1 + s2 + (outcomes >= 3 ? s3 : 0);
+      setTotalStakeInput(total > 0 ? total.toFixed(2) : '');
+    }, 100);
   };
 
-  // Gérer le changement de commission
+  // Gérer les changements de commissions
   const handleCommissionChange = (index, value) => {
-    const newData = [...data];
-    newData[index].commission = value;
-    setData(newData);
+    if (index === 0) setCommission1(value);
+    else if (index === 1) setCommission2(value);
+    else if (index === 2) setCommission3(value);
 
-    // Annuler le timer précédent
-    if (redistributeTimer.current) {
-      clearTimeout(redistributeTimer.current);
-    }
-
-    // Recalculer les mises après un délai
-    const totalStake = newData.reduce((sum, item, i) => 
-      i < outcomes ? sum + (parseFloat(item.stake) || 0) : sum, 0
-    );
-    
-    if (totalStake > 0) {
-      redistributeTimer.current = setTimeout(() => {
-        redistributeStakes(totalStake);
-      }, 500);
-    }
+    // Redistribuer après un délai
+    setTimeout(() => {
+      const total = (parseFloat(stake1) || 0) + (parseFloat(stake2) || 0) + (parseFloat(stake3) || 0);
+      if (total > 0) {
+        redistributeStakes(total);
+      }
+    }, 500);
   };
 
   // Gérer le changement de mise totale
   const handleTotalStakeChange = (value) => {
     setTotalStakeInput(value);
-    const newTotalStake = parseFloat(value) || 0;
-    if (newTotalStake > 0) {
-      redistributeStakes(newTotalStake);
+    const newTotal = parseFloat(value) || 0;
+    if (newTotal > 0) {
+      redistributeStakes(newTotal);
     }
   };
-
-  const results = calculateResults();
 
   // Ajuster le nombre d'issues selon le type de pari
   useEffect(() => {
@@ -244,24 +236,24 @@ export default function SurebetCalculator() {
       case 'H1-H2':
       case 'O-U':
         setOutcomes(2);
+        setOdds3('');
+        setStake3('');
         break;
       case '1-X-2':
       case '1X-2':
         setOutcomes(3);
+        if (!odds3) setOdds3('3.00');
         break;
       default:
         setOutcomes(2);
     }
   }, [surebetType]);
 
-  // Cleanup timer on unmount
-  useEffect(() => {
-    return () => {
-      if (redistributeTimer.current) {
-        clearTimeout(redistributeTimer.current);
-      }
-    };
-  }, []);
+  const results = calculateResults();
+  
+  const getOdds = (index) => index === 0 ? odds1 : index === 1 ? odds2 : odds3;
+  const getStake = (index) => index === 0 ? stake1 : index === 1 ? stake2 : stake3;
+  const getCommission = (index) => index === 0 ? commission1 : index === 1 ? commission2 : commission3;
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -420,7 +412,7 @@ export default function SurebetCalculator() {
                     <input
                       type="text"
                       placeholder="0.00"
-                      value={data[index]?.odds || ''}
+                      value={getOdds(index)}
                       onChange={(e) => handleOddsChange(index, e.target.value)}
                       className="w-24 sm:w-28 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base text-right"
                     />
@@ -429,7 +421,7 @@ export default function SurebetCalculator() {
                     <input
                       type="text"
                       placeholder="0"
-                      value={data[index]?.commission || ''}
+                      value={getCommission(index)}
                       onChange={(e) => handleCommissionChange(index, e.target.value)}
                       className="w-24 sm:w-28 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base text-right"
                     />
@@ -438,7 +430,7 @@ export default function SurebetCalculator() {
                     <input
                       type="text"
                       placeholder="0.00"
-                      value={data[index]?.stake || ''}
+                      value={getStake(index)}
                       onChange={(e) => handleStakeChange(index, e.target.value)}
                       className="w-24 sm:w-28 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base text-right"
                     />
