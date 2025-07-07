@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de Surebets - Rounders Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Calculateur de Surebets</h1>
+            <div class="profit-indicator">
+                <span class="label">Profit</span>
+                <span class="value" id="profitPercent">0.00%</span>
+            </div>
+        </header>
+
+        <div class="settings-panel">
+            <div class="setting-group">
+                <label for="outcomes">Nombre de résultats :</label>
+                <select id="outcomes" class="form-control">
+                    <option value="2" selected>2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+            
+            <div class="setting-group">
+                <label for="totalStake">Mise totale :</label>
+                <input type="number" id="totalStake" class="form-control" value="100" min="1">
+                <select id="currency" class="form-control currency-select">
+                    <option value="EUR">EUR €</option>
+                    <option value="USD">USD $</option>
+                    <option value="GBP">GBP £</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="calculator-table">
+            <table id="calcTable">
+                <thead>
+                    <tr>
+                        <th>Résultat</th>
+                        <th>Cote</th>
+                        <th>Mise</th>
+                        <th>Retour</th>
+                        <th>Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="outcome-row" data-outcome="1">
+                        <td class="outcome-label">Issue 1</td>
+                        <td>
+                            <input type="number" class="odds-input form-control" step="0.01" min="1.01" placeholder="0.00">
+                        </td>
+                        <td class="stake-amount">0.00</td>
+                        <td class="return-amount">0.00</td>
+                        <td class="profit-amount">0.00</td>
+                    </tr>
+                    <tr class="outcome-row" data-outcome="2">
+                        <td class="outcome-label">Issue 2</td>
+                        <td>
+                            <input type="number" class="odds-input form-control" step="0.01" min="1.01" placeholder="0.00">
+                        </td>
+                        <td class="stake-amount">0.00</td>
+                        <td class="return-amount">0.00</td>
+                        <td class="profit-amount">0.00</td>
+                    </tr>
+                    <tr class="outcome-row" data-outcome="3" style="display: none;">
+                        <td class="outcome-label">Issue 3</td>
+                        <td>
+                            <input type="number" class="odds-input form-control" step="0.01" min="1.01" placeholder="0.00">
+                        </td>
+                        <td class="stake-amount">0.00</td>
+                        <td class="return-amount">0.00</td>
+                        <td class="profit-amount">0.00</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="summary-row">
+                        <td colspan="2"><strong>Total</strong></td>
+                        <td class="total-stake">0.00</td>
+                        <td class="total-return">0.00</td>
+                        <td class="total-profit">0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="info-panel">
+            <div class="info-box" id="surebetStatus">
+                <h3>Statut</h3>
+                <p class="status-message">Entrez les cotes pour calculer</p>
+            </div>
+            
+            <div class="info-box">
+                <h3>Comment ça marche ?</h3>
+                <p>Un surebet (pari d'arbitrage) est une opportunité de parier sur toutes les issues d'un événement avec la garantie d'un profit, peu importe le résultat.</p>
+                <p>Entrez les cotes de différents bookmakers et la calculatrice déterminera si c'est un surebet et comment répartir vos mises.</p>
+            </div>
+        </div>
+
+        <div class="advanced-settings">
+            <h3>Options avancées</h3>
+            <div class="settings-grid">
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="roundStakes"> 
+                        Arrondir les mises à :
+                    </label>
+                    <input type="number" id="roundTo" class="form-control small" value="1" min="0.01" step="0.01" disabled>
+                </div>
+                
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="showCommission"> 
+                        Inclure les commissions
+                    </label>
+                </div>
+            </div>
+            
+            <div class="commission-panel" style="display: none;">
+                <div class="commission-inputs">
+                    <div class="commission-group" data-outcome="1">
+                        <label>Commission issue 1 :</label>
+                        <input type="number" class="commission-input form-control" value="0" min="-10" max="10" step="0.1">
+                        <span>%</span>
+                    </div>
+                    <div class="commission-group" data-outcome="2">
+                        <label>Commission issue 2 :</label>
+                        <input type="number" class="commission-input form-control" value="0" min="-10" max="10" step="0.1">
+                        <span>%</span>
+                    </div>
+                    <div class="commission-group" data-outcome="3" style="display: none;">
+                        <label>Commission issue 3 :</label>
+                        <input type="number" class="commission-input form-control" value="0" min="-10" max="10" step="0.1">
+                        <span>%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
