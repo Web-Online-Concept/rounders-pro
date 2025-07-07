@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 export default function SurebetCalculator() {
   const [outcomes, setOutcomes] = useState(2);
-  const [surebetType, setSurebetType] = useState('prematch'); // Type de surebet
+  const [surebetType, setSurebetType] = useState('1-2'); // Type de pari
   const [currency, setCurrency] = useState('USD');
   const [roundStakes, setRoundStakes] = useState(false);
   const [roundTo, setRoundTo] = useState(1);
@@ -25,15 +25,28 @@ export default function SurebetCalculator() {
     GBP: '£',
   };
 
-  const symbol = currencySymbols[currency];
+  // Obtenir le label du bookmaker selon le type de pari et l'index
+  const getBookmakerLabel = (index) => {
+    if (surebetType === '1-X-2') {
+      return ['1', 'X', '2'][index] || `Book ${index + 1}`;
+    } else if (surebetType === '1X-2') {
+      return ['1X', '2'][index] || `Book ${index + 1}`;
+    } else if (surebetType === 'H1-H2') {
+      return ['H1', 'H2'][index] || `Book ${index + 1}`;
+    } else if (surebetType === 'O-U') {
+      return ['Plus que', 'Moins que'][index] || `Book ${index + 1}`;
+    } else {
+      return ['1', '2'][index] || `Book ${index + 1}`;
+    }
+  };
 
-  // Types de surebets disponibles
+  // Types de paris disponibles
   const surebetTypes = [
-    { value: 'prematch', label: 'Prematch' },
-    { value: 'live', label: 'Live' },
-    { value: 'middles', label: 'Middles' },
-    { value: 'polish-middles', label: 'Polish middles' },
-    { value: 'outcomes', label: 'Outcomes' },
+    { value: '1-2', label: '1-2' },
+    { value: '1-X-2', label: '1-X-2' },
+    { value: '1X-2', label: '1X-2' },
+    { value: 'H1-H2', label: 'H1() - H2()' },
+    { value: 'O-U', label: 'Plus que - Moins que' },
   ];
 
   // Calculer les résultats
@@ -201,10 +214,27 @@ export default function SurebetCalculator() {
 
   const results = calculateResults();
 
-  // Ajuster les données quand on change le nombre d'issues
+  // Ajuster le nombre d'issues selon le type de pari
+  useEffect(() => {
+    switch(surebetType) {
+      case '1-2':
+      case 'H1-H2':
+      case 'O-U':
+        setOutcomes(2);
+        break;
+      case '1-X-2':
+      case '1X-2':
+        setOutcomes(3);
+        break;
+      default:
+        setOutcomes(2);
+    }
+  }, [surebetType]);
+
+  // Redistribuer les mises quand on change le nombre d'issues
   useEffect(() => {
     const currentTotal = data.reduce((sum, item, i) => 
-      i < 4 ? sum + (parseFloat(item.stake) || 0) : sum, 0
+      i < outcomes ? sum + (parseFloat(item.stake) || 0) : sum, 0
     );
     
     if (currentTotal > 0) {
@@ -217,23 +247,27 @@ export default function SurebetCalculator() {
       <div className="max-w-[980px] mx-auto">
         {/* Header avec Statut intégré - version desktop et mobile */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="hidden sm:flex justify-between items-start">
-            <div className="flex-1">
-              <div className="flex items-baseline gap-4 mb-2">
-                <h1 className="text-3xl font-bold text-indigo-900">Calculateur de Surebets Rounders.pro</h1>
-                <p className="text-sm font-semibold text-gray-600">Statut</p>
-              </div>
-              <div className="ml-auto">
-                <p className={`text-base font-medium ${
-                  results.isSurebet ? 'text-green-600' : 'text-gray-600'
-                }`}>
-                  {!results.isValid ? 'Entrez les cotes et mises pour calculer le surebet' :
-                   results.isSurebet ? 'Surebet détecté ! Profit garanti.' : 
-                   'Pas de surebet. Perte garantie.'}
-                </p>
-              </div>
+          <div className="hidden sm:grid sm:grid-cols-3 sm:items-center">
+            {/* Titre à gauche */}
+            <div className="text-left">
+              <h1 className="text-3xl font-bold text-indigo-900">Calculateur de Surebets</h1>
+              <p className="text-lg text-indigo-900 font-medium">Rounders.pro</p>
             </div>
-            <div className="bg-gray-50 rounded-lg px-6 py-4 text-center ml-6">
+            
+            {/* Statut au centre */}
+            <div className="text-center">
+              <p className="text-sm font-semibold text-gray-600 mb-1">Statut</p>
+              <p className={`text-base font-medium ${
+                results.isSurebet ? 'text-green-600' : 'text-gray-600'
+              }`}>
+                {!results.isValid ? 'Entrez les cotes et mises pour calculer le surebet' :
+                 results.isSurebet ? 'Surebet détecté ! Profit garanti.' : 
+                 'Pas de surebet. Perte garantie.'}
+              </p>
+            </div>
+            
+            {/* Profit à droite */}
+            <div className="text-right">
               <p className="text-sm text-gray-600 mb-1">Profit</p>
               <p className={`text-2xl font-bold ${
                 results.isSurebet ? 'text-green-600' : 'text-gray-600'
@@ -241,7 +275,7 @@ export default function SurebetCalculator() {
                 {results.isValid ? `${results.profitPercent.toFixed(2)}%` : '0.00%'}
               </p>
               {results.isValid && results.totalStake > 0 && (
-                <p className="text-xs text-gray-600 mt-1">
+                <p className="text-sm text-gray-600">
                   {results.minProfit.toFixed(2)} {symbol}
                 </p>
               )}
@@ -288,11 +322,10 @@ export default function SurebetCalculator() {
 
         {/* Settings Panel */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Première ligne */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div>
               <label htmlFor="surebetType" className="block text-sm font-medium text-gray-700 mb-2">
-                Type de surebet
+                Type de pari
               </label>
               <select
                 id="surebetType"
@@ -306,23 +339,6 @@ export default function SurebetCalculator() {
               </select>
             </div>
 
-            <div>
-              <label htmlFor="outcomes" className="block text-sm font-medium text-gray-700 mb-2">
-                Nombre de résultats
-              </label>
-              <select
-                id="outcomes"
-                value={outcomes}
-                onChange={(e) => setOutcomes(parseInt(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              >
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-              </select>
-            </div>
-
-            {/* Deuxième ligne */}
             <div>
               <label htmlFor="totalStake" className="block text-sm font-medium text-gray-700 mb-2">
                 Mise totale
@@ -367,7 +383,7 @@ export default function SurebetCalculator() {
             </colgroup>
             <thead>
               <tr className="border-b-2 border-gray-200">
-                <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Bookmaker</th>
+                <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Résultat</th>
                 <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Cote</th>
                 <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Commission %</th>
                 <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Mise</th>
@@ -378,7 +394,7 @@ export default function SurebetCalculator() {
             <tbody>
               {[...Array(outcomes)].map((_, index) => (
                 <tr key={index} className="border-b border-gray-100">
-                  <td className="px-2 sm:px-4 py-3 sm:py-4 text-gray-700 font-medium text-sm sm:text-base">Book {index + 1}</td>
+                  <td className="px-2 sm:px-4 py-3 sm:py-4 text-gray-700 font-medium text-sm sm:text-base">{getBookmakerLabel(index)}</td>
                   <td className="px-2 sm:px-4 py-3 sm:py-4">
                     <input
                       type="text"
