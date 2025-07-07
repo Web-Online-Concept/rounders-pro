@@ -127,7 +127,10 @@ export default function SurebetCalculator() {
   };
 
   useEffect(() => {
-    calculateResults();
+    const timer = setTimeout(() => {
+      calculateResults();
+    }, 100);
+    return () => clearTimeout(timer);
   }, [odds, totalStake, outcomes, showCommission, commissions, roundStakes, roundTo, mode, stakes]);
 
   const handleOddsChange = (index, value) => {
@@ -153,17 +156,47 @@ export default function SurebetCalculator() {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-[980px] mx-auto">
-        {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <h1 className="text-3xl font-bold text-indigo-900">Calculateur de Surebets Rounders.pro</h1>
-          <div className="bg-gray-50 rounded-lg px-6 py-4 text-center">
-            <p className="text-sm text-gray-600 mb-1">Profit</p>
-            <p className={`text-2xl font-bold ${
-              results?.isSurebet ? 'text-green-600' : 'text-gray-600'
-            }`}>
-              {results ? `${results.profitPercent.toFixed(2)}%` : '0.00%'}
-            </p>
+        {/* Header avec Statut intégré */}
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="flex-1 text-center sm:text-left">
+              <h1 className="text-3xl font-bold text-indigo-900 mb-2">Calculateur de Surebets Rounders</h1>
+              <div className="text-sm text-gray-600">
+                <p className="font-semibold mb-1">Statut</p>
+                <p className={`text-base font-medium ${
+                  results?.isSurebet ? 'text-green-600' : 'text-gray-600'
+                }`}>
+                  {!results ? 'Entrez les cotes et mises pour calculer le surebet' :
+                   results.isSurebet ? 'Surebet détecté ! Profit garanti.' : 
+                   'Pas de surebet. Perte garantie.'}
+                </p>
+              </div>
+            </div>
+            <div className="bg-gray-50 rounded-lg px-6 py-4 text-center">
+              <p className="text-sm text-gray-600 mb-1">Profit</p>
+              <p className={`text-2xl font-bold ${
+                results?.isSurebet ? 'text-green-600' : 'text-gray-600'
+              }`}>
+                {results ? `${results.profitPercent.toFixed(2)}%` : '0.00%'}
+              </p>
+              {results && (
+                <p className="text-xs text-gray-600 mt-1">
+                  {results.minProfit.toFixed(2)} {symbol}
+                </p>
+              )}
+            </div>
           </div>
+        </div>
+
+        {/* Comment ça marche - Sur toute la largeur */}
+        <div className="bg-blue-50 rounded-lg p-4 mb-6">
+          <h3 className="text-sm font-semibold text-indigo-900 mb-2">Comment ça marche ?</h3>
+          <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
+            Un surebet (pari d'arbitrage) est une opportunité de parier sur toutes les issues 
+            d'un événement avec la garantie d'un profit, peu importe le résultat. Entrez les 
+            cotes de différents bookmakers et la calculatrice déterminera si c'est un surebet 
+            et comment répartir vos mises.
+          </p>
         </div>
 
         {/* Settings Panel */}
@@ -262,12 +295,12 @@ export default function SurebetCalculator() {
                     />
                   </td>
                   <td className="px-2 sm:px-4 py-3 sm:py-4 font-medium text-sm sm:text-base">
-                    {results ? `${results.returns[index].toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
+                    {results && results.stakes[index] > 0 ? `${results.returns[index].toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
                   </td>
                   <td className={`px-2 sm:px-4 py-3 sm:py-4 font-medium text-sm sm:text-base ${
                     results?.profits[index] >= 0 ? 'text-green-600' : 'text-red-600'
                   }`}>
-                    {results ? `${results.profits[index].toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
+                    {results && results.stakes[index] > 0 ? `${results.profits[index].toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
                   </td>
                 </tr>
               ))}
@@ -277,12 +310,12 @@ export default function SurebetCalculator() {
                   {results ? `${results.totalStake.toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
                 </td>
                 <td className="px-2 sm:px-4 py-3 sm:py-4 text-sm sm:text-base">
-                  {results ? `${results.minReturn.toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
+                  {results && results.totalStake > 0 ? `${results.minReturn.toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
                 </td>
                 <td className={`px-2 sm:px-4 py-3 sm:py-4 text-sm sm:text-base ${
                   results?.minProfit >= 0 ? 'text-green-600' : 'text-red-600'
                 }`}>
-                  {results ? `${results.minProfit.toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
+                  {results && results.totalStake > 0 ? `${results.minProfit.toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
                 </td>
               </tr>
             </tbody>
@@ -290,7 +323,7 @@ export default function SurebetCalculator() {
         </div>
 
         {/* Advanced Settings */}
-        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-6">
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
           <h3 className="text-lg font-semibold text-indigo-900 mb-4">Options avancées</h3>
           
           <div className="space-y-4">
@@ -363,35 +396,6 @@ export default function SurebetCalculator() {
               {mode === 'global' 
                 ? "Mode mise globale : Entrez la mise totale et la calculatrice répartit automatiquement les mises optimales."
                 : "Mode mise individuelle : Entrez vos mises manuellement pour chaque bookmaker."}
-            </p>
-          </div>
-        </div>
-
-        {/* Info Panel */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-          <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
-            <h3 className="text-lg font-semibold text-indigo-900 mb-3">Statut</h3>
-            <p className={`text-base sm:text-lg font-medium ${
-              results?.isSurebet ? 'text-green-600' : 'text-gray-600'
-            }`}>
-              {!results ? 'Entrez les cotes et mises pour calculer le surebet' :
-               results.isSurebet ? 'Surebet détecté ! Profit garanti.' : 
-               'Pas de surebet. Perte garantie.'}
-            </p>
-            {results && (
-              <p className="text-xs sm:text-sm text-gray-600 mt-2">
-                Profit minimum : {results.minProfit.toFixed(2)} {symbol} ({((results.minProfit / results.totalStake) * 100).toFixed(2)}%)
-              </p>
-            )}
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
-            <h3 className="text-lg font-semibold text-indigo-900 mb-3">Comment ça marche ?</h3>
-            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
-              Un surebet (pari d'arbitrage) est une opportunité de parier sur toutes les issues 
-              d'un événement avec la garantie d'un profit, peu importe le résultat. Entrez les 
-              cotes de différents bookmakers et la calculatrice déterminera si c'est un surebet 
-              et comment répartir vos mises.
             </p>
           </div>
         </div>
