@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 
 export default function SurebetCalculator() {
   const [outcomes, setOutcomes] = useState(2);
+  const [surebetType, setSurebetType] = useState('prematch'); // Type de surebet
   const [currency, setCurrency] = useState('USD');
   const [roundStakes, setRoundStakes] = useState(false);
   const [roundTo, setRoundTo] = useState(1);
@@ -12,6 +13,7 @@ export default function SurebetCalculator() {
   const [data, setData] = useState([
     { odds: '2.00', stake: '100.00', commission: '0' },
     { odds: '2.00', stake: '100.00', commission: '0' },
+    { odds: '', stake: '', commission: '0' },
     { odds: '', stake: '', commission: '0' },
   ]);
 
@@ -24,6 +26,15 @@ export default function SurebetCalculator() {
   };
 
   const symbol = currencySymbols[currency];
+
+  // Types de surebets disponibles
+  const surebetTypes = [
+    { value: 'prematch', label: 'Prematch' },
+    { value: 'live', label: 'Live' },
+    { value: 'middles', label: 'Middles' },
+    { value: 'polish-middles', label: 'Polish middles' },
+    { value: 'outcomes', label: 'Outcomes' },
+  ];
 
   // Calculer les résultats
   const calculateResults = () => {
@@ -192,32 +203,27 @@ export default function SurebetCalculator() {
 
   // Ajuster les données quand on change le nombre d'issues
   useEffect(() => {
-    if (outcomes === 2 && parseFloat(data[2].stake) > 0) {
-      // Redistribuer la mise de la 3ème issue sur les 2 premières
-      const stake3 = parseFloat(data[2].stake) || 0;
-      const newData = [...data];
-      const stake1 = parseFloat(newData[0].stake) || 0;
-      const stake2 = parseFloat(newData[1].stake) || 0;
-      newData[0].stake = (stake1 + stake3 / 2).toFixed(2);
-      newData[1].stake = (stake2 + stake3 / 2).toFixed(2);
-      newData[2].stake = '';
-      setData(newData);
-      
-      const newTotal = parseFloat(newData[0].stake) + parseFloat(newData[1].stake);
-      setTotalStakeInput(newTotal.toFixed(2));
+    const currentTotal = data.reduce((sum, item, i) => 
+      i < 4 ? sum + (parseFloat(item.stake) || 0) : sum, 0
+    );
+    
+    if (currentTotal > 0) {
+      redistributeStakes(currentTotal);
     }
   }, [outcomes]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-[980px] mx-auto">
-        {/* Header avec Statut intégré */}
+        {/* Header avec Statut intégré - version desktop et mobile */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="flex-1 text-center sm:text-left">
-              <h1 className="text-3xl font-bold text-indigo-900 mb-2">Calculateur de Surebets</h1>
-              <div className="text-sm text-gray-600">
-                <p className="font-semibold mb-1">Statut</p>
+          <div className="hidden sm:flex justify-between items-start">
+            <div className="flex-1">
+              <div className="flex items-baseline gap-4 mb-2">
+                <h1 className="text-3xl font-bold text-indigo-900">Calculateur de Surebets Rounders.pro</h1>
+                <p className="text-sm font-semibold text-gray-600">Statut</p>
+              </div>
+              <div className="ml-auto">
                 <p className={`text-base font-medium ${
                   results.isSurebet ? 'text-green-600' : 'text-gray-600'
                 }`}>
@@ -227,7 +233,7 @@ export default function SurebetCalculator() {
                 </p>
               </div>
             </div>
-            <div className="bg-gray-50 rounded-lg px-6 py-4 text-center">
+            <div className="bg-gray-50 rounded-lg px-6 py-4 text-center ml-6">
               <p className="text-sm text-gray-600 mb-1">Profit</p>
               <p className={`text-2xl font-bold ${
                 results.isSurebet ? 'text-green-600' : 'text-gray-600'
@@ -239,6 +245,32 @@ export default function SurebetCalculator() {
                   {results.minProfit.toFixed(2)} {symbol}
                 </p>
               )}
+            </div>
+          </div>
+          
+          {/* Version mobile */}
+          <div className="sm:hidden">
+            <h1 className="text-2xl font-bold text-indigo-900 mb-2 text-center">Calculateur de Surebets</h1>
+            <p className="text-xs text-center text-gray-500 mb-3">Rounders.pro</p>
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm font-semibold text-gray-600 mb-1">Statut</p>
+                <p className={`text-sm font-medium ${
+                  results.isSurebet ? 'text-green-600' : 'text-gray-600'
+                }`}>
+                  {!results.isValid ? 'Entrez les cotes' :
+                   results.isSurebet ? 'Surebet détecté !' : 
+                   'Pas de surebet.'}
+                </p>
+              </div>
+              <div className="bg-gray-50 rounded-lg px-4 py-3 text-center">
+                <p className="text-xs text-gray-600">Profit</p>
+                <p className={`text-xl font-bold ${
+                  results.isSurebet ? 'text-green-600' : 'text-gray-600'
+                }`}>
+                  {results.isValid ? `${results.profitPercent.toFixed(2)}%` : '0.00%'}
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -256,7 +288,24 @@ export default function SurebetCalculator() {
 
         {/* Settings Panel */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Première ligne */}
+            <div>
+              <label htmlFor="surebetType" className="block text-sm font-medium text-gray-700 mb-2">
+                Type de surebet
+              </label>
+              <select
+                id="surebetType"
+                value={surebetType}
+                onChange={(e) => setSurebetType(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                {surebetTypes.map(type => (
+                  <option key={type.value} value={type.value}>{type.label}</option>
+                ))}
+              </select>
+            </div>
+
             <div>
               <label htmlFor="outcomes" className="block text-sm font-medium text-gray-700 mb-2">
                 Nombre de résultats
@@ -269,9 +318,11 @@ export default function SurebetCalculator() {
               >
                 <option value="2">2</option>
                 <option value="3">3</option>
+                <option value="4">4</option>
               </select>
             </div>
 
+            {/* Deuxième ligne */}
             <div>
               <label htmlFor="totalStake" className="block text-sm font-medium text-gray-700 mb-2">
                 Mise totale
