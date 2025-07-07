@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function SurebetCalculator() {
   const [outcomes, setOutcomes] = useState(2);
@@ -14,15 +14,20 @@ export default function SurebetCalculator() {
   const [odds2, setOdds2] = useState('2.00');
   const [odds3, setOdds3] = useState('');
   
-  const [stake1, setStake1] = useState('50.00');
-  const [stake2, setStake2] = useState('50.00');
+  const [stake1, setStake1] = useState('50');
+  const [stake2, setStake2] = useState('50');
   const [stake3, setStake3] = useState('');
   
   const [commission1, setCommission1] = useState('0');
   const [commission2, setCommission2] = useState('0');
   const [commission3, setCommission3] = useState('0');
 
-  const [totalStakeInput, setTotalStakeInput] = useState('100.00');
+  const [totalStakeInput, setTotalStakeInput] = useState('100');
+  
+  // Timers pour le debounce
+  const oddsTimer = useRef(null);
+  const commissionTimer = useRef(null);
+  const totalStakeTimer = useRef(null);
 
   const currencySymbols = {
     EUR: '€',
@@ -184,13 +189,31 @@ export default function SurebetCalculator() {
     else if (index === 1) setOdds2(value);
     else if (index === 2) setOdds3(value);
 
-    // Redistribuer après un délai
-    setTimeout(() => {
-      const total = (parseFloat(stake1) || 0) + (parseFloat(stake2) || 0) + (parseFloat(stake3) || 0);
-      if (total > 0) {
+    // Annuler le timer précédent
+    if (oddsTimer.current) {
+      clearTimeout(oddsTimer.current);
+    }
+
+    // Redistribuer après un délai de 800ms
+    oddsTimer.current = setTimeout(() => {
+      // Récupérer les valeurs actuelles au moment du timeout
+      const o1 = parseFloat(odds1) || 0;
+      const o2 = parseFloat(odds2) || 0;
+      const o3 = parseFloat(odds3) || 0;
+      const s1 = parseFloat(stake1) || 0;
+      const s2 = parseFloat(stake2) || 0;
+      const s3 = parseFloat(stake3) || 0;
+      const total = s1 + s2 + (outcomes >= 3 ? s3 : 0);
+      
+      // Vérifier que les cotes sont valides
+      const validOdds = (outcomes >= 1 ? o1 > 1 : true) && 
+                       (outcomes >= 2 ? o2 > 1 : true) && 
+                       (outcomes >= 3 ? o3 > 1 : true);
+      
+      if (total > 0 && validOdds) {
         redistributeStakes(total);
       }
-    }, 500);
+    }, 800);
   };
 
   // Gérer les changements de mises
@@ -204,7 +227,10 @@ export default function SurebetCalculator() {
     const s2 = index === 1 ? parseFloat(value) || 0 : parseFloat(stake2) || 0;
     const s3 = index === 2 ? parseFloat(value) || 0 : parseFloat(stake3) || 0;
     const total = s1 + s2 + (outcomes >= 3 ? s3 : 0);
-    setTotalStakeInput(total > 0 ? total.toFixed(2) : '0.00');
+    // Ne pas forcer le formatage pour laisser l'utilisateur taper librement
+    if (document.activeElement?.id !== 'totalStake') {
+      setTotalStakeInput(total > 0 ? total.toString() : '0');
+    }
   };
 
   // Gérer les changements de commissions
@@ -213,55 +239,61 @@ export default function SurebetCalculator() {
     else if (index === 1) setCommission2(value);
     else if (index === 2) setCommission3(value);
 
-    // Redistribuer après un délai
-    setTimeout(() => {
-      const total = (parseFloat(stake1) || 0) + (parseFloat(stake2) || 0) + (parseFloat(stake3) || 0);
+    // Annuler le timer précédent
+    if (commissionTimer.current) {
+      clearTimeout(commissionTimer.current);
+    }
+
+    // Redistribuer après un délai de 800ms
+    commissionTimer.current = setTimeout(() => {
+      // Récupérer les valeurs actuelles au moment du timeout
+      const s1 = parseFloat(stake1) || 0;
+      const s2 = parseFloat(stake2) || 0;
+      const s3 = parseFloat(stake3) || 0;
+      const total = s1 + s2 + (outcomes >= 3 ? s3 : 0);
       if (total > 0) {
         redistributeStakes(total);
       }
-    }, 500);
+    }, 800);
   };
 
   // Gérer le changement de mise totale
   const handleTotalStakeChange = (value) => {
     setTotalStakeInput(value);
-    const newTotal = parseFloat(value) || 0;
-    if (newTotal > 0) {
-      redistributeStakes(newTotal);
+    
+    // Annuler le timer précédent
+    if (totalStakeTimer.current) {
+      clearTimeout(totalStakeTimer.current);
     }
+
+    // Redistribuer après un délai de 500ms pour la mise totale
+    totalStakeTimer.current = setTimeout(() => {
+      const newTotal = parseFloat(value) || 0;
+      if (newTotal > 0) {
+        redistributeStakes(newTotal);
+      }
+    }, 500);
   };
 
   // Ajuster le nombre d'issues selon le type de pari
   useEffect(() => {
-    const previousOutcomes = outcomes;
-    let newOutcomes = 2;
-    
     switch(surebetType) {
       case '1-2':
       case 'H1-H2':
       case 'O-U':
-        newOutcomes = 2;
-        if (previousOutcomes === 3) {
-          // Redistribuer les mises sur 2 issues
-          const total = (parseFloat(stake1) || 0) + (parseFloat(stake2) || 0) + (parseFloat(stake3) || 0);
-          if (total > 0) {
-            setTimeout(() => redistributeStakes(total), 100);
-          }
-        }
+        setOutcomes(2);
         setOdds3('');
         setStake3('');
         break;
       case '1-X-2':
       case '1X-2':
-        newOutcomes = 3;
+        setOutcomes(3);
         if (!odds3) setOdds3('3.00');
         break;
       default:
-        newOutcomes = 2;
+        setOutcomes(2);
     }
-    
-    setOutcomes(newOutcomes);
-  }, [surebetType]);
+  }, [surebetType, odds3]);
 
   // Mettre à jour la mise totale quand les mises individuelles changent
   useEffect(() => {
@@ -269,8 +301,17 @@ export default function SurebetCalculator() {
     const s2 = parseFloat(stake2) || 0;
     const s3 = parseFloat(stake3) || 0;
     const total = s1 + s2 + (outcomes >= 3 ? s3 : 0);
-    setTotalStakeInput(total > 0 ? total.toFixed(2) : '0.00');
+    setTotalStakeInput(total > 0 ? total.toString() : '0');
   }, [stake1, stake2, stake3, outcomes]);
+
+  // Cleanup timers on unmount
+  useEffect(() => {
+    return () => {
+      if (oddsTimer.current) clearTimeout(oddsTimer.current);
+      if (commissionTimer.current) clearTimeout(commissionTimer.current);
+      if (totalStakeTimer.current) clearTimeout(totalStakeTimer.current);
+    };
+  }, []);
 
   const results = calculateResults();
   
@@ -514,6 +555,9 @@ export default function SurebetCalculator() {
             <div className="mt-4 pt-4 border-t border-gray-200">
               <p className="text-xs text-gray-500">
                 Commissions positives = réduction des gains | Commissions négatives = augmentation des cotes
+              </p>
+              <p className="text-xs text-gray-400 mt-1">
+                Les mises se recalculent automatiquement après modification des cotes ou de la mise totale
               </p>
             </div>
           </div>
