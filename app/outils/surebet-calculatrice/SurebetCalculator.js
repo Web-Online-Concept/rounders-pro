@@ -166,6 +166,35 @@ export default function SurebetCalculator() {
           </div>
         </div>
 
+        {/* Info Panel */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+            <h3 className="text-lg font-semibold text-indigo-900 mb-3">Statut</h3>
+            <p className={`text-base sm:text-lg font-medium ${
+              results?.isSurebet ? 'text-green-600' : 'text-gray-600'
+            }`}>
+              {!results ? 'Entrez les cotes pour calculer' :
+               results.isSurebet ? 'Surebet détecté ! Profit garanti.' : 
+               'Pas de surebet. Perte garantie.'}
+            </p>
+            {results && (
+              <p className="text-xs sm:text-sm text-gray-600 mt-2">
+                Profit minimum : {results.minProfit.toFixed(2)} {symbol} ({((results.minProfit / results.totalStake) * 100).toFixed(2)}%)
+              </p>
+            )}
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+            <h3 className="text-lg font-semibold text-indigo-900 mb-3">Comment ça marche ?</h3>
+            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+              Un surebet (pari d'arbitrage) est une opportunité de parier sur toutes les issues 
+              d'un événement avec la garantie d'un profit, peu importe le résultat. Entrez les 
+              cotes de différents bookmakers et la calculatrice déterminera si c'est un surebet 
+              et comment répartir vos mises.
+            </p>
+          </div>
+        </div>
+
         {/* Settings Panel */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -289,37 +318,8 @@ export default function SurebetCalculator() {
           </table>
         </div>
 
-        {/* Info Panel */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-lg font-semibold text-indigo-900 mb-3">Statut</h3>
-            <p className={`text-lg font-medium ${
-              results?.isSurebet ? 'text-green-600' : 'text-gray-600'
-            }`}>
-              {!results ? 'Entrez les cotes pour calculer' :
-               results.isSurebet ? 'Surebet détecté ! Profit garanti.' : 
-               'Pas de surebet. Perte garantie.'}
-            </p>
-            {results && (
-              <p className="text-sm text-gray-600 mt-2">
-                Profit minimum : {results.minProfit.toFixed(2)} {symbol} ({((results.minProfit / results.totalStake) * 100).toFixed(2)}%)
-              </p>
-            )}
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-lg font-semibold text-indigo-900 mb-3">Comment ça marche ?</h3>
-            <p className="text-gray-600 text-sm leading-relaxed">
-              Un surebet (pari d'arbitrage) est une opportunité de parier sur toutes les issues 
-              d'un événement avec la garantie d'un profit, peu importe le résultat. Entrez les 
-              cotes de différents bookmakers et la calculatrice déterminera si c'est un surebet 
-              et comment répartir vos mises.
-            </p>
-          </div>
-        </div>
-
         {/* Advanced Settings */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-6">
           <h3 className="text-lg font-semibold text-indigo-900 mb-4">Options avancées</h3>
           
           <div className="space-y-4">
@@ -331,7 +331,7 @@ export default function SurebetCalculator() {
                 onChange={(e) => setRoundStakes(e.target.checked)}
                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
-              <label htmlFor="roundStakes" className="ml-2 text-sm text-gray-700">
+              <label htmlFor="roundStakes" className="ml-2 text-xs sm:text-sm text-gray-700">
                 Arrondir les mises à :
               </label>
               <input
@@ -353,7 +353,7 @@ export default function SurebetCalculator() {
                 onChange={(e) => setShowCommission(e.target.checked)}
                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
-              <label htmlFor="showCommission" className="ml-2 text-sm text-gray-700">
+              <label htmlFor="showCommission" className="ml-2 text-xs sm:text-sm text-gray-700">
                 Inclure les commissions
               </label>
             </div>
@@ -363,7 +363,7 @@ export default function SurebetCalculator() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {[...Array(outcomes)].map((_, index) => (
                     <div key={index} className="flex items-center">
-                      <label className="text-sm text-gray-700 mr-2">
+                      <label className="text-xs sm:text-sm text-gray-700 mr-2">
                         Commission Book {index + 1} :
                       </label>
                       <input
@@ -375,7 +375,7 @@ export default function SurebetCalculator() {
                         step="0.1"
                         className="w-20 px-2 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                       />
-                      <span className="ml-1 text-sm text-gray-700">%</span>
+                      <span className="ml-1 text-xs sm:text-sm text-gray-700">%</span>
                     </div>
                   ))}
                 </div>
@@ -387,7 +387,7 @@ export default function SurebetCalculator() {
           </div>
 
           <div className="mt-6 pt-6 border-t border-gray-200">
-            <h4 className="text-sm font-semibold text-gray-700 mb-2">Mode de calcul</h4>
+            <h4 className="text-xs sm:text-sm font-semibold text-gray-700 mb-2">Mode de calcul</h4>
             <p className="text-xs text-gray-500">
               {mode === 'global' 
                 ? "Mode mise globale : Entrez la mise totale et la calculatrice répartit automatiquement les mises optimales."
