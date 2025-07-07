@@ -1,20 +1,4 @@
-{/* Calculator Table */}
-        <div className="bg-white rounded-lg shadow-sm p-3 sm:p-6 mb-6 overflow-x-auto">
-          <table className="w-full table-fixed min-w-[750px]">
-            <colgroup>
-              <col className="w-[130px]" />
-              <col className="w-[120px]" />
-              <col className="w-[130px]" />
-              <col className="w-[120px]" />
-              <col className="w-[120px]" />
-              <col className="w-[120px]" />
-            </colgroup>
-            <thead>
-              <tr className="border-b-2 border-gray-200">
-                <th className="w-[120px] px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Bookmaker</th>
-                <th className="w-[100px] px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Cote</th>
-                <th className="w-[120px] px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Commission %</th>
-                <th className="w-[100px] px-2 sm:'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 
@@ -281,7 +265,7 @@ export default function SurebetCalculator() {
                 id="outcomes"
                 value={outcomes}
                 onChange={(e) => setOutcomes(parseInt(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-right"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               >
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -297,7 +281,7 @@ export default function SurebetCalculator() {
                 type="text"
                 value={totalStakeInput}
                 onChange={(e) => handleTotalStakeChange(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-right"
               />
             </div>
 
@@ -321,7 +305,15 @@ export default function SurebetCalculator() {
 
         {/* Calculator Table */}
         <div className="bg-white rounded-lg shadow-sm p-3 sm:p-6 mb-6 overflow-x-auto">
-          <table className="w-full table-fixed min-w-[700px]">
+          <table className="w-full table-fixed min-w-[750px]">
+            <colgroup>
+              <col className="w-[130px]" />
+              <col className="w-[120px]" />
+              <col className="w-[130px]" />
+              <col className="w-[120px]" />
+              <col className="w-[120px]" />
+              <col className="w-[120px]" />
+            </colgroup>
             <thead>
               <tr className="border-b-2 border-gray-200">
                 <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Bookmaker</th>
