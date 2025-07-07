@@ -146,72 +146,6 @@ const SurebetCalculator = () => {
     }, 100);
   };
 
-  // Redistribuer les autres mises quand une mise change
-  const redistributeOtherStakes = (changedStakeIndex) => {
-    if (isRedistributing.current) return;
-    
-    const total = parseFloat(totalStake) || 0;
-    if (total <= 0) return;
-    
-    const outcomeCount = getOutcomeCount();
-    const changedStake = changedStakeIndex === 1 ? parseFloat(stake1) || 0 
-                       : changedStakeIndex === 2 ? parseFloat(stake2) || 0 
-                       : parseFloat(stake3) || 0;
-    
-    const remainingTotal = total - changedStake;
-    if (remainingTotal < 0) return;
-    
-    const o1 = parseFloat(odds1) || 1;
-    const o2 = parseFloat(odds2) || 1;
-    const o3 = outcomeCount === 3 ? (parseFloat(odds3) || 1) : 0;
-    
-    const c1 = parseFloat(commission1) || 0;
-    const c2 = parseFloat(commission2) || 0;
-    const c3 = outcomeCount === 3 ? (parseFloat(commission3) || 0) : 0;
-    
-    // Calcul avec commissions
-    const adjOdds1 = o1 * (1 - c1 / 100);
-    const adjOdds2 = o2 * (1 - c2 / 100);
-    const adjOdds3 = outcomeCount === 3 ? o3 * (1 - c3 / 100) : 1;
-    
-    isRedistributing.current = true;
-    
-    if (outcomeCount === 2) {
-      // Pour 2 résultats
-      if (changedStakeIndex === 1) {
-        setStake2(remainingTotal.toFixed(2));
-      } else {
-        setStake1(remainingTotal.toFixed(2));
-      }
-    } else {
-      // Pour 3 résultats
-      let sumInverse;
-      if (changedStakeIndex === 1) {
-        sumInverse = 1/adjOdds2 + 1/adjOdds3;
-        if (sumInverse > 0) {
-          setStake2((remainingTotal * (1/adjOdds2) / sumInverse).toFixed(2));
-          setStake3((remainingTotal * (1/adjOdds3) / sumInverse).toFixed(2));
-        }
-      } else if (changedStakeIndex === 2) {
-        sumInverse = 1/adjOdds1 + 1/adjOdds3;
-        if (sumInverse > 0) {
-          setStake1((remainingTotal * (1/adjOdds1) / sumInverse).toFixed(2));
-          setStake3((remainingTotal * (1/adjOdds3) / sumInverse).toFixed(2));
-        }
-      } else {
-        sumInverse = 1/adjOdds1 + 1/adjOdds2;
-        if (sumInverse > 0) {
-          setStake1((remainingTotal * (1/adjOdds1) / sumInverse).toFixed(2));
-          setStake2((remainingTotal * (1/adjOdds2) / sumInverse).toFixed(2));
-        }
-      }
-    }
-    
-    setTimeout(() => {
-      isRedistributing.current = false;
-    }, 100);
-  };
-
   // Handlers
   const handleOddsChange = (setter, value) => {
     setter(value);
@@ -232,8 +166,65 @@ const SurebetCalculator = () => {
   const handleStakeChange = (setter, value, stakeIndex) => {
     setter(value);
     if (stakeTimerRef.current) clearTimeout(stakeTimerRef.current);
+    
+    // Ne PAS toucher à la mise totale !
+    // Garder la mise totale actuelle et redistribuer seulement les autres mises
     stakeTimerRef.current = setTimeout(() => {
-      redistributeOtherStakes(stakeIndex);
+      const currentTotal = parseFloat(totalStake) || 0;
+      if (currentTotal <= 0) return;
+      
+      const outcomeCount = getOutcomeCount();
+      const newStake = parseFloat(value) || 0;
+      const remainingTotal = currentTotal - newStake;
+      
+      if (remainingTotal < 0) return;
+      
+      const o1 = parseFloat(odds1) || 1;
+      const o2 = parseFloat(odds2) || 1;
+      const o3 = outcomeCount === 3 ? (parseFloat(odds3) || 1) : 0;
+      
+      const c1 = parseFloat(commission1) || 0;
+      const c2 = parseFloat(commission2) || 0;
+      const c3 = outcomeCount === 3 ? (parseFloat(commission3) || 0) : 0;
+      
+      const adjOdds1 = o1 * (1 - c1 / 100);
+      const adjOdds2 = o2 * (1 - c2 / 100);
+      const adjOdds3 = outcomeCount === 3 ? o3 * (1 - c3 / 100) : 1;
+      
+      isRedistributing.current = true;
+      
+      if (outcomeCount === 2) {
+        if (stakeIndex === 1) {
+          setStake2(remainingTotal.toFixed(2));
+        } else {
+          setStake1(remainingTotal.toFixed(2));
+        }
+      } else {
+        let sumInverse;
+        if (stakeIndex === 1) {
+          sumInverse = 1/adjOdds2 + 1/adjOdds3;
+          if (sumInverse > 0) {
+            setStake2((remainingTotal * (1/adjOdds2) / sumInverse).toFixed(2));
+            setStake3((remainingTotal * (1/adjOdds3) / sumInverse).toFixed(2));
+          }
+        } else if (stakeIndex === 2) {
+          sumInverse = 1/adjOdds1 + 1/adjOdds3;
+          if (sumInverse > 0) {
+            setStake1((remainingTotal * (1/adjOdds1) / sumInverse).toFixed(2));
+            setStake3((remainingTotal * (1/adjOdds3) / sumInverse).toFixed(2));
+          }
+        } else {
+          sumInverse = 1/adjOdds1 + 1/adjOdds2;
+          if (sumInverse > 0) {
+            setStake1((remainingTotal * (1/adjOdds1) / sumInverse).toFixed(2));
+            setStake2((remainingTotal * (1/adjOdds2) / sumInverse).toFixed(2));
+          }
+        }
+      }
+      
+      setTimeout(() => {
+        isRedistributing.current = false;
+      }, 100);
     }, 500);
   };
 
@@ -247,16 +238,8 @@ const SurebetCalculator = () => {
     }, 500);
   };
 
-  // Mise à jour de la mise totale quand les mises individuelles changent
-  useEffect(() => {
-    if (!isEditingTotal.current && !isRedistributing.current) {
-      const s1 = parseFloat(stake1) || 0;
-      const s2 = parseFloat(stake2) || 0;
-      const s3 = getOutcomeCount() === 3 ? (parseFloat(stake3) || 0) : 0;
-      const newTotal = s1 + s2 + s3;
-      setTotalStake(newTotal.toFixed(2));
-    }
-  }, [stake1, stake2, stake3]);
+  // NE PAS mettre à jour la mise totale automatiquement
+  // La mise totale doit rester fixe quand on modifie les mises individuelles
 
   // Ajuster les mises au changement de type de pari
   useEffect(() => {
@@ -317,14 +300,14 @@ const SurebetCalculator = () => {
 
         {/* Main Calculator */}
         <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
-          {/* Settings */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
+          {/* Settings - 4 colonnes sur PC, 2 sur mobile */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
             <div>
-              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Type de pari</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">Type de pari</label>
               <select 
                 value={betType} 
                 onChange={(e) => setBetType(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                className="w-full px-2 py-2 border border-gray-300 rounded-md text-sm"
               >
                 <option value="1-2">1-2</option>
                 <option value="1-X-2">1-X-2</option>
@@ -334,29 +317,29 @@ const SurebetCalculator = () => {
               </select>
             </div>
             <div>
-              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Nombre de résultats</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">Nombre de résultats</label>
               <input 
                 type="text" 
                 value={getOutcomeCount()} 
                 readOnly 
-                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-sm"
+                className="w-full px-2 py-2 border border-gray-300 rounded-md bg-gray-100 text-sm text-center"
               />
             </div>
             <div>
-              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Mise totale</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">Mise totale</label>
               <input 
                 type="text" 
                 value={totalStake} 
                 onChange={(e) => handleTotalStakeChange(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-right text-sm"
+                className="w-full px-2 py-2 border border-gray-300 rounded-md text-right text-sm"
               />
             </div>
             <div>
-              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Devise</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">Devise</label>
               <select 
                 value={currency} 
                 onChange={(e) => setCurrency(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                className="w-full px-2 py-2 border border-gray-300 rounded-md text-sm"
               >
                 <option value="EUR">EUR €</option>
                 <option value="USD">USD $</option>
@@ -516,7 +499,7 @@ const SurebetCalculator = () => {
 
           {/* Help text */}
           <div className="mt-4 text-xs text-gray-500 text-center">
-            Les mises se redistribuent automatiquement. Modifiez une mise individuelle pour garder la mise totale fixe.
+            Modification des cotes/commissions : redistribue toutes les mises | Modification d'une mise : redistribue les autres mises
           </div>
         </div>
       </div>
