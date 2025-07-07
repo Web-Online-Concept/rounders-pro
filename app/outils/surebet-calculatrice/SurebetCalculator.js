@@ -13,20 +13,13 @@ const SurebetCalculator = () => {
   const [commission1, setCommission1] = useState('0');
   const [commission2, setCommission2] = useState('0');
   const [commission3, setCommission3] = useState('0');
-  const [stake1, setStake1] = useState('');
-  const [stake2, setStake2] = useState('');
-  const [stake3, setStake3] = useState('');
+  const [stake1, setStake1] = useState('50.00');
+  const [stake2, setStake2] = useState('50.00');
+  const [stake3, setStake3] = useState('0.00');
   
   // Timers pour le debounce
   const oddsTimerRef = useRef(null);
-  const stakeTimerRef = useRef(null);
   const totalTimerRef = useRef(null);
-  const totalStakeRef = useRef(totalStake); // Référence pour la mise totale
-
-  // Mettre à jour la référence quand totalStake change
-  useEffect(() => {
-    totalStakeRef.current = totalStake;
-  }, [totalStake]);
 
   // Symboles des devises
   const currencySymbols = { EUR: '€', USD: '$', GBP: '£' };
@@ -109,10 +102,9 @@ const SurebetCalculator = () => {
   };
 
   // Redistribuer les mises selon la mise totale
-  const redistributeStakes = (overrideTotalStake = null) => {
-    // Utiliser la valeur passée en paramètre ou l'état actuel
-    const total = overrideTotalStake !== null ? parseFloat(overrideTotalStake) : parseFloat(totalStake);
-    if (isNaN(total) || total <= 0) return;
+  const redistributeStakes = () => {
+    const total = parseFloat(totalStake) || 0;
+    if (total <= 0) return;
     
     const outcomeCount = getOutcomeCount();
     const o1 = parseFloat(odds1) || 0;
@@ -143,7 +135,6 @@ const SurebetCalculator = () => {
     const newStake2 = total * (1/adjOdds2) / sumInverse;
     const newStake3 = outcomeCount === 3 ? total * (1/adjOdds3) / sumInverse : 0;
     
-    // Forcer la mise à jour
     setStake1(newStake1.toFixed(2));
     setStake2(newStake2.toFixed(2));
     if (outcomeCount === 3) {
@@ -158,7 +149,7 @@ const SurebetCalculator = () => {
     setter(value);
     if (oddsTimerRef.current) clearTimeout(oddsTimerRef.current);
     oddsTimerRef.current = setTimeout(() => {
-      redistributeStakes(null);
+      redistributeStakes();
     }, 500);
   };
 
@@ -166,160 +157,52 @@ const SurebetCalculator = () => {
     setter(value);
     if (oddsTimerRef.current) clearTimeout(oddsTimerRef.current);
     oddsTimerRef.current = setTimeout(() => {
-      redistributeStakes(null);
+      redistributeStakes();
     }, 500);
   };
 
-  const handleStakeChange = (setter, value, stakeIndex) => {
+  // PAS DE REDISTRIBUTION quand on change une mise manuellement
+  const handleStakeChange = (setter, value) => {
     setter(value);
-    if (stakeTimerRef.current) clearTimeout(stakeTimerRef.current);
-    
-    // Redistribuer les autres mises en gardant la mise totale fixe
-    stakeTimerRef.current = setTimeout(() => {
-      const currentTotal = parseFloat(totalStakeRef.current) || 0;
-      if (currentTotal <= 0) return;
-      
-      const outcomeCount = getOutcomeCount();
-      const newStake = parseFloat(value) || 0;
-      
-      // Si la nouvelle mise est supérieure au total, on ne fait rien
-      if (newStake > currentTotal) {
-        // Remettre l'ancienne valeur
-        redistributeStakes(null);
-        return;
-      }
-      
-      const remainingTotal = currentTotal - newStake;
-      
-      const o1 = parseFloat(odds1) || 1;
-      const o2 = parseFloat(odds2) || 1;
-      const o3 = outcomeCount === 3 ? (parseFloat(odds3) || 1) : 1;
-      
-      const c1 = parseFloat(commission1) || 0;
-      const c2 = parseFloat(commission2) || 0;
-      const c3 = outcomeCount === 3 ? (parseFloat(commission3) || 0) : 0;
-      
-      const adjOdds1 = o1 * (1 - c1 / 100);
-      const adjOdds2 = o2 * (1 - c2 / 100);
-      const adjOdds3 = outcomeCount === 3 ? o3 * (1 - c3 / 100) : 1;
-      
-      if (outcomeCount === 2) {
-        // Pour 2 résultats, l'autre mise = total - mise modifiée
-        if (stakeIndex === 1) {
-          setStake2(remainingTotal.toFixed(2));
-        } else {
-          setStake1(remainingTotal.toFixed(2));
-        }
-      } else {
-        // Pour 3 résultats
-        if (remainingTotal === 0) {
-          // Si on a mis tout sur une mise, les autres sont à 0
-          if (stakeIndex === 1) {
-            setStake2('0.00');
-            setStake3('0.00');
-          } else if (stakeIndex === 2) {
-            setStake1('0.00');
-            setStake3('0.00');
-          } else {
-            setStake1('0.00');
-            setStake2('0.00');
-          }
-        } else {
-          // Redistribuer proportionnellement selon les cotes
-          let sumInverse;
-          if (stakeIndex === 1) {
-            sumInverse = (adjOdds2 > 0 ? 1/adjOdds2 : 0) + (adjOdds3 > 0 ? 1/adjOdds3 : 0);
-            if (sumInverse > 0) {
-              setStake2((remainingTotal * (1/adjOdds2) / sumInverse).toFixed(2));
-              setStake3((remainingTotal * (1/adjOdds3) / sumInverse).toFixed(2));
-            }
-          } else if (stakeIndex === 2) {
-            sumInverse = (adjOdds1 > 0 ? 1/adjOdds1 : 0) + (adjOdds3 > 0 ? 1/adjOdds3 : 0);
-            if (sumInverse > 0) {
-              setStake1((remainingTotal * (1/adjOdds1) / sumInverse).toFixed(2));
-              setStake3((remainingTotal * (1/adjOdds3) / sumInverse).toFixed(2));
-            }
-          } else {
-            sumInverse = (adjOdds1 > 0 ? 1/adjOdds1 : 0) + (adjOdds2 > 0 ? 1/adjOdds2 : 0);
-            if (sumInverse > 0) {
-              setStake1((remainingTotal * (1/adjOdds1) / sumInverse).toFixed(2));
-              setStake2((remainingTotal * (1/adjOdds2) / sumInverse).toFixed(2));
-            }
-          }
-        }
-      }
-    }, 300);
+    // On met à jour SEULEMENT la mise concernée, sans redistribuer
   };
 
   const handleTotalStakeChange = (value) => {
     setTotalStake(value);
-    
-    // Calculer immédiatement si la valeur est valide
-    const numValue = parseFloat(value);
-    if (!isNaN(numValue) && numValue > 0) {
-      if (totalTimerRef.current) clearTimeout(totalTimerRef.current);
-      totalTimerRef.current = setTimeout(() => {
-        // Forcer le calcul avec la nouvelle valeur
-        const outcomeCount = getOutcomeCount();
-        const o1 = parseFloat(odds1) || 0;
-        const o2 = parseFloat(odds2) || 0;
-        const o3 = outcomeCount === 3 ? (parseFloat(odds3) || 0) : 0;
-        
-        if (o1 <= 0 || o2 <= 0 || (outcomeCount === 3 && o3 <= 0)) return;
-        
-        const c1 = parseFloat(commission1) || 0;
-        const c2 = parseFloat(commission2) || 0;
-        const c3 = outcomeCount === 3 ? (parseFloat(commission3) || 0) : 0;
-        
-        const adjOdds1 = o1 * (1 - c1 / 100);
-        const adjOdds2 = o2 * (1 - c2 / 100);
-        const adjOdds3 = outcomeCount === 3 ? o3 * (1 - c3 / 100) : 1;
-        
-        let sumInverse = 0;
-        if (adjOdds1 > 0) sumInverse += 1/adjOdds1;
-        if (adjOdds2 > 0) sumInverse += 1/adjOdds2;
-        if (outcomeCount === 3 && adjOdds3 > 0) sumInverse += 1/adjOdds3;
-        
-        if (sumInverse === 0) return;
-        
-        const newStake1 = numValue * (1/adjOdds1) / sumInverse;
-        const newStake2 = numValue * (1/adjOdds2) / sumInverse;
-        const newStake3 = outcomeCount === 3 ? numValue * (1/adjOdds3) / sumInverse : 0;
-        
-        setStake1(newStake1.toFixed(2));
-        setStake2(newStake2.toFixed(2));
-        if (outcomeCount === 3) {
-          setStake3(newStake3.toFixed(2));
-        }
-      }, 300);
-    }
+    if (totalTimerRef.current) clearTimeout(totalTimerRef.current);
+    totalTimerRef.current = setTimeout(() => {
+      redistributeStakes();
+    }, 300);
   };
+
+  // Mise à jour de la mise totale quand les mises individuelles changent
+  useEffect(() => {
+    const s1 = parseFloat(stake1) || 0;
+    const s2 = parseFloat(stake2) || 0;
+    const s3 = getOutcomeCount() === 3 ? (parseFloat(stake3) || 0) : 0;
+    const newTotal = s1 + s2 + s3;
+    setTotalStake(newTotal.toFixed(2));
+  }, [stake1, stake2, stake3, betType]);
 
   // Ajuster les mises au changement de type de pari
   useEffect(() => {
     if (getOutcomeCount() === 2) {
-      setStake3('');
+      setStake3('0.00');
       setOdds3('2.00');
       setCommission3('0');
     }
-    // Toujours utiliser la valeur actuelle de totalStake
-    const currentTotal = parseFloat(totalStake);
-    if (!isNaN(currentTotal) && currentTotal > 0) {
-      redistributeStakes(currentTotal);
-    }
+    redistributeStakes();
   }, [betType]);
 
   // Initialisation au chargement
   useEffect(() => {
-    // Calculer les mises initiales immédiatement
-    redistributeStakes(100);
+    redistributeStakes();
   }, []);
 
   // Nettoyage des timers
   useEffect(() => {
     return () => {
       if (oddsTimerRef.current) clearTimeout(oddsTimerRef.current);
-      if (stakeTimerRef.current) clearTimeout(stakeTimerRef.current);
       if (totalTimerRef.current) clearTimeout(totalTimerRef.current);
     };
   }, []);
@@ -457,7 +340,7 @@ const SurebetCalculator = () => {
                     <input 
                       type="text" 
                       value={stake1} 
-                      onChange={(e) => handleStakeChange(setStake1, e.target.value, 1)}
+                      onChange={(e) => handleStakeChange(setStake1, e.target.value)}
                       className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                     />
                   </td>
@@ -490,7 +373,7 @@ const SurebetCalculator = () => {
                     <input 
                       type="text" 
                       value={stake2} 
-                      onChange={(e) => handleStakeChange(setStake2, e.target.value, 2)}
+                      onChange={(e) => handleStakeChange(setStake2, e.target.value)}
                       className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                     />
                   </td>
@@ -542,7 +425,7 @@ const SurebetCalculator = () => {
                   <td className="px-2 sm:px-4 py-3"></td>
                   <td className="px-2 sm:px-4 py-3 text-center text-sm">{results.total.toFixed(2)} {symbol}</td>
                   <td className="px-2 sm:px-4 py-3 text-center text-sm">
-                    {Math.min(...results.returns.slice(0, outcomeCount).filter(r => !isNaN(r))).toFixed(2)} {symbol}
+                    {Math.min(...results.returns.slice(0, outcomeCount).filter(r => !isNaN(r) && r > 0)).toFixed(2)} {symbol}
                   </td>
                   <td className={`px-2 sm:px-4 py-3 text-center text-sm ${results.minProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {results.minProfit >= 0 ? '+' : ''}{results.minProfit.toFixed(2)} {symbol}
@@ -564,7 +447,7 @@ const SurebetCalculator = () => {
 
           {/* Help text */}
           <div className="mt-4 text-xs text-gray-500 text-center">
-            Modification des cotes/commissions : redistribue toutes les mises | Modification d'une mise : redistribue les autres mises
+            Modification des cotes/commissions : redistribue toutes les mises | Modification de la mise totale : redistribue toutes les mises
           </div>
         </div>
       </div>
