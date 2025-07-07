@@ -5,16 +5,17 @@ import { useState, useEffect } from 'react';
 export default function SurebetCalculator() {
   const [outcomes, setOutcomes] = useState(2);
   const [currency, setCurrency] = useState('USD');
-  const [showCommission, setShowCommission] = useState(false);
   const [roundStakes, setRoundStakes] = useState(false);
   const [roundTo, setRoundTo] = useState(1);
   
   // Initialiser avec des valeurs par défaut comme surebet.com
   const [data, setData] = useState([
-    { odds: '2.00', stake: '100.00', commission: 0 },
-    { odds: '2.00', stake: '100.00', commission: 0 },
-    { odds: '', stake: '', commission: 0 },
+    { odds: '2.00', stake: '100.00', commission: '0' },
+    { odds: '2.00', stake: '100.00', commission: '0' },
+    { odds: '', stake: '', commission: '0' },
   ]);
+
+  const [totalStakeInput, setTotalStakeInput] = useState('200.00');
 
   const currencySymbols = {
     EUR: '€',
@@ -34,7 +35,7 @@ export default function SurebetCalculator() {
     for (let i = 0; i < outcomes; i++) {
       const odd = parseFloat(data[i].odds) || 0;
       const stake = parseFloat(data[i].stake) || 0;
-      const commission = showCommission ? (parseFloat(data[i].commission) || 0) : 0;
+      const commission = parseFloat(data[i].commission) || 0;
 
       if (odd <= 1) {
         validData = false;
@@ -98,7 +99,7 @@ export default function SurebetCalculator() {
     };
   };
 
-  // Mettre à jour les mises automatiquement quand on change une cote ou la mise totale
+  // Mettre à jour les mises automatiquement
   const redistributeStakes = (newTotalStake, excludeIndex = -1) => {
     const validOdds = [];
     let sumInverseOdds = 0;
@@ -107,8 +108,9 @@ export default function SurebetCalculator() {
     for (let i = 0; i < outcomes; i++) {
       const odd = parseFloat(data[i].odds);
       if (odd > 1) {
-        const adjustedOdd = showCommission && data[i].commission !== 0
-          ? (data[i].commission < 0 ? odd / (1 + Math.abs(data[i].commission) / 100) : odd * (1 - data[i].commission / 100))
+        const commission = parseFloat(data[i].commission) || 0;
+        const adjustedOdd = commission !== 0
+          ? (commission < 0 ? odd / (1 + Math.abs(commission) / 100) : odd * (1 - commission / 100))
           : odd;
         validOdds[i] = adjustedOdd;
         sumInverseOdds += 1 / adjustedOdd;
@@ -140,12 +142,12 @@ export default function SurebetCalculator() {
     newData[index].odds = value;
     setData(newData);
 
-    // Redistribuer les mises si toutes les cotes sont valides
+    // Redistribuer les mises après un délai
     const totalStake = newData.reduce((sum, item, i) => 
       i < outcomes ? sum + (parseFloat(item.stake) || 0) : sum, 0
     );
-    if (totalStake > 0) {
-      setTimeout(() => redistributeStakes(totalStake), 100);
+    if (totalStake > 0 && value && parseFloat(value) > 1) {
+      setTimeout(() => redistributeStakes(totalStake), 500);
     }
   };
 
@@ -154,25 +156,32 @@ export default function SurebetCalculator() {
     const newData = [...data];
     newData[index].stake = value;
     setData(newData);
+
+    // Mettre à jour le total
+    const newTotal = newData.reduce((sum, item, i) => 
+      i < outcomes ? sum + (parseFloat(item.stake) || 0) : sum, 0
+    );
+    setTotalStakeInput(newTotal > 0 ? newTotal.toFixed(2) : '');
   };
 
   // Gérer le changement de commission
   const handleCommissionChange = (index, value) => {
     const newData = [...data];
-    newData[index].commission = parseFloat(value) || 0;
+    newData[index].commission = value;
     setData(newData);
 
-    // Recalculer les mises
+    // Recalculer les mises après un délai
     const totalStake = newData.reduce((sum, item, i) => 
       i < outcomes ? sum + (parseFloat(item.stake) || 0) : sum, 0
     );
     if (totalStake > 0) {
-      setTimeout(() => redistributeStakes(totalStake), 100);
+      setTimeout(() => redistributeStakes(totalStake), 500);
     }
   };
 
   // Gérer le changement de mise totale
   const handleTotalStakeChange = (value) => {
+    setTotalStakeInput(value);
     const newTotalStake = parseFloat(value) || 0;
     if (newTotalStake > 0) {
       redistributeStakes(newTotalStake);
@@ -183,16 +192,19 @@ export default function SurebetCalculator() {
 
   // Ajuster les données quand on change le nombre d'issues
   useEffect(() => {
-    if (outcomes === 2 && data[2].stake) {
+    if (outcomes === 2 && parseFloat(data[2].stake) > 0) {
       // Redistribuer la mise de la 3ème issue sur les 2 premières
       const stake3 = parseFloat(data[2].stake) || 0;
-      if (stake3 > 0) {
-        const newData = [...data];
-        newData[0].stake = (parseFloat(newData[0].stake) || 0) + stake3 / 2;
-        newData[1].stake = (parseFloat(newData[1].stake) || 0) + stake3 / 2;
-        newData[2].stake = '';
-        setData(newData);
-      }
+      const newData = [...data];
+      const stake1 = parseFloat(newData[0].stake) || 0;
+      const stake2 = parseFloat(newData[1].stake) || 0;
+      newData[0].stake = (stake1 + stake3 / 2).toFixed(2);
+      newData[1].stake = (stake2 + stake3 / 2).toFixed(2);
+      newData[2].stake = '';
+      setData(newData);
+      
+      const newTotal = parseFloat(newData[0].stake) + parseFloat(newData[1].stake);
+      setTotalStakeInput(newTotal.toFixed(2));
     }
   }, [outcomes]);
 
@@ -266,11 +278,9 @@ export default function SurebetCalculator() {
               </label>
               <input
                 id="totalStake"
-                type="number"
-                value={results.totalStake.toFixed(2)}
+                type="text"
+                value={totalStakeInput}
                 onChange={(e) => handleTotalStakeChange(e.target.value)}
-                min="0"
-                step="0.01"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
@@ -295,14 +305,12 @@ export default function SurebetCalculator() {
 
         {/* Calculator Table */}
         <div className="bg-white rounded-lg shadow-sm p-3 sm:p-6 mb-6 overflow-x-auto">
-          <table className="w-full min-w-[600px]">
+          <table className="w-full min-w-[700px]">
             <thead>
               <tr className="border-b-2 border-gray-200">
                 <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Bookmaker</th>
                 <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Cote</th>
-                {showCommission && (
-                  <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Commission %</th>
-                )}
+                <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Commission %</th>
                 <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Mise</th>
                 <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Retour</th>
                 <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Profit</th>
@@ -314,34 +322,25 @@ export default function SurebetCalculator() {
                   <td className="px-2 sm:px-4 py-3 sm:py-4 text-gray-700 font-medium text-sm sm:text-base">Book {index + 1}</td>
                   <td className="px-2 sm:px-4 py-3 sm:py-4">
                     <input
-                      type="number"
-                      step="0.01"
-                      min="1.01"
+                      type="text"
                       placeholder="0.00"
                       value={data[index].odds}
                       onChange={(e) => handleOddsChange(index, e.target.value)}
                       className="w-20 sm:w-24 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
                     />
                   </td>
-                  {showCommission && (
-                    <td className="px-2 sm:px-4 py-3 sm:py-4">
-                      <input
-                        type="number"
-                        step="0.1"
-                        min="-10"
-                        max="10"
-                        placeholder="0"
-                        value={data[index].commission}
-                        onChange={(e) => handleCommissionChange(index, e.target.value)}
-                        className="w-20 sm:w-24 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
-                      />
-                    </td>
-                  )}
                   <td className="px-2 sm:px-4 py-3 sm:py-4">
                     <input
-                      type="number"
-                      step="0.01"
-                      min="0"
+                      type="text"
+                      placeholder="0"
+                      value={data[index].commission}
+                      onChange={(e) => handleCommissionChange(index, e.target.value)}
+                      className="w-20 sm:w-24 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
+                    />
+                  </td>
+                  <td className="px-2 sm:px-4 py-3 sm:py-4">
+                    <input
+                      type="text"
                       placeholder="0.00"
                       value={data[index].stake}
                       onChange={(e) => handleStakeChange(index, e.target.value)}
@@ -359,7 +358,7 @@ export default function SurebetCalculator() {
                 </tr>
               ))}
               <tr className="bg-gray-50 font-semibold">
-                <td colSpan={showCommission ? 3 : 2} className="px-2 sm:px-4 py-3 sm:py-4 text-sm sm:text-base">Total</td>
+                <td colSpan="3" className="px-2 sm:px-4 py-3 sm:py-4 text-sm sm:text-base">Total</td>
                 <td className="px-2 sm:px-4 py-3 sm:py-4 text-sm sm:text-base">
                   {results.totalStake.toFixed(2)} {symbol}
                 </td>
@@ -383,19 +382,6 @@ export default function SurebetCalculator() {
           <div className="space-y-4">
             <div className="flex items-center">
               <input
-                id="showCommission"
-                type="checkbox"
-                checked={showCommission}
-                onChange={(e) => setShowCommission(e.target.checked)}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-              />
-              <label htmlFor="showCommission" className="ml-2 text-xs sm:text-sm text-gray-700">
-                Afficher les commissions dans le tableau
-              </label>
-            </div>
-
-            <div className="flex items-center">
-              <input
                 id="roundStakes"
                 type="checkbox"
                 checked={roundStakes}
@@ -406,12 +392,10 @@ export default function SurebetCalculator() {
                 Arrondir les mises à :
               </label>
               <input
-                type="number"
+                type="text"
                 value={roundTo}
                 onChange={(e) => setRoundTo(parseFloat(e.target.value) || 1)}
                 disabled={!roundStakes}
-                min="0.01"
-                step="0.01"
                 className="ml-2 w-20 px-2 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:opacity-50"
               />
             </div>
