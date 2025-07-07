@@ -120,7 +120,7 @@ export default function SurebetCalculator() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[980px] mx-auto">
         {/* Header */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
           <h1 className="text-3xl font-bold text-indigo-900">Calculateur de Surebets</h1>
@@ -185,22 +185,22 @@ export default function SurebetCalculator() {
         </div>
 
         {/* Calculator Table */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6 overflow-x-auto">
-          <table className="w-full">
+        <div className="bg-white rounded-lg shadow-sm p-3 sm:p-6 mb-6 overflow-x-auto">
+          <table className="w-full min-w-[500px]">
             <thead>
               <tr className="border-b-2 border-gray-200">
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Résultat</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Cote</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Mise</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Retour</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Profit</th>
+                <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Résultat</th>
+                <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Cote</th>
+                <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Mise</th>
+                <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Retour</th>
+                <th className="px-2 sm:px-4 py-3 text-left text-xs sm:text-sm font-semibold text-gray-700">Profit</th>
               </tr>
             </thead>
             <tbody>
               {[...Array(outcomes)].map((_, index) => (
                 <tr key={index} className="border-b border-gray-100">
-                  <td className="px-4 py-4 text-gray-700 font-medium">Issue {index + 1}</td>
-                  <td className="px-4 py-4">
+                  <td className="px-2 sm:px-4 py-3 sm:py-4 text-gray-700 font-medium text-sm sm:text-base">Book {index + 1}</td>
+                  <td className="px-2 sm:px-4 py-3 sm:py-4">
                     <input
                       type="number"
                       step="0.01"
@@ -208,16 +208,16 @@ export default function SurebetCalculator() {
                       placeholder="0.00"
                       value={odds[index] || ''}
                       onChange={(e) => handleOddsChange(index, e.target.value)}
-                      className="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-24 sm:w-32 px-2 sm:px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
                     />
                   </td>
-                  <td className="px-4 py-4 font-medium">
+                  <td className="px-2 sm:px-4 py-3 sm:py-4 font-medium text-sm sm:text-base">
                     {results ? `${results.stakes[index].toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
                   </td>
-                  <td className="px-4 py-4 font-medium">
+                  <td className="px-2 sm:px-4 py-3 sm:py-4 font-medium text-sm sm:text-base">
                     {results ? `${results.returns[index].toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
                   </td>
-                  <td className={`px-4 py-4 font-medium ${
+                  <td className={`px-2 sm:px-4 py-3 sm:py-4 font-medium text-sm sm:text-base ${
                     results?.profits[index] >= 0 ? 'text-green-600' : 'text-red-600'
                   }`}>
                     {results ? `${results.profits[index].toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
@@ -225,12 +225,12 @@ export default function SurebetCalculator() {
                 </tr>
               ))}
               <tr className="bg-gray-50 font-semibold">
-                <td colSpan="2" className="px-4 py-4">Total</td>
-                <td className="px-4 py-4">{totalStake.toFixed(2)} {symbol}</td>
-                <td className="px-4 py-4">
+                <td colSpan="2" className="px-2 sm:px-4 py-3 sm:py-4 text-sm sm:text-base">Total</td>
+                <td className="px-2 sm:px-4 py-3 sm:py-4 text-sm sm:text-base">{totalStake.toFixed(2)} {symbol}</td>
+                <td className="px-2 sm:px-4 py-3 sm:py-4 text-sm sm:text-base">
                   {results ? `${results.totalReturn.toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
                 </td>
-                <td className={`px-4 py-4 ${
+                <td className={`px-2 sm:px-4 py-3 sm:py-4 text-sm sm:text-base ${
                   results?.totalProfit >= 0 ? 'text-green-600' : 'text-red-600'
                 }`}>
                   {results ? `${results.totalProfit.toFixed(2)} ${symbol}` : `0.00 ${symbol}`}
@@ -310,7 +310,7 @@ export default function SurebetCalculator() {
                   {[...Array(outcomes)].map((_, index) => (
                     <div key={index} className="flex items-center">
                       <label className="text-sm text-gray-700 mr-2">
-                        Commission issue {index + 1} :
+                        Commission Book {index + 1} :
                       </label>
                       <input
                         type="number"
