@@ -7,7 +7,7 @@ const SurebetCalculator = () => {
   // États
   const [betType, setBetType] = useState('1-2');
   const [currency, setCurrency] = useState('EUR');
-  const [totalStake, setTotalStake] = useState('100');
+  const [totalStake, setTotalStake] = useState('140');
   const [odds1, setOdds1] = useState('');
   const [odds2, setOdds2] = useState('');
   const [odds3, setOdds3] = useState('');
@@ -22,7 +22,7 @@ const SurebetCalculator = () => {
   const [distribute3, setDistribute3] = useState(true);
   const [distributeAll, setDistributeAll] = useState(true);
   const [fixedMode, setFixedMode] = useState('sum');
-  const [round, setRound] = useState(false);
+  const [round, setRound] = useState(true);
   const [roundTo, setRoundTo] = useState('1');
 
   // Flag pour éviter les boucles infinies
@@ -50,7 +50,7 @@ const SurebetCalculator = () => {
     }
   };
 
-  // Fonction pour redistribuer les mises (alignée sur surebet.com)
+  // Fonction pour redistribuer les mises
   const redistributeStakes = () => {
     if (isUpdating.current) return;
     isUpdating.current = true;
@@ -62,14 +62,14 @@ const SurebetCalculator = () => {
     const c1 = parseFloat(commission1) || 0;
     const c2 = parseFloat(commission2) || 0;
     const c3 = outcomeCount === 3 ? (parseFloat(commission3) || 0) : 0;
-    const total = parseFloat(totalStake) || 100;
+    const total = parseFloat(totalStake) || 140;
 
     // Calcul des cotes ajustées
     const adjOdds1 = o1 * (1 - c1 / 100);
     const adjOdds2 = o2 * (1 - c2 / 100);
     const adjOdds3 = outcomeCount === 3 ? o3 * (1 - c3 / 100) : 0;
 
-    // Somme des inverses des cotes
+    // Somme des inverses des cotes pour les issues distribuées
     let sumInverseOdds = 0;
     if (adjOdds1 > 0 && distribute1) sumInverseOdds += 1 / adjOdds1;
     if (adjOdds2 > 0 && distribute2) sumInverseOdds += 1 / adjOdds2;
@@ -87,9 +87,9 @@ const SurebetCalculator = () => {
     let s1 = 0, s2 = 0, s3 = 0;
     if (fixedMode === 'sum') {
       // Mise totale fixe
-      s1 = distribute1 ? (total / adjOdds1 / sumInverseOdds) : parseFloat(stake1) || 0;
-      s2 = distribute2 ? (total / adjOdds2 / sumInverseOdds) : parseFloat(stake2) || 0;
-      s3 = outcomeCount === 3 && distribute3 ? (total / adjOdds3 / sumInverseOdds) : 0;
+      s1 = distribute1 && adjOdds1 > 0 ? (total / adjOdds1 / sumInverseOdds) : parseFloat(stake1) || 0;
+      s2 = distribute2 && adjOdds2 > 0 ? (total / adjOdds2 / sumInverseOdds) : parseFloat(stake2) || 0;
+      s3 = outcomeCount === 3 && distribute3 && adjOdds3 > 0 ? (total / adjOdds3 / sumInverseOdds) : 0;
     } else {
       // Mise individuelle fixe
       const fixedStake = parseFloat(fixedMode === '1' ? stake1 : fixedMode === '2' ? stake2 : stake3) || 0;
@@ -100,11 +100,11 @@ const SurebetCalculator = () => {
       // Mise à jour de totalStake uniquement si fixedMode n'est pas 'sum'
       setTotalStake(totalForEqualProfit.toFixed(2));
       
-      if (fixedMode !== '1') s1 = distribute1 ? (totalForEqualProfit / adjOdds1 / sumInverseOdds) : parseFloat(stake1) || 0;
+      if (fixedMode !== '1') s1 = distribute1 && adjOdds1 > 0 ? (totalForEqualProfit / adjOdds1 / sumInverseOdds) : parseFloat(stake1) || 0;
       else s1 = fixedStake;
-      if (fixedMode !== '2') s2 = distribute2 ? (totalForEqualProfit / adjOdds2 / sumInverseOdds) : parseFloat(stake2) || 0;
+      if (fixedMode !== '2') s2 = distribute2 && adjOdds2 > 0 ? (totalForEqualProfit / adjOdds2 / sumInverseOdds) : parseFloat(stake2) || 0;
       else s2 = fixedStake;
-      if (outcomeCount === 3 && fixedMode !== '3') s3 = distribute3 ? (totalForEqualProfit / adjOdds3 / sumInverseOdds) : parseFloat(stake3) || 0;
+      if (outcomeCount === 3 && fixedMode !== '3') s3 = distribute3 && adjOdds3 > 0 ? (totalForEqualProfit / adjOdds3 / sumInverseOdds) : parseFloat(stake3) || 0;
       else if (outcomeCount === 3) s3 = fixedStake;
     }
 
@@ -181,13 +181,7 @@ const SurebetCalculator = () => {
 
   const handleStakeChange = (setter, value, index) => {
     setter(value);
-    if (fixedMode === `sum`) {
-      // Ne pas appeler redistributeStakes si fixedMode est 'sum'
-      // La mise totale reste fixe, recalculer seulement si nécessaire
-      if (!distribute1 || !distribute2 || (getOutcomeCount() === 3 && !distribute3)) {
-        debouncedRedistribute();
-      }
-    } else if (fixedMode === `${index}`) {
+    if (fixedMode === `${index}`) {
       debouncedRedistribute();
     }
   };
@@ -250,7 +244,7 @@ const SurebetCalculator = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-[980px] mx-auto">
-        {/* Header restauré exactement comme dans ton code */}
+        {/* Header restauré */}
         <div className="mb-4">
           <h1 className="text-2xl sm:text-3xl font-bold text-indigo-900">
             Calculateur de Surebets
@@ -303,7 +297,7 @@ const SurebetCalculator = () => {
                   className="w-full px-2 py-2 border border-gray-300 rounded-md text-right text-sm"
                 />
                 {parseFloat(totalStake) <= 0 || isNaN(parseFloat(totalStake)) ? (
-                  <div className="absolute text-red-500 text-xs mt-1">La mise doit être &gt; 0.</div>
+                  <div className="absolute text-red-500 text-xs mt-1">La mise doit être > 0.</div>
                 ) : null}
               </div>
             </div>
@@ -341,7 +335,7 @@ const SurebetCalculator = () => {
                 className="w-16 px-2 py-1 border border-gray-300 rounded text-right text-sm"
               />
               {parseFloat(roundTo) <= 0 || isNaN(parseFloat(roundTo)) ? (
-                <div className="absolute text-red-500 text-xs mt-1">L'arrondi doit être &gt; 0.</div>
+                <div className="absolute text-red-500 text-xs mt-1">L'arrondi doit être > 0.</div>
               ) : null}
             </div>
           </div>
@@ -393,7 +387,7 @@ const SurebetCalculator = () => {
                         className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                       />
                       {parseFloat(odds1) <= 1 || parseFloat(odds1) >= 100000 || isNaN(parseFloat(odds1)) ? (
-                        <div className="absolute text-red-500 text-xs mt-1">Cote &gt;1 et &lt;100000.</div>
+                        <div className="absolute text-red-500 text-xs mt-1">Cote >1 et <100000.</div>
                       ) : null}
                     </div>
                   </td>
@@ -419,7 +413,7 @@ const SurebetCalculator = () => {
                         className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                       />
                       {parseFloat(stake1) <= 0 || isNaN(parseFloat(stake1)) ? (
-                        <div className="absolute text-red-500 text-xs mt-1">Mise &gt; 0.</div>
+                        <div className="absolute text-red-500 text-xs mt-1">Mise > 0.</div>
                       ) : null}
                     </div>
                   </td>
@@ -459,7 +453,7 @@ const SurebetCalculator = () => {
                         className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                       />
                       {parseFloat(odds2) <= 1 || parseFloat(odds2) >= 100000 || isNaN(parseFloat(odds2)) ? (
-                        <div className="absolute text-red-500 text-xs mt-1">Cote &gt;1 et &lt;100000.</div>
+                        <div className="absolute text-red-500 text-xs mt-1">Cote >1 et <100000.</div>
                       ) : null}
                     </div>
                   </td>
@@ -485,7 +479,7 @@ const SurebetCalculator = () => {
                         className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                       />
                       {parseFloat(stake2) <= 0 || isNaN(parseFloat(stake2)) ? (
-                        <div className="absolute text-red-500 text-xs mt-1">Mise &gt; 0.</div>
+                        <div className="absolute text-red-500 text-xs mt-1">Mise > 0.</div>
                       ) : null}
                     </div>
                   </td>
@@ -526,7 +520,7 @@ const SurebetCalculator = () => {
                           className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                         />
                         {parseFloat(odds3) <= 1 || parseFloat(odds3) >= 100000 || isNaN(parseFloat(odds3)) ? (
-                          <div className="absolute text-red-500 text-xs mt-1">Cote &gt;1 et &lt;100000.</div>
+                          <div className="absolute text-red-500 text-xs mt-1">Cote >1 et <100000.</div>
                         ) : null}
                       </div>
                     </td>
@@ -552,7 +546,7 @@ const SurebetCalculator = () => {
                           className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                         />
                         {parseFloat(stake3) <= 0 || isNaN(parseFloat(stake3)) ? (
-                          <div className="absolute text-red-500 text-xs mt-1">Mise &gt; 0.</div>
+                          <div className="absolute text-red-500 text-xs mt-1">Mise > 0.</div>
                         ) : null}
                       </div>
                     </td>
@@ -588,7 +582,9 @@ const SurebetCalculator = () => {
                   <td className="px-2 sm:px-4 py-3"></td>
                   <td className="px-2 sm:px-4 py-3 text-center text-sm">{results.total.toFixed(2)} {symbol}</td>
                   <td className="px-2 sm:px-4 py-3 text-center text-sm">
-                    {Math.min(...results.returns.slice(0, outcomeCount).filter(r => !isNaN(r) && r > 0)).toFixed(2)} {symbol}
+                    {results.returns.slice(0, outcomeCount).filter(r => !isNaN(r) && r > 0).length > 0 
+                      ? Math.min(...results.returns.slice(0, outcomeCount).filter(r => !isNaN(r) && r > 0)).toFixed(2) 
+                      : '0.00'} {symbol}
                   </td>
                   <td className={`px-2 sm:px-4 py-3 text-center text-sm ${results.minProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {results.minProfit >= 0 ? '+' : ''}{results.minProfit.toFixed(2)} {symbol}
