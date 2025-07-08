@@ -80,14 +80,14 @@ const SurebetCalculator = () => {
       let fixedTotal = 0;
       let sumInverseDistribute = 0;
 
-      if ((fixedMode === 'sum' && !distribute1) or (fixedIndex === 1)) fixedTotal += parseFloat(stake1) || 0;
+      if ((fixedMode === 'sum' && !distribute1) || (fixedIndex === 1)) fixedTotal += parseFloat(stake1) || 0;
       else if (adjOdds1 > 0) sumInverseDistribute += 1 / adjOdds1;
 
-      if ((fixedMode === 'sum' && !distribute2) or (fixedIndex === 2)) fixedTotal += parseFloat(stake2) || 0;
+      if ((fixedMode === 'sum' && !distribute2) || (fixedIndex === 2)) fixedTotal += parseFloat(stake2) || 0;
       else if (adjOdds2 > 0) sumInverseDistribute += 1 / adjOdds2;
 
       if (outcomeCount === 3) {
-        if ((fixedMode === 'sum' && !distribute3) or (fixedIndex === 3)) fixedTotal += parseFloat(stake3) || 0;
+        if ((fixedMode === 'sum' && !distribute3) || (fixedIndex === 3)) fixedTotal += parseFloat(stake3) || 0;
         else if (adjOdds3 > 0) sumInverseDistribute += 1 / adjOdds3;
       }
 
@@ -263,14 +263,14 @@ const SurebetCalculator = () => {
       let fixedTotal = 0;
       let sumInverseDistribute = 0;
 
-      if ((fixedMode === 'sum' && !distribute1) or (fixedIndex === 1)) fixedTotal += parseFloat(stake1) || 0;
+      if ((fixedMode === 'sum' && !distribute1) || (fixedIndex === 1)) fixedTotal += parseFloat(stake1) || 0;
       else if (adjOdds1 > 0) sumInverseDistribute += 1 / adjOdds1;
 
-      if ((fixedMode === 'sum' && !distribute2) or (fixedIndex === 2)) fixedTotal += parseFloat(stake2) || 0;
+      if ((fixedMode === 'sum' && !distribute2) || (fixedIndex === 2)) fixedTotal += parseFloat(stake2) || 0;
       else if (adjOdds2 > 0) sumInverseDistribute += 1 / adjOdds2;
 
       if (outcomeCount === 3) {
-        if ((fixedMode === 'sum' && !distribute3) or (fixedIndex === 3)) fixedTotal += parseFloat(stake3) || 0;
+        if ((fixedMode === 'sum' && !distribute3) || (fixedIndex === 3)) fixedTotal += parseFloat(stake3) || 0;
         else if (adjOdds3 > 0) sumInverseDistribute += 1 / adjOdds3;
       }
 
@@ -321,14 +321,14 @@ const SurebetCalculator = () => {
       let fixedTotal = 0;
       let sumInverseDistribute = 0;
 
-      if ((fixedMode === 'sum' && !distribute1) or (fixedIndex === 1)) fixedTotal += parseFloat(stake1) || 0;
+      if ((fixedMode === 'sum' && !distribute1) || (fixedIndex === 1)) fixedTotal += parseFloat(stake1) || 0;
       else if (adjOdds1 > 0) sumInverseDistribute += 1 / adjOdds1;
 
-      if ((fixedMode === 'sum' && !distribute2) or (fixedIndex === 2)) fixedTotal += parseFloat(stake2) || 0;
+      if ((fixedMode === 'sum' && !distribute2) || (fixedIndex === 2)) fixedTotal += parseFloat(stake2) || 0;
       else if (adjOdds2 > 0) sumInverseDistribute += 1 / adjOdds2;
 
       if (outcomeCount === 3) {
-        if ((fixedMode === 'sum' && !distribute3) or (fixedIndex === 3)) fixedTotal += parseFloat(stake3) || 0;
+        if ((fixedMode === 'sum' && !distribute3) || (fixedIndex === 3)) fixedTotal += parseFloat(stake3) || 0;
         else if (adjOdds3 > 0) sumInverseDistribute += 1 / adjOdds3;
       }
 
