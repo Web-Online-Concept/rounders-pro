@@ -74,41 +74,24 @@ const redistributeStakes = (overrideTotal = null) => {
 
   isUpdating.current = true;
 
-  const fixedIndex = ['1', '2', '3'].includes(fixedMode) ? parseInt(fixedMode) : null;
-  let fixedTotal = 0;
-  let sumInverseDistribute = 0;
+  let inverseSum = 0;
+  if (adjOdds1 > 0) inverseSum += 1 / adjOdds1;
+  if (adjOdds2 > 0) inverseSum += 1 / adjOdds2;
+  if (outcomeCount === 3 && adjOdds3 > 0) inverseSum += 1 / adjOdds3;
 
-  if ((fixedMode === 'sum' && !distribute1) || (fixedIndex === 1)) fixedTotal += parseFloat(stake1) || 0;
-  else if (adjOdds1 > 0) sumInverseDistribute += 1 / adjOdds1;
+  if (inverseSum <= 0) return;
 
-  if ((fixedMode === 'sum' && !distribute2) || (fixedIndex === 2)) fixedTotal += parseFloat(stake2) || 0;
-  else if (adjOdds2 > 0) sumInverseDistribute += 1 / adjOdds2;
+  const stake1 = (total / adjOdds1) / inverseSum;
+  const stake2 = (total / adjOdds2) / inverseSum;
+  const stake3 = outcomeCount === 3 ? (total / adjOdds3) / inverseSum : 0;
 
-  if (outcomeCount === 3) {
-    if ((fixedMode === 'sum' && !distribute3) || (fixedIndex === 3)) fixedTotal += parseFloat(stake3) || 0;
-    else if (adjOdds3 > 0) sumInverseDistribute += 1 / adjOdds3;
-  }
-
-  const toDistribute = total - fixedTotal;
-
-  if (toDistribute >= 0 && sumInverseDistribute > 0) {
-    if (fixedIndex !== 1 && distribute1) {
-      const newStake1 = toDistribute * (1 / adjOdds1) / sumInverseDistribute;
-      setStake1(newStake1.toFixed(2));
-    }
-    if (fixedIndex !== 2 && distribute2) {
-      const newStake2 = toDistribute * (1 / adjOdds2) / sumInverseDistribute;
-      setStake2(newStake2.toFixed(2));
-    }
-    if (outcomeCount === 3 && fixedIndex !== 3 && distribute3) {
-      const newStake3 = toDistribute * (1 / adjOdds3) / sumInverseDistribute;
-      setStake3(newStake3.toFixed(2));
-    }
-  }
+  setStake1(stake1.toFixed(2));
+  setStake2(stake2.toFixed(2));
+  if (outcomeCount === 3) setStake3(stake3.toFixed(2));
 
   setTimeout(() => {
     isUpdating.current = false;
-  }, 100);
+  }, 50);
 };
 
 
