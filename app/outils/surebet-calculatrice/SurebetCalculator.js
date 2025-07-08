@@ -8,15 +8,15 @@ const SurebetCalculator = () => {
   const [betType, setBetType] = useState('1-2');
   const [currency, setCurrency] = useState('EUR');
   const [totalStake, setTotalStake] = useState('100');
-  const [odds1, setOdds1] = useState('3.00');
-  const [odds2, setOdds2] = useState('1.50');
-  const [odds3, setOdds3] = useState('2.00');
+  const [odds1, setOdds1] = useState('');
+  const [odds2, setOdds2] = useState('');
+  const [odds3, setOdds3] = useState('');
   const [commission1, setCommission1] = useState('0');
   const [commission2, setCommission2] = useState('0');
   const [commission3, setCommission3] = useState('0');
-  const [stake1, setStake1] = useState('33.33');
-  const [stake2, setStake2] = useState('66.67');
-  const [stake3, setStake3] = useState('0.00');
+  const [stake1, setStake1] = useState('');
+  const [stake2, setStake2] = useState('');
+  const [stake3, setStake3] = useState('');
   const [distribute1, setDistribute1] = useState(true);
   const [distribute2, setDistribute2] = useState(true);
   const [distribute3, setDistribute3] = useState(true);
@@ -50,7 +50,7 @@ const SurebetCalculator = () => {
     }
   };
 
-  // Fonction pour redistribuer les mises
+  // Fonction pour redistribuer les mises (basée sur surebet.com)
   const redistributeStakes = () => {
     if (isUpdating.current) return;
     isUpdating.current = true;
@@ -76,6 +76,9 @@ const SurebetCalculator = () => {
     if (outcomeCount === 3 && adjOdds3 > 0) sumInverseOdds += 1 / adjOdds3;
 
     if (sumInverseOdds <= 0) {
+      setStake1('');
+      setStake2('');
+      if (outcomeCount === 3) setStake3('');
       isUpdating.current = false;
       return;
     }
@@ -83,12 +86,12 @@ const SurebetCalculator = () => {
     // Calcul des mises
     let s1 = 0, s2 = 0, s3 = 0;
     if (fixedMode === 'sum' && distributeAll) {
-      // Redistribution des mises pour égaliser les profits
+      // Mise totale fixe, redistribution des mises
       s1 = distribute1 ? (total / adjOdds1 / sumInverseOdds) : parseFloat(stake1) || 0;
       s2 = distribute2 ? (total / adjOdds2 / sumInverseOdds) : parseFloat(stake2) || 0;
       s3 = outcomeCount === 3 && distribute3 ? (total / adjOdds3 / sumInverseOdds) : 0;
     } else if (fixedMode !== 'sum') {
-      // Cas où une mise individuelle est fixe
+      // Mise individuelle fixe
       const fixedStake = parseFloat(fixedMode === '1' ? stake1 : fixedMode === '2' ? stake2 : stake3) || 0;
       const fixedOdds = fixedMode === '1' ? adjOdds1 : fixedMode === '2' ? adjOdds2 : adjOdds3;
       const fixedReturn = fixedStake * fixedOdds;
@@ -114,9 +117,9 @@ const SurebetCalculator = () => {
     }
 
     // Mise à jour des mises
-    setStake1(s1.toFixed(2));
-    setStake2(s2.toFixed(2));
-    if (outcomeCount === 3) setStake3(s3.toFixed(2));
+    setStake1(s1 > 0 ? s1.toFixed(2) : '');
+    setStake2(s2 > 0 ? s2.toFixed(2) : '');
+    if (outcomeCount === 3) setStake3(s3 > 0 ? s3.toFixed(2) : '');
 
     isUpdating.current = false;
   };
@@ -144,17 +147,17 @@ const SurebetCalculator = () => {
     const profit2 = return2 - actualTotal;
     const profit3 = outcomeCount === 3 ? return3 - actualTotal : 0;
     const profits = outcomeCount === 3 ? [profit1, profit2, profit3] : [profit1, profit2];
-    const minProfit = Math.min(...profits.filter(p => !isNaN(p)));
+    const minProfit = Math.min(...profits.filter(p => !isNaN(p) && p !== 0));
     let sumInverseOdds = 0;
-    if (adjOdds1 > 0) sumInverseOdds += 1/adjOdds1;
-    if (adjOdds2 > 0) sumInverseOdds += 1/adjOdds2;
-    if (outcomeCount === 3 && adjOdds3 > 0) sumInverseOdds += 1/adjOdds3;
+    if (adjOdds1 > 0) sumInverseOdds += 1 / adjOdds1;
+    if (adjOdds2 > 0) sumInverseOdds += 1 / adjOdds2;
+    if (outcomeCount === 3 && adjOdds3 > 0) sumInverseOdds += 1 / adjOdds3;
     const isSurebet = sumInverseOdds < 1 && sumInverseOdds > 0;
     return {
       stakes: [s1, s2, s3],
       returns: [return1, return2, return3],
       profits: [profit1, profit2, profit3],
-      minProfit: isNaN(minProfit) ? 0 : minProfit,
+      minProfit: isNaN(minProfit) || minProfit === Infinity || minProfit === -Infinity ? 0 : minProfit,
       isSurebet,
       total: actualTotal,
       symbol
@@ -198,23 +201,11 @@ const SurebetCalculator = () => {
     debouncedRedistribute();
   };
 
-  // Mise à jour de la mise totale quand les mises individuelles changent
+  // Supprimer la mise à jour automatique de totalStake
+  // Redistribution quand les paramètres changent
   useEffect(() => {
-    if (fixedMode !== 'sum' && !isUpdating.current) {
-      const s1 = parseFloat(stake1) || 0;
-      const s2 = parseFloat(stake2) || 0;
-      const s3 = getOutcomeCount() === 3 ? (parseFloat(stake3) || 0) : 0;
-      const newTotal = s1 + s2 + s3;
-      setTotalStake(newTotal.toFixed(2));
-    }
-  }, [stake1, stake2, stake3, fixedMode]);
-
-  // Redistribuer quand les paramètres changent
-  useEffect(() => {
-    if (fixedMode === 'sum') {
-      debouncedRedistribute();
-    }
-  }, [distribute1, distribute2, distribute3, betType, debouncedRedistribute]);
+    debouncedRedistribute();
+  }, [distribute1, distribute2, distribute3, betType, fixedMode, debouncedRedistribute]);
 
   // Mise à jour du checkbox "tous"
   useEffect(() => {
@@ -225,20 +216,13 @@ const SurebetCalculator = () => {
   // Ajuster au changement de type de pari
   useEffect(() => {
     if (getOutcomeCount() === 2) {
-      setStake3('0.00');
-      setOdds3('2.00');
+      setStake3('');
+      setOdds3('');
       setCommission3('0');
       setDistribute3(true);
     }
     debouncedRedistribute();
   }, [betType, debouncedRedistribute]);
-
-  // Redistribuer au changement de mode fixe
-  useEffect(() => {
-    if (fixedMode === 'sum') {
-      debouncedRedistribute();
-    }
-  }, [fixedMode, debouncedRedistribute]);
 
   // Redistribuer au changement de l'arrondi
   useEffect(() => {
@@ -257,28 +241,12 @@ const SurebetCalculator = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-[980px] mx-auto">
-        {/* Header avec Statut intégré */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="grid gridCols-3 gap-4">
-            <div className="col-span-1">
-              <h1 className="text-2xl sm:text-3xl font-bold text-indigo-900">
-                Calculateur de Surebets
-                <span className="block text-sm text-gray-600 font-normal">Rounders.pro</span>
-              </h1>
-            </div>
-            <div className="col-span-1 text-center">
-              <div className="text-sm text-gray-600 mb-1">Statut</div>
-              <div className={`text-lg font-semibold ${results.isSurebet ? 'text-green-600' : 'text-red-600'}`}>
-                {results.isSurebet ? 'Surebet détecté!' : 'Pas de surebet. Perte garantie.'}
-              </div>
-            </div>
-            <div className="col-span-1 text-right">
-              <div className="text-sm text-gray-600 mb-1">Profit</div>
-              <div className={`text-2xl font-bold ${results.minProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                {results.minProfit >= 0 ? '+' : ''}{results.minProfit.toFixed(2)} {results.symbol}
-              </div>
-            </div>
-          </div>
+        {/* Header restauré tel que dans ton code d'origine */}
+        <div className="mb-4">
+          <h1 className="text-2xl sm:text-3xl font-bold text-indigo-900">
+            Calculateur de Surebets
+            <span className="block text-sm text-gray-600 font-normal">Rounders.pro</span>
+          </h1>
         </div>
 
         {/* Comment ça marche */}
