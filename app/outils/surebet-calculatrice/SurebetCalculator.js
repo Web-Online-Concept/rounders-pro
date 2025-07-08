@@ -53,45 +53,14 @@ const SurebetCalculator = () => {
 
   // Fonction pour redistribuer les mises selon la mise totale
   
-const redistributeStakes = (overrideTotal = null) => {
-  if (isUpdating.current) return;
-
-  const total = overrideTotal !== null ? parseFloat(overrideTotal) : parseFloat(totalStake);
-  if (isNaN(total) || total <= 0) return;
-
-  const outcomeCount = getOutcomeCount();
-  const o1 = parseFloat(odds1) || 1;
-  const o2 = parseFloat(odds2) || 1;
-  const o3 = outcomeCount === 3 ? (parseFloat(odds3) || 1) : 1;
-
-  const c1 = parseFloat(commission1) || 0;
-  const c2 = parseFloat(commission2) || 0;
-  const c3 = outcomeCount === 3 ? (parseFloat(commission3) || 0) : 0;
-
-  const adjOdds1 = o1 * (1 - c1 / 100);
-  const adjOdds2 = o2 * (1 - c2 / 100);
-  const adjOdds3 = outcomeCount === 3 ? o3 * (1 - c3 / 100) : 1;
-
-  isUpdating.current = true;
-
-  let inverseSum = 0;
-  if (adjOdds1 > 0) inverseSum += 1 / adjOdds1;
-  if (adjOdds2 > 0) inverseSum += 1 / adjOdds2;
-  if (outcomeCount === 3 && adjOdds3 > 0) inverseSum += 1 / adjOdds3;
-
-  if (inverseSum <= 0) return;
-
-  const stake1 = (total / adjOdds1) / inverseSum;
-  const stake2 = (total / adjOdds2) / inverseSum;
-  const stake3 = outcomeCount === 3 ? (total / adjOdds3) / inverseSum : 0;
-
-  setStake1(stake1.toFixed(2));
-  setStake2(stake2.toFixed(2));
-  if (outcomeCount === 3) setStake3(stake3.toFixed(2));
-
-  setTimeout(() => {
-    isUpdating.current = false;
-  }, 50);
+const redistributeStakes = () => {
+  // Ce mode ne redistribue rien automatiquement
+  // Il met juste à jour le totalStake en fonction des mises existantes
+  const s1 = parseFloat(stake1) || 0;
+  const s2 = parseFloat(stake2) || 0;
+  const s3 = getOutcomeCount() === 3 ? (parseFloat(stake3) || 0) : 0;
+  const total = s1 + s2 + s3;
+  setTotalStake(total.toFixed(2));
 };
 
 
