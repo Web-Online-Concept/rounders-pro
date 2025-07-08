@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { debounce } from 'lodash';
 
 const SurebetCalculator = () => {
-  // États pour les valeurs
+  // États
   const [betType, setBetType] = useState('1-2');
   const [currency, setCurrency] = useState('EUR');
   const [totalStake, setTotalStake] = useState('100');
@@ -50,7 +50,7 @@ const SurebetCalculator = () => {
     }
   };
 
-  // Fonction pour redistribuer les mises (basée sur surebet.com)
+  // Fonction pour redistribuer les mises (alignée sur surebet.com)
   const redistributeStakes = () => {
     if (isUpdating.current) return;
     isUpdating.current = true;
@@ -71,9 +71,9 @@ const SurebetCalculator = () => {
 
     // Somme des inverses des cotes
     let sumInverseOdds = 0;
-    if (adjOdds1 > 0) sumInverseOdds += 1 / adjOdds1;
-    if (adjOdds2 > 0) sumInverseOdds += 1 / adjOdds2;
-    if (outcomeCount === 3 && adjOdds3 > 0) sumInverseOdds += 1 / adjOdds3;
+    if (adjOdds1 > 0 && distribute1) sumInverseOdds += 1 / adjOdds1;
+    if (adjOdds2 > 0 && distribute2) sumInverseOdds += 1 / adjOdds2;
+    if (outcomeCount === 3 && adjOdds3 > 0 && distribute3) sumInverseOdds += 1 / adjOdds3;
 
     if (sumInverseOdds <= 0) {
       setStake1('');
@@ -85,22 +85,21 @@ const SurebetCalculator = () => {
 
     // Calcul des mises
     let s1 = 0, s2 = 0, s3 = 0;
-    if (fixedMode === 'sum' && distributeAll) {
-      // Mise totale fixe, redistribution des mises
+    if (fixedMode === 'sum') {
+      // Mise totale fixe
       s1 = distribute1 ? (total / adjOdds1 / sumInverseOdds) : parseFloat(stake1) || 0;
       s2 = distribute2 ? (total / adjOdds2 / sumInverseOdds) : parseFloat(stake2) || 0;
       s3 = outcomeCount === 3 && distribute3 ? (total / adjOdds3 / sumInverseOdds) : 0;
-    } else if (fixedMode !== 'sum') {
+    } else {
       // Mise individuelle fixe
       const fixedStake = parseFloat(fixedMode === '1' ? stake1 : fixedMode === '2' ? stake2 : stake3) || 0;
       const fixedOdds = fixedMode === '1' ? adjOdds1 : fixedMode === '2' ? adjOdds2 : adjOdds3;
       const fixedReturn = fixedStake * fixedOdds;
-
-      // Calcul de la mise totale pour égaliser les profits
       const totalForEqualProfit = fixedReturn / (1 / sumInverseOdds);
+      
+      // Mise à jour de totalStake uniquement si fixedMode n'est pas 'sum'
       setTotalStake(totalForEqualProfit.toFixed(2));
-
-      // Redistribution des autres mises
+      
       if (fixedMode !== '1') s1 = distribute1 ? (totalForEqualProfit / adjOdds1 / sumInverseOdds) : parseFloat(stake1) || 0;
       else s1 = fixedStake;
       if (fixedMode !== '2') s2 = distribute2 ? (totalForEqualProfit / adjOdds2 / sumInverseOdds) : parseFloat(stake2) || 0;
@@ -180,14 +179,24 @@ const SurebetCalculator = () => {
     debouncedRedistribute();
   };
 
-  const handleStakeChange = (setter, value) => {
+  const handleStakeChange = (setter, value, index) => {
     setter(value);
-    debouncedRedistribute();
+    if (fixedMode === `sum`) {
+      // Ne pas appeler redistributeStakes si fixedMode est 'sum'
+      // La mise totale reste fixe, recalculer seulement si nécessaire
+      if (!distribute1 || !distribute2 || (getOutcomeCount() === 3 && !distribute3)) {
+        debouncedRedistribute();
+      }
+    } else if (fixedMode === `${index}`) {
+      debouncedRedistribute();
+    }
   };
 
   const handleTotalStakeChange = (value) => {
     setTotalStake(value);
-    debouncedRedistribute();
+    if (fixedMode === 'sum') {
+      debouncedRedistribute();
+    }
   };
 
   // Gestion du checkbox "tous" pour D
@@ -201,11 +210,11 @@ const SurebetCalculator = () => {
     debouncedRedistribute();
   };
 
-  // Supprimer la mise à jour automatique de totalStake
-  // Redistribution quand les paramètres changent
-  useEffect(() => {
+  // Gestion du changement de fixedMode
+  const handleFixedModeChange = (value) => {
+    setFixedMode(value);
     debouncedRedistribute();
-  }, [distribute1, distribute2, distribute3, betType, fixedMode, debouncedRedistribute]);
+  };
 
   // Mise à jour du checkbox "tous"
   useEffect(() => {
@@ -241,7 +250,7 @@ const SurebetCalculator = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-[980px] mx-auto">
-        {/* Header restauré tel que dans ton code d'origine */}
+        {/* Header restauré exactement comme dans ton code */}
         <div className="mb-4">
           <h1 className="text-2xl sm:text-3xl font-bold text-indigo-900">
             Calculateur de Surebets
@@ -406,7 +415,7 @@ const SurebetCalculator = () => {
                       <input 
                         type="text" 
                         value={stake1} 
-                        onChange={(e) => handleStakeChange(setStake1, e.target.value)}
+                        onChange={(e) => handleStakeChange(setStake1, e.target.value, 1)}
                         className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                       />
                       {parseFloat(stake1) <= 0 || isNaN(parseFloat(stake1)) ? (
@@ -434,7 +443,7 @@ const SurebetCalculator = () => {
                       name="fixed" 
                       value="1"
                       checked={fixedMode === '1'}
-                      onChange={(e) => setFixedMode(e.target.value)}
+                      onChange={(e) => handleFixedModeChange(e.target.value)}
                       className="w-4 h-4"
                     />
                   </td>
@@ -472,7 +481,7 @@ const SurebetCalculator = () => {
                       <input 
                         type="text" 
                         value={stake2} 
-                        onChange={(e) => handleStakeChange(setStake2, e.target.value)}
+                        onChange={(e) => handleStakeChange(setStake2, e.target.value, 2)}
                         className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                       />
                       {parseFloat(stake2) <= 0 || isNaN(parseFloat(stake2)) ? (
@@ -500,7 +509,7 @@ const SurebetCalculator = () => {
                       name="fixed" 
                       value="2"
                       checked={fixedMode === '2'}
-                      onChange={(e) => setFixedMode(e.target.value)}
+                      onChange={(e) => handleFixedModeChange(e.target.value)}
                       className="w-4 h-4"
                     />
                   </td>
@@ -539,7 +548,7 @@ const SurebetCalculator = () => {
                         <input 
                           type="text" 
                           value={stake3} 
-                          onChange={(e) => handleStakeChange(setStake3, e.target.value)}
+                          onChange={(e) => handleStakeChange(setStake3, e.target.value, 3)}
                           className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                         />
                         {parseFloat(stake3) <= 0 || isNaN(parseFloat(stake3)) ? (
@@ -567,7 +576,7 @@ const SurebetCalculator = () => {
                         name="fixed" 
                         value="3"
                         checked={fixedMode === '3'}
-                        onChange={(e) => setFixedMode(e.target.value)}
+                        onChange={(e) => handleFixedModeChange(e.target.value)}
                         className="w-4 h-4"
                       />
                     </td>
@@ -602,7 +611,7 @@ const SurebetCalculator = () => {
                         name="fixed" 
                         value="sum"
                         checked={fixedMode === 'sum'}
-                        onChange={(e) => setFixedMode(e.target.value)}
+                        onChange={(e) => handleFixedModeChange(e.target.value)}
                         className="w-4 h-4"
                       />
                       <strong className="text-xs hidden sm:inline">C</strong>
