@@ -259,7 +259,7 @@ const SurebetCalculator = () => {
       <div className="max-w-[980px] mx-auto">
         {/* Header avec Statut intégré */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid gridCols-3 gap-4">
             <div className="col-span-1">
               <h1 className="text-2xl sm:text-3xl font-bold text-indigo-900">
                 Calculateur de Surebets
@@ -318,15 +318,17 @@ const SurebetCalculator = () => {
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">Mise totale</label>
-              <input 
-                type="text" 
-                value={totalStake} 
-                onChange={(e) => handleTotalStakeChange(e.target.value)}
-                className="w-full px-2 py-2 border border-gray-300 rounded-md text-right text-sm"
-              />
-              {parseFloat(totalStake) <= 0 || isNaN(parseFloat(totalStake)) ? (
-                <div className="text-red-500 text-xs mt-1">La mise doit être > 0.</div>
-              ) : null}
+              <div className="relative">
+                <input 
+                  type="text" 
+                  value={totalStake} 
+                  onChange={(e) => handleTotalStakeChange(e.target.value)}
+                  className="w-full px-2 py-2 border border-gray-300 rounded-md text-right text-sm"
+                />
+                {parseFloat(totalStake) <= 0 || isNaN(parseFloat(totalStake)) ? (
+                  <div className="absolute text-red-500 text-xs mt-1">La mise doit être &gt; 0.</div>
+                ) : null}
+              </div>
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">Devise</label>
@@ -354,15 +356,17 @@ const SurebetCalculator = () => {
             <label htmlFor="round" className="text-sm text-gray-600">
               Arrondir les mises jusqu'à :
             </label>
-            <input
-              type="text"
-              value={roundTo}
-              onChange={(e) => setRoundTo(e.target.value)}
-              className="w-16 px-2 py-1 border border-gray-300 rounded text-right text-sm ml-2"
-            />
-            {parseFloat(roundTo) <= 0 || isNaN(parseFloat(roundTo)) ? (
-              <div className="text-red-500 text-xs mt-1">L'arrondi doit être > 0.</div>
-            ) : null}
+            <div className="relative inline-block ml-2">
+              <input
+                type="text"
+                value={roundTo}
+                onChange={(e) => setRoundTo(e.target.value)}
+                className="w-16 px-2 py-1 border border-gray-300 rounded text-right text-sm"
+              />
+              {parseFloat(roundTo) <= 0 || isNaN(parseFloat(roundTo)) ? (
+                <div className="absolute text-red-500 text-xs mt-1">L'arrondi doit être &gt; 0.</div>
+              ) : null}
+            </div>
           </div>
 
           {/* Results Table */}
@@ -412,7 +416,7 @@ const SurebetCalculator = () => {
                         className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                       />
                       {parseFloat(odds1) <= 1 || parseFloat(odds1) >= 100000 || isNaN(parseFloat(odds1)) ? (
-                        <div className="absolute text-red-500 text-xs mt-1">Cote >1 et <100000.</div>
+                        <div className="absolute text-red-500 text-xs mt-1">Cote &gt;1 et &lt;100000.</div>
                       ) : null}
                     </div>
                   </td>
@@ -438,7 +442,7 @@ const SurebetCalculator = () => {
                         className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                       />
                       {parseFloat(stake1) <= 0 || isNaN(parseFloat(stake1)) ? (
-                        <div className="absolute text-red-500 text-xs mt-1">Mise > 0.</div>
+                        <div className="absolute text-red-500 text-xs mt-1">Mise &gt; 0.</div>
                       ) : null}
                     </div>
                   </td>
@@ -478,7 +482,7 @@ const SurebetCalculator = () => {
                         className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                       />
                       {parseFloat(odds2) <= 1 || parseFloat(odds2) >= 100000 || isNaN(parseFloat(odds2)) ? (
-                        <div className="absolute text-red-500 text-xs mt-1">Cote >1 et <100000.</div>
+                        <div className="absolute text-red-500 text-xs mt-1">Cote &gt;1 et &lt;100000.</div>
                       ) : null}
                     </div>
                   </td>
@@ -504,7 +508,7 @@ const SurebetCalculator = () => {
                         className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                       />
                       {parseFloat(stake2) <= 0 || isNaN(parseFloat(stake2)) ? (
-                        <div className="absolute text-red-500 text-xs mt-1">Mise > 0.</div>
+                        <div className="absolute text-red-500 text-xs mt-1">Mise &gt; 0.</div>
                       ) : null}
                     </div>
                   </td>
@@ -545,7 +549,7 @@ const SurebetCalculator = () => {
                           className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                         />
                         {parseFloat(odds3) <= 1 || parseFloat(odds3) >= 100000 || isNaN(parseFloat(odds3)) ? (
-                          <div className="absolute text-red-500 text-xs mt-1">Cote >1 et <100000.</div>
+                          <div className="absolute text-red-500 text-xs mt-1">Cote &gt;1 et &lt;100000.</div>
                         ) : null}
                       </div>
                     </td>
@@ -571,7 +575,7 @@ const SurebetCalculator = () => {
                           className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                         />
                         {parseFloat(stake3) <= 0 || isNaN(parseFloat(stake3)) ? (
-                          <div className="absolute text-red-500 text-xs mt-1">Mise > 0.</div>
+                          <div className="absolute text-red-500 text-xs mt-1">Mise &gt; 0.</div>
                         ) : null}
                       </div>
                     </td>
