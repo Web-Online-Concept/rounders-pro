@@ -17,6 +17,15 @@ const SurebetCalculator = () => {
   const [stake2, setStake2] = useState('50.00');
   const [stake3, setStake3] = useState('0.00');
   
+  // États pour les checkboxes D (Distribution)
+  const [distribute1, setDistribute1] = useState(true);
+  const [distribute2, setDistribute2] = useState(true);
+  const [distribute3, setDistribute3] = useState(true);
+  const [distributeAll, setDistributeAll] = useState(true);
+  
+  // État pour le mode C (Constant) - par défaut sur sum
+  const [fixedMode, setFixedMode] = useState('sum');
+  
   // Timers pour le debounce
   const oddsTimerRef = useRef(null);
   const totalTimerRef = useRef(null);
@@ -101,7 +110,7 @@ const SurebetCalculator = () => {
     };
   };
 
-  // Redistribuer les mises selon la mise totale
+  // Redistribuer les mises selon la mise totale (seulement celles avec D coché)
   const redistributeStakes = () => {
     const total = parseFloat(totalStake) || 0;
     if (total <= 0) return;
@@ -122,25 +131,88 @@ const SurebetCalculator = () => {
     const adjOdds2 = o2 * (1 - c2 / 100);
     const adjOdds3 = outcomeCount === 3 ? o3 * (1 - c3 / 100) : 1;
     
-    // Somme des inverses
-    let sumInverse = 0;
-    if (adjOdds1 > 0) sumInverse += 1/adjOdds1;
-    if (adjOdds2 > 0) sumInverse += 1/adjOdds2;
-    if (outcomeCount === 3 && adjOdds3 > 0) sumInverse += 1/adjOdds3;
-    
-    if (sumInverse === 0) return;
-    
-    // Calcul des nouvelles mises pour avoir le même retour peu importe l'issue
-    const newStake1 = total * (1/adjOdds1) / sumInverse;
-    const newStake2 = total * (1/adjOdds2) / sumInverse;
-    const newStake3 = outcomeCount === 3 ? total * (1/adjOdds3) / sumInverse : 0;
-    
-    setStake1(newStake1.toFixed(2));
-    setStake2(newStake2.toFixed(2));
-    if (outcomeCount === 3) {
-      setStake3(newStake3.toFixed(2));
+    // Si C est sur sum, on redistribue selon D
+    if (fixedMode === 'sum') {
+      // Calculer les mises pour les paris avec D coché
+      const distributes = [distribute1, distribute2, outcomeCount === 3 ? distribute3 : false];
+      const currentStakes = [parseFloat(stake1) || 0, parseFloat(stake2) || 0, parseFloat(stake3) || 0];
+      const adjOdds = [adjOdds1, adjOdds2, adjOdds3];
+      
+      // Calculer la somme des mises fixes (D décoché)
+      let fixedTotal = 0;
+      for (let i = 0; i < outcomeCount; i++) {
+        if (!distributes[i]) {
+          fixedTotal += currentStakes[i];
+        }
+      }
+      
+      // Reste à distribuer
+      const toDistribute = total - fixedTotal;
+      if (toDistribute < 0) return; // Pas assez pour couvrir les mises fixes
+      
+      // Somme des inverses pour les mises à distribuer
+      let sumInverseDistribute = 0;
+      for (let i = 0; i < outcomeCount; i++) {
+        if (distributes[i] && adjOdds[i] > 0) {
+          sumInverseDistribute += 1 / adjOdds[i];
+        }
+      }
+      
+      if (sumInverseDistribute === 0) return;
+      
+      // Calculer et mettre à jour les mises
+      if (distribute1) {
+        const newStake1 = toDistribute * (1/adjOdds1) / sumInverseDistribute;
+        setStake1(newStake1.toFixed(2));
+      }
+      
+      if (distribute2) {
+        const newStake2 = toDistribute * (1/adjOdds2) / sumInverseDistribute;
+        setStake2(newStake2.toFixed(2));
+      }
+      
+      if (outcomeCount === 3 && distribute3) {
+        const newStake3 = toDistribute * (1/adjOdds3) / sumInverseDistribute;
+        setStake3(newStake3.toFixed(2));
+      }
     } else {
-      setStake3('0.00');
+      // Si C est sur une mise spécifique, cette mise reste fixe
+      // et on redistribue les autres selon leurs cotes
+      const fixedStakeIndex = parseInt(fixedMode) - 1;
+      const fixedStake = fixedStakeIndex === 0 ? parseFloat(stake1) || 0
+                       : fixedStakeIndex === 1 ? parseFloat(stake2) || 0
+                       : parseFloat(stake3) || 0;
+      
+      const remainingTotal = total - fixedStake;
+      if (remainingTotal < 0) return;
+      
+      // Redistribuer le reste entre les autres mises
+      const adjOddsArray = [adjOdds1, adjOdds2, adjOdds3];
+      let sumInverseOthers = 0;
+      
+      for (let i = 0; i < outcomeCount; i++) {
+        if (i !== fixedStakeIndex && adjOddsArray[i] > 0) {
+          sumInverseOthers += 1 / adjOddsArray[i];
+        }
+      }
+      
+      if (sumInverseOthers === 0) return;
+      
+      // Mettre à jour les mises (sauf celle qui est fixe)
+      if (fixedStakeIndex !== 0) {
+        const newStake1 = remainingTotal * (1/adjOdds1) / sumInverseOthers;
+        setStake1(newStake1.toFixed(2));
+      }
+      
+      if (fixedStakeIndex !== 1) {
+        const newStake2 = remainingTotal * (1/adjOdds2) / sumInverseOthers;
+        setStake2(newStake2.toFixed(2));
+      }
+      
+      if (outcomeCount === 3 && fixedStakeIndex !== 2) {
+        const newStake3 = remainingTotal * (1/adjOdds3) / sumInverseOthers;
+        setStake3(newStake3.toFixed(2));
+      }
     }
   };
 
@@ -164,7 +236,8 @@ const SurebetCalculator = () => {
   // PAS DE REDISTRIBUTION quand on change une mise manuellement
   const handleStakeChange = (setter, value) => {
     setter(value);
-    // On met à jour SEULEMENT la mise concernée, sans redistribuer
+    // Si C = sum, on ne redistribue pas les autres mises
+    // Si C != sum, on recalcule la mise totale dans le useEffect
   };
 
   const handleTotalStakeChange = (value) => {
@@ -175,14 +248,34 @@ const SurebetCalculator = () => {
     }, 300);
   };
 
+  // Gestion du checkbox "tous" pour D
+  const handleDistributeAllChange = (checked) => {
+    setDistributeAll(checked);
+    setDistribute1(checked);
+    setDistribute2(checked);
+    if (getOutcomeCount() === 3) {
+      setDistribute3(checked);
+    }
+  };
+
   // Mise à jour de la mise totale quand les mises individuelles changent
   useEffect(() => {
-    const s1 = parseFloat(stake1) || 0;
-    const s2 = parseFloat(stake2) || 0;
-    const s3 = getOutcomeCount() === 3 ? (parseFloat(stake3) || 0) : 0;
-    const newTotal = s1 + s2 + s3;
-    setTotalStake(newTotal.toFixed(2));
-  }, [stake1, stake2, stake3, betType]);
+    // Si C = sum est sélectionné, la mise totale reste fixe
+    // Sinon, elle se recalcule comme la somme des mises
+    if (fixedMode !== 'sum') {
+      const s1 = parseFloat(stake1) || 0;
+      const s2 = parseFloat(stake2) || 0;
+      const s3 = getOutcomeCount() === 3 ? (parseFloat(stake3) || 0) : 0;
+      const newTotal = s1 + s2 + s3;
+      setTotalStake(newTotal.toFixed(2));
+    }
+  }, [stake1, stake2, stake3, betType, fixedMode]);
+
+  // Mise à jour du checkbox "tous" quand les checkboxes individuels changent
+  useEffect(() => {
+    const allChecked = distribute1 && distribute2 && (getOutcomeCount() === 2 || distribute3);
+    setDistributeAll(allChecked);
+  }, [distribute1, distribute2, distribute3, betType]);
 
   // Ajuster les mises au changement de type de pari
   useEffect(() => {
@@ -190,6 +283,7 @@ const SurebetCalculator = () => {
       setStake3('0.00');
       setOdds3('2.00');
       setCommission3('0');
+      setDistribute3(true);
     }
     redistributeStakes();
   }, [betType]);
@@ -198,6 +292,14 @@ const SurebetCalculator = () => {
   useEffect(() => {
     redistributeStakes();
   }, []);
+
+  // Quand on change le mode fixe
+  useEffect(() => {
+    if (fixedMode === 'sum') {
+      // Si on passe en mode C=sum, recalculer les mises selon la mise totale actuelle
+      redistributeStakes();
+    }
+  }, [fixedMode]);
 
   // Nettoyage des timers
   useEffect(() => {
@@ -300,12 +402,14 @@ const SurebetCalculator = () => {
           <div className="overflow-x-auto">
             <table className="w-full table-fixed">
               <colgroup>
+                <col className="w-16 sm:w-20" />
                 <col className="w-20 sm:w-24" />
-                <col className="w-24 sm:w-28" />
+                <col className="w-16 sm:w-20" />
                 <col className="w-20 sm:w-24" />
-                <col className="w-24 sm:w-28" />
-                <col className="w-24 sm:w-28" />
-                <col className="w-24 sm:w-28" />
+                <col className="w-20 sm:w-24" />
+                <col className="w-20 sm:w-24" />
+                <col className="w-12 sm:w-16" />
+                <col className="w-12 sm:w-16" />
               </colgroup>
               <thead>
                 <tr className="bg-gray-50">
@@ -315,6 +419,18 @@ const SurebetCalculator = () => {
                   <th className="px-2 sm:px-4 py-3 text-center text-xs sm:text-sm font-medium text-gray-700">Mise</th>
                   <th className="px-2 sm:px-4 py-3 text-center text-xs sm:text-sm font-medium text-gray-700">Retour</th>
                   <th className="px-2 sm:px-4 py-3 text-center text-xs sm:text-sm font-medium text-gray-700">Profit</th>
+                  <th className="px-1 sm:px-2 py-3 text-center text-xs font-medium text-gray-700">
+                    D
+                    <abbr className="inline-block w-4 h-4 text-xs text-gray-400 no-underline cursor-help" title="Les paris pour lesquels le bénéfice sera distribué">
+                      ⓘ
+                    </abbr>
+                  </th>
+                  <th className="px-1 sm:px-2 py-3 text-center text-xs font-medium text-gray-700">
+                    C
+                    <abbr className="inline-block w-4 h-4 text-xs text-gray-400 no-underline cursor-help" title="Quantité fixe">
+                      ⓘ
+                    </abbr>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -350,6 +466,24 @@ const SurebetCalculator = () => {
                   <td className={`px-2 sm:px-4 py-3 text-center font-medium text-sm ${results.profits[0] >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {results.profits[0] >= 0 ? '+' : ''}{results.profits[0].toFixed(2)} {symbol}
                   </td>
+                  <td className="px-1 sm:px-2 py-3 text-center">
+                    <input 
+                      type="checkbox" 
+                      checked={distribute1}
+                      onChange={(e) => setDistribute1(e.target.checked)}
+                      className="w-4 h-4"
+                    />
+                  </td>
+                  <td className="px-1 sm:px-2 py-3 text-center">
+                    <input 
+                      type="radio" 
+                      name="fixed" 
+                      value="1"
+                      checked={fixedMode === '1'}
+                      onChange={(e) => setFixedMode(e.target.value)}
+                      className="w-4 h-4"
+                    />
+                  </td>
                 </tr>
                 <tr className="border-b">
                   <td className="px-2 sm:px-4 py-3 text-xs sm:text-sm">{labels[1]}</td>
@@ -383,6 +517,24 @@ const SurebetCalculator = () => {
                   <td className={`px-2 sm:px-4 py-3 text-center font-medium text-sm ${results.profits[1] >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {results.profits[1] >= 0 ? '+' : ''}{results.profits[1].toFixed(2)} {symbol}
                   </td>
+                  <td className="px-1 sm:px-2 py-3 text-center">
+                    <input 
+                      type="checkbox" 
+                      checked={distribute2}
+                      onChange={(e) => setDistribute2(e.target.checked)}
+                      className="w-4 h-4"
+                    />
+                  </td>
+                  <td className="px-1 sm:px-2 py-3 text-center">
+                    <input 
+                      type="radio" 
+                      name="fixed" 
+                      value="2"
+                      checked={fixedMode === '2'}
+                      onChange={(e) => setFixedMode(e.target.value)}
+                      className="w-4 h-4"
+                    />
+                  </td>
                 </tr>
                 {outcomeCount === 3 && (
                   <tr className="border-b">
@@ -407,7 +559,7 @@ const SurebetCalculator = () => {
                       <input 
                         type="text" 
                         value={stake3} 
-                        onChange={(e) => handleStakeChange(setStake3, e.target.value, 3)}
+                        onChange={(e) => handleStakeChange(setStake3, e.target.value)}
                         className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
                       />
                     </td>
@@ -416,6 +568,24 @@ const SurebetCalculator = () => {
                     </td>
                     <td className={`px-2 sm:px-4 py-3 text-center font-medium text-sm ${results.profits[2] >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                       {results.profits[2] >= 0 ? '+' : ''}{results.profits[2].toFixed(2)} {symbol}
+                    </td>
+                    <td className="px-1 sm:px-2 py-3 text-center">
+                      <input 
+                        type="checkbox" 
+                        checked={distribute3}
+                        onChange={(e) => setDistribute3(e.target.checked)}
+                        className="w-4 h-4"
+                      />
+                    </td>
+                    <td className="px-1 sm:px-2 py-3 text-center">
+                      <input 
+                        type="radio" 
+                        name="fixed" 
+                        value="3"
+                        checked={fixedMode === '3'}
+                        onChange={(e) => setFixedMode(e.target.value)}
+                        className="w-4 h-4"
+                      />
                     </td>
                   </tr>
                 )}
@@ -430,6 +600,30 @@ const SurebetCalculator = () => {
                   <td className={`px-2 sm:px-4 py-3 text-center text-sm ${results.minProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {results.minProfit >= 0 ? '+' : ''}{results.minProfit.toFixed(2)} {symbol}
                   </td>
+                  <td className="px-1 sm:px-2 py-3 text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <input 
+                        type="checkbox" 
+                        checked={distributeAll}
+                        onChange={(e) => handleDistributeAllChange(e.target.checked)}
+                        className="w-4 h-4"
+                      />
+                      <strong className="text-xs hidden sm:inline">D</strong>
+                    </div>
+                  </td>
+                  <td className="px-1 sm:px-2 py-3 text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <input 
+                        type="radio" 
+                        name="fixed" 
+                        value="sum"
+                        checked={fixedMode === 'sum'}
+                        onChange={(e) => setFixedMode(e.target.value)}
+                        className="w-4 h-4"
+                      />
+                      <strong className="text-xs hidden sm:inline">C</strong>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -441,13 +635,14 @@ const SurebetCalculator = () => {
             <div className="space-y-2 text-xs sm:text-sm text-gray-600">
               <p>• Mode arrondi : Les mises peuvent être arrondies au nombre entier le plus proche</p>
               <p>• Commissions : Entrez le pourcentage de commission de chaque bookmaker (0% par défaut)</p>
-              <p>• Redistribution automatique : Les mises se recalculent automatiquement selon les cotes</p>
+              <p>• Case D : Cochez pour redistribuer automatiquement cette mise quand la mise totale change</p>
+              <p>• Case C : Sélectionnez l'élément qui reste constant lors des calculs</p>
             </div>
           </div>
 
           {/* Help text */}
           <div className="mt-4 text-xs text-gray-500 text-center">
-            Modification des cotes/commissions : redistribue toutes les mises | Modification de la mise totale : redistribue toutes les mises
+            D = Distribution automatique | C = Valeur constante
           </div>
         </div>
       </div>
