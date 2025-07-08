@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { debounce } from 'lodash';
 
 const SurebetCalculator = () => {
   // États pour les valeurs
@@ -16,16 +17,14 @@ const SurebetCalculator = () => {
   const [stake1, setStake1] = useState('33.33');
   const [stake2, setStake2] = useState('66.67');
   const [stake3, setStake3] = useState('0.00');
-  
-  // États pour les checkboxes D (Distribution)
   const [distribute1, setDistribute1] = useState(true);
   const [distribute2, setDistribute2] = useState(true);
   const [distribute3, setDistribute3] = useState(true);
   const [distributeAll, setDistributeAll] = useState(true);
-  
-  // État pour le mode C (Constant)
   const [fixedMode, setFixedMode] = useState('sum');
-  
+  const [round, setRound] = useState(false);
+  const [roundTo, setRoundTo] = useState('1');
+
   // Flag pour éviter les boucles infinies
   const isUpdating = useRef(false);
 
@@ -51,65 +50,106 @@ const SurebetCalculator = () => {
     }
   };
 
-  // Fonction pour redistribuer les mises selon la mise totale
-  
-const redistributeStakes = () => {
-  // Ce mode ne redistribue rien automatiquement
-  // Il met juste à jour le totalStake en fonction des mises existantes
-  const s1 = parseFloat(stake1) || 0;
-  const s2 = parseFloat(stake2) || 0;
-  const s3 = getOutcomeCount() === 3 ? (parseFloat(stake3) || 0) : 0;
-  const total = s1 + s2 + s3;
-  setTotalStake(total.toFixed(2));
-};
+  // Fonction pour redistribuer les mises
+  const redistributeStakes = () => {
+    if (isUpdating.current) return;
+    isUpdating.current = true;
 
+    const outcomeCount = getOutcomeCount();
+    const o1 = parseFloat(odds1) || 0;
+    const o2 = parseFloat(odds2) || 0;
+    const o3 = outcomeCount === 3 ? (parseFloat(odds3) || 0) : 0;
+    const c1 = parseFloat(commission1) || 0;
+    const c2 = parseFloat(commission2) || 0;
+    const c3 = outcomeCount === 3 ? (parseFloat(commission3) || 0) : 0;
+    const total = parseFloat(totalStake) || 100;
+
+    // Calcul des cotes ajustées
+    const adjOdds1 = o1 * (1 - c1 / 100);
+    const adjOdds2 = o2 * (1 - c2 / 100);
+    const adjOdds3 = outcomeCount === 3 ? o3 * (1 - c3 / 100) : 0;
+
+    // Somme des inverses des cotes
+    let sumInverseOdds = 0;
+    if (adjOdds1 > 0) sumInverseOdds += 1 / adjOdds1;
+    if (adjOdds2 > 0) sumInverseOdds += 1 / adjOdds2;
+    if (outcomeCount === 3 && adjOdds3 > 0) sumInverseOdds += 1 / adjOdds3;
+
+    if (sumInverseOdds <= 0) {
+      isUpdating.current = false;
+      return;
+    }
+
+    // Calcul des mises
+    let s1 = 0, s2 = 0, s3 = 0;
+    if (fixedMode === 'sum' && distributeAll) {
+      // Redistribution des mises pour égaliser les profits
+      s1 = distribute1 ? (total / adjOdds1 / sumInverseOdds) : parseFloat(stake1) || 0;
+      s2 = distribute2 ? (total / adjOdds2 / sumInverseOdds) : parseFloat(stake2) || 0;
+      s3 = outcomeCount === 3 && distribute3 ? (total / adjOdds3 / sumInverseOdds) : 0;
+    } else if (fixedMode !== 'sum') {
+      // Cas où une mise individuelle est fixe
+      const fixedStake = parseFloat(fixedMode === '1' ? stake1 : fixedMode === '2' ? stake2 : stake3) || 0;
+      const fixedOdds = fixedMode === '1' ? adjOdds1 : fixedMode === '2' ? adjOdds2 : adjOdds3;
+      const fixedReturn = fixedStake * fixedOdds;
+
+      // Calcul de la mise totale pour égaliser les profits
+      const totalForEqualProfit = fixedReturn / (1 / sumInverseOdds);
+      setTotalStake(totalForEqualProfit.toFixed(2));
+
+      // Redistribution des autres mises
+      if (fixedMode !== '1') s1 = distribute1 ? (totalForEqualProfit / adjOdds1 / sumInverseOdds) : parseFloat(stake1) || 0;
+      else s1 = fixedStake;
+      if (fixedMode !== '2') s2 = distribute2 ? (totalForEqualProfit / adjOdds2 / sumInverseOdds) : parseFloat(stake2) || 0;
+      else s2 = fixedStake;
+      if (outcomeCount === 3 && fixedMode !== '3') s3 = distribute3 ? (totalForEqualProfit / adjOdds3 / sumInverseOdds) : parseFloat(stake3) || 0;
+      else if (outcomeCount === 3) s3 = fixedStake;
+    }
+
+    // Arrondi des mises si activé
+    if (round && parseFloat(roundTo) > 0) {
+      s1 = Math.round(s1 / parseFloat(roundTo)) * parseFloat(roundTo);
+      s2 = Math.round(s2 / parseFloat(roundTo)) * parseFloat(roundTo);
+      s3 = outcomeCount === 3 ? Math.round(s3 / parseFloat(roundTo)) * parseFloat(roundTo) : 0;
+    }
+
+    // Mise à jour des mises
+    setStake1(s1.toFixed(2));
+    setStake2(s2.toFixed(2));
+    if (outcomeCount === 3) setStake3(s3.toFixed(2));
+
+    isUpdating.current = false;
+  };
 
   // Calcul des résultats
   const calculateResults = () => {
     const outcomeCount = getOutcomeCount();
-    
     const o1 = parseFloat(odds1) || 0;
     const o2 = parseFloat(odds2) || 0;
     const o3 = outcomeCount === 3 ? (parseFloat(odds3) || 0) : 0;
-    
     const c1 = parseFloat(commission1) || 0;
     const c2 = parseFloat(commission2) || 0;
     const c3 = outcomeCount === 3 ? (parseFloat(commission3) || 0) : 0;
-    
     const s1 = parseFloat(stake1) || 0;
     const s2 = parseFloat(stake2) || 0;
     const s3 = outcomeCount === 3 ? (parseFloat(stake3) || 0) : 0;
-    
-    // Calcul du total réel des mises
     const actualTotal = s1 + s2 + (outcomeCount === 3 ? s3 : 0);
-    
-    // Calcul des cotes ajustées (après commission)
     const adjOdds1 = o1 * (1 - c1 / 100);
     const adjOdds2 = o2 * (1 - c2 / 100);
     const adjOdds3 = outcomeCount === 3 ? o3 * (1 - c3 / 100) : 0;
-    
-    // Calcul des retours
     const return1 = s1 * adjOdds1;
     const return2 = s2 * adjOdds2;
     const return3 = outcomeCount === 3 ? s3 * adjOdds3 : 0;
-    
-    // Calcul des profits (retour - mise totale)
     const profit1 = return1 - actualTotal;
     const profit2 = return2 - actualTotal;
     const profit3 = outcomeCount === 3 ? return3 - actualTotal : 0;
-    
-    // Profit minimum (le pire scénario)
     const profits = outcomeCount === 3 ? [profit1, profit2, profit3] : [profit1, profit2];
     const minProfit = Math.min(...profits.filter(p => !isNaN(p)));
-    
-    // Calcul si c'est un surebet
     let sumInverseOdds = 0;
     if (adjOdds1 > 0) sumInverseOdds += 1/adjOdds1;
     if (adjOdds2 > 0) sumInverseOdds += 1/adjOdds2;
     if (outcomeCount === 3 && adjOdds3 > 0) sumInverseOdds += 1/adjOdds3;
-    
     const isSurebet = sumInverseOdds < 1 && sumInverseOdds > 0;
-    
     return {
       stakes: [s1, s2, s3],
       returns: [return1, return2, return3],
@@ -121,33 +161,30 @@ const redistributeStakes = () => {
     };
   };
 
-  // Handler pour les changements de cotes
+  // Débouncer pour les changements
+  const debouncedRedistribute = useCallback(debounce(() => redistributeStakes(), 300), [
+    odds1, odds2, odds3, commission1, commission2, commission3, totalStake, distribute1, distribute2, distribute3, fixedMode, round, roundTo
+  ]);
+
+  // Handlers pour les changements
   const handleOddsChange = (setter, value) => {
     setter(value);
-    setTimeout(() => {
-      redistributeStakes(null);
-    }, 500);
+    debouncedRedistribute();
   };
 
-  // Handler pour les changements de commission
   const handleCommissionChange = (setter, value) => {
     setter(value);
-    setTimeout(() => {
-      redistributeStakes();
-    }, 500);
+    debouncedRedistribute();
   };
 
-  // Handler pour les changements de mise
   const handleStakeChange = (setter, value) => {
     setter(value);
+    debouncedRedistribute();
   };
 
-  // Handler pour la mise totale
   const handleTotalStakeChange = (value) => {
     setTotalStake(value);
-    setTimeout(() => {
-      redistributeStakes(value);
-    }, 300);
+    debouncedRedistribute();
   };
 
   // Gestion du checkbox "tous" pour D
@@ -158,6 +195,7 @@ const redistributeStakes = () => {
     if (getOutcomeCount() === 3) {
       setDistribute3(checked);
     }
+    debouncedRedistribute();
   };
 
   // Mise à jour de la mise totale quand les mises individuelles changent
@@ -174,9 +212,9 @@ const redistributeStakes = () => {
   // Redistribuer quand les paramètres changent
   useEffect(() => {
     if (fixedMode === 'sum') {
-      redistributeStakes();
+      debouncedRedistribute();
     }
-  }, [distribute1, distribute2, distribute3, betType]);
+  }, [distribute1, distribute2, distribute3, betType, debouncedRedistribute]);
 
   // Mise à jour du checkbox "tous"
   useEffect(() => {
@@ -192,20 +230,25 @@ const redistributeStakes = () => {
       setCommission3('0');
       setDistribute3(true);
     }
-    redistributeStakes();
-  }, [betType]);
+    debouncedRedistribute();
+  }, [betType, debouncedRedistribute]);
 
   // Redistribuer au changement de mode fixe
   useEffect(() => {
     if (fixedMode === 'sum') {
-      redistributeStakes();
+      debouncedRedistribute();
     }
-  }, [fixedMode]);
+  }, [fixedMode, debouncedRedistribute]);
+
+  // Redistribuer au changement de l'arrondi
+  useEffect(() => {
+    debouncedRedistribute();
+  }, [round, roundTo, debouncedRedistribute]);
 
   // Initialisation
   useEffect(() => {
-    redistributeStakes();
-  }, []);
+    debouncedRedistribute();
+  }, [debouncedRedistribute]);
 
   const results = calculateResults();
   const labels = getLabels();
@@ -248,7 +291,7 @@ const redistributeStakes = () => {
 
         {/* Main Calculator */}
         <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
-          {/* Settings - 4 colonnes sur PC, 2 sur mobile */}
+          {/* Settings */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">Type de pari</label>
@@ -281,6 +324,9 @@ const redistributeStakes = () => {
                 onChange={(e) => handleTotalStakeChange(e.target.value)}
                 className="w-full px-2 py-2 border border-gray-300 rounded-md text-right text-sm"
               />
+              {parseFloat(totalStake) <= 0 || isNaN(parseFloat(totalStake)) ? (
+                <div className="text-red-500 text-xs mt-1">La mise doit être > 0.</div>
+              ) : null}
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">Devise</label>
@@ -296,8 +342,31 @@ const redistributeStakes = () => {
             </div>
           </div>
 
+          {/* Arrondi */}
+          <div className="form-check mt-4">
+            <input
+              id="round"
+              type="checkbox"
+              checked={round}
+              onChange={(e) => setRound(e.target.checked)}
+              className="form-check-input"
+            />
+            <label htmlFor="round" className="text-sm text-gray-600">
+              Arrondir les mises jusqu'à :
+            </label>
+            <input
+              type="text"
+              value={roundTo}
+              onChange={(e) => setRoundTo(e.target.value)}
+              className="w-16 px-2 py-1 border border-gray-300 rounded text-right text-sm ml-2"
+            />
+            {parseFloat(roundTo) <= 0 || isNaN(parseFloat(roundTo)) ? (
+              <div className="text-red-500 text-xs mt-1">L'arrondi doit être > 0.</div>
+            ) : null}
+          </div>
+
           {/* Results Table */}
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto mt-6">
             <table className="w-full table-fixed">
               <colgroup>
                 <col className="w-16 sm:w-20" />
@@ -335,28 +404,43 @@ const redistributeStakes = () => {
                 <tr className="border-b">
                   <td className="px-2 sm:px-4 py-3 text-xs sm:text-sm">{labels[0]}</td>
                   <td className="px-2 sm:px-4 py-3">
-                    <input 
-                      type="text" 
-                      value={odds1} 
-                      onChange={(e) => handleOddsChange(setOdds1, e.target.value)}
-                      className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
-                    />
+                    <div className="relative">
+                      <input 
+                        type="text" 
+                        value={odds1} 
+                        onChange={(e) => handleOddsChange(setOdds1, e.target.value)}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
+                      />
+                      {parseFloat(odds1) <= 1 || parseFloat(odds1) >= 100000 || isNaN(parseFloat(odds1)) ? (
+                        <div className="absolute text-red-500 text-xs mt-1">Cote >1 et <100000.</div>
+                      ) : null}
+                    </div>
                   </td>
                   <td className="px-2 sm:px-4 py-3">
-                    <input 
-                      type="text" 
-                      value={commission1} 
-                      onChange={(e) => handleCommissionChange(setCommission1, e.target.value)}
-                      className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
-                    />
+                    <div className="relative">
+                      <input 
+                        type="text" 
+                        value={commission1} 
+                        onChange={(e) => handleCommissionChange(setCommission1, e.target.value)}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
+                      />
+                      {parseFloat(commission1) <= -40 || parseFloat(commission1) >= 40 || isNaN(parseFloat(commission1)) ? (
+                        <div className="absolute text-red-500 text-xs mt-1">Commission entre -40 et 40.</div>
+                      ) : null}
+                    </div>
                   </td>
                   <td className="px-2 sm:px-4 py-3">
-                    <input 
-                      type="text" 
-                      value={stake1} 
-                      onChange={(e) => handleStakeChange(setStake1, e.target.value)}
-                      className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
-                    />
+                    <div className="relative">
+                      <input 
+                        type="text" 
+                        value={stake1} 
+                        onChange={(e) => handleStakeChange(setStake1, e.target.value)}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
+                      />
+                      {parseFloat(stake1) <= 0 || isNaN(parseFloat(stake1)) ? (
+                        <div className="absolute text-red-500 text-xs mt-1">Mise > 0.</div>
+                      ) : null}
+                    </div>
                   </td>
                   <td className="px-2 sm:px-4 py-3 text-center text-sm">
                     {results.returns[0].toFixed(2)} {symbol}
@@ -386,28 +470,43 @@ const redistributeStakes = () => {
                 <tr className="border-b">
                   <td className="px-2 sm:px-4 py-3 text-xs sm:text-sm">{labels[1]}</td>
                   <td className="px-2 sm:px-4 py-3">
-                    <input 
-                      type="text" 
-                      value={odds2} 
-                      onChange={(e) => handleOddsChange(setOdds2, e.target.value)}
-                      className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
-                    />
+                    <div className="relative">
+                      <input 
+                        type="text" 
+                        value={odds2} 
+                        onChange={(e) => handleOddsChange(setOdds2, e.target.value)}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
+                      />
+                      {parseFloat(odds2) <= 1 || parseFloat(odds2) >= 100000 || isNaN(parseFloat(odds2)) ? (
+                        <div className="absolute text-red-500 text-xs mt-1">Cote >1 et <100000.</div>
+                      ) : null}
+                    </div>
                   </td>
                   <td className="px-2 sm:px-4 py-3">
-                    <input 
-                      type="text" 
-                      value={commission2} 
-                      onChange={(e) => handleCommissionChange(setCommission2, e.target.value)}
-                      className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
-                    />
+                    <div className="relative">
+                      <input 
+                        type="text" 
+                        value={commission2} 
+                        onChange={(e) => handleCommissionChange(setCommission2, e.target.value)}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
+                      />
+                      {parseFloat(commission2) <= -40 || parseFloat(commission2) >= 40 || isNaN(parseFloat(commission2)) ? (
+                        <div className="absolute text-red-500 text-xs mt-1">Commission entre -40 et 40.</div>
+                      ) : null}
+                    </div>
                   </td>
                   <td className="px-2 sm:px-4 py-3">
-                    <input 
-                      type="text" 
-                      value={stake2} 
-                      onChange={(e) => handleStakeChange(setStake2, e.target.value)}
-                      className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
-                    />
+                    <div className="relative">
+                      <input 
+                        type="text" 
+                        value={stake2} 
+                        onChange={(e) => handleStakeChange(setStake2, e.target.value)}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
+                      />
+                      {parseFloat(stake2) <= 0 || isNaN(parseFloat(stake2)) ? (
+                        <div className="absolute text-red-500 text-xs mt-1">Mise > 0.</div>
+                      ) : null}
+                    </div>
                   </td>
                   <td className="px-2 sm:px-4 py-3 text-center text-sm">
                     {results.returns[1].toFixed(2)} {symbol}
@@ -438,28 +537,43 @@ const redistributeStakes = () => {
                   <tr className="border-b">
                     <td className="px-2 sm:px-4 py-3 text-xs sm:text-sm">{labels[2]}</td>
                     <td className="px-2 sm:px-4 py-3">
-                      <input 
-                        type="text" 
-                        value={odds3} 
-                        onChange={(e) => handleOddsChange(setOdds3, e.target.value)}
-                        className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
-                      />
+                      <div className="relative">
+                        <input 
+                          type="text" 
+                          value={odds3} 
+                          onChange={(e) => handleOddsChange(setOdds3, e.target.value)}
+                          className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
+                        />
+                        {parseFloat(odds3) <= 1 || parseFloat(odds3) >= 100000 || isNaN(parseFloat(odds3)) ? (
+                          <div className="absolute text-red-500 text-xs mt-1">Cote >1 et <100000.</div>
+                        ) : null}
+                      </div>
                     </td>
                     <td className="px-2 sm:px-4 py-3">
-                      <input 
-                        type="text" 
-                        value={commission3} 
-                        onChange={(e) => handleCommissionChange(setCommission3, e.target.value)}
-                        className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
-                      />
+                      <div className="relative">
+                        <input 
+                          type="text" 
+                          value={commission3} 
+                          onChange={(e) => handleCommissionChange(setCommission3, e.target.value)}
+                          className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
+                        />
+                        {parseFloat(commission3) <= -40 || parseFloat(commission3) >= 40 || isNaN(parseFloat(commission3)) ? (
+                          <div className="absolute text-red-500 text-xs mt-1">Commission entre -40 et 40.</div>
+                        ) : null}
+                      </div>
                     </td>
                     <td className="px-2 sm:px-4 py-3">
-                      <input 
-                        type="text" 
-                        value={stake3} 
-                        onChange={(e) => handleStakeChange(setStake3, e.target.value)}
-                        className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
-                      />
+                      <div className="relative">
+                        <input 
+                          type="text" 
+                          value={stake3} 
+                          onChange={(e) => handleStakeChange(setStake3, e.target.value)}
+                          className="w-full px-2 py-1 border border-gray-300 rounded text-right text-sm"
+                        />
+                        {parseFloat(stake3) <= 0 || isNaN(parseFloat(stake3)) ? (
+                          <div className="absolute text-red-500 text-xs mt-1">Mise > 0.</div>
+                        ) : null}
+                      </div>
                     </td>
                     <td className="px-2 sm:px-4 py-3 text-center text-sm">
                       {results.returns[2].toFixed(2)} {symbol}
