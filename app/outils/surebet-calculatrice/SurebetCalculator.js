@@ -74,7 +74,41 @@ const SurebetCalculator = () => {
     
     isUpdating.current = true;
     
-    if (fixedMode === 'sum') {
+    
+    const fixedIndex = ['1', '2', '3'].includes(fixedMode) ? parseInt(fixedMode) : null;
+    if (fixedMode === 'sum' || fixedIndex) {
+      let fixedTotal = 0;
+      let sumInverseDistribute = 0;
+
+      if ((fixedMode === 'sum' && !distribute1) or (fixedIndex === 1)) fixedTotal += parseFloat(stake1) || 0;
+      else if (adjOdds1 > 0) sumInverseDistribute += 1 / adjOdds1;
+
+      if ((fixedMode === 'sum' && !distribute2) or (fixedIndex === 2)) fixedTotal += parseFloat(stake2) || 0;
+      else if (adjOdds2 > 0) sumInverseDistribute += 1 / adjOdds2;
+
+      if (outcomeCount === 3) {
+        if ((fixedMode === 'sum' && !distribute3) or (fixedIndex === 3)) fixedTotal += parseFloat(stake3) || 0;
+        else if (adjOdds3 > 0) sumInverseDistribute += 1 / adjOdds3;
+      }
+
+      const toDistribute = total - fixedTotal;
+
+      if (toDistribute >= 0 && sumInverseDistribute > 0) {
+        if (fixedIndex !== 1 && distribute1) {
+          const newStake1 = toDistribute * (1 / adjOdds1) / sumInverseDistribute;
+          setStake1(newStake1.toFixed(2));
+        }
+        if (fixedIndex !== 2 && distribute2) {
+          const newStake2 = toDistribute * (1 / adjOdds2) / sumInverseDistribute;
+          setStake2(newStake2.toFixed(2));
+        }
+        if (outcomeCount === 3 && fixedIndex !== 3 && distribute3) {
+          const newStake3 = toDistribute * (1 / adjOdds3) / sumInverseDistribute;
+          setStake3(newStake3.toFixed(2));
+        }
+      }
+    }
+    
       // Mode C=sum : redistribuer les mises avec D coché
       let fixedTotal = 0;
       let sumInverseDistribute = 0;
@@ -223,7 +257,41 @@ const SurebetCalculator = () => {
 
   // Redistribuer quand les paramètres changent
   useEffect(() => {
-    if (fixedMode === 'sum') {
+    
+    const fixedIndex = ['1', '2', '3'].includes(fixedMode) ? parseInt(fixedMode) : null;
+    if (fixedMode === 'sum' || fixedIndex) {
+      let fixedTotal = 0;
+      let sumInverseDistribute = 0;
+
+      if ((fixedMode === 'sum' && !distribute1) or (fixedIndex === 1)) fixedTotal += parseFloat(stake1) || 0;
+      else if (adjOdds1 > 0) sumInverseDistribute += 1 / adjOdds1;
+
+      if ((fixedMode === 'sum' && !distribute2) or (fixedIndex === 2)) fixedTotal += parseFloat(stake2) || 0;
+      else if (adjOdds2 > 0) sumInverseDistribute += 1 / adjOdds2;
+
+      if (outcomeCount === 3) {
+        if ((fixedMode === 'sum' && !distribute3) or (fixedIndex === 3)) fixedTotal += parseFloat(stake3) || 0;
+        else if (adjOdds3 > 0) sumInverseDistribute += 1 / adjOdds3;
+      }
+
+      const toDistribute = total - fixedTotal;
+
+      if (toDistribute >= 0 && sumInverseDistribute > 0) {
+        if (fixedIndex !== 1 && distribute1) {
+          const newStake1 = toDistribute * (1 / adjOdds1) / sumInverseDistribute;
+          setStake1(newStake1.toFixed(2));
+        }
+        if (fixedIndex !== 2 && distribute2) {
+          const newStake2 = toDistribute * (1 / adjOdds2) / sumInverseDistribute;
+          setStake2(newStake2.toFixed(2));
+        }
+        if (outcomeCount === 3 && fixedIndex !== 3 && distribute3) {
+          const newStake3 = toDistribute * (1 / adjOdds3) / sumInverseDistribute;
+          setStake3(newStake3.toFixed(2));
+        }
+      }
+    }
+    
       redistributeStakes();
     }
   }, [distribute1, distribute2, distribute3, betType]);
@@ -247,7 +315,41 @@ const SurebetCalculator = () => {
 
   // Redistribuer au changement de mode fixe
   useEffect(() => {
-    if (fixedMode === 'sum') {
+    
+    const fixedIndex = ['1', '2', '3'].includes(fixedMode) ? parseInt(fixedMode) : null;
+    if (fixedMode === 'sum' || fixedIndex) {
+      let fixedTotal = 0;
+      let sumInverseDistribute = 0;
+
+      if ((fixedMode === 'sum' && !distribute1) or (fixedIndex === 1)) fixedTotal += parseFloat(stake1) || 0;
+      else if (adjOdds1 > 0) sumInverseDistribute += 1 / adjOdds1;
+
+      if ((fixedMode === 'sum' && !distribute2) or (fixedIndex === 2)) fixedTotal += parseFloat(stake2) || 0;
+      else if (adjOdds2 > 0) sumInverseDistribute += 1 / adjOdds2;
+
+      if (outcomeCount === 3) {
+        if ((fixedMode === 'sum' && !distribute3) or (fixedIndex === 3)) fixedTotal += parseFloat(stake3) || 0;
+        else if (adjOdds3 > 0) sumInverseDistribute += 1 / adjOdds3;
+      }
+
+      const toDistribute = total - fixedTotal;
+
+      if (toDistribute >= 0 && sumInverseDistribute > 0) {
+        if (fixedIndex !== 1 && distribute1) {
+          const newStake1 = toDistribute * (1 / adjOdds1) / sumInverseDistribute;
+          setStake1(newStake1.toFixed(2));
+        }
+        if (fixedIndex !== 2 && distribute2) {
+          const newStake2 = toDistribute * (1 / adjOdds2) / sumInverseDistribute;
+          setStake2(newStake2.toFixed(2));
+        }
+        if (outcomeCount === 3 && fixedIndex !== 3 && distribute3) {
+          const newStake3 = toDistribute * (1 / adjOdds3) / sumInverseDistribute;
+          setStake3(newStake3.toFixed(2));
+        }
+      }
+    }
+    
       redistributeStakes();
     }
   }, [fixedMode]);
