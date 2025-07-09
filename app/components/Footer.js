@@ -33,8 +33,8 @@ export default function Footer() {
             <h4 className="font-bold text-white mb-4">Contact</h4>
             <ul className="space-y-2 text-sm">
               <li>Email : rounders.pro@gmail.com</li>
-              <li>Twitter : @rounders_pro</li>
-              <li><Link href="/guide-stake/faq" className="hover:text-white">FAQ</Link></li>
+              <li><Link href="https://x.com/rounders_pro" target="_blank" rel="noopener noreferrer" className="hover:text-white">Twitter : @rounders_pro</Link></li>
+              <li><Link href="https://www.youtube.com/@Rounders_fr" target="_blank" rel="noopener noreferrer" className="hover:text-white">Youtube : @Rounders_fr</Link></li>
             </ul>
           </div>
         </div>
