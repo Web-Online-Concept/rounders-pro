@@ -176,7 +176,7 @@ export default function GuideSidebar() {
       )}
       
       {/* Sidebar desktop - Position absolue pour ne pas affecter le layout mobile */}
-      <aside className="hidden md:block md:fixed md:left-0 md:top-0 md:h-full md:w-64 bg-gray-50 border-r border-gray-200 md:pt-16">
+      <aside className="hidden md:block md:fixed md:left-0 md:top-0 md:h-full md:w-64 bg-gray-50 border-r border-gray-200 md:pt-16 md:z-0">
         <div className="p-6">
           <h2 className="text-xl font-bold text-gray-800 mb-6">Guide Complet Stake</h2>
           <nav className="space-y-2">
