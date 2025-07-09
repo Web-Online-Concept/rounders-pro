@@ -40,12 +40,14 @@ export default function GuideLayout({ children }) {
     <>
       <Header />
       <GuideSidebar />
-      <main className="min-h-screen bg-white pb-20 md:pb-0 md:ml-64">
-        <div className="max-w-4xl mx-auto p-6">
-          {children}
-        </div>
-      </main>
-      <Footer />
+      <div className="md:ml-64">
+        <main className="min-h-screen bg-white pb-20 md:pb-0">
+          <div className="max-w-4xl mx-auto p-6">
+            {children}
+          </div>
+        </main>
+        <Footer />
+      </div>
       <BottomBar />
     </>
   );
