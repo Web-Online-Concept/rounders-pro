@@ -37,18 +37,16 @@ export const metadata = {
 
 export default function GuideLayout({ children }) {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Header />
       <GuideSidebar />
-      <div className="md:ml-64">
-        <main className="min-h-screen bg-white pb-20 md:pb-0">
-          <div className="max-w-4xl mx-auto p-6">
-            {children}
-          </div>
-        </main>
-        <Footer />
-      </div>
+      <main className="flex-1 bg-white pb-20 md:pb-0 md:ml-64">
+        <div className="max-w-4xl mx-auto p-6">
+          {children}
+        </div>
+      </main>
+      <Footer />
       <BottomBar />
-    </>
+    </div>
   );
 }
