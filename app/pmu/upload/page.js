@@ -47,12 +47,7 @@ export default function UploadPage() {
 
       if (response.ok) {
         setUploadResult(result);
-        if (result.stats.insertedCount > 0) {
-          // Rediriger vers le dashboard après 3 secondes si des chevaux ont été importés
-          setTimeout(() => {
-            router.push('/pmu');
-          }, 3000);
-        }
+        // Redirection supprimée - l'utilisateur reviendra manuellement
       } else {
         setError(result.error || 'Erreur lors de l\'upload');
       }
@@ -165,6 +160,10 @@ export default function UploadPage() {
             <button onClick={resetForm} className="reset-button">
               Faire un nouvel import
             </button>
+            
+            <Link href="/pmu" className="dashboard-button">
+              Voir le tableau de bord
+            </Link>
           </div>
         )}
 
@@ -468,6 +467,22 @@ export default function UploadPage() {
 
         .reset-button:hover {
           background-color: #2563eb;
+        }
+
+        .dashboard-button {
+          display: inline-block;
+          margin-left: 12px;
+          padding: 10px 20px;
+          background-color: #10b981;
+          color: white;
+          text-decoration: none;
+          border-radius: 6px;
+          font-weight: 500;
+          transition: all 0.2s;
+        }
+
+        .dashboard-button:hover {
+          background-color: #059669;
         }
 
         .error-details {
