@@ -45,6 +45,33 @@ function parseDate(dateStr) {
   }
 }
 
+// Fonction pour parser l'heure du format "1/0/00" vers "HH:MM:SS"
+function parseTime(timeStr) {
+  if (!timeStr) return null;
+  
+  try {
+    // Si c'est déjà au bon format HH:MM:SS ou HH:MM
+    if (String(timeStr).match(/^\d{1,2}:\d{2}(:\d{2})?$/)) {
+      return timeStr;
+    }
+    
+    // Format bizarre "1/0/00" => on le convertit
+    const parts = String(timeStr).split('/');
+    if (parts.length === 3) {
+      const hours = parts[0].padStart(2, '0');
+      const minutes = parts[1].padStart(2, '0');
+      const seconds = parts[2].padStart(2, '0');
+      return `${hours}:${minutes}:${seconds}`;
+    }
+    
+    // Si c'est autre chose, on essaie de le nettoyer
+    return null;
+  } catch (error) {
+    console.error('Erreur parsing heure:', timeStr, error);
+    return null;
+  }
+}
+
 // Fonction pour parser un nombre décimal
 function parseDecimal(value) {
   if (!value || value === '') return null;
