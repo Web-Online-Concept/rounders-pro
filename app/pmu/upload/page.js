@@ -124,6 +124,28 @@ export default function UploadPage() {
               </div>
             )}
 
+            {uploadResult.errors && uploadResult.errors.length > 0 && (
+              <div className="error-details">
+                <h4>Détails des erreurs :</h4>
+                {uploadResult.errors.map((err, idx) => (
+                  <div key={idx} className="error-item">
+                    <strong>{err.cheval}:</strong> {err.error}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {uploadResult.errors && uploadResult.errors.length > 0 && (
+              <div className="error-details">
+                <h4>Détails des erreurs :</h4>
+                {uploadResult.errors.map((err, idx) => (
+                  <div key={idx} className="error-item">
+                    <strong>{err.cheval}:</strong> {err.error}
+                  </div>
+                ))}
+              </div>
+            )}
+
             {uploadResult.stats?.courses && uploadResult.stats.courses.length > 0 && (
               <div className="result-courses">
                 <h4>Courses importées :</h4>
@@ -446,6 +468,56 @@ export default function UploadPage() {
 
         .reset-button:hover {
           background-color: #2563eb;
+        }
+
+        .error-details {
+          margin-top: 20px;
+          padding: 16px;
+          background-color: #fee2e2;
+          border: 1px solid #fecaca;
+          border-radius: 6px;
+        }
+
+        .error-details h4 {
+          margin: 0 0 12px 0;
+          color: #991b1b;
+          font-size: 16px;
+        }
+
+        .error-item {
+          font-size: 14px;
+          color: #7f1d1d;
+          margin-bottom: 8px;
+          word-break: break-word;
+        }
+
+        .error-item strong {
+          color: #991b1b;
+        }
+
+        .error-details {
+          margin-top: 20px;
+          padding: 16px;
+          background-color: #fee2e2;
+          border: 1px solid #fecaca;
+          border-radius: 6px;
+        }
+
+        .error-details h4 {
+          margin: 0 0 12px 0;
+          color: #991b1b;
+          font-size: 16px;
+        }
+
+        .error-item {
+          font-size: 14px;
+          color: #7f1d1d;
+          margin-bottom: 8px;
+          word-break: break-word;
+        }
+
+        .error-item strong {
+          color: #991b1b;
         }
 
         @media (max-width: 640px) {
