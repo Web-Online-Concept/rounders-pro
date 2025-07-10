@@ -4,8 +4,8 @@
 export const CRITERES = {
   "chevaux_4ans_DD_FF": {
     id: "chevaux_4ans_DD_FF",
-    nom: "Chevaux 4 ans DD-DD-FF",
-    description: "Sélectionne les chevaux de 4 ans avec Déf=DD, Déf-1=DD et Déf-2=FF",
+    nom: "Chevaux 4 ans DD-DD-FF (Mus1 ≠ 1-4)",
+    description: "Sélectionne les chevaux de 4 ans avec Déf=DD, Déf-1=DD, Déf-2=FF et Musique 1 différent de 1,2,3,4",
     actif: true,
     couleur: "#3B82F6", // Bleu
     filtres: [
@@ -36,6 +36,13 @@ export const CRITERES = {
         valeur: "FF",
         type: "exact",
         operateur: "="
+      },
+      {
+        colonne: 45,  // Colonne AT : Mus1
+        nom: "Musique 1",
+        valeur: [1, 2, 3, 4],
+        type: "not_in",
+        operateur: "≠"
       }
     ]
   },
@@ -81,7 +88,7 @@ export function applyCriteria(row, criteriaId) {
     
     // Convertir en string pour la comparaison
     const value = String(cellValue).trim();
-    const targetValue = String(filtre.valeur).trim();
+    const targetValue = filtre.type === 'not_in' ? filtre.valeur : String(filtre.valeur).trim();
     
     switch (filtre.type) {
       case 'exact':
@@ -95,6 +102,19 @@ export function applyCriteria(row, criteriaId) {
       
       case 'lesser':
         return parseFloat(value) < parseFloat(targetValue);
+      
+      case 'not_in':
+        // Pour un tableau de valeurs interdites
+        const forbidden = Array.isArray(filtre.valeur) ? filtre.valeur : [filtre.valeur];
+        const numValue = parseFloat(value);
+        
+        // Si c'est un nombre, vérifier numériquement
+        if (!isNaN(numValue)) {
+          return !forbidden.includes(numValue);
+        }
+        
+        // Sinon, c'est accepté (0a, Da, etc. sont OK)
+        return true;
       
       default:
         return false;
@@ -122,9 +142,12 @@ export function getCriteriaDescription(criteriaId) {
   const criteria = CRITERES[criteriaId];
   if (!criteria) return '';
   
-  const filters = criteria.filtres.map(f => 
-    `${f.nom} ${f.operateur} ${f.valeur}`
-  ).join(' ET ');
+  const filters = criteria.filtres.map(f => {
+    if (f.type === 'not_in' && Array.isArray(f.valeur)) {
+      return `${f.nom} ${f.operateur} ${f.valeur.join(',')}`;
+    }
+    return `${f.nom} ${f.operateur} ${f.valeur}`;
+  }).join(' ET ');
   
   return `${criteria.nom}: ${filters}`;
 }
