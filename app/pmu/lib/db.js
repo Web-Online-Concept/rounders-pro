@@ -1,4 +1,6 @@
 import { neon } from '@neondatabase/serverless';
+
+// Obtenir la connexion à la base de données
 const sql = neon(process.env.DATABASE_URL);
 
 // Fonction pour initialiser les tables si elles n'existent pas
@@ -131,25 +133,17 @@ export async function getAllChevaux(filters = {}) {
     `;
     
     const conditions = [];
-    const values = [];
-    let paramCount = 1;
     
     if (filters.dateDebut) {
-      conditions.push(`c.date_course >= $${paramCount}`);
-      values.push(filters.dateDebut);
-      paramCount++;
+      conditions.push(`c.date_course >= '${filters.dateDebut}'`);
     }
     
     if (filters.dateFin) {
-      conditions.push(`c.date_course <= $${paramCount}`);
-      values.push(filters.dateFin);
-      paramCount++;
+      conditions.push(`c.date_course <= '${filters.dateFin}'`);
     }
     
     if (filters.hippodrome) {
-      conditions.push(`c.hippodrome ILIKE $${paramCount}`);
-      values.push(`%${filters.hippodrome}%`);
-      paramCount++;
+      conditions.push(`c.hippodrome ILIKE '%${filters.hippodrome}%'`);
     }
     
     if (conditions.length > 0) {
@@ -158,8 +152,8 @@ export async function getAllChevaux(filters = {}) {
     
     query += ' ORDER BY c.date_course DESC, c.numero_course ASC, c.numero_cheval ASC';
     
-    const result = await sql.query(query, values);
-    return result.rows;
+    const result = await sql(query);
+    return result;
   } catch (error) {
     console.error('Erreur lors de la récupération des chevaux:', error);
     throw error;
@@ -189,7 +183,7 @@ export async function createImport(fileName, critereName, chevauxCount) {
       VALUES (${fileName}, ${critereName}, ${chevauxCount})
       RETURNING id
     `;
-    return result.rows[0].id;
+    return result[0].id;
   } catch (error) {
     console.error('Erreur lors de la création de l\'import:', error);
     throw error;
@@ -199,6 +193,9 @@ export async function createImport(fileName, critereName, chevauxCount) {
 // Fonction pour insérer un cheval
 export async function insertCheval(importId, chevalData) {
   try {
+    // Convertir la date au bon format
+    const dateStr = chevalData.date_course || null;
+    
     const result = await sql`
       INSERT INTO pmu_chevaux (
         import_id,
@@ -257,63 +254,63 @@ export async function insertCheval(importId, chevalData) {
         data_complete
       ) VALUES (
         ${importId},
-        ${chevalData.date_course},
-        ${chevalData.numero_reunion},
-        ${chevalData.hippodrome},
-        ${chevalData.numero_course},
-        ${chevalData.heure_course},
-        ${chevalData.discipline},
-        ${chevalData.nb_partants},
-        ${chevalData.distance},
-        ${chevalData.type_depart},
-        ${chevalData.numero_cheval},
-        ${chevalData.nom_cheval},
-        ${chevalData.age},
-        ${chevalData.sexe},
-        ${chevalData.pourcent_g_hippo},
-        ${chevalData.pourcent_p_hippo},
-        ${chevalData.clt_ca},
-        ${chevalData.first_def},
-        ${chevalData.def},
-        ${chevalData.def_1},
-        ${chevalData.def_2},
-        ${chevalData.def_3},
-        ${chevalData.def_4},
-        ${chevalData.def_5},
-        ${chevalData.def_6},
-        ${chevalData.def_7},
-        ${chevalData.def_8},
-        ${chevalData.pourcent_g_ch_histo},
-        ${chevalData.pourcent_g_ch},
-        ${chevalData.pourcent_p_ch},
-        ${chevalData.pourcent_total_ch},
-        ${chevalData.clt_ch},
-        ${chevalData.entraineur},
-        ${chevalData.pourcent_g_ent},
-        ${chevalData.pourcent_p_ent},
-        ${chevalData.pourcent_total_ent},
-        ${chevalData.clt_ent},
-        ${chevalData.pilote},
-        ${chevalData.poids_fav},
-        ${chevalData.pourcent_g_pi},
-        ${chevalData.pourcent_p_pi},
-        ${chevalData.pourcent_total_pi},
-        ${chevalData.clt_pi},
-        ${chevalData.musique},
-        ${chevalData.mus1},
-        ${chevalData.mus2},
-        ${chevalData.mus3},
-        ${chevalData.mus4},
-        ${chevalData.mus5},
-        ${chevalData.mus6},
-        ${chevalData.tempo},
-        ${chevalData.gains_carriere},
-        ${chevalData.statut},
-        ${JSON.stringify(chevalData.data_complete)}
+        ${dateStr},
+        ${chevalData.numero_reunion || null},
+        ${chevalData.hippodrome || null},
+        ${chevalData.numero_course || null},
+        ${chevalData.heure_course || null},
+        ${chevalData.discipline || null},
+        ${chevalData.nb_partants || null},
+        ${chevalData.distance || null},
+        ${chevalData.type_depart || null},
+        ${chevalData.numero_cheval || null},
+        ${chevalData.nom_cheval || null},
+        ${chevalData.age || null},
+        ${chevalData.sexe || null},
+        ${chevalData.pourcent_g_hippo || null},
+        ${chevalData.pourcent_p_hippo || null},
+        ${chevalData.clt_ca || null},
+        ${chevalData.first_def || null},
+        ${chevalData.def || null},
+        ${chevalData.def_1 || null},
+        ${chevalData.def_2 || null},
+        ${chevalData.def_3 || null},
+        ${chevalData.def_4 || null},
+        ${chevalData.def_5 || null},
+        ${chevalData.def_6 || null},
+        ${chevalData.def_7 || null},
+        ${chevalData.def_8 || null},
+        ${chevalData.pourcent_g_ch_histo || null},
+        ${chevalData.pourcent_g_ch || null},
+        ${chevalData.pourcent_p_ch || null},
+        ${chevalData.pourcent_total_ch || null},
+        ${chevalData.clt_ch || null},
+        ${chevalData.entraineur || null},
+        ${chevalData.pourcent_g_ent || null},
+        ${chevalData.pourcent_p_ent || null},
+        ${chevalData.pourcent_total_ent || null},
+        ${chevalData.clt_ent || null},
+        ${chevalData.pilote || null},
+        ${chevalData.poids_fav || null},
+        ${chevalData.pourcent_g_pi || null},
+        ${chevalData.pourcent_p_pi || null},
+        ${chevalData.pourcent_total_pi || null},
+        ${chevalData.clt_pi || null},
+        ${chevalData.musique || null},
+        ${chevalData.mus1 || null},
+        ${chevalData.mus2 || null},
+        ${chevalData.mus3 || null},
+        ${chevalData.mus4 || null},
+        ${chevalData.mus5 || null},
+        ${chevalData.mus6 || null},
+        ${chevalData.tempo || null},
+        ${chevalData.gains_carriere || null},
+        ${chevalData.statut || null},
+        ${JSON.stringify(chevalData.data_complete || {})}
       )
       RETURNING id
     `;
-    return result.rows[0].id;
+    return result[0].id;
   } catch (error) {
     console.error('Erreur lors de l\'insertion du cheval:', error);
     throw error;

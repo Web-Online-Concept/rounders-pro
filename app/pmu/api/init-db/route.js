@@ -66,11 +66,11 @@ export async function POST(request) {
 // GET - Vérifier l'état de la base de données
 export async function GET(request) {
   try {
-    const { sql } = await import('@neondatabase/serverless');
-    const db = sql(process.env.DATABASE_URL);
+    const { neon } = await import('@neondatabase/serverless');
+    const sql = neon(process.env.DATABASE_URL);
     
     // Vérifier si les tables existent
-    const tablesCheck = await db`
+    const tablesCheck = await sql`
       SELECT table_name 
       FROM information_schema.tables 
       WHERE table_schema = 'public' 
@@ -91,7 +91,7 @@ export async function GET(request) {
     }
     
     // Compter les enregistrements
-    const countsResult = await db`
+    const countsResult = await sql`
       SELECT 
         (SELECT COUNT(*) FROM pmu_imports) as imports_count,
         (SELECT COUNT(*) FROM pmu_chevaux WHERE deleted_at IS NULL) as chevaux_count
