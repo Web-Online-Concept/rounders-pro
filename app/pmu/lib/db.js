@@ -125,35 +125,31 @@ export async function initDatabase() {
 // Fonction pour obtenir tous les chevaux (non supprimés)
 export async function getAllChevaux(filters = {}) {
   try {
-    let query = `
+    // Requête de base
+    let chevaux = await sql`
       SELECT c.*, i.fichier_nom, i.critere_utilise, i.date_import
       FROM pmu_chevaux c
       JOIN pmu_imports i ON c.import_id = i.id
       WHERE c.deleted_at IS NULL
+      ORDER BY c.date_course DESC, c.numero_course ASC, c.numero_cheval ASC
     `;
     
-    const conditions = [];
-    
+    // Appliquer les filtres en JavaScript (plus simple avec Neon)
     if (filters.dateDebut) {
-      conditions.push(`c.date_course >= '${filters.dateDebut}'`);
+      chevaux = chevaux.filter(c => c.date_course >= filters.dateDebut);
     }
     
     if (filters.dateFin) {
-      conditions.push(`c.date_course <= '${filters.dateFin}'`);
+      chevaux = chevaux.filter(c => c.date_course <= filters.dateFin);
     }
     
     if (filters.hippodrome) {
-      conditions.push(`c.hippodrome ILIKE '%${filters.hippodrome}%'`);
+      chevaux = chevaux.filter(c => 
+        c.hippodrome.toLowerCase().includes(filters.hippodrome.toLowerCase())
+      );
     }
     
-    if (conditions.length > 0) {
-      query += ' AND ' + conditions.join(' AND ');
-    }
-    
-    query += ' ORDER BY c.date_course DESC, c.numero_course ASC, c.numero_cheval ASC';
-    
-    const result = await sql(query);
-    return result;
+    return chevaux;
   } catch (error) {
     console.error('Erreur lors de la récupération des chevaux:', error);
     throw error;
