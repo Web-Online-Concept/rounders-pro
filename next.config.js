@@ -4,6 +4,9 @@ const nextConfig = {
   images: {
     domains: [],
   },
+  experimental: {
+    serverComponentsExternalPackages: ['xlsx', '@neondatabase/serverless']
+  }
 };
 
 module.exports = nextConfig;

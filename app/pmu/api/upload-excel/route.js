@@ -6,6 +6,15 @@ import { getCriteriaById } from '../../lib/criteria';
 export async function POST(request) {
   console.log('📤 Début du traitement de l\'upload');
   
+  // Vérifier la connexion à la base de données
+  if (!process.env.DATABASE_URL) {
+    console.error('❌ DATABASE_URL non définie');
+    return NextResponse.json(
+      { error: 'Configuration de base de données manquante' },
+      { status: 500 }
+    );
+  }
+  
   try {
     // Récupérer les données du formulaire
     const formData = await request.formData();
@@ -159,6 +168,6 @@ export async function POST(request) {
   }
 }
 
-// Limite de taille pour l'upload (10MB)
+// Configuration spécifique pour cette route
 export const runtime = 'nodejs';
-export const maxDuration = 30; // 30 secondes max pour le traitement
+export const maxDuration = 30;

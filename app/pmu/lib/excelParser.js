@@ -42,6 +42,8 @@ function parseInteger(value) {
 // Fonction principale pour parser le fichier Excel
 export async function parseExcelFile(file, selectedCriteriaId) {
   try {
+    console.log('📄 Début du parsing Excel');
+    
     // Lire le fichier
     const arrayBuffer = await file.arrayBuffer();
     const workbook = XLSX.read(arrayBuffer, {
