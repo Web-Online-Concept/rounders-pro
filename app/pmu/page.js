@@ -278,8 +278,8 @@ export default function DashboardPage() {
               onChange={(e) => handleFilterChange('critere', e.target.value)}
             >
               <option value="">Tous les critères</option>
-              <option value="Chevaux 4 ans DD-DD-FF (Mus1 ≠ 1-4)">DD-DD-FF</option>
-              <option value="Chevaux 4 ans DD-FF-FF (Mus1 ≠ 1-4)">DD-FF-FF</option>
+              <option value="Critère 1">Critère 1</option>
+              <option value="Critère 2">Critère 2</option>
             </select>
           </div>
           

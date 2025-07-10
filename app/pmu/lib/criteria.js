@@ -4,7 +4,7 @@
 export const CRITERES = {
   "chevaux_4ans_DD_FF": {
     id: "chevaux_4ans_DD_FF",
-    nom: "Chevaux 4 ans DD-DD-FF (Mus1 ≠ 1-4)",
+    nom: "Critère 1",
     description: "Sélectionne les chevaux de 4 ans avec Déf=DD, Déf-1=DD, Déf-2=FF et Musique 1 différent de 1,2,3,4",
     actif: true,
     couleur: "#3B82F6", // Bleu
@@ -49,7 +49,7 @@ export const CRITERES = {
   
   "chevaux_4ans_DD_FF_FF": {
     id: "chevaux_4ans_DD_FF_FF",
-    nom: "Chevaux 4 ans DD-FF-FF (Mus1 ≠ 1-4)",
+    nom: "Critère 2",
     description: "Sélectionne les chevaux de 4 ans avec Déf=DD, Déf-1=FF, Déf-2=FF et Musique 1 différent de 1,2,3,4",
     actif: true,
     couleur: "#10B981", // Vert
