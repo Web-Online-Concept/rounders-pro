@@ -176,9 +176,9 @@ export default function UploadPage() {
                 Faire un nouvel import
               </button>
               
-              <Link href="/pmu" className="dashboard-button">
+              <button onClick={() => router.push('/pmu')} className="dashboard-button">
                 Voir le tableau de bord
-              </Link>
+              </button>
             </div>
           </div>
         )}
