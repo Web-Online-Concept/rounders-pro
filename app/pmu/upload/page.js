@@ -524,22 +524,18 @@ export default function UploadPage() {
           transition: all 0.2s;
         }
 
-        .reset-button:hover {
-          background-color: #2563eb;
-        }
-
         .action-buttons {
           display: flex;
           gap: 12px;
           margin-top: 20px;
         }
 
+        .reset-button,
         .dashboard-button {
           display: inline-flex;
           align-items: center;
           justify-content: center;
           padding: 10px 20px;
-          background-color: #6366f1;
           color: white;
           text-decoration: none;
           border: none;
@@ -547,6 +543,18 @@ export default function UploadPage() {
           font-weight: 500;
           cursor: pointer;
           transition: all 0.2s;
+        }
+
+        .reset-button {
+          background-color: #3b82f6;
+        }
+
+        .reset-button:hover {
+          background-color: #2563eb;
+        }
+
+        .dashboard-button {
+          background-color: #6366f1;
         }
 
         .dashboard-button:hover {
