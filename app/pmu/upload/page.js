@@ -145,25 +145,41 @@ export default function UploadPage() {
               <div className="result-courses">
                 <h4>Courses importées :</h4>
                 {uploadResult.stats.courses.map((course, idx) => (
-                  <div key={idx} className="course-summary">
-                    <span className="course-name">
-                      {course.hippodrome} - R{course.reunion}C{course.course}
-                    </span>
-                    <span className="course-count">
-                      {course.chevaux.length} chevaux
-                    </span>
+                  <div key={idx} className="course-detail">
+                    <div className="course-header-import">
+                      <span className="course-name">
+                        {course.hippodrome} - R{course.reunion}C{course.course}
+                      </span>
+                      <span className="course-count">
+                        {course.chevaux.length} {course.chevaux.length > 1 ? 'chevaux' : 'cheval'}
+                      </span>
+                    </div>
+                    <div className="chevaux-detail">
+                      {course.chevaux.map((cheval, cIdx) => (
+                        <div key={cIdx} className="cheval-item">
+                          <span className="cheval-numero">N°{cheval.numero}</span>
+                          <span className="cheval-nom">{cheval.nom}</span>
+                          <span className="cheval-info">{cheval.age} ans</span>
+                          <span className="cheval-def">
+                            Déf: {cheval.def || '-'} | {cheval.def_1 || '-'} | {cheval.def_2 || '-'}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
             )}
 
-            <button onClick={resetForm} className="reset-button">
-              Faire un nouvel import
-            </button>
-            
-            <Link href="/pmu" className="dashboard-button">
-              Voir le tableau de bord
-            </Link>
+            <div className="action-buttons">
+              <button onClick={resetForm} className="reset-button">
+                Faire un nouvel import
+              </button>
+              
+              <Link href="/pmu" className="dashboard-button">
+                Voir le tableau de bord
+              </Link>
+            </div>
           </div>
         )}
 
@@ -432,26 +448,69 @@ export default function UploadPage() {
           margin: 0 0 12px 0;
         }
 
-        .course-summary {
+        .course-detail {
+          margin-bottom: 16px;
+          border: 1px solid #e5e7eb;
+          border-radius: 6px;
+          overflow: hidden;
+        }
+
+        .course-header-import {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 8px 0;
-          border-bottom: 1px solid #f3f4f6;
-        }
-
-        .course-summary:last-child {
-          border-bottom: none;
+          padding: 12px 16px;
+          background-color: #f9fafb;
+          border-bottom: 1px solid #e5e7eb;
         }
 
         .course-name {
-          font-weight: 500;
+          font-weight: 600;
           color: #111827;
         }
 
         .course-count {
           color: #6b7280;
           font-size: 14px;
+        }
+
+        .chevaux-detail {
+          padding: 8px 0;
+        }
+
+        .cheval-item {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 8px 16px;
+          border-bottom: 1px solid #f3f4f6;
+        }
+
+        .cheval-item:last-child {
+          border-bottom: none;
+        }
+
+        .cheval-numero {
+          font-weight: 600;
+          color: #6b7280;
+          min-width: 35px;
+        }
+
+        .cheval-nom {
+          font-weight: 500;
+          color: #111827;
+          flex: 1;
+        }
+
+        .cheval-info {
+          color: #6b7280;
+          font-size: 14px;
+        }
+
+        .cheval-def {
+          color: #7c3aed;
+          font-size: 14px;
+          font-weight: 500;
         }
 
         .reset-button {
@@ -469,20 +528,29 @@ export default function UploadPage() {
           background-color: #2563eb;
         }
 
+        .action-buttons {
+          display: flex;
+          gap: 12px;
+          margin-top: 20px;
+        }
+
         .dashboard-button {
-          display: inline-block;
-          margin-left: 12px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
           padding: 10px 20px;
-          background-color: #10b981;
+          background-color: #6366f1;
           color: white;
           text-decoration: none;
+          border: none;
           border-radius: 6px;
           font-weight: 500;
+          cursor: pointer;
           transition: all 0.2s;
         }
 
         .dashboard-button:hover {
-          background-color: #059669;
+          background-color: #4f46e5;
         }
 
         .error-details {
