@@ -1,157 +1,94 @@
 import { NextResponse } from 'next/server';
-import { parseExcelFile, validateExcelFile } from '../../lib/excelParser';
-import { createImport, insertCheval } from '../../lib/db';
-import { getCriteriaById } from '../../lib/criteria';
+import { getAllChevaux, deleteCheval } from '../../lib/db';
 
-export async function POST(request) {
-  console.log('📤 Début du traitement de l\'upload');
-  
+// GET - Récupérer tous les chevaux avec filtres optionnels
+export async function GET(request) {
   try {
-    // Récupérer les données du formulaire
-    const formData = await request.formData();
-    const file = formData.get('file');
-    const criteriaId = formData.get('criteriaId');
+    // Extraire les paramètres de recherche
+    const { searchParams } = new URL(request.url);
     
-    // Validation des données
-    if (!file) {
-      return NextResponse.json(
-        { error: 'Aucun fichier fourni' },
-        { status: 400 }
-      );
-    }
-    
-    if (!criteriaId) {
-      return NextResponse.json(
-        { error: 'Aucun critère sélectionné' },
-        { status: 400 }
-      );
-    }
-    
-    // Vérifier que le critère existe
-    const criteria = getCriteriaById(criteriaId);
-    if (!criteria) {
-      return NextResponse.json(
-        { error: 'Critère invalide' },
-        { status: 400 }
-      );
-    }
-    
-    // Valider le fichier
-    const validation = validateExcelFile(file);
-    if (!validation.valid) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      );
-    }
-    
-    console.log(`📊 Parsing du fichier: ${file.name} avec le critère: ${criteriaId}`);
-    
-    // Parser le fichier Excel
-    const parseResult = await parseExcelFile(file, criteriaId);
-    
-    if (!parseResult.success) {
-      return NextResponse.json(
-        { error: `Erreur lors du parsing: ${parseResult.error}` },
-        { status: 400 }
-      );
-    }
-    
-    console.log(`✅ Parsing réussi: ${parseResult.selectedCount} chevaux sélectionnés sur ${parseResult.totalRows}`);
-    
-    // Si aucun cheval ne correspond aux critères
-    if (parseResult.selectedCount === 0) {
-      return NextResponse.json({
-        success: true,
-        message: 'Aucun cheval ne correspond aux critères sélectionnés',
-        stats: {
-          totalRows: parseResult.totalRows,
-          selectedCount: 0,
-          criteriaUsed: criteria.nom
-        }
-      });
-    }
-    
-    // Créer l'enregistrement d'import
-    const importId = await createImport(
-      file.name,
-      criteria.nom,
-      parseResult.selectedCount
-    );
-    
-    console.log(`💾 Import créé avec l'ID: ${importId}`);
-    
-    // Insérer les chevaux en base de données
-    const insertedIds = [];
-    const errors = [];
-    
-    for (const cheval of parseResult.chevaux) {
-      try {
-        const chevalId = await insertCheval(importId, cheval);
-        insertedIds.push(chevalId);
-      } catch (error) {
-        console.error(`Erreur insertion cheval ${cheval.nom_cheval}:`, error);
-        errors.push({
-          cheval: cheval.nom_cheval,
-          error: error.message
-        });
-      }
-    }
-    
-    console.log(`✅ ${insertedIds.length} chevaux insérés avec succès`);
-    
-    // Préparer le résumé des résultats
-    const summary = {
-      totalRows: parseResult.totalRows,
-      selectedCount: parseResult.selectedCount,
-      insertedCount: insertedIds.length,
-      errorCount: errors.length,
-      criteriaUsed: criteria.nom,
-      fileName: file.name,
-      importId: importId
+    const filters = {
+      dateDebut: searchParams.get('dateDebut'),
+      dateFin: searchParams.get('dateFin'),
+      hippodrome: searchParams.get('hippodrome'),
+      critere: searchParams.get('critere')
     };
     
-    // Si certains chevaux sont présents
-    if (parseResult.chevaux.length > 0) {
-      // Grouper par course pour le résumé
-      const coursesMap = {};
-      parseResult.chevaux.forEach(cheval => {
-        const key = `${cheval.hippodrome}_${cheval.date_course}_R${cheval.numero_reunion}_C${cheval.numero_course}`;
-        if (!coursesMap[key]) {
-          coursesMap[key] = {
-            hippodrome: cheval.hippodrome,
-            date: cheval.date_course,
-            reunion: cheval.numero_reunion,
-            course: cheval.numero_course,
-            chevaux: []
-          };
-        }
-        coursesMap[key].chevaux.push({
-          numero: cheval.numero_cheval,
-          nom: cheval.nom_cheval,
-          age: cheval.age,
-          def: cheval.def,
-          def_1: cheval.def_1,
-          def_2: cheval.def_2
-        });
-      });
-      
-      summary.courses = Object.values(coursesMap);
-    }
+    console.log('🔍 Récupération des chevaux avec filtres:', filters);
     
-    // Retourner le résultat
+    // Récupérer les chevaux depuis la base de données
+    const chevaux = await getAllChevaux(filters);
+    
+    // Grouper les chevaux par date et course pour faciliter l'affichage
+    const chevauxGroupes = {};
+    
+    chevaux.forEach(cheval => {
+      // Créer une clé unique pour chaque course
+      const dateKey = cheval.date_course;
+      const courseKey = `${cheval.hippodrome}_R${cheval.numero_reunion}_C${cheval.numero_course}`;
+      
+      if (!chevauxGroupes[dateKey]) {
+        chevauxGroupes[dateKey] = {};
+      }
+      
+      if (!chevauxGroupes[dateKey][courseKey]) {
+        chevauxGroupes[dateKey][courseKey] = {
+          date: cheval.date_course,
+          hippodrome: cheval.hippodrome,
+          reunion: cheval.numero_reunion,
+          course: cheval.numero_course,
+          heure: cheval.heure_course,
+          discipline: cheval.discipline,
+          distance: cheval.distance,
+          critere_utilise: cheval.critere_utilise,
+          fichier_nom: cheval.fichier_nom,
+          date_import: cheval.date_import,
+          chevaux: []
+        };
+      }
+      
+      chevauxGroupes[dateKey][courseKey].chevaux.push({
+        id: cheval.id,
+        numero: cheval.numero_cheval,
+        nom: cheval.nom_cheval,
+        age: cheval.age,
+        sexe: cheval.sexe,
+        def: cheval.def,
+        def_1: cheval.def_1,
+        def_2: cheval.def_2,
+        entraineur: cheval.entraineur,
+        pilote: cheval.pilote,
+        musique: cheval.musique,
+        gains_carriere: cheval.gains_carriere,
+        pourcent_g_ch: cheval.pourcent_g_ch,
+        pourcent_p_ch: cheval.pourcent_p_ch,
+        pourcent_total_ch: cheval.pourcent_total_ch,
+        data_complete: cheval.data_complete
+      });
+    });
+    
+    // Calculer les statistiques
+    const stats = {
+      totalChevaux: chevaux.length,
+      totalCourses: Object.values(chevauxGroupes).reduce(
+        (acc, date) => acc + Object.keys(date).length, 
+        0
+      ),
+      hippodromes: [...new Set(chevaux.map(c => c.hippodrome))].sort(),
+      dates: Object.keys(chevauxGroupes).sort().reverse()
+    };
+    
     return NextResponse.json({
       success: true,
-      message: `${insertedIds.length} chevaux importés avec succès`,
-      stats: summary,
-      errors: errors.length > 0 ? errors : undefined
+      data: chevauxGroupes,
+      stats: stats
     });
     
   } catch (error) {
-    console.error('❌ Erreur lors du traitement:', error);
+    console.error('❌ Erreur lors de la récupération des chevaux:', error);
     return NextResponse.json(
       { 
-        error: 'Erreur lors du traitement du fichier',
+        error: 'Erreur lors de la récupération des données',
         details: error.message 
       },
       { status: 500 }
@@ -159,6 +96,46 @@ export async function POST(request) {
   }
 }
 
-// Limite de taille pour l'upload (10MB)
+// DELETE - Supprimer un cheval (soft delete)
+export async function DELETE(request) {
+  try {
+    // Récupérer l'ID du cheval à supprimer
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    
+    if (!id) {
+      return NextResponse.json(
+        { error: 'ID du cheval manquant' },
+        { status: 400 }
+      );
+    }
+    
+    console.log(`🗑️ Suppression du cheval ID: ${id}`);
+    
+    // Supprimer le cheval (soft delete)
+    const result = await deleteCheval(id);
+    
+    if (result.success) {
+      return NextResponse.json({
+        success: true,
+        message: 'Cheval supprimé avec succès'
+      });
+    } else {
+      throw new Error('Échec de la suppression');
+    }
+    
+  } catch (error) {
+    console.error('❌ Erreur lors de la suppression:', error);
+    return NextResponse.json(
+      { 
+        error: 'Erreur lors de la suppression',
+        details: error.message 
+      },
+      { status: 500 }
+    );
+  }
+}
+
+// Configuration
 export const runtime = 'nodejs';
-export const maxDuration = 30; // 30 secondes max pour le traitement
+export const dynamic = 'force-dynamic';
