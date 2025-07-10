@@ -11,7 +11,8 @@ export default function DashboardPage() {
   const [filters, setFilters] = useState({
     dateDebut: '',
     dateFin: '',
-    hippodrome: ''
+    hippodrome: '',
+    critere: ''
   });
   const [isDbInitialized, setIsDbInitialized] = useState(true);
 
@@ -93,7 +94,8 @@ export default function DashboardPage() {
     setFilters({
       dateDebut: '',
       dateFin: '',
-      hippodrome: ''
+      hippodrome: '',
+      critere: ''
     });
   };
 
@@ -265,6 +267,19 @@ export default function DashboardPage() {
               {stats?.hippodromes.map(h => (
                 <option key={h} value={h}>{h}</option>
               ))}
+            </select>
+          </div>
+          
+          <div className="filter-item">
+            <label htmlFor="critere">Critère utilisé</label>
+            <select
+              id="critere"
+              value={filters.critere}
+              onChange={(e) => handleFilterChange('critere', e.target.value)}
+            >
+              <option value="">Tous les critères</option>
+              <option value="Chevaux 4 ans DD-DD-FF (Mus1 ≠ 1-4)">DD-DD-FF</option>
+              <option value="Chevaux 4 ans DD-FF-FF (Mus1 ≠ 1-4)">DD-FF-FF</option>
             </select>
           </div>
           

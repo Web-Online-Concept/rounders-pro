@@ -149,6 +149,10 @@ export async function getAllChevaux(filters = {}) {
       );
     }
     
+    if (filters.critere) {
+      chevaux = chevaux.filter(c => c.critere_utilise === filters.critere);
+    }
+    
     return chevaux;
   } catch (error) {
     console.error('Erreur lors de la récupération des chevaux:', error);
