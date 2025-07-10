@@ -6,8 +6,20 @@ function parseDate(dateStr) {
   if (!dateStr) return null;
   
   try {
-    const parts = dateStr.split('/');
-    if (parts.length !== 3) return null;
+    // Gérer différents formats possibles
+    const dateString = String(dateStr).trim();
+    
+    // Si c'est déjà au format ISO
+    if (dateString.match(/^\d{4}-\d{2}-\d{2}/)) {
+      return dateString.substring(0, 10);
+    }
+    
+    // Format DD/MM/YY ou D/M/YY
+    const parts = dateString.split('/');
+    if (parts.length !== 3) {
+      console.error('Format de date invalide:', dateStr);
+      return null;
+    }
     
     const day = parts[0].padStart(2, '0');
     const month = parts[1].padStart(2, '0');
@@ -15,10 +27,18 @@ function parseDate(dateStr) {
     
     // Gérer les années sur 2 chiffres
     if (year.length === 2) {
-      year = '20' + year;
+      // Pour 2025, on assume que les années 00-50 sont 2000-2050
+      const yearNum = parseInt(year);
+      if (yearNum <= 50) {
+        year = '20' + year;
+      } else {
+        year = '19' + year;
+      }
     }
     
-    return `${year}-${month}-${day}`;
+    const dateResult = `${year}-${month}-${day}`;
+    console.log(`Date convertie: ${dateStr} => ${dateResult}`);
+    return dateResult;
   } catch (error) {
     console.error('Erreur parsing date:', dateStr, error);
     return null;
@@ -89,6 +109,14 @@ export async function parseExcelFile(file, selectedCriteriaId) {
         continue;
       }
       
+      console.log(`Cheval sélectionné ligne ${i+1}:`, {
+        nom: row[COLONNES.NOM_CHEVAL],
+        age: row[COLONNES.AGE],
+        def: row[COLONNES.DEF],
+        def_1: row[COLONNES.DEF_1],
+        def_2: row[COLONNES.DEF_2]
+      });
+      
       // Extraire les données du cheval
       const cheval = {
         // Info course
@@ -96,7 +124,7 @@ export async function parseExcelFile(file, selectedCriteriaId) {
         numero_reunion: row[COLONNES.NUMERO_REUNION],
         hippodrome: row[COLONNES.HIPPODROME],
         numero_course: parseInteger(row[COLONNES.NUMERO_COURSE]),
-        heure_course: row[COLONNES.HEURE],
+        heure_course: parseTime(row[COLONNES.HEURE]),
         discipline: row[COLONNES.DISCIPLINE],
         nb_partants: parseInteger(row[COLONNES.PARTANTS]),
         distance: row[COLONNES.DISTANCE],
