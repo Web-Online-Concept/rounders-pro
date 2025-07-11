@@ -136,23 +136,34 @@ export async function getAllChevaux(filters = {}) {
     
     // Appliquer les filtres en JavaScript (plus simple avec Neon)
     if (filters.dateDebut) {
-      chevaux = chevaux.filter(c => c.date_course >= filters.dateDebut);
+      console.log('Filtre date début:', filters.dateDebut);
+      chevaux = chevaux.filter(c => {
+        if (!c.date_course) return false;
+        const dateCheval = new Date(c.date_course).toISOString().split('T')[0];
+        return dateCheval >= filters.dateDebut;
+      });
     }
     
     if (filters.dateFin) {
-      chevaux = chevaux.filter(c => c.date_course <= filters.dateFin);
+      console.log('Filtre date fin:', filters.dateFin);
+      chevaux = chevaux.filter(c => {
+        if (!c.date_course) return false;
+        const dateCheval = new Date(c.date_course).toISOString().split('T')[0];
+        return dateCheval <= filters.dateFin;
+      });
     }
     
     if (filters.hippodrome) {
-      chevaux = chevaux.filter(c => 
-        c.hippodrome.toLowerCase().includes(filters.hippodrome.toLowerCase())
-      );
+      console.log('Filtre hippodrome:', filters.hippodrome);
+      chevaux = chevaux.filter(c => c.hippodrome === filters.hippodrome);
     }
     
     if (filters.critere) {
+      console.log('Filtre critère:', filters.critere);
       chevaux = chevaux.filter(c => c.critere_utilise === filters.critere);
     }
     
+    console.log('Nombre de chevaux après filtrage:', chevaux.length);
     return chevaux;
   } catch (error) {
     console.error('Erreur lors de la récupération des chevaux:', error);

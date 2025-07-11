@@ -26,6 +26,7 @@ export default function DashboardPage() {
       if (filters.dateDebut) params.append('dateDebut', filters.dateDebut);
       if (filters.dateFin) params.append('dateFin', filters.dateFin);
       if (filters.hippodrome) params.append('hippodrome', filters.hippodrome);
+      if (filters.critere) params.append('critere', filters.critere);
       
       const response = await fetch(`/pmu/api/chevaux?${params}`);
       
