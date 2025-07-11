@@ -144,6 +144,58 @@ export const CRITERES = {
     ]
   },
   
+  "juments_5ans_DD_DD_FF": {
+    id: "juments_5ans_DD_DD_FF",
+    nom: "Critère 4",
+    description: "Sélectionne les juments de 5 ans avec Déf=DD, Déf-1=DD, Déf-2=FF et Musique 1 différent de 1,2,3,4",
+    actif: true,
+    couleur: "#F59E0B", // Orange
+    filtres: [
+      {
+        colonne: 11,  // Colonne L : Age
+        nom: "Age",
+        valeur: "5",
+        type: "exact",
+        operateur: "="
+      },
+      {
+        colonne: 12,  // Colonne M : Sexe
+        nom: "Sexe",
+        valeur: "F",
+        type: "exact",
+        operateur: "="
+      },
+      {
+        colonne: 17,  // Colonne R : Déf
+        nom: "Défaillance actuelle",
+        valeur: "DD",
+        type: "exact",
+        operateur: "="
+      },
+      {
+        colonne: 18,  // Colonne S : Déf-1
+        nom: "Défaillance précédente",
+        valeur: "DD",
+        type: "exact",
+        operateur: "="
+      },
+      {
+        colonne: 19,  // Colonne T : Déf-2
+        nom: "Défaillance -2",
+        valeur: "FF",
+        type: "exact",
+        operateur: "="
+      },
+      {
+        colonne: 45,  // Colonne AT : Mus1
+        nom: "Musique 1",
+        valeur: [1, 2, 3, 4],
+        type: "not_in",
+        operateur: "≠"
+      }
+    ]
+  },
+  
   // Emplacement pour ajouter d'autres critères facilement
   // Exemple de structure pour un futur critère :
   /*

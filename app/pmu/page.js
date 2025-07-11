@@ -281,6 +281,7 @@ export default function DashboardPage() {
               <option value="Critère 1">Critère 1</option>
               <option value="Critère 2">Critère 2</option>
               <option value="Critère 3">Critère 3</option>
+              <option value="Critère 4">Critère 4</option>
             </select>
           </div>
           
