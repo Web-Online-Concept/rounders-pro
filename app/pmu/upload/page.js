@@ -148,7 +148,7 @@ export default function UploadPage() {
                   <div key={idx} className="course-detail">
                     <div className="course-header-import">
                       <span className="course-name">
-                        R{course.reunion}C{course.course} - {course.hippodrome}
+                        {course.reunion}C{course.course} - {course.hippodrome}
                       </span>
                       <span className="course-count">
                         {course.chevaux.length} {course.chevaux.length > 1 ? 'chevaux' : 'cheval'}

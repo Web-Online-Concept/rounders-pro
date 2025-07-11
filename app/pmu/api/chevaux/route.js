@@ -25,7 +25,7 @@ export async function GET(request) {
     chevaux.forEach(cheval => {
       // Créer une clé unique pour chaque course
       const dateKey = cheval.date_course;
-      const courseKey = `${cheval.hippodrome}_R${cheval.numero_reunion}_C${cheval.numero_course}`;
+      const courseKey = `${cheval.hippodrome}_${cheval.numero_reunion}_C${cheval.numero_course}`;
       
       if (!chevauxGroupes[dateKey]) {
         chevauxGroupes[dateKey] = {};
