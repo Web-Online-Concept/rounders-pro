@@ -131,7 +131,7 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
                 >
                   <div className="course-info">
                     <h4 className="course-title">
-                      R{courseData.reunion}C{courseData.course} - {courseData.hippodrome}
+                      {courseData.reunion}C{courseData.course} - {courseData.hippodrome}
                     </h4>
                     <div className="course-details">
                       <span className="detail-item">
