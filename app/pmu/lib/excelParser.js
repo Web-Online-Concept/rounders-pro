@@ -88,6 +88,26 @@ function parseInteger(value) {
   return isNaN(parsed) ? null : parsed;
 }
 
+// Fonction pour extraire le numéro de course depuis "C1", "C2", etc.
+function parseCourseNumber(value) {
+  if (!value) return null;
+  
+  const strValue = String(value).trim();
+  
+  // Si c'est déjà un nombre
+  if (!isNaN(strValue)) {
+    return parseInt(strValue, 10);
+  }
+  
+  // Si c'est au format "C1", "C2", etc.
+  if (strValue.match(/^C(\d+)$/i)) {
+    return parseInt(strValue.substring(1), 10);
+  }
+  
+  console.log('Format de numéro de course non reconnu:', value);
+  return null;
+}
+
 // Fonction principale pour parser le fichier Excel
 export async function parseExcelFile(file, selectedCriteriaId) {
   try {
@@ -143,7 +163,10 @@ export async function parseExcelFile(file, selectedCriteriaId) {
         age: row[COLONNES.AGE],
         def: row[COLONNES.DEF],
         def_1: row[COLONNES.DEF_1],
-        def_2: row[COLONNES.DEF_2]
+        def_2: row[COLONNES.DEF_2],
+        colonneB: row[COLONNES.NUMERO_REUNION],
+        colonneD_brut: row[COLONNES.NUMERO_COURSE],
+        colonneD_parsed: parseCourseNumber(row[COLONNES.NUMERO_COURSE])
       });
       
       // Extraire les données du cheval
@@ -152,7 +175,7 @@ export async function parseExcelFile(file, selectedCriteriaId) {
         date_course: parseDate(row[COLONNES.DATE]),
         numero_reunion: row[COLONNES.NUMERO_REUNION],
         hippodrome: row[COLONNES.HIPPODROME],
-        numero_course: parseInteger(row[COLONNES.NUMERO_COURSE]),
+        numero_course: parseCourseNumber(row[COLONNES.NUMERO_COURSE]),
         heure_course: parseTime(row[COLONNES.HEURE]),
         discipline: row[COLONNES.DISCIPLINE],
         nb_partants: parseInteger(row[COLONNES.PARTANTS]),
