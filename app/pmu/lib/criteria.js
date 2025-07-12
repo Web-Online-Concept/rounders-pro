@@ -253,28 +253,7 @@ export const CRITERES = {
         operateur: "="
       }
     ]
-  },
-  
-  // Emplacement pour ajouter d'autres critères facilement
-  // Exemple de structure pour un futur critère :
-  /*
-  "critere_exemple": {
-    id: "critere_exemple",
-    nom: "Nom du critère",
-    description: "Description détaillée",
-    actif: false,
-    couleur: "#10B981", // Vert
-    filtres: [
-      {
-        colonne: X,
-        nom: "Nom du filtre",
-        valeur: "valeur recherchée",
-        type: "exact" | "contains" | "greater" | "lesser",
-        operateur: "=" | "LIKE" | ">" | "<"
-      }
-    ]
   }
-  */
 };
 
 // Fonction pour appliquer un critère sur une ligne de données
@@ -308,10 +287,6 @@ export function applyCriteria(row, criteriaId) {
       
       case 'exact_mus1':
         // Spécial pour le critère 5 - Mus1 doit être exactement "1"
-        // Log pour déboguer
-        console.log(`Critère 5 - Vérification Mus1: valeur='${value}', match=${value === '1'}`);
-        
-        // Accepter seulement "1" (pas "1a", "1.0", etc.)
         return value === '1';
       
       case 'contains':
@@ -386,11 +361,11 @@ export function getCriteriaDescription(criteriaId) {
 // Export des colonnes pour référence
 export const COLONNES = {
   // La Réunion et la Course
-  DATE: 0,                // Colonne A (index 0) - CORRIGÉ !
-  NUMERO_REUNION: 1,      // Colonne B (index 1)
-  HIPPODROME: 2,
-  NUMERO_COURSE: 3,
-  HEURE: 4,
+  NUMERO_REUNION: 0,      // Colonne A
+  DATE: 1,                // Colonne B - LA DATE EST ICI !
+  HIPPODROME: 2,          // Colonne C
+  NUMERO_COURSE: 3,       // Colonne D
+  HEURE: 4,               // Colonne E
   DISCIPLINE: 5,
   PARTANTS: 6,
   DISTANCE: 7,
