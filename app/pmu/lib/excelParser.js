@@ -4,23 +4,32 @@ import { applyCriteria, COLONNES } from './criteria';
 // Fonction pour parser la date du format "7/11/25" vers "2025-07-11"
 // FORMAT AMÉRICAIN dans l'export Excel : mois/jour/année
 function parseDate(dateStr) {
-  if (!dateStr) return null;
+  console.log('📅 ParseDate appelé avec:', dateStr, 'Type:', typeof dateStr);
+  
+  if (!dateStr && dateStr !== 0) {
+    console.log('⚠️ Date vide ou null');
+    return null;
+  }
   
   try {
     // Gérer différents formats possibles
     const dateString = String(dateStr).trim();
+    console.log('📅 Date string nettoyée:', dateString);
     
     // Si c'est déjà au format ISO
     if (dateString.match(/^\d{4}-\d{2}-\d{2}/)) {
+      console.log('✅ Date déjà au format ISO');
       return dateString.substring(0, 10);
     }
     
     // Format MM/DD/YY ou M/D/YY (FORMAT AMÉRICAIN)
     const parts = dateString.split('/');
     if (parts.length !== 3) {
-      console.error('Format de date invalide:', dateStr);
+      console.error('❌ Format de date invalide (pas 3 parties):', dateStr);
       return null;
     }
+    
+    console.log('📅 Parties de la date:', parts);
     
     // En format américain : mois/jour/année
     const month = parts[0].padStart(2, '0');
@@ -39,10 +48,10 @@ function parseDate(dateStr) {
     }
     
     const dateResult = `${year}-${month}-${day}`;
-    console.log(`Date convertie (format US): ${dateStr} => ${dateResult}`);
+    console.log(`✅ Date convertie (format US): ${dateStr} => ${dateResult}`);
     return dateResult;
   } catch (error) {
-    console.error('Erreur parsing date:', dateStr, error);
+    console.error('❌ Erreur parsing date:', dateStr, error);
     return null;
   }
 }
@@ -52,7 +61,7 @@ function parseTime(timeValue) {
   if (!timeValue && timeValue !== 0) return null;
   
   try {
-    console.log('Parsing heure, valeur brute:', timeValue, 'type:', typeof timeValue);
+    console.log('⏰ Parsing heure, valeur brute:', timeValue, 'type:', typeof timeValue);
     
     // Si c'est déjà au bon format HH:MM:SS ou HH:MM
     const timeStr = String(timeValue).trim();
@@ -70,7 +79,7 @@ function parseTime(timeValue) {
         const hours = Math.floor(totalMinutes / 60);
         const minutes = totalMinutes % 60;
         const result = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
-        console.log(`Heure convertie depuis fraction: ${numValue} => ${result}`);
+        console.log(`✅ Heure convertie depuis fraction: ${numValue} => ${result}`);
         return result;
       }
     }
@@ -96,10 +105,10 @@ function parseTime(timeValue) {
       }
     }
     
-    console.log('Format d\'heure non reconnu:', timeValue);
+    console.log('⚠️ Format d\'heure non reconnu:', timeValue);
     return '00:00:00'; // Valeur par défaut au lieu de null
   } catch (error) {
-    console.error('Erreur parsing heure:', timeValue, error);
+    console.error('❌ Erreur parsing heure:', timeValue, error);
     return '00:00:00';
   }
 }
@@ -142,6 +151,7 @@ function parseCourseNumber(value) {
 export async function parseExcelFile(file, selectedCriteriaId) {
   try {
     console.log('📄 Début du parsing Excel');
+    console.log('📊 COLONNES.DATE vaut:', COLONNES.DATE);
     
     // Lire le fichier avec options spéciales pour les dates et heures
     const arrayBuffer = await file.arrayBuffer();
@@ -173,6 +183,18 @@ export async function parseExcelFile(file, selectedCriteriaId) {
       throw new Error('Aucune donnée trouvée dans le fichier');
     }
     
+    // Debug: afficher les 3 premières lignes de données
+    console.log('🔍 Premières lignes de données:');
+    for (let i = dataStartRow; i < Math.min(dataStartRow + 3, data.length); i++) {
+      console.log(`Ligne ${i+1}:`, {
+        colonneA: data[i][0],
+        colonneB_date: data[i][1],
+        colonneC: data[i][2],
+        colonneD: data[i][3],
+        colonneE_heure: data[i][4]
+      });
+    }
+    
     // Extraire et filtrer les chevaux
     const chevaux = [];
     let totalRows = 0;
@@ -185,9 +207,9 @@ export async function parseExcelFile(file, selectedCriteriaId) {
       
       totalRows++;
       
-      // Debug: afficher l'heure pour la première ligne
-      if (i === dataStartRow) {
-        console.log('Première ligne - Colonne E (heure):', row[COLONNES.HEURE]);
+      // Debug: afficher les données de date pour les 3 premières lignes
+      if (totalRows <= 3) {
+        console.log(`📋 Ligne ${i+1} - Colonne date (index ${COLONNES.DATE}):`, row[COLONNES.DATE]);
       }
       
       // Appliquer le critère sélectionné
@@ -195,21 +217,20 @@ export async function parseExcelFile(file, selectedCriteriaId) {
         continue;
       }
       
-      console.log(`Cheval sélectionné ligne ${i+1}:`, {
+      // Parser la date
+      const dateParsed = parseDate(row[COLONNES.DATE]);
+      
+      console.log(`✅ Cheval sélectionné ligne ${i+1}:`, {
         nom: row[COLONNES.NOM_CHEVAL],
-        age: row[COLONNES.AGE],
-        def: row[COLONNES.DEF],
-        def_1: row[COLONNES.DEF_1],
-        def_2: row[COLONNES.DEF_2],
-        colonneB: row[COLONNES.NUMERO_REUNION],
-        colonneD_brut: row[COLONNES.NUMERO_COURSE],
-        colonneD_parsed: parseCourseNumber(row[COLONNES.NUMERO_COURSE])
+        date_brute: row[COLONNES.DATE],
+        date_parsee: dateParsed,
+        heure: row[COLONNES.HEURE]
       });
       
       // Extraire les données du cheval
       const cheval = {
         // Info course
-        date_course: parseDate(row[COLONNES.DATE]),
+        date_course: dateParsed,
         numero_reunion: row[COLONNES.NUMERO_REUNION],
         hippodrome: row[COLONNES.HIPPODROME],
         numero_course: parseCourseNumber(row[COLONNES.NUMERO_COURSE]),
@@ -279,6 +300,11 @@ export async function parseExcelFile(file, selectedCriteriaId) {
       };
       
       chevaux.push(cheval);
+    }
+    
+    console.log(`📊 Résultat du parsing: ${chevaux.length} chevaux sélectionnés sur ${totalRows} lignes`);
+    if (chevaux.length > 0) {
+      console.log('Premier cheval complet:', chevaux[0]);
     }
     
     return {
