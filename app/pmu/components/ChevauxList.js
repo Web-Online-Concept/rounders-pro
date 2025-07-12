@@ -94,10 +94,18 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
 
   // Formater la date
   const formatDate = (dateStr) => {
-    if (!dateStr) return '';
+    if (!dateStr) {
+      console.warn('formatDate: pas de date fournie');
+      return 'Date non disponible';
+    }
+    
+    // Ignorer les dates invalides connues
+    if (dateStr === 'date-invalide' || dateStr === 'date-inconnue' || dateStr === 'sans-date') {
+      return null;
+    }
     
     try {
-      console.log('Formatage de la date:', dateStr, 'Type:', typeof dateStr);
+      console.log('formatDate - Input:', dateStr, 'Type:', typeof dateStr);
       
       let date;
       
@@ -105,23 +113,39 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
       if (dateStr instanceof Date) {
         date = dateStr;
       }
-      // Si c'est une chaîne au format ISO (2025-07-12)
-      else if (typeof dateStr === 'string' && dateStr.match(/^\d{4}-\d{2}-\d{2}/)) {
-        // Ajouter l'heure pour éviter les problèmes de timezone
-        date = new Date(dateStr + 'T12:00:00');
+      // Si c'est une chaîne au format ISO (2025-01-17 ou 2025-01-17T...)
+      else if (typeof dateStr === 'string') {
+        // Format YYYY-MM-DD
+        if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+          // Ajouter l'heure à midi pour éviter les problèmes de timezone
+          date = new Date(dateStr + 'T12:00:00');
+        }
+        // Format ISO complet
+        else if (dateStr.match(/^\d{4}-\d{2}-\d{2}T/)) {
+          date = new Date(dateStr);
+        }
+        // Essayer de parser directement
+        else {
+          date = new Date(dateStr);
+        }
       }
-      // Sinon, essayer de parser normalement
-      else {
+      // Si c'est un nombre (timestamp)
+      else if (typeof dateStr === 'number') {
         date = new Date(dateStr);
       }
-      
-      // Vérifier si la date est valide
-      if (isNaN(date.getTime())) {
-        console.error('Date invalide après parsing:', dateStr, date);
+      // Type non reconnu
+      else {
+        console.error('formatDate - Type non reconnu:', typeof dateStr, dateStr);
         return 'Date invalide';
       }
       
-      console.log('Date parsée correctement:', date);
+      // Vérifier si la date est valide
+      if (!date || isNaN(date.getTime())) {
+        console.error('formatDate - Date invalide après parsing:', dateStr, date);
+        return 'Date invalide';
+      }
+      
+      console.log('formatDate - Date parsée:', date);
       
       // Formater la date en français
       const options = {
@@ -134,10 +158,14 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
       const formatted = date.toLocaleDateString('fr-FR', options);
       
       // Capitaliser la première lettre
-      return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+      const result = formatted.charAt(0).toUpperCase() + formatted.slice(1);
+      
+      console.log('formatDate - Résultat:', result);
+      
+      return result;
       
     } catch (error) {
-      console.error('Erreur formatage date:', dateStr, error);
+      console.error('formatDate - Erreur:', error, 'pour la date:', dateStr);
       return 'Date invalide';
     }
   };
@@ -145,7 +173,11 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
   // Formater l'heure
   const formatTime = (timeStr) => {
     if (!timeStr) return '';
-    return timeStr.substring(0, 5); // HH:MM
+    // Si l'heure est au format HH:MM:SS, ne garder que HH:MM
+    if (typeof timeStr === 'string' && timeStr.length >= 5) {
+      return timeStr.substring(0, 5);
+    }
+    return timeStr;
   };
 
   // Formater les gains
@@ -203,16 +235,26 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
     );
   }
 
+  // Log pour debug
+  console.log('ChevauxList - Données reçues:', Object.keys(chevaux));
+
   return (
     <div className="chevaux-list">
       {Object.entries(chevaux).map(([date, courses]) => {
-        // Ignorer les entrées avec des dates invalides dans l'affichage
-        if (date === 'date-invalide' || date === 'sans-date') {
+        // Ignorer les entrées avec des dates invalides
+        if (date === 'date-invalide' || date === 'date-inconnue' || date === 'sans-date') {
+          console.log('ChevauxList - Date ignorée:', date);
           return null;
         }
         
         const isDateDeleting = deletingDates.has(date);
         const dateFormatted = formatDate(date);
+        
+        // Si le formatage retourne null, ignorer cette entrée
+        if (!dateFormatted) {
+          console.log('ChevauxList - Date non formatable:', date);
+          return null;
+        }
         
         return (
           <div key={date} className="date-group">

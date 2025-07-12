@@ -19,17 +19,48 @@ export async function GET(request) {
     // Récupérer les chevaux depuis la base de données
     const chevaux = await getAllChevaux(filters);
     
+    console.log(`📊 Nombre de chevaux récupérés: ${chevaux.length}`);
+    
     // Grouper les chevaux par date et course pour faciliter l'affichage
     const chevauxGroupes = {};
     
-    chevaux.forEach(cheval => {
+    chevaux.forEach((cheval, index) => {
       // Formater la date pour avoir une clé cohérente
       let dateKey = cheval.date_course;
       
-      // Si la date existe, s'assurer qu'elle est au format string
-      if (dateKey && typeof dateKey === 'object') {
-        // Si c'est un objet Date, le convertir en string ISO
+      // Log pour debug (seulement pour le premier cheval)
+      if (index === 0) {
+        console.log('🗓️ Debug date - Premier cheval:');
+        console.log('  - date_course brute:', dateKey);
+        console.log('  - type:', typeof dateKey);
+        console.log('  - valeur:', dateKey);
+      }
+      
+      // Gestion robuste de la date
+      if (!dateKey) {
+        console.log('⚠️ Date manquante pour le cheval:', cheval.nom_cheval);
+        dateKey = 'date-inconnue';
+      } else if (typeof dateKey === 'object' && dateKey instanceof Date) {
+        // C'est un objet Date
+        dateKey = dateKey.toISOString().split('T')[0];
+      } else if (typeof dateKey === 'string') {
+        // C'est déjà une string, on vérifie le format
+        if (dateKey.includes('T')) {
+          // Format ISO avec heure, on garde juste la date
+          dateKey = dateKey.split('T')[0];
+        }
+        // Si c'est déjà au format YYYY-MM-DD, on ne touche à rien
+      } else if (typeof dateKey === 'number') {
+        // Peut-être un timestamp
         dateKey = new Date(dateKey).toISOString().split('T')[0];
+      } else {
+        console.log('⚠️ Format de date non reconnu:', dateKey, 'Type:', typeof dateKey);
+        dateKey = 'date-invalide';
+      }
+      
+      // Log pour debug (premier cheval seulement)
+      if (index === 0) {
+        console.log('  - date_course formatée:', dateKey);
       }
       
       // Créer une clé unique pour chaque course
@@ -74,6 +105,9 @@ export async function GET(request) {
         data_complete: cheval.data_complete
       });
     });
+    
+    // Log des dates trouvées
+    console.log('📅 Dates trouvées:', Object.keys(chevauxGroupes));
     
     // Calculer les statistiques
     const stats = {

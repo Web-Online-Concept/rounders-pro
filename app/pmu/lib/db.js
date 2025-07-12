@@ -125,22 +125,89 @@ export async function initDatabase() {
 // Fonction pour obtenir tous les chevaux (non supprimés)
 export async function getAllChevaux(filters = {}) {
   try {
-    // Requête de base
+    // Requête avec conversion explicite de la date et de l'heure en format texte
     let chevaux = await sql`
-      SELECT c.*, i.fichier_nom, i.critere_utilise, i.date_import
+      SELECT 
+        c.id,
+        c.import_id,
+        TO_CHAR(c.date_course, 'YYYY-MM-DD') as date_course,
+        c.numero_reunion,
+        c.hippodrome,
+        c.numero_course,
+        TO_CHAR(c.heure_course, 'HH24:MI:SS') as heure_course,
+        c.discipline,
+        c.nb_partants,
+        c.distance,
+        c.type_depart,
+        c.numero_cheval,
+        c.nom_cheval,
+        c.age,
+        c.sexe,
+        c.pourcent_g_hippo,
+        c.pourcent_p_hippo,
+        c.clt_ca,
+        c.first_def,
+        c.def,
+        c.def_1,
+        c.def_2,
+        c.def_3,
+        c.def_4,
+        c.def_5,
+        c.def_6,
+        c.def_7,
+        c.def_8,
+        c.pourcent_g_ch_histo,
+        c.pourcent_g_ch,
+        c.pourcent_p_ch,
+        c.pourcent_total_ch,
+        c.clt_ch,
+        c.entraineur,
+        c.pourcent_g_ent,
+        c.pourcent_p_ent,
+        c.pourcent_total_ent,
+        c.clt_ent,
+        c.pilote,
+        c.poids_fav,
+        c.pourcent_g_pi,
+        c.pourcent_p_pi,
+        c.pourcent_total_pi,
+        c.clt_pi,
+        c.musique,
+        c.mus1,
+        c.mus2,
+        c.mus3,
+        c.mus4,
+        c.mus5,
+        c.mus6,
+        c.tempo,
+        c.gains_carriere,
+        c.statut,
+        c.data_complete,
+        c.created_at,
+        c.deleted_at,
+        i.fichier_nom,
+        i.critere_utilise,
+        TO_CHAR(i.date_import, 'YYYY-MM-DD HH24:MI:SS') as date_import
       FROM pmu_chevaux c
       JOIN pmu_imports i ON c.import_id = i.id
       WHERE c.deleted_at IS NULL
       ORDER BY c.date_course DESC, c.numero_reunion ASC, c.numero_course ASC, c.numero_cheval ASC
     `;
     
-    // Appliquer les filtres en JavaScript (plus simple avec Neon)
+    // Log pour debug (juste le premier cheval)
+    if (chevaux.length > 0) {
+      console.log('🐴 Premier cheval récupéré:');
+      console.log('  - date_course:', chevaux[0].date_course);
+      console.log('  - heure_course:', chevaux[0].heure_course);
+      console.log('  - Type date_course:', typeof chevaux[0].date_course);
+    }
+    
+    // Appliquer les filtres en JavaScript
     if (filters.dateDebut) {
       console.log('Filtre date début:', filters.dateDebut);
       chevaux = chevaux.filter(c => {
         if (!c.date_course) return false;
-        const dateCheval = new Date(c.date_course).toISOString().split('T')[0];
-        return dateCheval >= filters.dateDebut;
+        return c.date_course >= filters.dateDebut;
       });
     }
     
@@ -148,8 +215,7 @@ export async function getAllChevaux(filters = {}) {
       console.log('Filtre date fin:', filters.dateFin);
       chevaux = chevaux.filter(c => {
         if (!c.date_course) return false;
-        const dateCheval = new Date(c.date_course).toISOString().split('T')[0];
-        return dateCheval <= filters.dateFin;
+        return c.date_course <= filters.dateFin;
       });
     }
     
@@ -163,10 +229,10 @@ export async function getAllChevaux(filters = {}) {
       chevaux = chevaux.filter(c => c.critere_utilise === filters.critere);
     }
     
-    console.log('Nombre de chevaux après filtrage:', chevaux.length);
+    console.log('📊 Nombre de chevaux après filtrage:', chevaux.length);
     return chevaux;
   } catch (error) {
-    console.error('Erreur lors de la récupération des chevaux:', error);
+    console.error('❌ Erreur lors de la récupération des chevaux:', error);
     throw error;
   }
 }
