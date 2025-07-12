@@ -246,10 +246,10 @@ export const CRITERES = {
         operateur: "≥"
       },
       {
-        colonne: 45,  // Colonne AT (46 en Excel = index 45)
+        colonne: 45,  // Colonne AT (46 en Excel = index 45) - Mus1
         nom: "AT",
         valeur: "1",
-        type: "exact",
+        type: "exact_mus1",  // Type spécial pour Mus1
         operateur: "="
       }
     ]
@@ -305,6 +305,14 @@ export function applyCriteria(row, criteriaId) {
     switch (filtre.type) {
       case 'exact':
         return value === targetValue;
+      
+      case 'exact_mus1':
+        // Spécial pour le critère 5 - Mus1 doit être exactement "1"
+        // Log pour déboguer
+        console.log(`Critère 5 - Vérification Mus1: valeur='${value}', match=${value === '1'}`);
+        
+        // Accepter seulement "1" (pas "1a", "1.0", etc.)
+        return value === '1';
       
       case 'contains':
         return value.toLowerCase().includes(targetValue.toLowerCase());
@@ -429,7 +437,7 @@ export const COLONNES = {
   
   // La Musique
   MUSIQUE: 44,
-  MUS1: 45,
+  MUS1: 45,  // Colonne AT
   MUS2: 46,
   MUS3: 47,
   MUS4: 48,
