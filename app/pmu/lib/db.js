@@ -186,6 +186,30 @@ export async function deleteCheval(id) {
   }
 }
 
+// Fonction pour supprimer tous les chevaux d'une date (soft delete)
+export async function deleteByDate(date) {
+  try {
+    // Effectuer la suppression soft (mise à jour de deleted_at)
+    const result = await sql`
+      UPDATE pmu_chevaux 
+      SET deleted_at = CURRENT_TIMESTAMP 
+      WHERE date_course = ${date}
+      AND deleted_at IS NULL
+      RETURNING id
+    `;
+    
+    console.log(`✅ ${result.length} chevaux supprimés pour la date ${date}`);
+    
+    return {
+      success: true,
+      count: result.length
+    };
+  } catch (error) {
+    console.error('Erreur lors de la suppression par date:', error);
+    throw error;
+  }
+}
+
 // Fonction pour créer un import
 export async function createImport(fileName, critereName, chevauxCount) {
   try {

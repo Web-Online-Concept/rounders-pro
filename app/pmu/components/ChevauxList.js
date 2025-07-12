@@ -6,6 +6,7 @@ import { getCriteriaById, CRITERES } from '../lib/criteria';
 export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
   const [expandedCourses, setExpandedCourses] = useState(new Set());
   const [deletingIds, setDeletingIds] = useState(new Set());
+  const [deletingDates, setDeletingDates] = useState(new Set());
 
   // Basculer l'expansion d'une course
   const toggleCourse = (courseKey) => {
@@ -46,6 +47,46 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
       setDeletingIds(prev => {
         const newSet = new Set(prev);
         newSet.delete(chevalId);
+        return newSet;
+      });
+    }
+  };
+
+  // Gérer la suppression d'une journée complète
+  const handleDeleteDate = async (date, dateFormatted) => {
+    // Compter le nombre total de chevaux pour cette date
+    const totalChevaux = Object.values(chevaux[date]).reduce((sum, course) => {
+      return sum + course.chevaux.length;
+    }, 0);
+    
+    const totalCourses = Object.keys(chevaux[date]).length;
+    
+    if (!confirm(`Êtes-vous sûr de vouloir supprimer toute la journée du ${dateFormatted} ?\n\nCela supprimera ${totalChevaux} chevaux dans ${totalCourses} courses.`)) {
+      return;
+    }
+
+    // Ajouter à la liste des suppressions en cours
+    setDeletingDates(prev => new Set([...prev, date]));
+
+    try {
+      const response = await fetch(`/pmu/api/chevaux/by-date?date=${date}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        // Rafraîchir la liste
+        onRefresh();
+      } else {
+        const error = await response.json();
+        alert(`Erreur lors de la suppression : ${error.error}`);
+      }
+    } catch (error) {
+      alert('Erreur lors de la suppression');
+    } finally {
+      // Retirer de la liste des suppressions en cours
+      setDeletingDates(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(date);
         return newSet;
       });
     }
@@ -126,128 +167,158 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
 
   return (
     <div className="chevaux-list">
-      {Object.entries(chevaux).map(([date, courses]) => (
-        <div key={date} className="date-group">
-          <h3 className="date-header">{formatDate(date)}</h3>
-          
-          {Object.entries(courses).map(([courseKey, courseData]) => {
-            const isExpanded = expandedCourses.has(courseKey);
-            const chevauxCount = courseData.chevaux.length;
+      {Object.entries(chevaux).map(([date, courses]) => {
+        const isDateDeleting = deletingDates.has(date);
+        const dateFormatted = formatDate(date);
+        
+        return (
+          <div key={date} className="date-group">
+            <div className="date-header-container">
+              <h3 className="date-header">{dateFormatted}</h3>
+              <button
+                className="delete-date-btn"
+                onClick={() => handleDeleteDate(date, dateFormatted)}
+                disabled={isDateDeleting}
+                title="Supprimer toute la journée"
+              >
+                {isDateDeleting ? (
+                  <>
+                    <span className="spinner" />
+                    Suppression...
+                  </>
+                ) : (
+                  <>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                      <line x1="10" y1="11" x2="10" y2="17" />
+                      <line x1="14" y1="11" x2="14" y2="17" />
+                    </svg>
+                    Supprimer la journée
+                  </>
+                )}
+              </button>
+            </div>
             
-            return (
-              <div key={courseKey} className="course-card">
-                <div 
-                  className="course-header"
-                  onClick={() => toggleCourse(courseKey)}
-                >
-                  <div className="course-info">
-                    <h4 className="course-title">
-                      {courseData.reunion}C{courseData.course} - {courseData.hippodrome}
-                    </h4>
-                    <div className="course-details">
-                      <span className="detail-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <circle cx="12" cy="12" r="10" />
-                          <polyline points="12 6 12 12 16 14" />
-                        </svg>
-                        {formatTime(courseData.heure)}
-                      </span>
-                      <span className="detail-item">{courseData.discipline}</span>
-                      <span className="detail-item">{courseData.distance}m</span>
-                      <span className="detail-item chevaux-count">
-                        {chevauxCount} {chevauxCount > 1 ? 'chevaux' : 'cheval'}
-                      </span>
+            {Object.entries(courses).map(([courseKey, courseData]) => {
+              const isExpanded = expandedCourses.has(courseKey);
+              const chevauxCount = courseData.chevaux.length;
+              
+              return (
+                <div key={courseKey} className={`course-card ${isDateDeleting ? 'deleting' : ''}`}>
+                  <div 
+                    className="course-header"
+                    onClick={() => toggleCourse(courseKey)}
+                  >
+                    <div className="course-info">
+                      <h4 className="course-title">
+                        {courseData.reunion}C{courseData.course} - {courseData.hippodrome}
+                      </h4>
+                      <div className="course-details">
+                        <span className="detail-item">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                          </svg>
+                          {formatTime(courseData.heure)}
+                        </span>
+                        <span className="detail-item">{courseData.discipline}</span>
+                        <span className="detail-item">{courseData.distance}m</span>
+                        <span className="detail-item chevaux-count">
+                          {chevauxCount} {chevauxCount > 1 ? 'chevaux' : 'cheval'}
+                        </span>
+                      </div>
+                      <div className="course-meta">
+                        <span className="criteria-tag" style={{ backgroundColor: '#e0e7ff' }}>
+                          {courseData.critere_utilise}
+                        </span>
+                        <span className="criteria-description">
+                          {getCriteriaDescription(courseData.critere_utilise)}
+                        </span>
+                      </div>
                     </div>
-                    <div className="course-meta">
-                      <span className="criteria-tag" style={{ backgroundColor: '#e0e7ff' }}>
-                        {courseData.critere_utilise}
-                      </span>
-                      <span className="criteria-description">
-                        {getCriteriaDescription(courseData.critere_utilise)}
-                      </span>
-                    </div>
+                    
+                    <button className="expand-toggle">
+                      <svg 
+                        width="20" 
+                        height="20" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        strokeWidth="2"
+                        style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                      >
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                    </button>
                   </div>
                   
-                  <button className="expand-toggle">
-                    <svg 
-                      width="20" 
-                      height="20" 
-                      viewBox="0 0 24 24" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      strokeWidth="2"
-                      style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
-                    >
-                      <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                  </button>
-                </div>
-                
-                {isExpanded && (
-                  <div className="chevaux-table">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>N°</th>
-                          <th>Nom</th>
-                          <th>Âge</th>
-                          <th>Sexe</th>
-                          <th>Déf</th>
-                          <th>Déf-1</th>
-                          <th>Déf-2</th>
-                          <th>Entraîneur</th>
-                          <th>Pilote</th>
-                          <th>Musique</th>
-                          <th>Gains</th>
-                          <th>%G</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {courseData.chevaux.map((cheval) => (
-                          <tr key={cheval.id}>
-                            <td className="text-center">{cheval.numero}</td>
-                            <td className="cheval-nom">{cheval.nom}</td>
-                            <td className="text-center">{cheval.age}</td>
-                            <td className="text-center">{cheval.sexe}</td>
-                            <td className="text-center def-cell">{cheval.def || '-'}</td>
-                            <td className="text-center def-cell">{cheval.def_1 || '-'}</td>
-                            <td className="text-center def-cell">{cheval.def_2 || '-'}</td>
-                            <td>{cheval.entraineur}</td>
-                            <td>{cheval.pilote}</td>
-                            <td className="musique-cell">{cheval.musique || '-'}</td>
-                            <td className="text-right">{formatGains(cheval.gains_carriere)}</td>
-                            <td className="text-center">
-                              {cheval.pourcent_g_ch ? `${cheval.pourcent_g_ch}%` : '-'}
-                            </td>
-                            <td className="action-cell">
-                              <button
-                                className="delete-btn"
-                                onClick={() => handleDelete(cheval.id, cheval.nom)}
-                                disabled={deletingIds.has(cheval.id)}
-                                title="Supprimer"
-                              >
-                                {deletingIds.has(cheval.id) ? (
-                                  <span className="spinner" />
-                                ) : (
-                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <polyline points="3 6 5 6 21 6" />
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                  </svg>
-                                )}
-                              </button>
-                            </td>
+                  {isExpanded && (
+                    <div className="chevaux-table">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>N°</th>
+                            <th>Nom</th>
+                            <th>Âge</th>
+                            <th>Sexe</th>
+                            <th>Déf</th>
+                            <th>Déf-1</th>
+                            <th>Déf-2</th>
+                            <th>Entraîneur</th>
+                            <th>Pilote</th>
+                            <th>Musique</th>
+                            <th>Gains</th>
+                            <th>%G</th>
+                            <th></th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      ))}
+                        </thead>
+                        <tbody>
+                          {courseData.chevaux.map((cheval) => (
+                            <tr key={cheval.id}>
+                              <td className="text-center">{cheval.numero}</td>
+                              <td className="cheval-nom">{cheval.nom}</td>
+                              <td className="text-center">{cheval.age}</td>
+                              <td className="text-center">{cheval.sexe}</td>
+                              <td className="text-center def-cell">{cheval.def || '-'}</td>
+                              <td className="text-center def-cell">{cheval.def_1 || '-'}</td>
+                              <td className="text-center def-cell">{cheval.def_2 || '-'}</td>
+                              <td>{cheval.entraineur}</td>
+                              <td>{cheval.pilote}</td>
+                              <td className="musique-cell">{cheval.musique || '-'}</td>
+                              <td className="text-right">{formatGains(cheval.gains_carriere)}</td>
+                              <td className="text-center">
+                                {cheval.pourcent_g_ch ? `${cheval.pourcent_g_ch}%` : '-'}
+                              </td>
+                              <td className="action-cell">
+                                <button
+                                  className="delete-btn"
+                                  onClick={() => handleDelete(cheval.id, cheval.nom)}
+                                  disabled={deletingIds.has(cheval.id) || isDateDeleting}
+                                  title="Supprimer"
+                                >
+                                  {deletingIds.has(cheval.id) ? (
+                                    <span className="spinner" />
+                                  ) : (
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                      <polyline points="3 6 5 6 21 6" />
+                                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                    </svg>
+                                  )}
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
 
       <style jsx>{`
         .chevaux-list {
@@ -262,12 +333,44 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
           gap: 12px;
         }
 
+        .date-header-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 8px;
+        }
+
         .date-header {
           font-size: 20px;
           font-weight: 600;
           color: #111827;
-          margin: 0 0 8px 0;
+          margin: 0;
           text-transform: capitalize;
+        }
+
+        .delete-date-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 8px 16px;
+          background-color: white;
+          color: #dc2626;
+          border: 1px solid #fecaca;
+          border-radius: 6px;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+
+        .delete-date-btn:hover:not(:disabled) {
+          background-color: #fee2e2;
+          border-color: #fca5a5;
+        }
+
+        .delete-date-btn:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
         }
 
         .course-card {
@@ -275,6 +378,12 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
           border: 1px solid #e5e7eb;
           border-radius: 8px;
           overflow: hidden;
+          transition: opacity 0.2s;
+        }
+
+        .course-card.deleting {
+          opacity: 0.5;
+          pointer-events: none;
         }
 
         .course-header {
@@ -455,6 +564,17 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
         }
 
         @media (max-width: 768px) {
+          .date-header-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+          }
+
+          .delete-date-btn {
+            font-size: 13px;
+            padding: 6px 12px;
+          }
+
           .course-details {
             flex-wrap: wrap;
             gap: 8px;
