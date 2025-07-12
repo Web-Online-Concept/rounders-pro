@@ -47,30 +47,60 @@ function parseDate(dateStr) {
   }
 }
 
-// Fonction pour parser l'heure du format "1/0/00" vers "HH:MM:SS"
-function parseTime(timeStr) {
-  if (!timeStr) return null;
+// Fonction pour parser l'heure - AMÉLIORÉE
+function parseTime(timeValue) {
+  if (!timeValue && timeValue !== 0) return null;
   
   try {
+    console.log('Parsing heure, valeur brute:', timeValue, 'type:', typeof timeValue);
+    
     // Si c'est déjà au bon format HH:MM:SS ou HH:MM
-    if (String(timeStr).match(/^\d{1,2}:\d{2}(:\d{2})?$/)) {
+    const timeStr = String(timeValue).trim();
+    if (timeStr.match(/^\d{1,2}:\d{2}(:\d{2})?$/)) {
       return timeStr;
     }
     
-    // Format bizarre "1/0/00" => on le convertit
-    const parts = String(timeStr).split('/');
-    if (parts.length === 3) {
-      const hours = parts[0].padStart(2, '0');
-      const minutes = parts[1].padStart(2, '0');
-      const seconds = parts[2].padStart(2, '0');
-      return `${hours}:${minutes}:${seconds}`;
+    // Si c'est un nombre (Excel stocke les heures comme fraction de jour)
+    if (typeof timeValue === 'number' || !isNaN(timeValue)) {
+      const numValue = Number(timeValue);
+      
+      // Excel stocke l'heure comme fraction de jour (0.5 = midi, 0.75 = 18h00, etc.)
+      if (numValue >= 0 && numValue <= 1) {
+        const totalMinutes = Math.round(numValue * 24 * 60);
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        const result = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
+        console.log(`Heure convertie depuis fraction: ${numValue} => ${result}`);
+        return result;
+      }
     }
     
-    // Si c'est autre chose, on essaie de le nettoyer
-    return null;
+    // Format bizarre "1/0/00" => on le convertit
+    if (timeStr.includes('/')) {
+      const parts = timeStr.split('/');
+      if (parts.length === 3) {
+        const hours = parts[0].padStart(2, '0');
+        const minutes = parts[1].padStart(2, '0');
+        const seconds = parts[2].padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+      }
+    }
+    
+    // Si c'est une chaîne avec "h" (comme "14h30")
+    if (timeStr.includes('h')) {
+      const match = timeStr.match(/(\d{1,2})h(\d{0,2})/i);
+      if (match) {
+        const hours = match[1].padStart(2, '0');
+        const minutes = (match[2] || '00').padStart(2, '0');
+        return `${hours}:${minutes}:00`;
+      }
+    }
+    
+    console.log('Format d\'heure non reconnu:', timeValue);
+    return '00:00:00'; // Valeur par défaut au lieu de null
   } catch (error) {
-    console.error('Erreur parsing heure:', timeStr, error);
-    return null;
+    console.error('Erreur parsing heure:', timeValue, error);
+    return '00:00:00';
   }
 }
 
@@ -113,13 +143,14 @@ export async function parseExcelFile(file, selectedCriteriaId) {
   try {
     console.log('📄 Début du parsing Excel');
     
-    // Lire le fichier
+    // Lire le fichier avec options spéciales pour les dates et heures
     const arrayBuffer = await file.arrayBuffer();
     const workbook = XLSX.read(arrayBuffer, {
       type: 'array',
-      cellDates: true,
-      cellNF: false,
-      cellText: false
+      cellDates: false,  // Ne pas convertir automatiquement les dates
+      cellNF: true,      // Garder les formats de nombres
+      cellText: false,
+      raw: true         // Garder les valeurs brutes
     });
     
     // Prendre la première feuille
@@ -130,7 +161,8 @@ export async function parseExcelFile(file, selectedCriteriaId) {
     const data = XLSX.utils.sheet_to_json(worksheet, {
       header: 1,
       defval: null,
-      raw: false
+      raw: true,  // Garder les valeurs brutes pour l'heure
+      dateNF: 'HH:mm:ss'
     });
     
     // Trouver où commencent les données (après les headers)
@@ -152,6 +184,11 @@ export async function parseExcelFile(file, selectedCriteriaId) {
       if (!row || !row[0]) continue;
       
       totalRows++;
+      
+      // Debug: afficher l'heure pour la première ligne
+      if (i === dataStartRow) {
+        console.log('Première ligne - Colonne E (heure):', row[COLONNES.HEURE]);
+      }
       
       // Appliquer le critère sélectionné
       if (!applyCriteria(row, selectedCriteriaId)) {
