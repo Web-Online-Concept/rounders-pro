@@ -131,7 +131,7 @@ export async function getAllChevaux(filters = {}) {
       FROM pmu_chevaux c
       JOIN pmu_imports i ON c.import_id = i.id
       WHERE c.deleted_at IS NULL
-      ORDER BY c.date_course DESC, c.numero_course ASC, c.numero_cheval ASC
+      ORDER BY c.date_course DESC, c.numero_reunion ASC, c.numero_course ASC, c.numero_cheval ASC
     `;
     
     // Appliquer les filtres en JavaScript (plus simple avec Neon)
