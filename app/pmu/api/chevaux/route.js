@@ -28,39 +28,41 @@ export async function GET(request) {
       // Formater la date pour avoir une clé cohérente
       let dateKey = cheval.date_course;
       
-      // Log pour debug (seulement pour le premier cheval)
-      if (index === 0) {
-        console.log('🗓️ Debug date - Premier cheval:');
-        console.log('  - date_course brute:', dateKey);
-        console.log('  - type:', typeof dateKey);
-        console.log('  - valeur:', dateKey);
+      // Log détaillé pour les premiers chevaux
+      if (index < 3) {
+        console.log(`🐴 Cheval ${index + 1}:`, {
+          nom: cheval.nom_cheval,
+          date_course_brute: cheval.date_course,
+          type: typeof cheval.date_course,
+          hippodrome: cheval.hippodrome,
+          reunion: cheval.numero_reunion,
+          course: cheval.numero_course
+        });
       }
       
       // Gestion robuste de la date
-      if (!dateKey) {
-        console.log('⚠️ Date manquante pour le cheval:', cheval.nom_cheval);
+      if (!dateKey || dateKey === null || dateKey === undefined) {
+        console.log(`⚠️ Date manquante pour le cheval: ${cheval.nom_cheval} (ID: ${cheval.id})`);
         dateKey = 'date-inconnue';
       } else if (typeof dateKey === 'object' && dateKey instanceof Date) {
         // C'est un objet Date
         dateKey = dateKey.toISOString().split('T')[0];
+        console.log(`📅 Date convertie de Date object vers: ${dateKey}`);
       } else if (typeof dateKey === 'string') {
         // C'est déjà une string, on vérifie le format
         if (dateKey.includes('T')) {
           // Format ISO avec heure, on garde juste la date
           dateKey = dateKey.split('T')[0];
+          console.log(`📅 Date extraite de ISO string: ${dateKey}`);
         }
         // Si c'est déjà au format YYYY-MM-DD, on ne touche à rien
       } else if (typeof dateKey === 'number') {
         // Peut-être un timestamp
         dateKey = new Date(dateKey).toISOString().split('T')[0];
+        console.log(`📅 Date convertie de timestamp: ${dateKey}`);
       } else {
-        console.log('⚠️ Format de date non reconnu:', dateKey, 'Type:', typeof dateKey);
+        console.log(`⚠️ Format de date non reconnu: ${dateKey}, Type: ${typeof dateKey}`);
         dateKey = 'date-invalide';
-      }
-      
-      // Log pour debug (premier cheval seulement)
-      if (index === 0) {
-        console.log('  - date_course formatée:', dateKey);
       }
       
       // Créer une clé unique pour chaque course
@@ -107,7 +109,12 @@ export async function GET(request) {
     });
     
     // Log des dates trouvées
-    console.log('📅 Dates trouvées:', Object.keys(chevauxGroupes));
+    console.log('📅 Toutes les dates trouvées:', Object.keys(chevauxGroupes));
+    console.log('📅 Détail par date:');
+    Object.entries(chevauxGroupes).forEach(([date, courses]) => {
+      const totalChevaux = Object.values(courses).reduce((sum, course) => sum + course.chevaux.length, 0);
+      console.log(`  - ${date}: ${Object.keys(courses).length} courses, ${totalChevaux} chevaux`);
+    });
     
     // Calculer les statistiques
     const stats = {
