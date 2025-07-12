@@ -232,21 +232,21 @@ export const CRITERES = {
     couleur: "#EC4899", // Rose
     filtres: [
       {
-        colonne: 33,  // Colonne AG
+        colonne: 32,  // Colonne AG (33 en Excel = index 32)
         nom: "AG",
         valeur: 10,
         type: "greater_or_equal",
         operateur: "≥"
       },
       {
-        colonne: 39,  // Colonne AM
+        colonne: 38,  // Colonne AM (39 en Excel = index 38)
         nom: "AM",
         valeur: 10,
         type: "greater_or_equal",
         operateur: "≥"
       },
       {
-        colonne: 46,  // Colonne AT (46, pas 45)
+        colonne: 45,  // Colonne AT (46 en Excel = index 45)
         nom: "AT",
         valeur: "1",
         type: "exact",
@@ -416,13 +416,13 @@ export const COLONNES = {
   
   // Les Hommes
   ENTRAINEUR: 31,
-  POURCENT_G_ENT: 32,
+  POURCENT_G_ENT: 32,  // Colonne AG
   POURCENT_P_ENT: 33,
   POURCENT_TOTAL_ENT: 34,
   CLT_ENT: 35,
   PILOTE: 36,
   POIDS_FAV: 37,
-  POURCENT_G_PI: 38,
+  POURCENT_G_PI: 38,   // Colonne AM
   POURCENT_P_PI: 39,
   POURCENT_TOTAL_PI: 40,
   CLT_PI: 41,
