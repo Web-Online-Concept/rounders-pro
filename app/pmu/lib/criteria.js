@@ -5,7 +5,7 @@ export const CRITERES = {
   "chevaux_4ans_DD_FF": {
     id: "chevaux_4ans_DD_FF",
     nom: "Critère 1",
-    description: "Sélectionne les chevaux de 4 ans avec Déf=DD, Déf-1=DD, Déf-2=FF et Musique 1 différent de 1,2,3,4",
+    description: "Sélectionne les chevaux de 4 ans avec Déf=DD, Déf-1=DD, Déf-2=FF et Musique 1 différent de 1,2,3,4, BV différent de A,B,C",
     actif: true,
     couleur: "#3B82F6", // Bleu
     filtres: [
@@ -43,6 +43,13 @@ export const CRITERES = {
         valeur: [1, 2, 3, 4],
         type: "not_in",
         operateur: "≠"
+      },
+      {
+        colonne: 74,  // Colonne BV
+        nom: "BV",
+        valeur: ["A", "B", "C"],
+        type: "not_in",
+        operateur: "≠"
       }
     ]
   },
@@ -50,7 +57,7 @@ export const CRITERES = {
   "chevaux_4ans_DD_FF_FF": {
     id: "chevaux_4ans_DD_FF_FF",
     nom: "Critère 2",
-    description: "Sélectionne les chevaux de 4 ans avec Déf=DD, Déf-1=FF, Déf-2=FF et Musique 1 différent de 1,2,3,4",
+    description: "Sélectionne les chevaux de 4 ans avec Déf=DD, Déf-1=FF, Déf-2=FF et Musique 1 différent de 1,2,3,4, BV différent de A,B,C",
     actif: true,
     couleur: "#10B981", // Vert
     filtres: [
@@ -88,6 +95,13 @@ export const CRITERES = {
         valeur: [1, 2, 3, 4],
         type: "not_in",
         operateur: "≠"
+      },
+      {
+        colonne: 74,  // Colonne BV
+        nom: "BV",
+        valeur: ["A", "B", "C"],
+        type: "not_in",
+        operateur: "≠"
       }
     ]
   },
@@ -95,7 +109,7 @@ export const CRITERES = {
   "juments_5ans_DD_FF_FF": {
     id: "juments_5ans_DD_FF_FF",
     nom: "Critère 3",
-    description: "Sélectionne les juments de 5 ans avec Déf=DD, Déf-1=FF, Déf-2=FF et Musique 1 différent de 1,2,3,4",
+    description: "Sélectionne les juments de 5 ans avec Déf=DD, Déf-1=FF, Déf-2=FF et Musique 1 différent de 1,2,3,4, BV différent de A,B,C",
     actif: true,
     couleur: "#8B5CF6", // Violet
     filtres: [
@@ -140,6 +154,13 @@ export const CRITERES = {
         valeur: [1, 2, 3, 4],
         type: "not_in",
         operateur: "≠"
+      },
+      {
+        colonne: 74,  // Colonne BV
+        nom: "BV",
+        valeur: ["A", "B", "C"],
+        type: "not_in",
+        operateur: "≠"
       }
     ]
   },
@@ -147,7 +168,7 @@ export const CRITERES = {
   "juments_5ans_DD_DD_FF": {
     id: "juments_5ans_DD_DD_FF",
     nom: "Critère 4",
-    description: "Sélectionne les juments de 5 ans avec Déf=DD, Déf-1=DD, Déf-2=FF et Musique 1 différent de 1,2,3,4",
+    description: "Sélectionne les juments de 5 ans avec Déf=DD, Déf-1=DD, Déf-2=FF et Musique 1 différent de 1,2,3,4, BV différent de A,B,C",
     actif: true,
     couleur: "#F59E0B", // Orange
     filtres: [
@@ -192,6 +213,44 @@ export const CRITERES = {
         valeur: [1, 2, 3, 4],
         type: "not_in",
         operateur: "≠"
+      },
+      {
+        colonne: 74,  // Colonne BV
+        nom: "BV",
+        valeur: ["A", "B", "C"],
+        type: "not_in",
+        operateur: "≠"
+      }
+    ]
+  },
+  
+  "critere_5": {
+    id: "critere_5",
+    nom: "Critère 5",
+    description: "Sélectionne les chevaux avec AG≥10, AM≥10 et AT=1",
+    actif: true,
+    couleur: "#EC4899", // Rose
+    filtres: [
+      {
+        colonne: 33,  // Colonne AG
+        nom: "AG",
+        valeur: 10,
+        type: "greater_or_equal",
+        operateur: "≥"
+      },
+      {
+        colonne: 39,  // Colonne AM
+        nom: "AM",
+        valeur: 10,
+        type: "greater_or_equal",
+        operateur: "≥"
+      },
+      {
+        colonne: 46,  // Colonne AT (46, pas 45)
+        nom: "AT",
+        valeur: "1",
+        type: "exact",
+        operateur: "="
       }
     ]
   },
@@ -232,6 +291,10 @@ export function applyCriteria(row, criteriaId) {
     
     // Gérer les valeurs nulles ou undefined
     if (cellValue === null || cellValue === undefined || cellValue === '') {
+      // Pour not_in, une valeur vide est acceptée
+      if (filtre.type === 'not_in') {
+        return true;
+      }
       return false;
     }
     
@@ -249,12 +312,23 @@ export function applyCriteria(row, criteriaId) {
       case 'greater':
         return parseFloat(value) > parseFloat(targetValue);
       
+      case 'greater_or_equal':
+        return parseFloat(value) >= parseFloat(targetValue);
+      
       case 'lesser':
         return parseFloat(value) < parseFloat(targetValue);
       
       case 'not_in':
         // Pour un tableau de valeurs interdites
         const forbidden = Array.isArray(filtre.valeur) ? filtre.valeur : [filtre.valeur];
+        
+        // Pour BV, on compare les lettres en majuscules
+        if (filtre.nom === 'BV') {
+          const upperValue = value.toUpperCase();
+          return !forbidden.includes(upperValue);
+        }
+        
+        // Pour Musique 1
         const numValue = parseFloat(value);
         
         // Si c'est un nombre, vérifier numériquement
@@ -369,5 +443,8 @@ export const COLONNES = {
   
   // Les Résultats
   PLACE: 83,
-  RED_KM: 84
+  RED_KM: 84,
+  
+  // Nouvelle colonne BV
+  BV: 74
 };

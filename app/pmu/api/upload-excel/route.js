@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { parseExcelFile, validateExcelFile } from '../../lib/excelParser';
 import { createImport, insertCheval } from '../../lib/db';
-import { getCriteriaById } from '../../lib/criteria';
+import { getCriteriaById, getActiveCriteria } from '../../lib/criteria';
 
 export async function POST(request) {
   console.log('📤 Début du traitement de l\'upload');
@@ -20,6 +20,7 @@ export async function POST(request) {
     const formData = await request.formData();
     const file = formData.get('file');
     const criteriaId = formData.get('criteriaId');
+    const applyAllCriteria = formData.get('applyAllCriteria') === 'true';
     
     // Validation des données
     if (!file) {
@@ -29,18 +30,9 @@ export async function POST(request) {
       );
     }
     
-    if (!criteriaId) {
+    if (!applyAllCriteria && !criteriaId) {
       return NextResponse.json(
         { error: 'Aucun critère sélectionné' },
-        { status: 400 }
-      );
-    }
-    
-    // Vérifier que le critère existe
-    const criteria = getCriteriaById(criteriaId);
-    if (!criteria) {
-      return NextResponse.json(
-        { error: 'Critère invalide' },
         { status: 400 }
       );
     }
@@ -50,6 +42,138 @@ export async function POST(request) {
     if (!validation.valid) {
       return NextResponse.json(
         { error: validation.error },
+        { status: 400 }
+      );
+    }
+    
+    // Si on applique tous les critères
+    if (applyAllCriteria) {
+      console.log(`📊 Application de tous les critères sur le fichier: ${file.name}`);
+      
+      const allCriteria = getActiveCriteria();
+      const allResults = {};
+      const allChevaux = [];
+      const allErrors = [];
+      let totalSelected = 0;
+      let totalInserted = 0;
+      let totalRows = 0;
+      
+      // Appliquer chaque critère
+      for (const criteria of allCriteria) {
+        console.log(`🔍 Application du critère: ${criteria.nom}`);
+        
+        // Parser avec ce critère
+        const parseResult = await parseExcelFile(file, criteria.id);
+        
+        if (!parseResult.success) {
+          allErrors.push({
+            critere: criteria.nom,
+            error: parseResult.error
+          });
+          continue;
+        }
+        
+        // Capturer le nombre total de lignes depuis le premier parsing
+        if (totalRows === 0) {
+          totalRows = parseResult.totalRows;
+        }
+        
+        // Créer un import pour ce critère si des chevaux sont trouvés
+        let insertedCount = 0;
+        const criteriaErrors = [];
+        
+        if (parseResult.selectedCount > 0) {
+          const importId = await createImport(
+            file.name,
+            criteria.nom,
+            parseResult.selectedCount
+          );
+          
+          // Insérer les chevaux
+          for (const cheval of parseResult.chevaux) {
+            try {
+              await insertCheval(importId, cheval);
+              insertedCount++;
+              
+              // Ajouter le critère et la couleur au cheval pour l'affichage
+              allChevaux.push({
+                ...cheval,
+                critere: criteria.nom,
+                couleur: criteria.couleur
+              });
+            } catch (error) {
+              criteriaErrors.push({
+                cheval: cheval.nom_cheval,
+                error: error.message
+              });
+            }
+          }
+        }
+        
+        // Enregistrer les résultats pour ce critère
+        allResults[criteria.nom] = {
+          selectedCount: parseResult.selectedCount,
+          insertedCount: insertedCount,
+          errors: criteriaErrors
+        };
+        
+        totalSelected += parseResult.selectedCount;
+        totalInserted += insertedCount;
+        
+        if (criteriaErrors.length > 0) {
+          allErrors.push(...criteriaErrors.map(e => ({
+            ...e,
+            critere: criteria.nom
+          })));
+        }
+      }
+      
+      // Grouper par course pour le résumé
+      const coursesMap = {};
+      allChevaux.forEach(cheval => {
+        const key = `${cheval.hippodrome}_${cheval.date_course}_R${cheval.numero_reunion}_C${cheval.numero_course}`;
+        if (!coursesMap[key]) {
+          coursesMap[key] = {
+            hippodrome: cheval.hippodrome,
+            date: cheval.date_course,
+            reunion: cheval.numero_reunion,
+            course: cheval.numero_course,
+            chevaux: []
+          };
+        }
+        coursesMap[key].chevaux.push({
+          numero: cheval.numero_cheval,
+          nom: cheval.nom_cheval,
+          age: cheval.age,
+          def: cheval.def,
+          def_1: cheval.def_1,
+          def_2: cheval.def_2,
+          critere: cheval.critere,
+          couleur: cheval.couleur
+        });
+      });
+      
+      return NextResponse.json({
+        success: true,
+        message: `${totalInserted} chevaux importés avec tous les critères`,
+        allCriteriaResults: allResults,
+        stats: {
+          totalRows: totalRows,
+          selectedCount: totalSelected,
+          insertedCount: totalInserted,
+          errorCount: allErrors.length,
+          fileName: file.name,
+          courses: Object.values(coursesMap)
+        },
+        errors: allErrors.length > 0 ? allErrors : undefined
+      });
+    }
+    
+    // Traitement normal avec un seul critère
+    const criteria = getCriteriaById(criteriaId);
+    if (!criteria) {
+      return NextResponse.json(
+        { error: 'Critère invalide' },
         { status: 400 }
       );
     }

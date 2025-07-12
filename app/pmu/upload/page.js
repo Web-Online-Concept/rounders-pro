@@ -10,6 +10,7 @@ export default function UploadPage() {
   const router = useRouter();
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedCriteria, setSelectedCriteria] = useState('');
+  const [applyAllCriteria, setApplyAllCriteria] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadResult, setUploadResult] = useState(null);
   const [error, setError] = useState(null);
@@ -18,14 +19,28 @@ export default function UploadPage() {
   const resetForm = () => {
     setSelectedFile(null);
     setSelectedCriteria('');
+    setApplyAllCriteria(false);
     setUploadResult(null);
     setError(null);
   };
 
+  // Gérer le changement de la checkbox tous critères
+  const handleAllCriteriaChange = (checked) => {
+    setApplyAllCriteria(checked);
+    if (checked) {
+      setSelectedCriteria(''); // Reset la sélection individuelle
+    }
+  };
+
   // Gérer l'upload
   const handleUpload = async () => {
-    if (!selectedFile || !selectedCriteria) {
-      setError('Veuillez sélectionner un fichier et un critère');
+    if (!selectedFile) {
+      setError('Veuillez sélectionner un fichier');
+      return;
+    }
+
+    if (!applyAllCriteria && !selectedCriteria) {
+      setError('Veuillez choisir un critère ou sélectionner "Appliquer tous les critères"');
       return;
     }
 
@@ -36,7 +51,12 @@ export default function UploadPage() {
     try {
       const formData = new FormData();
       formData.append('file', selectedFile);
-      formData.append('criteriaId', selectedCriteria);
+      
+      if (applyAllCriteria) {
+        formData.append('applyAllCriteria', 'true');
+      } else {
+        formData.append('criteriaId', selectedCriteria);
+      }
 
       const response = await fetch('/pmu/api/upload-excel', {
         method: 'POST',
@@ -47,7 +67,6 @@ export default function UploadPage() {
 
       if (response.ok) {
         setUploadResult(result);
-        // Redirection supprimée - l'utilisateur reviendra manuellement
       } else {
         setError(result.error || 'Erreur lors de l\'upload');
       }
@@ -96,7 +115,34 @@ export default function UploadPage() {
               <h3>{uploadResult.message}</h3>
             </div>
             
-            {uploadResult.stats && (
+            {/* Résultats pour tous les critères */}
+            {uploadResult.allCriteriaResults && (
+              <div className="all-criteria-results">
+                <h4>Résultats par critère :</h4>
+                {Object.entries(uploadResult.allCriteriaResults).map(([critereName, result]) => (
+                  <div key={critereName} className="criteria-result-item">
+                    <div className="criteria-result-header">
+                      <span className="criteria-name">{critereName}</span>
+                      <span className={`criteria-count ${result.selectedCount > 0 ? 'has-results' : 'no-results'}`}>
+                        {result.selectedCount} {result.selectedCount > 1 ? 'chevaux trouvés' : 'cheval trouvé'}
+                      </span>
+                    </div>
+                    {result.insertedCount > 0 && (
+                      <div className="criteria-inserted">
+                        {result.insertedCount} {result.insertedCount > 1 ? 'chevaux importés' : 'cheval importé'}
+                      </div>
+                    )}
+                  </div>
+                ))}
+                
+                <div className="total-summary">
+                  <strong>Total :</strong> {uploadResult.stats.selectedCount} chevaux trouvés, {uploadResult.stats.insertedCount} importés
+                </div>
+              </div>
+            )}
+
+            {/* Résultats pour un seul critère */}
+            {!uploadResult.allCriteriaResults && uploadResult.stats && (
               <div className="result-stats">
                 <div className="stat-item">
                   <span className="stat-label">Lignes analysées</span>
@@ -116,17 +162,6 @@ export default function UploadPage() {
                     <span className="stat-value error-text">{uploadResult.stats.errorCount}</span>
                   </div>
                 )}
-              </div>
-            )}
-
-            {uploadResult.errors && uploadResult.errors.length > 0 && (
-              <div className="error-details">
-                <h4>Détails des erreurs :</h4>
-                {uploadResult.errors.map((err, idx) => (
-                  <div key={idx} className="error-item">
-                    <strong>{err.cheval}:</strong> {err.error}
-                  </div>
-                ))}
               </div>
             )}
 
@@ -163,6 +198,11 @@ export default function UploadPage() {
                           <span className="cheval-def">
                             Déf: {cheval.def || '-'} | {cheval.def_1 || '-'} | {cheval.def_2 || '-'}
                           </span>
+                          {cheval.critere && (
+                            <span className="cheval-critere" style={{color: cheval.couleur}}>
+                              {cheval.critere}
+                            </span>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -186,6 +226,28 @@ export default function UploadPage() {
         {/* Formulaire d'upload */}
         {!uploadResult && (
           <>
+            {/* Option tous les critères */}
+            <div className="form-section all-criteria-section">
+              <label className="checkbox-container">
+                <input
+                  type="checkbox"
+                  checked={applyAllCriteria}
+                  onChange={(e) => handleAllCriteriaChange(e.target.checked)}
+                  disabled={isUploading}
+                />
+                <span className="checkbox-label">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="11" width="18" height="10" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  Appliquer tous les critères
+                </span>
+                <span className="checkbox-description">
+                  Analyse le fichier avec tous les critères disponibles (1, 2, 3, 4 et 5) en une seule fois
+                </span>
+              </label>
+            </div>
+
             <div className="form-section">
               <h2 className="section-title">1. Sélectionner le fichier Excel</h2>
               <FileUploader
@@ -195,11 +257,16 @@ export default function UploadPage() {
               />
             </div>
 
-            <div className="form-section">
+            <div className={`form-section ${applyAllCriteria ? 'disabled-section' : ''}`}>
               <h2 className="section-title">2. Choisir le critère de filtrage</h2>
+              {applyAllCriteria && (
+                <p className="disabled-message">
+                  La sélection individuelle est désactivée car "Appliquer tous les critères" est activé
+                </p>
+              )}
               <CriteriaSelector
                 onCriteriaSelect={setSelectedCriteria}
-                disabled={isUploading}
+                disabled={isUploading || applyAllCriteria}
               />
             </div>
 
@@ -220,7 +287,7 @@ export default function UploadPage() {
               </Link>
               <button
                 onClick={handleUpload}
-                disabled={!selectedFile || !selectedCriteria || isUploading}
+                disabled={!selectedFile || (!selectedCriteria && !applyAllCriteria) || isUploading}
                 className="submit-button"
               >
                 {isUploading ? (
@@ -282,6 +349,67 @@ export default function UploadPage() {
           margin: 0 auto;
         }
 
+        .all-criteria-section {
+          background: #f0f9ff !important;
+          border-color: #3b82f6 !important;
+        }
+
+        .checkbox-container {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          cursor: pointer;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+          position: absolute;
+          opacity: 0;
+        }
+
+        .checkbox-label {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-weight: 600;
+          color: #111827;
+          font-size: 16px;
+        }
+
+        .checkbox-label svg {
+          color: #3b82f6;
+        }
+
+        .checkbox-container input[type="checkbox"]:checked ~ .checkbox-label svg {
+          color: #2563eb;
+        }
+
+        .checkbox-description {
+          font-size: 14px;
+          color: #6b7280;
+          font-weight: 400;
+          margin-left: 32px;
+        }
+
+        .checkbox-container input[type="checkbox"]::before {
+          content: '';
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          border: 2px solid #d1d5db;
+          border-radius: 4px;
+          margin-right: 8px;
+          vertical-align: middle;
+          background: white;
+        }
+
+        .checkbox-container input[type="checkbox"]:checked::before {
+          background-color: #3b82f6;
+          border-color: #3b82f6;
+          background-image: url("data:image/svg+xml,%3Csvg width='12' height='10' viewBox='0 0 12 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5L4.5 8.5L11 1' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+
         .form-section {
           background: white;
           border: 1px solid #e5e7eb;
@@ -290,11 +418,92 @@ export default function UploadPage() {
           margin-bottom: 24px;
         }
 
+        .disabled-section {
+          opacity: 0.6;
+          position: relative;
+        }
+
+        .disabled-message {
+          color: #6b7280;
+          font-size: 14px;
+          font-style: italic;
+          margin-bottom: 12px;
+        }
+
         .section-title {
           font-size: 18px;
           font-weight: 600;
           color: #111827;
           margin: 0 0 16px 0;
+        }
+
+        .all-criteria-results {
+          background: #f9fafb;
+          border: 1px solid #e5e7eb;
+          border-radius: 6px;
+          padding: 16px;
+          margin-bottom: 20px;
+        }
+
+        .all-criteria-results h4 {
+          font-size: 16px;
+          font-weight: 600;
+          color: #374151;
+          margin: 0 0 12px 0;
+        }
+
+        .criteria-result-item {
+          background: white;
+          border: 1px solid #e5e7eb;
+          border-radius: 4px;
+          padding: 12px;
+          margin-bottom: 8px;
+        }
+
+        .criteria-result-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .criteria-name {
+          font-weight: 600;
+          color: #111827;
+        }
+
+        .criteria-count {
+          font-size: 14px;
+        }
+
+        .criteria-count.has-results {
+          color: #22c55e;
+          font-weight: 500;
+        }
+
+        .criteria-count.no-results {
+          color: #6b7280;
+        }
+
+        .criteria-inserted {
+          font-size: 12px;
+          color: #10b981;
+          margin-top: 4px;
+        }
+
+        .total-summary {
+          margin-top: 12px;
+          padding-top: 12px;
+          border-top: 1px solid #e5e7eb;
+          font-size: 16px;
+          color: #111827;
+        }
+
+        .cheval-critere {
+          font-size: 12px;
+          font-weight: 600;
+          padding: 2px 8px;
+          border-radius: 4px;
+          background-color: rgba(0,0,0,0.05);
         }
 
         .error-message {
@@ -559,31 +768,6 @@ export default function UploadPage() {
 
         .dashboard-button:hover {
           background-color: #4f46e5;
-        }
-
-        .error-details {
-          margin-top: 20px;
-          padding: 16px;
-          background-color: #fee2e2;
-          border: 1px solid #fecaca;
-          border-radius: 6px;
-        }
-
-        .error-details h4 {
-          margin: 0 0 12px 0;
-          color: #991b1b;
-          font-size: 16px;
-        }
-
-        .error-item {
-          font-size: 14px;
-          color: #7f1d1d;
-          margin-bottom: 8px;
-          word-break: break-word;
-        }
-
-        .error-item strong {
-          color: #991b1b;
         }
 
         .error-details {
