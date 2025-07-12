@@ -1,12 +1,15 @@
 import { NextResponse } from 'next/server';
-import { deleteByDate } from '../../../lib/db';
+import { deleteByDate } from '../../../../lib/db';
 
 export async function DELETE(request) {
   try {
     const { searchParams } = new URL(request.url);
     const date = searchParams.get('date');
     
+    console.log('🗑️ API appelée pour supprimer la date:', date);
+    
     if (!date) {
+      console.error('❌ Aucune date fournie');
       return NextResponse.json(
         { error: 'Date requise' },
         { status: 400 }
@@ -17,7 +20,7 @@ export async function DELETE(request) {
     
     const result = await deleteByDate(date);
     
-    console.log(`✅ ${result.count} chevaux supprimés`);
+    console.log(`✅ Résultat de la suppression:`, result);
     
     return NextResponse.json({
       success: true,
@@ -26,11 +29,12 @@ export async function DELETE(request) {
     });
     
   } catch (error) {
-    console.error('❌ Erreur lors de la suppression par date:', error);
+    console.error('❌ Erreur détaillée lors de la suppression par date:', error);
     return NextResponse.json(
       { 
         error: 'Erreur lors de la suppression',
-        details: error.message 
+        details: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
       },
       { status: 500 }
     );

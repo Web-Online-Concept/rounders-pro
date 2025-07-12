@@ -189,23 +189,29 @@ export async function deleteCheval(id) {
 // Fonction pour supprimer tous les chevaux d'une date (soft delete)
 export async function deleteByDate(date) {
   try {
+    console.log('🗑️ Suppression des chevaux pour la date:', date);
+    
+    // S'assurer que la date est au bon format (YYYY-MM-DD)
+    const dateFormatted = new Date(date).toISOString().split('T')[0];
+    console.log('📅 Date formatée:', dateFormatted);
+    
     // Effectuer la suppression soft (mise à jour de deleted_at)
     const result = await sql`
       UPDATE pmu_chevaux 
       SET deleted_at = CURRENT_TIMESTAMP 
-      WHERE date_course = ${date}
+      WHERE date_course = ${dateFormatted}
       AND deleted_at IS NULL
       RETURNING id
     `;
     
-    console.log(`✅ ${result.length} chevaux supprimés pour la date ${date}`);
+    console.log(`✅ ${result.length} chevaux supprimés pour la date ${dateFormatted}`);
     
     return {
       success: true,
       count: result.length
     };
   } catch (error) {
-    console.error('Erreur lors de la suppression par date:', error);
+    console.error('❌ Erreur lors de la suppression par date:', error);
     throw error;
   }
 }
