@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import ChevauxList from './components/ChevauxList';
 
@@ -15,6 +15,60 @@ export default function DashboardPage() {
     critere: ''
   });
   const [isDbInitialized, setIsDbInitialized] = useState(true);
+  
+  // États pour le convertisseur
+  const [isConverting, setIsConverting] = useState(false);
+  const fileInputRef = useRef(null);
+
+  // Gérer la conversion XLSX vers XLS
+  const handleFileConversion = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Vérifier que c'est bien un fichier XLSX
+    if (!file.name.endsWith('.xlsx')) {
+      alert('Veuillez sélectionner un fichier .xlsx');
+      event.target.value = '';
+      return;
+    }
+
+    setIsConverting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/pmu/api/convert-excel', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la conversion');
+      }
+
+      // Récupérer le fichier converti
+      const blob = await response.blob();
+      
+      // Créer un lien de téléchargement
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = file.name.replace('.xlsx', '.xls');
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      
+      // Réinitialiser l'input
+      event.target.value = '';
+    } catch (error) {
+      console.error('Erreur:', error);
+      alert('Erreur lors de la conversion du fichier');
+    } finally {
+      setIsConverting(false);
+    }
+  };
 
   // Charger les données
   const loadData = async () => {
@@ -179,13 +233,47 @@ export default function DashboardPage() {
           </p>
         </div>
         
-        <Link href="/pmu/upload" className="upload-button">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
-          Importer un fichier
-        </Link>
+        <div className="header-actions">
+          {/* Convertisseur XLSX vers XLS */}
+          <div className="converter-container">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".xlsx"
+              onChange={handleFileConversion}
+              style={{ display: 'none' }}
+            />
+            <button 
+              onClick={() => fileInputRef.current?.click()}
+              className="converter-button"
+              disabled={isConverting}
+            >
+              {isConverting ? (
+                <>
+                  <span className="spinner" />
+                  Conversion...
+                </>
+              ) : (
+                <>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                  XLSX → XLS
+                </>
+              )}
+            </button>
+          </div>
+          
+          <Link href="/pmu/upload" className="upload-button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            Importer un fichier
+          </Link>
+        </div>
       </div>
 
       {/* Statistiques */}
@@ -331,6 +419,12 @@ export default function DashboardPage() {
           flex: 1;
         }
 
+        .header-actions {
+          display: flex;
+          gap: 12px;
+          align-items: center;
+        }
+
         .page-title {
           font-size: 32px;
           font-weight: 700;
@@ -342,6 +436,34 @@ export default function DashboardPage() {
           font-size: 16px;
           color: #6b7280;
           margin: 0;
+        }
+
+        .converter-container {
+          position: relative;
+        }
+
+        .converter-button {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 12px 20px;
+          background-color: #8b5cf6;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background-color 0.2s;
+          font-size: 14px;
+        }
+
+        .converter-button:hover:not(:disabled) {
+          background-color: #7c3aed;
+        }
+
+        .converter-button:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
         }
 
         .upload-button {
@@ -359,6 +481,15 @@ export default function DashboardPage() {
 
         .upload-button:hover {
           background-color: #2563eb;
+        }
+
+        .spinner {
+          width: 16px;
+          height: 16px;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-top-color: white;
+          border-radius: 50%;
+          animation: spin 0.6s linear infinite;
         }
 
         .stats-grid {
@@ -489,13 +620,11 @@ export default function DashboardPage() {
           text-align: center;
         }
 
-        .spinner {
+        .loading-state .spinner {
           width: 40px;
           height: 40px;
           border: 3px solid #f3f4f6;
           border-top-color: #3b82f6;
-          border-radius: 50%;
-          animation: spin 0.8s linear infinite;
           margin: 0 auto 16px;
         }
 
@@ -517,17 +646,23 @@ export default function DashboardPage() {
             font-size: 24px;
           }
 
+          .header-actions {
+            width: 100%;
+            flex-direction: column;
+          }
+
+          .converter-button,
+          .upload-button {
+            width: 100%;
+            justify-content: center;
+          }
+
           .stats-grid {
             grid-template-columns: 1fr;
           }
 
           .filters-grid {
             grid-template-columns: 1fr;
-          }
-
-          .upload-button {
-            width: 100%;
-            justify-content: center;
           }
         }
       `}</style>
