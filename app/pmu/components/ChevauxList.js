@@ -95,13 +95,51 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
   // Formater la date
   const formatDate = (dateStr) => {
     if (!dateStr) return '';
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('fr-FR', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    });
+    
+    try {
+      console.log('Formatage de la date:', dateStr, 'Type:', typeof dateStr);
+      
+      let date;
+      
+      // Si c'est déjà un objet Date
+      if (dateStr instanceof Date) {
+        date = dateStr;
+      }
+      // Si c'est une chaîne au format ISO (2025-07-12)
+      else if (typeof dateStr === 'string' && dateStr.match(/^\d{4}-\d{2}-\d{2}/)) {
+        // Ajouter l'heure pour éviter les problèmes de timezone
+        date = new Date(dateStr + 'T12:00:00');
+      }
+      // Sinon, essayer de parser normalement
+      else {
+        date = new Date(dateStr);
+      }
+      
+      // Vérifier si la date est valide
+      if (isNaN(date.getTime())) {
+        console.error('Date invalide après parsing:', dateStr, date);
+        return 'Date invalide';
+      }
+      
+      console.log('Date parsée correctement:', date);
+      
+      // Formater la date en français
+      const options = {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      };
+      
+      const formatted = date.toLocaleDateString('fr-FR', options);
+      
+      // Capitaliser la première lettre
+      return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+      
+    } catch (error) {
+      console.error('Erreur formatage date:', dateStr, error);
+      return 'Date invalide';
+    }
   };
 
   // Formater l'heure
@@ -168,6 +206,11 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
   return (
     <div className="chevaux-list">
       {Object.entries(chevaux).map(([date, courses]) => {
+        // Ignorer les entrées avec des dates invalides dans l'affichage
+        if (date === 'date-invalide' || date === 'sans-date') {
+          return null;
+        }
+        
         const isDateDeleting = deletingDates.has(date);
         const dateFormatted = formatDate(date);
         
@@ -318,7 +361,7 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
             })}
           </div>
         );
-      })}
+      }).filter(Boolean)}
 
       <style jsx>{`
         .chevaux-list {

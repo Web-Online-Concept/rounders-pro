@@ -23,8 +23,22 @@ export async function GET(request) {
     const chevauxGroupes = {};
     
     chevaux.forEach(cheval => {
+      // S'assurer que la date est au format string ISO (YYYY-MM-DD)
+      let dateKey;
+      if (cheval.date_course) {
+        const dateObj = new Date(cheval.date_course);
+        if (!isNaN(dateObj.getTime())) {
+          // Formater la date en YYYY-MM-DD
+          dateKey = dateObj.toISOString().split('T')[0];
+        } else {
+          console.error('Date invalide pour le cheval:', cheval.nom_cheval, cheval.date_course);
+          dateKey = 'date-invalide';
+        }
+      } else {
+        dateKey = 'sans-date';
+      }
+      
       // Créer une clé unique pour chaque course
-      const dateKey = cheval.date_course;
       const courseKey = `${cheval.hippodrome}_${cheval.numero_reunion}_C${cheval.numero_course}`;
       
       if (!chevauxGroupes[dateKey]) {
@@ -33,7 +47,7 @@ export async function GET(request) {
       
       if (!chevauxGroupes[dateKey][courseKey]) {
         chevauxGroupes[dateKey][courseKey] = {
-          date: cheval.date_course,
+          date: dateKey, // Utiliser la dateKey formatée
           hippodrome: cheval.hippodrome,
           reunion: cheval.numero_reunion,
           course: cheval.numero_course,
@@ -67,6 +81,14 @@ export async function GET(request) {
       });
     });
     
+    // Nettoyer les clés invalides si elles existent
+    if (chevauxGroupes['date-invalide']) {
+      console.warn('⚠️ Des chevaux avec des dates invalides ont été trouvés');
+    }
+    if (chevauxGroupes['sans-date']) {
+      console.warn('⚠️ Des chevaux sans date ont été trouvés');
+    }
+    
     // Calculer les statistiques
     const stats = {
       totalChevaux: chevaux.length,
@@ -74,8 +96,11 @@ export async function GET(request) {
         (acc, date) => acc + Object.keys(date).length, 
         0
       ),
-      hippodromes: [...new Set(chevaux.map(c => c.hippodrome))].sort(),
-      dates: Object.keys(chevauxGroupes).sort().reverse()
+      hippodromes: [...new Set(chevaux.map(c => c.hippodrome))].filter(Boolean).sort(),
+      dates: Object.keys(chevauxGroupes)
+        .filter(d => d !== 'date-invalide' && d !== 'sans-date')
+        .sort()
+        .reverse()
     };
     
     return NextResponse.json({
