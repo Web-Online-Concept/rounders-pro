@@ -361,8 +361,8 @@ export function getCriteriaDescription(criteriaId) {
 // Export des colonnes pour référence
 export const COLONNES = {
   // La Réunion et la Course
-  NUMERO_REUNION: 0,      // Colonne A
-  DATE: 1,                // Colonne B - LA DATE EST ICI !
+  DATE: 0,                // Colonne A - LA DATE EST BIEN ICI !
+  NUMERO_REUNION: 1,      // Colonne B
   HIPPODROME: 2,          // Colonne C
   NUMERO_COURSE: 3,       // Colonne D
   HEURE: 4,               // Colonne E

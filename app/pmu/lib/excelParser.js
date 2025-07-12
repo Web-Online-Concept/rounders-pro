@@ -1,8 +1,8 @@
 import * as XLSX from 'xlsx';
 import { applyCriteria, COLONNES } from './criteria';
 
-// Fonction pour parser la date du format "7/11/25" vers "2025-07-11"
-// FORMAT AMÉRICAIN dans l'export Excel : mois/jour/année
+// Fonction pour parser la date du format "12/07/2025" vers "2025-07-12"
+// FORMAT FRANÇAIS : jour/mois/année
 function parseDate(dateStr) {
   if (!dateStr && dateStr !== 0) {
     return null;
@@ -17,16 +17,16 @@ function parseDate(dateStr) {
       return dateString.substring(0, 10);
     }
     
-    // Format MM/DD/YY ou M/D/YY (FORMAT AMÉRICAIN)
+    // Format DD/MM/YYYY ou D/M/YYYY (FORMAT FRANÇAIS)
     const parts = dateString.split('/');
     if (parts.length !== 3) {
       console.error('Format de date invalide:', dateStr);
       return null;
     }
     
-    // En format américain : mois/jour/année
-    const month = parts[0].padStart(2, '0');
-    const day = parts[1].padStart(2, '0');
+    // En format français : jour/mois/année
+    const day = parts[0].padStart(2, '0');
+    const month = parts[1].padStart(2, '0');
     let year = parts[2];
     
     // Gérer les années sur 2 chiffres

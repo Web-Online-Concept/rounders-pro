@@ -94,86 +94,33 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
 
   // Formater la date
   const formatDate = (dateStr) => {
-    if (!dateStr) {
-      console.warn('formatDate: pas de date fournie');
-      return 'Date non disponible';
-    }
-    
-    // Ignorer les dates invalides connues
-    if (dateStr === 'date-invalide' || dateStr === 'date-inconnue' || dateStr === 'sans-date') {
-      return null;
-    }
+    if (!dateStr) return '';
     
     try {
-      console.log('formatDate - Input:', dateStr, 'Type:', typeof dateStr);
-      
-      let date;
-      
-      // Si c'est déjà un objet Date
-      if (dateStr instanceof Date) {
-        date = dateStr;
-      }
-      // Si c'est une chaîne au format ISO (2025-01-17 ou 2025-01-17T...)
-      else if (typeof dateStr === 'string') {
-        // Format YYYY-MM-DD
-        if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
-          // Ajouter l'heure à midi pour éviter les problèmes de timezone
-          date = new Date(dateStr + 'T12:00:00');
-        }
-        // Format ISO complet
-        else if (dateStr.match(/^\d{4}-\d{2}-\d{2}T/)) {
-          date = new Date(dateStr);
-        }
-        // Essayer de parser directement
-        else {
-          date = new Date(dateStr);
-        }
-      }
-      // Si c'est un nombre (timestamp)
-      else if (typeof dateStr === 'number') {
-        date = new Date(dateStr);
-      }
-      // Type non reconnu
-      else {
-        console.error('formatDate - Type non reconnu:', typeof dateStr, dateStr);
-        return 'Date invalide';
+      // Si c'est au format YYYY-MM-DD
+      if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        const date = new Date(dateStr + 'T12:00:00');
+        
+        const options = {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        };
+        
+        const formatted = date.toLocaleDateString('fr-FR', options);
+        return formatted.charAt(0).toUpperCase() + formatted.slice(1);
       }
       
-      // Vérifier si la date est valide
-      if (!date || isNaN(date.getTime())) {
-        console.error('formatDate - Date invalide après parsing:', dateStr, date);
-        return 'Date invalide';
-      }
-      
-      console.log('formatDate - Date parsée:', date);
-      
-      // Formater la date en français
-      const options = {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-      };
-      
-      const formatted = date.toLocaleDateString('fr-FR', options);
-      
-      // Capitaliser la première lettre
-      const result = formatted.charAt(0).toUpperCase() + formatted.slice(1);
-      
-      console.log('formatDate - Résultat:', result);
-      
-      return result;
-      
+      return dateStr;
     } catch (error) {
-      console.error('formatDate - Erreur:', error, 'pour la date:', dateStr);
-      return 'Date invalide';
+      return dateStr;
     }
   };
 
   // Formater l'heure
   const formatTime = (timeStr) => {
     if (!timeStr) return '';
-    // Si l'heure est au format HH:MM:SS, ne garder que HH:MM
     if (typeof timeStr === 'string' && timeStr.length >= 5) {
       return timeStr.substring(0, 5);
     }
@@ -192,11 +139,8 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
 
   // Obtenir la description du critère
   const getCriteriaDescription = (critereName) => {
-    // Trouver le critère par son nom
     const criteria = Object.values(CRITERES).find(c => c.nom === critereName);
     if (!criteria) return critereName;
-    
-    // Retourner la description
     return criteria.description;
   };
 
@@ -235,26 +179,11 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
     );
   }
 
-  // Log pour debug
-  console.log('ChevauxList - Données reçues:', Object.keys(chevaux));
-
   return (
     <div className="chevaux-list">
       {Object.entries(chevaux).map(([date, courses]) => {
-        // Ignorer les entrées avec des dates invalides
-        if (date === 'date-invalide' || date === 'date-inconnue' || date === 'sans-date') {
-          console.log('ChevauxList - Date ignorée:', date);
-          return null;
-        }
-        
         const isDateDeleting = deletingDates.has(date);
         const dateFormatted = formatDate(date);
-        
-        // Si le formatage retourne null, ignorer cette entrée
-        if (!dateFormatted) {
-          console.log('ChevauxList - Date non formatable:', date);
-          return null;
-        }
         
         return (
           <div key={date} className="date-group">
@@ -403,7 +332,7 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
             })}
           </div>
         );
-      }).filter(Boolean)}
+      })}
 
       <style jsx>{`
         .chevaux-list {
