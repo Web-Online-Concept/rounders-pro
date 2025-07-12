@@ -14,6 +14,11 @@ export default function UploadPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadResult, setUploadResult] = useState(null);
   const [error, setError] = useState(null);
+  
+  // États pour la sélection manuelle
+  const [analysisResult, setAnalysisResult] = useState(null);
+  const [selectedChevaux, setSelectedChevaux] = useState({});
+  const [isImporting, setIsImporting] = useState(false);
 
   // Réinitialiser le formulaire
   const resetForm = () => {
@@ -21,6 +26,8 @@ export default function UploadPage() {
     setSelectedCriteria('');
     setApplyAllCriteria(false);
     setUploadResult(null);
+    setAnalysisResult(null);
+    setSelectedChevaux({});
     setError(null);
   };
 
@@ -32,8 +39,8 @@ export default function UploadPage() {
     }
   };
 
-  // Gérer l'upload
-  const handleUpload = async () => {
+  // Gérer l'analyse (première étape)
+  const handleAnalyze = async () => {
     if (!selectedFile) {
       setError('Veuillez sélectionner un fichier');
       return;
@@ -46,11 +53,77 @@ export default function UploadPage() {
 
     setIsUploading(true);
     setError(null);
-    setUploadResult(null);
+    setAnalysisResult(null);
 
     try {
       const formData = new FormData();
       formData.append('file', selectedFile);
+      formData.append('analyzeOnly', 'true'); // Nouvelle option pour analyse seulement
+      
+      if (applyAllCriteria) {
+        formData.append('applyAllCriteria', 'true');
+      } else {
+        formData.append('criteriaId', selectedCriteria);
+      }
+
+      const response = await fetch('/pmu/api/upload-excel', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setAnalysisResult(result);
+        
+        // Initialiser tous les chevaux comme sélectionnés
+        const initialSelection = {};
+        if (result.allCriteriaResults) {
+          // Pour tous les critères
+          Object.entries(result.allCriteriaResults).forEach(([critereName, criteriaData]) => {
+            if (criteriaData.chevaux) {
+              criteriaData.chevaux.forEach(cheval => {
+                initialSelection[`${critereName}_${cheval.id}`] = true;
+              });
+            }
+          });
+        } else if (result.chevaux) {
+          // Pour un seul critère
+          result.chevaux.forEach(cheval => {
+            initialSelection[cheval.id] = true;
+          });
+        }
+        setSelectedChevaux(initialSelection);
+      } else {
+        setError(result.error || 'Erreur lors de l\'analyse');
+      }
+    } catch (err) {
+      setError('Erreur de connexion au serveur');
+      console.error('Erreur analyse:', err);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  // Gérer l'import des chevaux sélectionnés
+  const handleImport = async () => {
+    const chevauxToImport = Object.entries(selectedChevaux)
+      .filter(([_, isSelected]) => isSelected)
+      .map(([key, _]) => key);
+
+    if (chevauxToImport.length === 0) {
+      setError('Veuillez sélectionner au moins un cheval');
+      return;
+    }
+
+    setIsImporting(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('importOnly', 'true');
+      formData.append('selectedChevaux', JSON.stringify(chevauxToImport));
       
       if (applyAllCriteria) {
         formData.append('applyAllCriteria', 'true');
@@ -67,16 +140,61 @@ export default function UploadPage() {
 
       if (response.ok) {
         setUploadResult(result);
+        setAnalysisResult(null);
       } else {
-        setError(result.error || 'Erreur lors de l\'upload');
+        setError(result.error || 'Erreur lors de l\'import');
       }
     } catch (err) {
       setError('Erreur de connexion au serveur');
-      console.error('Erreur upload:', err);
+      console.error('Erreur import:', err);
     } finally {
-      setIsUploading(false);
+      setIsImporting(false);
     }
   };
+
+  // Gérer la sélection d'un cheval
+  const handleChevalSelection = (chevalKey, isChecked) => {
+    setSelectedChevaux(prev => ({
+      ...prev,
+      [chevalKey]: isChecked
+    }));
+  };
+
+  // Sélectionner/désélectionner tous les chevaux d'une course
+  const handleCourseSelection = (courseChevaux, critereName = null) => {
+    const newSelection = { ...selectedChevaux };
+    const allSelected = courseChevaux.every(cheval => {
+      const key = critereName ? `${critereName}_${cheval.id}` : cheval.id;
+      return selectedChevaux[key];
+    });
+
+    courseChevaux.forEach(cheval => {
+      const key = critereName ? `${critereName}_${cheval.id}` : cheval.id;
+      newSelection[key] = !allSelected;
+    });
+
+    setSelectedChevaux(newSelection);
+  };
+
+  // Sélectionner/désélectionner tous
+  const handleSelectAll = () => {
+    const allKeys = Object.keys(selectedChevaux);
+    const allSelected = allKeys.every(key => selectedChevaux[key]);
+    
+    const newSelection = {};
+    allKeys.forEach(key => {
+      newSelection[key] = !allSelected;
+    });
+    
+    setSelectedChevaux(newSelection);
+  };
+
+  // Compter les chevaux sélectionnés
+  const countSelected = () => {
+    return Object.values(selectedChevaux).filter(v => v).length;
+  };
+
+  const totalChevaux = Object.keys(selectedChevaux).length;
 
   return (
     <div className="upload-page">
@@ -96,7 +214,7 @@ export default function UploadPage() {
       </div>
 
       <div className="upload-container">
-        {/* Résultat de l'upload */}
+        {/* Résultat final de l'import */}
         {uploadResult && (
           <div className={`result-card ${uploadResult.success ? 'success' : 'warning'}`}>
             <div className="result-header">
@@ -115,102 +233,6 @@ export default function UploadPage() {
               <h3>{uploadResult.message}</h3>
             </div>
             
-            {/* Résultats pour tous les critères */}
-            {uploadResult.allCriteriaResults && (
-              <div className="all-criteria-results">
-                <h4>Résultats par critère :</h4>
-                {Object.entries(uploadResult.allCriteriaResults).map(([critereName, result]) => (
-                  <div key={critereName} className="criteria-result-item">
-                    <div className="criteria-result-header">
-                      <span className="criteria-name">{critereName}</span>
-                      <span className={`criteria-count ${result.selectedCount > 0 ? 'has-results' : 'no-results'}`}>
-                        {result.selectedCount} {result.selectedCount > 1 ? 'chevaux trouvés' : 'cheval trouvé'}
-                      </span>
-                    </div>
-                    {result.insertedCount > 0 && (
-                      <div className="criteria-inserted">
-                        {result.insertedCount} {result.insertedCount > 1 ? 'chevaux importés' : 'cheval importé'}
-                      </div>
-                    )}
-                  </div>
-                ))}
-                
-                <div className="total-summary">
-                  <strong>Total :</strong> {uploadResult.stats.selectedCount} chevaux trouvés, {uploadResult.stats.insertedCount} importés
-                </div>
-              </div>
-            )}
-
-            {/* Résultats pour un seul critère */}
-            {!uploadResult.allCriteriaResults && uploadResult.stats && (
-              <div className="result-stats">
-                <div className="stat-item">
-                  <span className="stat-label">Lignes analysées</span>
-                  <span className="stat-value">{uploadResult.stats.totalRows}</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">Chevaux sélectionnés</span>
-                  <span className="stat-value">{uploadResult.stats.selectedCount}</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">Chevaux importés</span>
-                  <span className="stat-value success-text">{uploadResult.stats.insertedCount}</span>
-                </div>
-                {uploadResult.stats.errorCount > 0 && (
-                  <div className="stat-item">
-                    <span className="stat-label">Erreurs</span>
-                    <span className="stat-value error-text">{uploadResult.stats.errorCount}</span>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {uploadResult.errors && uploadResult.errors.length > 0 && (
-              <div className="error-details">
-                <h4>Détails des erreurs :</h4>
-                {uploadResult.errors.map((err, idx) => (
-                  <div key={idx} className="error-item">
-                    <strong>{err.cheval}:</strong> {err.error}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {uploadResult.stats?.courses && uploadResult.stats.courses.length > 0 && (
-              <div className="result-courses">
-                <h4>Courses importées :</h4>
-                {uploadResult.stats.courses.map((course, idx) => (
-                  <div key={idx} className="course-detail">
-                    <div className="course-header-import">
-                      <span className="course-name">
-                        {course.reunion}C{course.course} - {course.hippodrome}
-                      </span>
-                      <span className="course-count">
-                        {course.chevaux.length} {course.chevaux.length > 1 ? 'chevaux' : 'cheval'}
-                      </span>
-                    </div>
-                    <div className="chevaux-detail">
-                      {course.chevaux.map((cheval, cIdx) => (
-                        <div key={cIdx} className="cheval-item">
-                          <span className="cheval-numero">N°{cheval.numero}</span>
-                          <span className="cheval-nom">{cheval.nom}</span>
-                          <span className="cheval-info">{cheval.age} ans</span>
-                          <span className="cheval-def">
-                            Déf: {cheval.def || '-'} | {cheval.def_1 || '-'} | {cheval.def_2 || '-'}
-                          </span>
-                          {cheval.critere && (
-                            <span className="cheval-critere" style={{color: cheval.couleur}}>
-                              {cheval.critere}
-                            </span>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
             <div className="action-buttons">
               <button onClick={resetForm} className="reset-button">
                 Faire un nouvel import
@@ -223,8 +245,149 @@ export default function UploadPage() {
           </div>
         )}
 
-        {/* Formulaire d'upload */}
-        {!uploadResult && (
+        {/* Résultats de l'analyse avec sélection */}
+        {analysisResult && !uploadResult && (
+          <div className="analysis-results">
+            <div className="selection-header">
+              <h2>Sélection des chevaux à importer</h2>
+              <div className="selection-info">
+                <span className="selection-count">
+                  {countSelected()} / {totalChevaux} chevaux sélectionnés
+                </span>
+                <button onClick={handleSelectAll} className="select-all-btn">
+                  {countSelected() === totalChevaux ? 'Tout désélectionner' : 'Tout sélectionner'}
+                </button>
+              </div>
+            </div>
+
+            {/* Résultats pour tous les critères */}
+            {analysisResult.allCriteriaResults && (
+              <div className="all-criteria-selection">
+                {Object.entries(analysisResult.allCriteriaResults).map(([critereName, criteriaData]) => (
+                  <div key={critereName} className="criteria-section">
+                    <h3 style={{color: criteriaData.couleur}}>{critereName}</h3>
+                    {criteriaData.selectedCount === 0 ? (
+                      <p className="no-results">Aucun cheval trouvé pour ce critère</p>
+                    ) : (
+                      criteriaData.courses?.map((course, idx) => (
+                        <div key={idx} className="course-selection">
+                          <div className="course-header-selection">
+                            <label className="course-checkbox">
+                              <input
+                                type="checkbox"
+                                checked={course.chevaux.every(ch => selectedChevaux[`${critereName}_${ch.id}`])}
+                                onChange={() => handleCourseSelection(course.chevaux, critereName)}
+                              />
+                              <span>{course.reunion}C{course.course} - {course.hippodrome}</span>
+                            </label>
+                            <span className="course-count">
+                              {course.chevaux.filter(ch => selectedChevaux[`${critereName}_${ch.id}`]).length} / {course.chevaux.length}
+                            </span>
+                          </div>
+                          <div className="chevaux-selection">
+                            {course.chevaux.map((cheval) => (
+                              <label key={cheval.id} className="cheval-checkbox">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedChevaux[`${critereName}_${cheval.id}`] || false}
+                                  onChange={(e) => handleChevalSelection(`${critereName}_${cheval.id}`, e.target.checked)}
+                                />
+                                <span className="cheval-info-selection">
+                                  <span className="cheval-numero">N°{cheval.numero}</span>
+                                  <span className="cheval-nom">{cheval.nom}</span>
+                                  <span className="cheval-age">{cheval.age} ans</span>
+                                  <span className="cheval-def">
+                                    Déf: {cheval.def || '-'} | {cheval.def_1 || '-'} | {cheval.def_2 || '-'}
+                                  </span>
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Résultats pour un seul critère */}
+            {!analysisResult.allCriteriaResults && analysisResult.courses && (
+              <div className="single-criteria-selection">
+                {analysisResult.courses.map((course, idx) => (
+                  <div key={idx} className="course-selection">
+                    <div className="course-header-selection">
+                      <label className="course-checkbox">
+                        <input
+                          type="checkbox"
+                          checked={course.chevaux.every(ch => selectedChevaux[ch.id])}
+                          onChange={() => handleCourseSelection(course.chevaux)}
+                        />
+                        <span>{course.reunion}C{course.course} - {course.hippodrome}</span>
+                      </label>
+                      <span className="course-count">
+                        {course.chevaux.filter(ch => selectedChevaux[ch.id]).length} / {course.chevaux.length}
+                      </span>
+                    </div>
+                    <div className="chevaux-selection">
+                      {course.chevaux.map((cheval) => (
+                        <label key={cheval.id} className="cheval-checkbox">
+                          <input
+                            type="checkbox"
+                            checked={selectedChevaux[cheval.id] || false}
+                            onChange={(e) => handleChevalSelection(cheval.id, e.target.checked)}
+                          />
+                          <span className="cheval-info-selection">
+                            <span className="cheval-numero">N°{cheval.numero}</span>
+                            <span className="cheval-nom">{cheval.nom}</span>
+                            <span className="cheval-age">{cheval.age} ans</span>
+                            <span className="cheval-def">
+                              Déf: {cheval.def || '-'} | {cheval.def_1 || '-'} | {cheval.def_2 || '-'}
+                            </span>
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {error && (
+              <div className="error-message">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                {error}
+              </div>
+            )}
+
+            <div className="import-actions">
+              <button onClick={resetForm} className="cancel-import">
+                Annuler
+              </button>
+              <button 
+                onClick={handleImport} 
+                disabled={countSelected() === 0 || isImporting}
+                className="import-selected"
+              >
+                {isImporting ? (
+                  <>
+                    <span className="spinner" />
+                    Import en cours...
+                  </>
+                ) : (
+                  `Importer ${countSelected()} ${countSelected() > 1 ? 'chevaux' : 'cheval'}`
+                )}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Formulaire initial */}
+        {!uploadResult && !analysisResult && (
           <>
             <div className="form-section">
               <h2 className="section-title">1. Sélectionner le fichier Excel</h2>
@@ -297,17 +460,17 @@ export default function UploadPage() {
                 Annuler
               </Link>
               <button
-                onClick={handleUpload}
+                onClick={handleAnalyze}
                 disabled={!selectedFile || (!selectedCriteria && !applyAllCriteria) || isUploading}
                 className="submit-button"
               >
                 {isUploading ? (
                   <>
                     <span className="spinner" />
-                    Traitement en cours...
+                    Analyse en cours...
                   </>
                 ) : (
-                  'Analyser et importer'
+                  'Analyser le fichier'
                 )}
               </button>
             </div>
@@ -358,6 +521,212 @@ export default function UploadPage() {
         .upload-container {
           max-width: 800px;
           margin: 0 auto;
+        }
+
+        .analysis-results {
+          background: white;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          padding: 24px;
+        }
+
+        .selection-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 24px;
+          padding-bottom: 16px;
+          border-bottom: 1px solid #e5e7eb;
+        }
+
+        .selection-header h2 {
+          font-size: 20px;
+          font-weight: 600;
+          color: #111827;
+          margin: 0;
+        }
+
+        .selection-info {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .selection-count {
+          font-size: 16px;
+          font-weight: 500;
+          color: #3b82f6;
+        }
+
+        .select-all-btn {
+          padding: 6px 12px;
+          background-color: #f3f4f6;
+          color: #374151;
+          border: none;
+          border-radius: 4px;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+
+        .select-all-btn:hover {
+          background-color: #e5e7eb;
+        }
+
+        .criteria-section {
+          margin-bottom: 24px;
+        }
+
+        .criteria-section h3 {
+          font-size: 18px;
+          font-weight: 600;
+          margin: 0 0 12px 0;
+        }
+
+        .no-results {
+          color: #6b7280;
+          font-style: italic;
+          margin: 8px 0;
+        }
+
+        .course-selection {
+          background: #f9fafb;
+          border: 1px solid #e5e7eb;
+          border-radius: 6px;
+          margin-bottom: 12px;
+          overflow: hidden;
+        }
+
+        .course-header-selection {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 12px 16px;
+          background: white;
+          border-bottom: 1px solid #e5e7eb;
+        }
+
+        .course-checkbox {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          cursor: pointer;
+          font-weight: 600;
+          color: #111827;
+        }
+
+        .course-checkbox input[type="checkbox"] {
+          width: 18px;
+          height: 18px;
+          cursor: pointer;
+        }
+
+        .course-count {
+          font-size: 14px;
+          color: #6b7280;
+        }
+
+        .chevaux-selection {
+          padding: 8px;
+        }
+
+        .cheval-checkbox {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.2s;
+        }
+
+        .cheval-checkbox:hover {
+          background-color: white;
+        }
+
+        .cheval-checkbox input[type="checkbox"] {
+          width: 16px;
+          height: 16px;
+          cursor: pointer;
+          flex-shrink: 0;
+        }
+
+        .cheval-info-selection {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex: 1;
+        }
+
+        .cheval-numero {
+          font-weight: 600;
+          color: #6b7280;
+          min-width: 35px;
+        }
+
+        .cheval-nom {
+          font-weight: 500;
+          color: #111827;
+          flex: 1;
+        }
+
+        .cheval-age {
+          color: #6b7280;
+          font-size: 14px;
+        }
+
+        .cheval-def {
+          color: #7c3aed;
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        .import-actions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 12px;
+          margin-top: 24px;
+          padding-top: 24px;
+          border-top: 1px solid #e5e7eb;
+        }
+
+        .cancel-import {
+          padding: 10px 20px;
+          border: 1px solid #e5e7eb;
+          background-color: white;
+          color: #6b7280;
+          border-radius: 6px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+
+        .cancel-import:hover {
+          background-color: #f9fafb;
+        }
+
+        .import-selected {
+          padding: 10px 20px;
+          background-color: #3b82f6;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .import-selected:hover:not(:disabled) {
+          background-color: #2563eb;
+        }
+
+        .import-selected:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
         }
 
         .all-criteria-option {
@@ -483,75 +852,6 @@ export default function UploadPage() {
           margin: 0 0 16px 0;
         }
 
-        .all-criteria-results {
-          background: #f9fafb;
-          border: 1px solid #e5e7eb;
-          border-radius: 6px;
-          padding: 16px;
-          margin-bottom: 20px;
-        }
-
-        .all-criteria-results h4 {
-          font-size: 16px;
-          font-weight: 600;
-          color: #374151;
-          margin: 0 0 12px 0;
-        }
-
-        .criteria-result-item {
-          background: white;
-          border: 1px solid #e5e7eb;
-          border-radius: 4px;
-          padding: 12px;
-          margin-bottom: 8px;
-        }
-
-        .criteria-result-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .criteria-name {
-          font-weight: 600;
-          color: #111827;
-        }
-
-        .criteria-count {
-          font-size: 14px;
-        }
-
-        .criteria-count.has-results {
-          color: #22c55e;
-          font-weight: 500;
-        }
-
-        .criteria-count.no-results {
-          color: #6b7280;
-        }
-
-        .criteria-inserted {
-          font-size: 12px;
-          color: #10b981;
-          margin-top: 4px;
-        }
-
-        .total-summary {
-          margin-top: 12px;
-          padding-top: 12px;
-          border-top: 1px solid #e5e7eb;
-          font-size: 16px;
-          color: #111827;
-        }
-
-        .cheval-critere {
-          font-size: 12px;
-          font-weight: 600;
-          padding: 2px 8px;
-          border-radius: 4px;
-          background-color: rgba(0,0,0,0.05);
-        }
-
         .error-message {
           background-color: #fee2e2;
           border: 1px solid #fecaca;
@@ -660,125 +960,6 @@ export default function UploadPage() {
           color: #111827;
         }
 
-        .result-stats {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-          gap: 16px;
-          margin-bottom: 20px;
-        }
-
-        .stat-item {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-        }
-
-        .stat-label {
-          font-size: 14px;
-          color: #6b7280;
-        }
-
-        .stat-value {
-          font-size: 24px;
-          font-weight: 600;
-          color: #111827;
-        }
-
-        .success-text {
-          color: #22c55e;
-        }
-
-        .error-text {
-          color: #dc2626;
-        }
-
-        .result-courses {
-          margin-bottom: 20px;
-        }
-
-        .result-courses h4 {
-          font-size: 16px;
-          font-weight: 600;
-          color: #374151;
-          margin: 0 0 12px 0;
-        }
-
-        .course-detail {
-          margin-bottom: 16px;
-          border: 1px solid #e5e7eb;
-          border-radius: 6px;
-          overflow: hidden;
-        }
-
-        .course-header-import {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 12px 16px;
-          background-color: #f9fafb;
-          border-bottom: 1px solid #e5e7eb;
-        }
-
-        .course-name {
-          font-weight: 600;
-          color: #111827;
-        }
-
-        .course-count {
-          color: #6b7280;
-          font-size: 14px;
-        }
-
-        .chevaux-detail {
-          padding: 8px 0;
-        }
-
-        .cheval-item {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 8px 16px;
-          border-bottom: 1px solid #f3f4f6;
-        }
-
-        .cheval-item:last-child {
-          border-bottom: none;
-        }
-
-        .cheval-numero {
-          font-weight: 600;
-          color: #6b7280;
-          min-width: 35px;
-        }
-
-        .cheval-nom {
-          font-weight: 500;
-          color: #111827;
-          flex: 1;
-        }
-
-        .cheval-info {
-          color: #6b7280;
-          font-size: 14px;
-        }
-
-        .cheval-def {
-          color: #7c3aed;
-          font-size: 14px;
-          font-weight: 500;
-        }
-
-        .reset-button {
-          padding: 10px 20px;
-          background-color: #3b82f6;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-
         .action-buttons {
           display: flex;
           gap: 12px;
@@ -816,31 +997,6 @@ export default function UploadPage() {
           background-color: #4f46e5;
         }
 
-        .error-details {
-          margin-top: 20px;
-          padding: 16px;
-          background-color: #fee2e2;
-          border: 1px solid #fecaca;
-          border-radius: 6px;
-        }
-
-        .error-details h4 {
-          margin: 0 0 12px 0;
-          color: #991b1b;
-          font-size: 16px;
-        }
-
-        .error-item {
-          font-size: 14px;
-          color: #7f1d1d;
-          margin-bottom: 8px;
-          word-break: break-word;
-        }
-
-        .error-item strong {
-          color: #991b1b;
-        }
-
         @media (max-width: 640px) {
           .upload-page {
             padding: 16px;
@@ -854,8 +1010,19 @@ export default function UploadPage() {
             padding: 16px;
           }
 
-          .result-stats {
-            grid-template-columns: repeat(2, 1fr);
+          .selection-header {
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-start;
+          }
+
+          .selection-info {
+            width: 100%;
+            justify-content: space-between;
+          }
+
+          .cheval-info-selection {
+            flex-wrap: wrap;
           }
         }
       `}</style>
