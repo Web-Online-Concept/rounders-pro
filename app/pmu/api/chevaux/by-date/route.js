@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { deleteByDate } from '../../../../lib/db';
+import { deleteByDate } from '../../../lib/db';
 
 export async function DELETE(request) {
   try {
