@@ -226,28 +226,6 @@ export default function UploadPage() {
         {/* Formulaire d'upload */}
         {!uploadResult && (
           <>
-            {/* Option tous les critères */}
-            <div className="form-section all-criteria-section">
-              <label className="checkbox-container">
-                <input
-                  type="checkbox"
-                  checked={applyAllCriteria}
-                  onChange={(e) => handleAllCriteriaChange(e.target.checked)}
-                  disabled={isUploading}
-                />
-                <span className="checkbox-label">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="3" y="11" width="18" height="10" rx="2" ry="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                  </svg>
-                  Appliquer tous les critères
-                </span>
-                <span className="checkbox-description">
-                  Analyse le fichier avec tous les critères disponibles (1, 2, 3, 4 et 5) en une seule fois
-                </span>
-              </label>
-            </div>
-
             <div className="form-section">
               <h2 className="section-title">1. Sélectionner le fichier Excel</h2>
               <FileUploader
@@ -257,17 +235,50 @@ export default function UploadPage() {
               />
             </div>
 
-            <div className={`form-section ${applyAllCriteria ? 'disabled-section' : ''}`}>
+            <div className="form-section">
               <h2 className="section-title">2. Choisir le critère de filtrage</h2>
+              
+              {/* Option tous les critères */}
+              <div className="all-criteria-option">
+                <label className="checkbox-container">
+                  <input
+                    type="checkbox"
+                    checked={applyAllCriteria}
+                    onChange={(e) => handleAllCriteriaChange(e.target.checked)}
+                    disabled={isUploading}
+                  />
+                  <span className="checkbox-wrapper">
+                    <span className="checkbox-custom"></span>
+                    <span className="checkbox-label">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <rect x="3" y="11" width="18" height="10" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                      </svg>
+                      Appliquer tous les critères
+                    </span>
+                  </span>
+                </label>
+                <p className="checkbox-description">
+                  Analyse le fichier avec tous les critères disponibles (1, 2, 3, 4 et 5) en une seule fois
+                </p>
+              </div>
+
+              <div className="separator">
+                <span>ou</span>
+              </div>
+
               {applyAllCriteria && (
                 <p className="disabled-message">
                   La sélection individuelle est désactivée car "Appliquer tous les critères" est activé
                 </p>
               )}
-              <CriteriaSelector
-                onCriteriaSelect={setSelectedCriteria}
-                disabled={isUploading || applyAllCriteria}
-              />
+              
+              <div className={`criteria-selector-wrapper ${applyAllCriteria ? 'disabled' : ''}`}>
+                <CriteriaSelector
+                  onCriteriaSelect={setSelectedCriteria}
+                  disabled={isUploading || applyAllCriteria}
+                />
+              </div>
             </div>
 
             {error && (
@@ -349,15 +360,16 @@ export default function UploadPage() {
           margin: 0 auto;
         }
 
-        .all-criteria-section {
-          background: #f0f9ff !important;
-          border-color: #3b82f6 !important;
+        .all-criteria-option {
+          background: #f0f9ff;
+          border: 1px solid #3b82f6;
+          border-radius: 6px;
+          padding: 16px;
+          margin-bottom: 16px;
         }
 
         .checkbox-container {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
+          display: block;
           cursor: pointer;
         }
 
@@ -366,10 +378,43 @@ export default function UploadPage() {
           opacity: 0;
         }
 
-        .checkbox-label {
+        .checkbox-wrapper {
           display: flex;
           align-items: center;
           gap: 12px;
+        }
+
+        .checkbox-custom {
+          width: 20px;
+          height: 20px;
+          border: 2px solid #d1d5db;
+          border-radius: 4px;
+          background: white;
+          position: relative;
+          transition: all 0.2s;
+        }
+
+        .checkbox-container input[type="checkbox"]:checked ~ .checkbox-wrapper .checkbox-custom {
+          background-color: #3b82f6;
+          border-color: #3b82f6;
+        }
+
+        .checkbox-container input[type="checkbox"]:checked ~ .checkbox-wrapper .checkbox-custom::after {
+          content: '';
+          position: absolute;
+          left: 6px;
+          top: 2px;
+          width: 6px;
+          height: 10px;
+          border: solid white;
+          border-width: 0 2px 2px 0;
+          transform: rotate(45deg);
+        }
+
+        .checkbox-label {
+          display: flex;
+          align-items: center;
+          gap: 8px;
           font-weight: 600;
           color: #111827;
           font-size: 16px;
@@ -379,35 +424,36 @@ export default function UploadPage() {
           color: #3b82f6;
         }
 
-        .checkbox-container input[type="checkbox"]:checked ~ .checkbox-label svg {
-          color: #2563eb;
-        }
-
         .checkbox-description {
           font-size: 14px;
           color: #6b7280;
           font-weight: 400;
-          margin-left: 32px;
+          margin: 8px 0 0 32px;
         }
 
-        .checkbox-container input[type="checkbox"]::before {
+        .separator {
+          text-align: center;
+          margin: 16px 0;
+          position: relative;
+        }
+
+        .separator::before {
           content: '';
-          display: inline-block;
-          width: 20px;
-          height: 20px;
-          border: 2px solid #d1d5db;
-          border-radius: 4px;
-          margin-right: 8px;
-          vertical-align: middle;
-          background: white;
+          position: absolute;
+          top: 50%;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: #e5e7eb;
         }
 
-        .checkbox-container input[type="checkbox"]:checked::before {
-          background-color: #3b82f6;
-          border-color: #3b82f6;
-          background-image: url("data:image/svg+xml,%3Csvg width='12' height='10' viewBox='0 0 12 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5L4.5 8.5L11 1' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-          background-position: center;
-          background-repeat: no-repeat;
+        .separator span {
+          background: white;
+          padding: 0 16px;
+          position: relative;
+          color: #6b7280;
+          font-size: 14px;
+          font-style: italic;
         }
 
         .form-section {
@@ -416,10 +462,6 @@ export default function UploadPage() {
           border-radius: 8px;
           padding: 24px;
           margin-bottom: 24px;
-        }
-
-        .disabled-section {
-          opacity: 0.6;
           position: relative;
         }
 
@@ -428,6 +470,10 @@ export default function UploadPage() {
           font-size: 14px;
           font-style: italic;
           margin-bottom: 12px;
+        }
+
+        .criteria-selector-wrapper.disabled {
+          opacity: 0.5;
         }
 
         .section-title {
