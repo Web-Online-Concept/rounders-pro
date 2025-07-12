@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { getCriteriaById, CRITERES } from '../lib/criteria';
 
 export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
   const [expandedCourses, setExpandedCourses] = useState(new Set());
@@ -78,6 +79,16 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
     }).format(gains);
   };
 
+  // Obtenir la description du critère
+  const getCriteriaDescription = (critereName) => {
+    // Trouver le critère par son nom
+    const criteria = Object.values(CRITERES).find(c => c.nom === critereName);
+    if (!criteria) return critereName;
+    
+    // Retourner la description
+    return criteria.description;
+  };
+
   // Si pas de données
   if (!chevaux || Object.keys(chevaux).length === 0) {
     return (
@@ -151,8 +162,8 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
                       <span className="criteria-tag" style={{ backgroundColor: '#e0e7ff' }}>
                         {courseData.critere_utilise}
                       </span>
-                      <span className="import-info">
-                        Importé le {new Date(courseData.date_import).toLocaleDateString('fr-FR')}
+                      <span className="criteria-description">
+                        {getCriteriaDescription(courseData.critere_utilise)}
                       </span>
                     </div>
                   </div>
@@ -324,8 +335,9 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
           color: #4338ca;
         }
 
-        .import-info {
-          color: #9ca3af;
+        .criteria-description {
+          color: #6b7280;
+          font-style: italic;
         }
 
         .expand-toggle {
