@@ -1,30 +1,45 @@
 import * as XLSX from 'xlsx';
 import { applyCriteria, COLONNES } from './criteria';
 
+// Fonction pour convertir un nombre Excel en date
+function excelDateToJSDate(excelDate) {
+  // Excel stocke les dates comme nombre de jours depuis le 1/1/1900
+  // Mais Excel compte incorrectement 1900 comme année bissextile
+  const date = new Date((excelDate - 25569) * 86400 * 1000);
+  return date;
+}
+
 // Fonction pour parser la date du format "12/07/2025" vers "2025-07-12"
 // FORMAT FRANÇAIS : jour/mois/année
 function parseDate(dateStr) {
-  console.log('🔍 parseDate appelée avec:', dateStr, 'type:', typeof dateStr);
-  
   if (!dateStr && dateStr !== 0) {
-    console.log('❌ Date vide ou null');
     return null;
   }
   
   try {
+    // Si c'est un nombre (format Excel)
+    if (typeof dateStr === 'number') {
+      const jsDate = excelDateToJSDate(dateStr);
+      const year = jsDate.getFullYear();
+      const month = (jsDate.getMonth() + 1).toString().padStart(2, '0');
+      const day = jsDate.getDate().toString().padStart(2, '0');
+      const result = `${year}-${month}-${day}`;
+      console.log(`Date Excel ${dateStr} convertie en ${result}`);
+      return result;
+    }
+    
     // Gérer différents formats possibles
     const dateString = String(dateStr).trim();
     
     // Si c'est déjà au format ISO
     if (dateString.match(/^\d{4}-\d{2}-\d{2}/)) {
-      console.log('✅ Date déjà au format ISO:', dateString);
       return dateString.substring(0, 10);
     }
     
     // Format DD/MM/YYYY ou D/M/YYYY (FORMAT FRANÇAIS)
     const parts = dateString.split('/');
     if (parts.length !== 3) {
-      console.error('❌ Format de date invalide:', dateStr);
+      console.error('Format de date invalide:', dateStr);
       return null;
     }
     
@@ -45,10 +60,10 @@ function parseDate(dateStr) {
     }
     
     const dateResult = `${year}-${month}-${day}`;
-    console.log(`✅ Date convertie (format FR): ${dateStr} => ${dateResult}`);
+    console.log(`Date convertie (format FR): ${dateStr} => ${dateResult}`);
     return dateResult;
   } catch (error) {
-    console.error('❌ Erreur parsing date:', dateStr, error);
+    console.error('Erreur parsing date:', dateStr, error);
     return null;
   }
 }
@@ -144,8 +159,6 @@ function parseCourseNumber(value) {
 export async function parseExcelFile(file, selectedCriteriaId) {
   try {
     console.log('📄 Début du parsing Excel');
-    console.log('📋 Critère sélectionné:', selectedCriteriaId);
-    console.log('📊 COLONNES.DATE =', COLONNES.DATE);
     
     // Lire le fichier avec options spéciales pour les dates et heures
     const arrayBuffer = await file.arrayBuffer();
@@ -177,15 +190,6 @@ export async function parseExcelFile(file, selectedCriteriaId) {
       throw new Error('Aucune donnée trouvée dans le fichier');
     }
     
-    // DEBUG : Afficher les premières lignes
-    console.log('🔍 Premières lignes du fichier:');
-    for (let i = 0; i < Math.min(10, data.length); i++) {
-      const row = data[i];
-      if (row && row[0]) {
-        console.log(`Ligne ${i+1}: Colonne A (index 0) = "${row[0]}", Colonne B = "${row[1]}"`);
-      }
-    }
-    
     // Extraire et filtrer les chevaux
     const chevaux = [];
     let totalRows = 0;
@@ -198,9 +202,9 @@ export async function parseExcelFile(file, selectedCriteriaId) {
       
       totalRows++;
       
-      // DEBUG : afficher la valeur de la date pour les premières lignes
-      if (totalRows <= 3) {
-        console.log(`📅 Ligne ${i+1} - Valeur colonne A (date): "${row[COLONNES.DATE]}", type: ${typeof row[COLONNES.DATE]}`);
+      // Debug: afficher l'heure pour la première ligne
+      if (i === dataStartRow) {
+        console.log('Première ligne - Colonne E (heure):', row[COLONNES.HEURE]);
       }
       
       // Appliquer le critère sélectionné
@@ -208,19 +212,21 @@ export async function parseExcelFile(file, selectedCriteriaId) {
         continue;
       }
       
-      // Parser la date
-      const dateParsed = parseDate(row[COLONNES.DATE]);
-      
-      console.log(`✅ Cheval sélectionné ligne ${i+1}:`, {
+      console.log(`Cheval sélectionné ligne ${i+1}:`, {
         nom: row[COLONNES.NOM_CHEVAL],
-        date_brute: row[COLONNES.DATE],
-        date_parsee: dateParsed
+        age: row[COLONNES.AGE],
+        def: row[COLONNES.DEF],
+        def_1: row[COLONNES.DEF_1],
+        def_2: row[COLONNES.DEF_2],
+        colonneB: row[COLONNES.NUMERO_REUNION],
+        colonneD_brut: row[COLONNES.NUMERO_COURSE],
+        colonneD_parsed: parseCourseNumber(row[COLONNES.NUMERO_COURSE])
       });
       
       // Extraire les données du cheval
       const cheval = {
         // Info course
-        date_course: dateParsed,
+        date_course: parseDate(row[COLONNES.DATE]),
         numero_reunion: row[COLONNES.NUMERO_REUNION],
         hippodrome: row[COLONNES.HIPPODROME],
         numero_course: parseCourseNumber(row[COLONNES.NUMERO_COURSE]),
@@ -292,8 +298,6 @@ export async function parseExcelFile(file, selectedCriteriaId) {
       chevaux.push(cheval);
     }
     
-    console.log(`📊 Résumé: ${chevaux.length} chevaux sélectionnés sur ${totalRows} lignes`);
-    
     return {
       success: true,
       chevaux: chevaux,
@@ -303,7 +307,7 @@ export async function parseExcelFile(file, selectedCriteriaId) {
     };
     
   } catch (error) {
-    console.error('❌ Erreur lors du parsing du fichier Excel:', error);
+    console.error('Erreur lors du parsing du fichier Excel:', error);
     return {
       success: false,
       error: error.message,
