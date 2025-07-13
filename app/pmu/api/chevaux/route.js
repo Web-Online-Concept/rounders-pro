@@ -21,13 +21,22 @@ export async function GET(request) {
     const chevauxGroupes = {};
     
     chevaux.forEach(cheval => {
-      // Formater la date pour avoir une clé cohérente
-      let dateKey = cheval.date_course;
+      // CORRECTION : S'assurer que la date est bien présente
+      let dateKey = cheval.date_course || 'date-inconnue';
       
-      // Si la date existe, s'assurer qu'elle est au format string
-      if (dateKey && typeof dateKey === 'object') {
-        // Si c'est un objet Date, le convertir en string ISO
-        dateKey = new Date(dateKey).toISOString().split('T')[0];
+      // Si la date existe et est un objet Date, la convertir
+      if (dateKey !== 'date-inconnue' && typeof dateKey === 'object' && dateKey instanceof Date) {
+        dateKey = dateKey.toISOString().split('T')[0];
+      }
+      
+      // Si c'est une string avec le temps, garder juste la date
+      if (dateKey !== 'date-inconnue' && typeof dateKey === 'string' && dateKey.includes('T')) {
+        dateKey = dateKey.split('T')[0];
+      }
+      
+      // Log pour debug
+      if (!cheval.date_course) {
+        console.log(`⚠️ Cheval sans date: ${cheval.nom_cheval} (ID: ${cheval.id})`);
       }
       
       // Créer une clé unique pour chaque course
@@ -81,8 +90,11 @@ export async function GET(request) {
         0
       ),
       hippodromes: [...new Set(chevaux.map(c => c.hippodrome))].sort(),
-      dates: Object.keys(chevauxGroupes).sort().reverse()
+      dates: Object.keys(chevauxGroupes).filter(d => d !== 'date-inconnue').sort().reverse()
     };
+    
+    // Logger les dates trouvées
+    console.log('📅 Dates trouvées:', Object.keys(chevauxGroupes));
     
     return NextResponse.json({
       success: true,

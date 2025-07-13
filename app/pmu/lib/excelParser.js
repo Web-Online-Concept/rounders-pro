@@ -4,7 +4,10 @@ import { applyCriteria, COLONNES } from './criteria';
 // Fonction pour parser la date du format "12/07/2025" vers "2025-07-12"
 // FORMAT FRANÇAIS : jour/mois/année
 function parseDate(dateStr) {
+  console.log('🔍 parseDate appelée avec:', dateStr, 'type:', typeof dateStr);
+  
   if (!dateStr && dateStr !== 0) {
+    console.log('❌ Date vide ou null');
     return null;
   }
   
@@ -14,13 +17,14 @@ function parseDate(dateStr) {
     
     // Si c'est déjà au format ISO
     if (dateString.match(/^\d{4}-\d{2}-\d{2}/)) {
+      console.log('✅ Date déjà au format ISO:', dateString);
       return dateString.substring(0, 10);
     }
     
     // Format DD/MM/YYYY ou D/M/YYYY (FORMAT FRANÇAIS)
     const parts = dateString.split('/');
     if (parts.length !== 3) {
-      console.error('Format de date invalide:', dateStr);
+      console.error('❌ Format de date invalide:', dateStr);
       return null;
     }
     
@@ -41,10 +45,10 @@ function parseDate(dateStr) {
     }
     
     const dateResult = `${year}-${month}-${day}`;
-    console.log(`Date convertie (format FR): ${dateStr} => ${dateResult}`);
+    console.log(`✅ Date convertie (format FR): ${dateStr} => ${dateResult}`);
     return dateResult;
   } catch (error) {
-    console.error('Erreur parsing date:', dateStr, error);
+    console.error('❌ Erreur parsing date:', dateStr, error);
     return null;
   }
 }
@@ -54,8 +58,6 @@ function parseTime(timeValue) {
   if (!timeValue && timeValue !== 0) return null;
   
   try {
-    console.log('Parsing heure, valeur brute:', timeValue, 'type:', typeof timeValue);
-    
     // Si c'est déjà au bon format HH:MM:SS ou HH:MM
     const timeStr = String(timeValue).trim();
     if (timeStr.match(/^\d{1,2}:\d{2}(:\d{2})?$/)) {
@@ -72,7 +74,6 @@ function parseTime(timeValue) {
         const hours = Math.floor(totalMinutes / 60);
         const minutes = totalMinutes % 60;
         const result = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
-        console.log(`Heure convertie depuis fraction: ${numValue} => ${result}`);
         return result;
       }
     }
@@ -98,7 +99,6 @@ function parseTime(timeValue) {
       }
     }
     
-    console.log('Format d\'heure non reconnu:', timeValue);
     return '00:00:00'; // Valeur par défaut au lieu de null
   } catch (error) {
     console.error('Erreur parsing heure:', timeValue, error);
@@ -144,6 +144,8 @@ function parseCourseNumber(value) {
 export async function parseExcelFile(file, selectedCriteriaId) {
   try {
     console.log('📄 Début du parsing Excel');
+    console.log('📋 Critère sélectionné:', selectedCriteriaId);
+    console.log('📊 COLONNES.DATE =', COLONNES.DATE);
     
     // Lire le fichier avec options spéciales pour les dates et heures
     const arrayBuffer = await file.arrayBuffer();
@@ -175,6 +177,15 @@ export async function parseExcelFile(file, selectedCriteriaId) {
       throw new Error('Aucune donnée trouvée dans le fichier');
     }
     
+    // DEBUG : Afficher les premières lignes
+    console.log('🔍 Premières lignes du fichier:');
+    for (let i = 0; i < Math.min(10, data.length); i++) {
+      const row = data[i];
+      if (row && row[0]) {
+        console.log(`Ligne ${i+1}: Colonne A (index 0) = "${row[0]}", Colonne B = "${row[1]}"`);
+      }
+    }
+    
     // Extraire et filtrer les chevaux
     const chevaux = [];
     let totalRows = 0;
@@ -187,9 +198,9 @@ export async function parseExcelFile(file, selectedCriteriaId) {
       
       totalRows++;
       
-      // Debug: afficher l'heure pour la première ligne
-      if (i === dataStartRow) {
-        console.log('Première ligne - Colonne E (heure):', row[COLONNES.HEURE]);
+      // DEBUG : afficher la valeur de la date pour les premières lignes
+      if (totalRows <= 3) {
+        console.log(`📅 Ligne ${i+1} - Valeur colonne A (date): "${row[COLONNES.DATE]}", type: ${typeof row[COLONNES.DATE]}`);
       }
       
       // Appliquer le critère sélectionné
@@ -197,21 +208,19 @@ export async function parseExcelFile(file, selectedCriteriaId) {
         continue;
       }
       
-      console.log(`Cheval sélectionné ligne ${i+1}:`, {
+      // Parser la date
+      const dateParsed = parseDate(row[COLONNES.DATE]);
+      
+      console.log(`✅ Cheval sélectionné ligne ${i+1}:`, {
         nom: row[COLONNES.NOM_CHEVAL],
-        age: row[COLONNES.AGE],
-        def: row[COLONNES.DEF],
-        def_1: row[COLONNES.DEF_1],
-        def_2: row[COLONNES.DEF_2],
-        colonneB: row[COLONNES.NUMERO_REUNION],
-        colonneD_brut: row[COLONNES.NUMERO_COURSE],
-        colonneD_parsed: parseCourseNumber(row[COLONNES.NUMERO_COURSE])
+        date_brute: row[COLONNES.DATE],
+        date_parsee: dateParsed
       });
       
       // Extraire les données du cheval
       const cheval = {
         // Info course
-        date_course: parseDate(row[COLONNES.DATE]),
+        date_course: dateParsed,
         numero_reunion: row[COLONNES.NUMERO_REUNION],
         hippodrome: row[COLONNES.HIPPODROME],
         numero_course: parseCourseNumber(row[COLONNES.NUMERO_COURSE]),
@@ -283,6 +292,8 @@ export async function parseExcelFile(file, selectedCriteriaId) {
       chevaux.push(cheval);
     }
     
+    console.log(`📊 Résumé: ${chevaux.length} chevaux sélectionnés sur ${totalRows} lignes`);
+    
     return {
       success: true,
       chevaux: chevaux,
@@ -292,7 +303,7 @@ export async function parseExcelFile(file, selectedCriteriaId) {
     };
     
   } catch (error) {
-    console.error('Erreur lors du parsing du fichier Excel:', error);
+    console.error('❌ Erreur lors du parsing du fichier Excel:', error);
     return {
       success: false,
       error: error.message,

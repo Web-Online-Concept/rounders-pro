@@ -255,11 +255,14 @@ export async function createImport(fileName, critereName, chevauxCount) {
   }
 }
 
-// Fonction pour insérer un cheval
+// Fonction pour insérer un cheval - CORRIGÉE POUR LA DATE
 export async function insertCheval(importId, chevalData) {
   try {
-    // Convertir la date au bon format
+    // S'assurer que la date est bien présente et au bon format
     const dateStr = chevalData.date_course || null;
+    
+    // Log pour debug
+    console.log(`📅 Insertion cheval ${chevalData.nom_cheval} avec date: ${dateStr}`);
     
     const result = await sql`
       INSERT INTO pmu_chevaux (
