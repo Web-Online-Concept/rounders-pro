@@ -16,6 +16,15 @@ export async function DELETE(request) {
       );
     }
     
+    // Gérer le cas spécial "date-inconnue"
+    if (date === 'date-inconnue') {
+      console.log('⚠️ Tentative de suppression des dates inconnues');
+      return NextResponse.json(
+        { error: 'Impossible de supprimer les dates inconnues. Veuillez supprimer les chevaux individuellement.' },
+        { status: 400 }
+      );
+    }
+    
     console.log(`🗑️ Suppression de tous les chevaux du ${date}`);
     
     const result = await deleteByDate(date);

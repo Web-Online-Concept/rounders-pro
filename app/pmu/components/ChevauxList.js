@@ -7,6 +7,7 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
   const [expandedCourses, setExpandedCourses] = useState(new Set());
   const [deletingIds, setDeletingIds] = useState(new Set());
   const [deletingDates, setDeletingDates] = useState(new Set());
+  const [cleaningInvalidDates, setCleaningInvalidDates] = useState(false);
 
   // Basculer l'expansion d'une course
   const toggleCourse = (courseKey) => {
@@ -54,6 +55,12 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
 
   // Gérer la suppression d'une journée complète
   const handleDeleteDate = async (date, dateFormatted) => {
+    // Cas spécial pour "date-inconnue"
+    if (date === 'date-inconnue') {
+      alert('Les chevaux sans date ne peuvent pas être supprimés par journée. Utilisez le bouton "Nettoyer les dates invalides" ou supprimez-les individuellement.');
+      return;
+    }
+    
     // Compter le nombre total de chevaux pour cette date
     const totalChevaux = Object.values(chevaux[date]).reduce((sum, course) => {
       return sum + course.chevaux.length;
@@ -92,9 +99,39 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
     }
   };
 
+  // Nettoyer les dates invalides
+  const handleCleanInvalidDates = async () => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer DÉFINITIVEMENT tous les chevaux sans date valide ?\n\nCette action est irréversible.')) {
+      return;
+    }
+
+    setCleaningInvalidDates(true);
+
+    try {
+      const response = await fetch('/pmu/api/clean-invalid-dates', {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        alert(result.message);
+        onRefresh();
+      } else {
+        const error = await response.json();
+        alert(`Erreur : ${error.error}`);
+      }
+    } catch (error) {
+      alert('Erreur lors du nettoyage');
+    } finally {
+      setCleaningInvalidDates(false);
+    }
+  };
+
   // Formater la date
   const formatDate = (dateStr) => {
-    if (!dateStr) return '';
+    if (!dateStr || dateStr === 'date-inconnue') {
+      return 'Date inconnue';
+    }
     
     try {
       // Si c'est au format YYYY-MM-DD
@@ -114,7 +151,7 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
       
       return dateStr;
     } catch (error) {
-      return dateStr;
+      return 'Date invalide';
     }
   };
 
@@ -143,6 +180,9 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
     if (!criteria) return critereName;
     return criteria.description;
   };
+
+  // Vérifier s'il y a des dates invalides
+  const hasInvalidDates = chevaux && chevaux['date-inconnue'];
 
   // Si pas de données
   if (!chevaux || Object.keys(chevaux).length === 0) {
@@ -181,37 +221,64 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
 
   return (
     <div className="chevaux-list">
+      {/* Bouton de nettoyage si des dates invalides existent */}
+      {hasInvalidDates && (
+        <div className="invalid-dates-warning">
+          <div className="warning-content">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            <p>Des chevaux sans date valide ont été détectés</p>
+            <button
+              onClick={handleCleanInvalidDates}
+              disabled={cleaningInvalidDates}
+              className="clean-button"
+            >
+              {cleaningInvalidDates ? 'Nettoyage...' : 'Nettoyer les dates invalides'}
+            </button>
+          </div>
+        </div>
+      )}
+
       {Object.entries(chevaux).map(([date, courses]) => {
         const isDateDeleting = deletingDates.has(date);
         const dateFormatted = formatDate(date);
+        const isInvalidDate = date === 'date-inconnue';
         
         return (
           <div key={date} className="date-group">
             <div className="date-header-container">
-              <h3 className="date-header">{dateFormatted}</h3>
-              <button
-                className="delete-date-btn"
-                onClick={() => handleDeleteDate(date, dateFormatted)}
-                disabled={isDateDeleting}
-                title="Supprimer toute la journée"
-              >
-                {isDateDeleting ? (
-                  <>
-                    <span className="spinner" />
-                    Suppression...
-                  </>
-                ) : (
-                  <>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="3 6 5 6 21 6" />
-                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                      <line x1="10" y1="11" x2="10" y2="17" />
-                      <line x1="14" y1="11" x2="14" y2="17" />
-                    </svg>
-                    Supprimer la journée
-                  </>
-                )}
-              </button>
+              <h3 className={`date-header ${isInvalidDate ? 'invalid' : ''}`}>
+                {dateFormatted}
+                {isInvalidDate && ' ⚠️'}
+              </h3>
+              {!isInvalidDate && (
+                <button
+                  className="delete-date-btn"
+                  onClick={() => handleDeleteDate(date, dateFormatted)}
+                  disabled={isDateDeleting}
+                  title="Supprimer toute la journée"
+                >
+                  {isDateDeleting ? (
+                    <>
+                      <span className="spinner" />
+                      Suppression...
+                    </>
+                  ) : (
+                    <>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                        <line x1="10" y1="11" x2="10" y2="17" />
+                        <line x1="14" y1="11" x2="14" y2="17" />
+                      </svg>
+                      Supprimer la journée
+                    </>
+                  )}
+                </button>
+              )}
             </div>
             
             {Object.entries(courses).map(([courseKey, courseData]) => {
@@ -341,6 +408,54 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
           gap: 24px;
         }
 
+        .invalid-dates-warning {
+          background-color: #fef3c7;
+          border: 1px solid #fbbf24;
+          border-radius: 8px;
+          padding: 16px;
+          margin-bottom: 16px;
+        }
+
+        .warning-content {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+
+        .warning-content svg {
+          color: #f59e0b;
+          flex-shrink: 0;
+        }
+
+        .warning-content p {
+          flex: 1;
+          margin: 0;
+          color: #92400e;
+          font-weight: 500;
+        }
+
+        .clean-button {
+          padding: 6px 16px;
+          background-color: #f59e0b;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background-color 0.2s;
+        }
+
+        .clean-button:hover:not(:disabled) {
+          background-color: #d97706;
+        }
+
+        .clean-button:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+
         .date-group {
           display: flex;
           flex-direction: column;
@@ -360,6 +475,10 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
           color: #111827;
           margin: 0;
           text-transform: capitalize;
+        }
+
+        .date-header.invalid {
+          color: #dc2626;
         }
 
         .delete-date-btn {
@@ -582,6 +701,15 @@ export default function ChevauxList({ chevaux, onDelete, onRefresh }) {
             flex-direction: column;
             align-items: flex-start;
             gap: 8px;
+          }
+
+          .warning-content {
+            flex-direction: column;
+            text-align: center;
+          }
+
+          .clean-button {
+            width: 100%;
           }
 
           .delete-date-btn {

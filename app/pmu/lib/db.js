@@ -215,8 +215,24 @@ export async function deleteByDate(date) {
   try {
     console.log('🗑️ Suppression des chevaux pour la date:', date);
     
-    // S'assurer que la date est au bon format (YYYY-MM-DD)
-    const dateFormatted = new Date(date).toISOString().split('T')[0];
+    // Gérer le cas spécial "date-inconnue"
+    if (date === 'date-inconnue') {
+      throw new Error('Impossible de supprimer les dates inconnues');
+    }
+    
+    // S'assurer que la date est valide avant de la formater
+    let dateFormatted;
+    try {
+      const dateObj = new Date(date);
+      if (isNaN(dateObj.getTime())) {
+        throw new Error(`Date invalide: ${date}`);
+      }
+      dateFormatted = dateObj.toISOString().split('T')[0];
+    } catch (e) {
+      console.error('❌ Erreur de conversion de date:', e);
+      throw new Error(`Format de date invalide: ${date}`);
+    }
+    
     console.log('📅 Date formatée:', dateFormatted);
     
     // Effectuer la suppression soft (mise à jour de deleted_at)
@@ -381,6 +397,31 @@ export async function insertCheval(importId, chevalData) {
     return result[0].id;
   } catch (error) {
     console.error('Erreur lors de l\'insertion du cheval:', error);
+    throw error;
+  }
+}
+
+// Fonction pour supprimer DÉFINITIVEMENT les chevaux sans date
+export async function deleteInvalidDates() {
+  try {
+    console.log('🗑️ Suppression définitive des chevaux sans date valide');
+    
+    const result = await sql`
+      DELETE FROM pmu_chevaux 
+      WHERE date_course IS NULL
+      RETURNING id, nom_cheval
+    `;
+    
+    console.log(`✅ ${result.length} chevaux sans date supprimés définitivement`);
+    result.forEach(r => console.log(`- Supprimé: ${r.nom_cheval} (ID: ${r.id})`));
+    
+    return {
+      success: true,
+      count: result.length,
+      deleted: result
+    };
+  } catch (error) {
+    console.error('❌ Erreur lors de la suppression des dates invalides:', error);
     throw error;
   }
 }
