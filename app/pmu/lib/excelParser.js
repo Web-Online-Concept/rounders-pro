@@ -4,25 +4,32 @@ import { applyCriteria, COLONNES } from './criteria';
 // Fonction pour parser la date du format "12/07/2025" vers "2025-07-12"
 // FORMAT FRANÇAIS : jour/mois/année
 function parseDate(dateStr) {
+  console.log('🔍 DEBUG parseDate - Entrée:', dateStr, 'Type:', typeof dateStr);
+  
   if (!dateStr && dateStr !== 0) {
+    console.log('⚠️ DEBUG parseDate - Date vide ou null');
     return null;
   }
   
   try {
     // Gérer différents formats possibles
     const dateString = String(dateStr).trim();
+    console.log('🔍 DEBUG parseDate - String nettoyée:', dateString);
     
     // Si c'est déjà au format ISO
     if (dateString.match(/^\d{4}-\d{2}-\d{2}/)) {
+      console.log('✅ DEBUG parseDate - Déjà au format ISO');
       return dateString.substring(0, 10);
     }
     
     // Format DD/MM/YYYY ou D/M/YYYY (FORMAT FRANÇAIS)
     const parts = dateString.split('/');
     if (parts.length !== 3) {
-      console.error('Format de date invalide:', dateStr);
+      console.error('❌ DEBUG parseDate - Format invalide (pas 3 parties):', dateStr);
       return null;
     }
+    
+    console.log('🔍 DEBUG parseDate - Parties:', parts);
     
     // En format français : jour/mois/année
     const day = parts[0].padStart(2, '0');
@@ -31,7 +38,6 @@ function parseDate(dateStr) {
     
     // Gérer les années sur 2 chiffres
     if (year.length === 2) {
-      // Pour 2025, on assume que les années 00-50 sont 2000-2050
       const yearNum = parseInt(year);
       if (yearNum <= 50) {
         year = '20' + year;
@@ -41,9 +47,10 @@ function parseDate(dateStr) {
     }
     
     const dateResult = `${year}-${month}-${day}`;
+    console.log('✅ DEBUG parseDate - Résultat:', dateResult);
     return dateResult;
   } catch (error) {
-    console.error('Erreur parsing date:', dateStr, error);
+    console.error('❌ DEBUG parseDate - Erreur:', dateStr, error);
     return null;
   }
 }
@@ -138,6 +145,9 @@ function parseCourseNumber(value) {
 // Fonction principale pour parser le fichier Excel
 export async function parseExcelFile(file, selectedCriteriaId) {
   try {
+    console.log('📄 DEBUG - Début du parsing Excel');
+    console.log('📄 DEBUG - COLONNES.DATE =', COLONNES.DATE);
+    
     // Lire le fichier
     const arrayBuffer = await file.arrayBuffer();
     const workbook = XLSX.read(arrayBuffer, {
@@ -168,6 +178,20 @@ export async function parseExcelFile(file, selectedCriteriaId) {
       throw new Error('Aucune donnée trouvée dans le fichier');
     }
     
+    // DEBUG: Afficher les 3 premières lignes
+    console.log('📄 DEBUG - Premières lignes de données:');
+    for (let i = dataStartRow; i < Math.min(dataStartRow + 3, data.length); i++) {
+      if (data[i] && data[i][0]) {
+        console.log(`Ligne ${i+1}:`, {
+          colonneA_date: data[i][0],
+          colonneB: data[i][1],
+          colonneC: data[i][2],
+          colonneD: data[i][3],
+          colonneE: data[i][4]
+        });
+      }
+    }
+    
     // Extraire et filtrer les chevaux
     const chevaux = [];
     let totalRows = 0;
@@ -180,6 +204,11 @@ export async function parseExcelFile(file, selectedCriteriaId) {
       
       totalRows++;
       
+      // DEBUG pour les 3 premières lignes
+      if (totalRows <= 3) {
+        console.log(`📄 DEBUG - Ligne ${i+1} - Valeur colonne ${COLONNES.DATE}:`, row[COLONNES.DATE]);
+      }
+      
       // Appliquer le critère sélectionné
       if (!applyCriteria(row, selectedCriteriaId)) {
         continue;
@@ -187,6 +216,12 @@ export async function parseExcelFile(file, selectedCriteriaId) {
       
       // Parser la date
       const dateParsed = parseDate(row[COLONNES.DATE]);
+      
+      console.log(`✅ DEBUG - Cheval trouvé ligne ${i+1}:`, {
+        nom: row[COLONNES.NOM_CHEVAL],
+        date_brute: row[COLONNES.DATE],
+        date_parsee: dateParsed
+      });
       
       // Extraire les données du cheval
       const cheval = {
@@ -261,6 +296,11 @@ export async function parseExcelFile(file, selectedCriteriaId) {
       };
       
       chevaux.push(cheval);
+    }
+    
+    console.log(`📊 DEBUG - Résultat: ${chevaux.length} chevaux sur ${totalRows} lignes`);
+    if (chevaux.length > 0) {
+      console.log('📊 DEBUG - Premier cheval complet:', chevaux[0]);
     }
     
     return {
