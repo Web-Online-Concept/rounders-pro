@@ -659,7 +659,7 @@ export default function MontantePage() {
             <div className="bg-white rounded-lg shadow p-6 mt-6">
               <h2 className="text-lg font-semibold mb-4">Historique récent</h2>
               <div className="space-y-2">
-                {archivedMontantes.slice(-5).reverse().map(m => (
+                {archivedMontantes.slice(0, 5).map(m => (
                   <div 
                     key={m.id} 
                     className="text-sm py-2 border-b cursor-pointer hover:bg-gray-50 px-2 -mx-2 rounded"
