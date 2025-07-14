@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server'
 export async function POST(request) {
   try {
     const body = await request.json()
-    const { montanteId, pronos, currentAmount, password } = body
+    const { montanteId, pronos, currentAmount, bookmaker, password } = body
 
     // Vérifier le mot de passe
     if (password !== 'rounders2024') {
@@ -35,7 +35,8 @@ export async function POST(request) {
         combined_odds, 
         potential_win, 
         status, 
-        date
+        date,
+        bookmaker
       )
       VALUES (
         ${montanteId}, 
@@ -44,7 +45,8 @@ export async function POST(request) {
         ${combinedOdds}, 
         ${potentialWin}, 
         'pending', 
-        NOW()
+        NOW(),
+        ${bookmaker || null}
       )
       RETURNING *
     `

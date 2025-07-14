@@ -106,3 +106,33 @@ export async function POST(request) {
     }, { status: 500 })
   }
 }
+
+// PUT - Modifier une montante (titre)
+export async function PUT(request) {
+  try {
+    const body = await request.json()
+    const { montanteId, name, password } = body
+
+    // Vérifier le mot de passe
+    if (password !== 'rounders2024') {
+      return NextResponse.json({ 
+        error: 'Non autorisé' 
+      }, { status: 401 })
+    }
+
+    // Mettre à jour le nom de la montante
+    await sql`
+      UPDATE montantes 
+      SET name = ${name}
+      WHERE id = ${montanteId}
+    `
+
+    return NextResponse.json({ success: true })
+
+  } catch (error) {
+    console.error('Erreur lors de la modification de la montante:', error)
+    return NextResponse.json({ 
+      error: 'Erreur lors de la modification' 
+    }, { status: 500 })
+  }
+}

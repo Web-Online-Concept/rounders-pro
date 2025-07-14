@@ -10,6 +10,8 @@ export default function MontantePage() {
   const [showNewMontante, setShowNewMontante] = useState(false)
   const [showAddPalier, setShowAddPalier] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [editingTitle, setEditingTitle] = useState(false)
+  const [newTitle, setNewTitle] = useState('')
   
   // Formulaire nouvelle montante
   const [montanteName, setMontanteName] = useState('')
@@ -18,8 +20,14 @@ export default function MontantePage() {
   
   // Formulaire nouveau palier
   const [pronos, setPronos] = useState([{ sport: '', match: '', bet: '', odds: '' }])
+  const [selectedBookmaker, setSelectedBookmaker] = useState('')
 
-  // Vérifier l'authentification
+  const bookmakers = [
+    'Betclic', 'Winamax', 'Unibet', 'PMU', 'Parions Sport', 
+    'Zebet', 'Netbet', 'Betway', 'Bwin', 'Stake', 'PS3838'
+  ]
+
+  // Vérifier l'authentification et charger les données
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const auth = localStorage.getItem('rounders_auth')
@@ -28,6 +36,14 @@ export default function MontantePage() {
       }
     }
   }, [])
+
+  // Fonction de déconnexion
+  const handleLogout = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('rounders_auth')
+      setIsAuthenticated(false)
+    }
+  }
 
   // Charger les données depuis l'API
   const loadData = async () => {
@@ -69,20 +85,47 @@ export default function MontantePage() {
       })
 
       if (response.ok) {
-        // Recharger les données
         await loadData()
-        
-        // Reset form
         setMontanteName('')
         setInitialStake('')
         setTargetAmount('')
         setShowNewMontante(false)
       } else {
-        alert('Erreur lors de la création de la montante')
+        const error = await response.json()
+        console.error('Erreur API:', error)
+        alert('Erreur lors de la création de la montante: ' + (error.error || error.message || 'Erreur inconnue'))
       }
     } catch (error) {
       console.error('Erreur:', error)
       alert('Erreur lors de la création')
+    }
+  }
+
+  // Modifier le titre de la montante
+  const updateMontanteTitle = async () => {
+    if (!newTitle || !activeMontante) return
+
+    try {
+      const response = await fetch('/api/montantes', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          montanteId: activeMontante.id,
+          name: newTitle,
+          password: 'rounders2024'
+        })
+      })
+
+      if (response.ok) {
+        await loadData()
+        setEditingTitle(false)
+        setNewTitle('')
+      }
+    } catch (error) {
+      console.error('Erreur:', error)
+      alert('Erreur lors de la modification')
     }
   }
 
@@ -100,16 +143,15 @@ export default function MontantePage() {
           montanteId: activeMontante.id,
           pronos: pronos.filter(p => p.odds),
           currentAmount: activeMontante.current_amount,
+          bookmaker: selectedBookmaker,
           password: 'rounders2024'
         })
       })
 
       if (response.ok) {
-        // Recharger les données
         await loadData()
-        
-        // Reset form
         setPronos([{ sport: '', match: '', bet: '', odds: '' }])
+        setSelectedBookmaker('')
         setShowAddPalier(false)
       } else {
         alert('Erreur lors de l\'ajout du palier')
@@ -142,7 +184,6 @@ export default function MontantePage() {
       })
 
       if (response.ok) {
-        // Recharger les données
         await loadData()
       } else {
         alert('Erreur lors de la validation')
@@ -170,6 +211,80 @@ export default function MontantePage() {
     setPronos(updated)
   }
 
+  // Fonction pour créer le graphique d'évolution
+  const renderEvolutionChart = (montante) => {
+    if (!montante.paliers || montante.paliers.length === 0) return null
+
+    const chartData = [{ value: parseFloat(montante.initial_stake), status: 'start' }]
+    
+    montante.paliers.forEach(palier => {
+      if (palier.status === 'won') {
+        chartData.push({ value: parseFloat(palier.potential_win), status: 'won' })
+      } else if (palier.status === 'lost') {
+        chartData.push({ value: 0, status: 'lost' })
+      }
+    })
+
+    const maxValue = Math.max(...chartData.map(d => d.value), parseFloat(montante.target_amount))
+    const chartHeight = 60
+    const chartWidth = 300
+    const points = chartData.map((data, index) => {
+      const x = (index / (chartData.length - 1 || 1)) * chartWidth
+      const y = chartHeight - (data.value / maxValue) * chartHeight
+      return `${x},${y}`
+    }).join(' ')
+
+    return (
+      <div className="mb-4 p-3 bg-gray-50 rounded">
+        <svg width={chartWidth} height={chartHeight} className="w-full">
+          {/* Ligne de l'objectif */}
+          <line
+            x1="0"
+            y1={chartHeight - (parseFloat(montante.target_amount) / maxValue) * chartHeight}
+            x2={chartWidth}
+            y2={chartHeight - (parseFloat(montante.target_amount) / maxValue) * chartHeight}
+            stroke="#10b981"
+            strokeWidth="1"
+            strokeDasharray="5,5"
+          />
+          {/* Courbe d'évolution */}
+          <polyline
+            points={points}
+            fill="none"
+            stroke="#3b82f6"
+            strokeWidth="2"
+          />
+          {/* Points */}
+          {chartData.map((data, index) => {
+            const x = (index / (chartData.length - 1 || 1)) * chartWidth
+            const y = chartHeight - (data.value / maxValue) * chartHeight
+            return (
+              <circle
+                key={index}
+                cx={x}
+                cy={y}
+                r="3"
+                fill={data.status === 'lost' ? '#ef4444' : data.status === 'won' ? '#10b981' : '#3b82f6'}
+              />
+            )
+          })}
+        </svg>
+        <div className="flex justify-between text-xs text-gray-500 mt-1">
+          <span>Départ: {montante.initial_stake}€</span>
+          <span>Objectif: {montante.target_amount}€</span>
+        </div>
+      </div>
+    )
+  }
+
+  // Fonction pour déterminer le type de palier
+  const getPalierType = (palier) => {
+    const count = palier.pronos?.length || 0
+    if (count === 0) return ''
+    if (count === 1) return 'Simple'
+    return `Combiné ${count} matchs`
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -189,12 +304,20 @@ export default function MontantePage() {
             </h1>
             <div className="flex items-center space-x-4">
               {isAuthenticated && (
-                <span className="text-sm text-green-600 flex items-center">
-                  <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Mode édition
-                </span>
+                <>
+                  <span className="text-sm text-green-600 flex items-center">
+                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    Mode édition
+                  </span>
+                  <button
+                    onClick={handleLogout}
+                    className="text-sm text-gray-600 hover:text-gray-900"
+                  >
+                    Déconnexion
+                  </button>
+                </>
               )}
               <Link 
                 href="/paris-sportifs" 
@@ -294,8 +417,54 @@ export default function MontantePage() {
             {activeMontante ? (
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex justify-between items-start mb-6">
-                  <div>
-                    <h2 className="text-xl font-bold">{activeMontante.name}</h2>
+                  <div className="flex-1">
+                    {editingTitle && isAuthenticated ? (
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="text"
+                          value={newTitle}
+                          onChange={(e) => setNewTitle(e.target.value)}
+                          className="text-xl font-bold px-2 py-1 border rounded"
+                          autoFocus
+                        />
+                        <button
+                          onClick={updateMontanteTitle}
+                          className="text-green-600 hover:text-green-700"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </button>
+                        <button
+                          onClick={() => {
+                            setEditingTitle(false)
+                            setNewTitle('')
+                          }}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center space-x-2">
+                        <h2 className="text-xl font-bold">{activeMontante.name}</h2>
+                        {isAuthenticated && (
+                          <button
+                            onClick={() => {
+                              setEditingTitle(true)
+                              setNewTitle(activeMontante.name)
+                            }}
+                            className="text-gray-400 hover:text-gray-600"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                          </button>
+                        )}
+                      </div>
+                    )}
                     <p className="text-gray-600 text-sm">
                       Démarrée le {new Date(activeMontante.start_date).toLocaleDateString()}
                     </p>
@@ -309,6 +478,9 @@ export default function MontantePage() {
                     </button>
                   )}
                 </div>
+
+                {/* Graphique d'évolution */}
+                {renderEvolutionChart(activeMontante)}
 
                 {/* Progression */}
                 <div className="bg-gray-50 rounded p-4 mb-6">
@@ -335,7 +507,12 @@ export default function MontantePage() {
                   {activeMontante.paliers && activeMontante.paliers.map(palier => (
                     <div key={palier.id} className="border rounded-lg p-4">
                       <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-medium">Palier {palier.number}</h3>
+                        <h3 className="font-medium">
+                          Palier {palier.number} - {getPalierType(palier)}
+                          {palier.bookmaker && (
+                            <span className="ml-2 text-sm text-gray-500">({palier.bookmaker})</span>
+                          )}
+                        </h3>
                         <div className="flex items-center space-x-2">
                           {palier.status === 'pending' && isAuthenticated && (
                             <>
@@ -480,6 +657,21 @@ export default function MontantePage() {
           <div className="bg-white rounded-lg p-6 w-full max-w-2xl my-8">
             <h3 className="text-lg font-semibold mb-4">Nouveau palier</h3>
             
+            {/* Sélection du bookmaker */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Bookmaker</label>
+              <select
+                value={selectedBookmaker}
+                onChange={(e) => setSelectedBookmaker(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Sélectionner un bookmaker</option>
+                {bookmakers.map(bm => (
+                  <option key={bm} value={bm}>{bm}</option>
+                ))}
+              </select>
+            </div>
+            
             <div className="space-y-4 max-h-96 overflow-y-auto">
               {pronos.map((prono, index) => (
                 <div key={index} className="border rounded p-4">
@@ -573,6 +765,7 @@ export default function MontantePage() {
                 onClick={() => {
                   setShowAddPalier(false)
                   setPronos([{ sport: '', match: '', bet: '', odds: '' }])
+                  setSelectedBookmaker('')
                 }}
                 className="px-4 py-2 text-gray-600 hover:text-gray-800"
               >
