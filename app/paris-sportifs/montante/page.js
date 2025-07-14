@@ -18,30 +18,33 @@ export default function MontantePage() {
   // Formulaire nouveau palier
   const [pronos, setPronos] = useState([{ sport: '', match: '', bet: '', odds: '' }])
 
-  // Vérifier l'authentification
+  // Vérifier l'authentification et charger les données
   useEffect(() => {
-    const auth = localStorage.getItem('rounders_auth')
-    if (auth === 'true') {
-      setIsAuthenticated(true)
-    }
-  }, [])
-
-  // Charger les données au montage
-  useEffect(() => {
-    const saved = localStorage.getItem('rounders_montantes')
-    if (saved) {
-      const data = JSON.parse(saved)
-      setActiveMontante(data.active)
-      setArchivedMontantes(data.archived || [])
+    if (typeof window !== 'undefined') {
+      // Vérifier l'authentification
+      const auth = localStorage.getItem('rounders_auth')
+      if (auth === 'true') {
+        setIsAuthenticated(true)
+      }
+      
+      // Charger les données
+      const saved = localStorage.getItem('rounders_montantes')
+      if (saved) {
+        const data = JSON.parse(saved)
+        setActiveMontante(data.active)
+        setArchivedMontantes(data.archived || [])
+      }
     }
   }, [])
 
   // Sauvegarder les données
   const saveData = (active, archived) => {
-    localStorage.setItem('rounders_montantes', JSON.stringify({
-      active: active,
-      archived: archived
-    }))
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('rounders_montantes', JSON.stringify({
+        active: active,
+        archived: archived
+      }))
+    }
   }
 
   // Créer une nouvelle montante

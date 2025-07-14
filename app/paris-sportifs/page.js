@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 export default function ParisSporifsPage() {
@@ -60,17 +60,21 @@ export default function ParisSporifsPage() {
       setShowPasswordModal(false)
       setPassword('')
       // Stocker dans localStorage pour persister entre les pages
-      localStorage.setItem('rounders_auth', 'true')
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('rounders_auth', 'true')
+      }
     } else {
       alert('Mot de passe incorrect')
     }
   }
 
   // Vérifier l'authentification au chargement
-  useState(() => {
-    const auth = localStorage.getItem('rounders_auth')
-    if (auth === 'true') {
-      setIsAuthenticated(true)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const auth = localStorage.getItem('rounders_auth')
+      if (auth === 'true') {
+        setIsAuthenticated(true)
+      }
     }
   }, [])
 
