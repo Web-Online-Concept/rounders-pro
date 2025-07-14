@@ -24,38 +24,6 @@ export default function ParisSporifsPage() {
       icon: '🎯',
       path: '/paris-sportifs/martingale',
       available: false
-    },
-    {
-      id: 'suivi-paris',
-      title: 'Suivi des Paris',
-      description: 'Enregistrement et analyse de vos paris sportifs',
-      icon: '📊',
-      path: '/paris-sportifs/suivi-paris',
-      available: false
-    },
-    {
-      id: 'bankroll',
-      title: 'Gestion de Bankroll',
-      description: 'Suivez vos gains, pertes et l\'évolution de votre capital',
-      icon: '💰',
-      path: '/paris-sportifs/bankroll',
-      available: false
-    },
-    {
-      id: 'calculateur-cotes',
-      title: 'Calculateur de Cotes',
-      description: 'Convertisseur et calculateur de cotes (décimales, fractionnelles, américaines)',
-      icon: '🧮',
-      path: '/paris-sportifs/calculateur-cotes',
-      available: false
-    },
-    {
-      id: 'statistiques',
-      title: 'Statistiques Globales',
-      description: 'Vue d\'ensemble de vos performances et statistiques détaillées',
-      icon: '📉',
-      path: '/paris-sportifs/statistiques',
-      available: false
     }
   ]
 
