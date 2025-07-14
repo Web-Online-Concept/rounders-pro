@@ -23,7 +23,7 @@ export default function ParisSporifsPage() {
       description: 'Toutes nos martingales et résultats',
       icon: '🎯',
       path: '/paris-sportifs/martingale',
-      available: false
+      available: true
     }
   ]
 
