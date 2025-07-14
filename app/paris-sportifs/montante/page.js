@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 export default function MontantePage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [activeMontante, setActiveMontante] = useState(null)
   const [archivedMontantes, setArchivedMontantes] = useState([])
   const [showNewMontante, setShowNewMontante] = useState(false)
@@ -16,6 +17,14 @@ export default function MontantePage() {
   
   // Formulaire nouveau palier
   const [pronos, setPronos] = useState([{ sport: '', match: '', bet: '', odds: '' }])
+
+  // Vérifier l'authentification
+  useEffect(() => {
+    const auth = localStorage.getItem('rounders_auth')
+    if (auth === 'true') {
+      setIsAuthenticated(true)
+    }
+  }, [])
 
   // Charger les données au montage
   useEffect(() => {
@@ -93,6 +102,11 @@ export default function MontantePage() {
 
   // Valider un palier
   const validatePalier = (palierId, won) => {
+    if (!isAuthenticated) {
+      alert('Vous devez être authentifié pour modifier les données')
+      return
+    }
+
     const palier = activeMontante.paliers.find(p => p.id === palierId)
     if (!palier) return
 
@@ -166,15 +180,25 @@ export default function MontantePage() {
             <h1 className="text-2xl font-bold text-gray-900">
               Gestion des Montantes
             </h1>
-            <Link 
-              href="/paris-sportifs" 
-              className="text-gray-600 hover:text-gray-900 flex items-center"
-            >
-              <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Retour au menu
-            </Link>
+            <div className="flex items-center space-x-4">
+              {isAuthenticated && (
+                <span className="text-sm text-green-600 flex items-center">
+                  <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Mode édition
+                </span>
+              )}
+              <Link 
+                href="/paris-sportifs" 
+                className="text-gray-600 hover:text-gray-900 flex items-center"
+              >
+                <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Retour au menu
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -219,13 +243,19 @@ export default function MontantePage() {
                 </div>
               </div>
 
-              {!activeMontante && (
+              {!activeMontante && isAuthenticated && (
                 <button
                   onClick={() => setShowNewMontante(true)}
                   className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
                 >
                   Nouvelle montante
                 </button>
+              )}
+              
+              {!isAuthenticated && (
+                <div className="text-sm text-gray-500 text-center">
+                  Mode lecture seule
+                </div>
               )}
             </div>
 
@@ -261,12 +291,14 @@ export default function MontantePage() {
                       Démarrée le {new Date(activeMontante.startDate).toLocaleDateString()}
                     </p>
                   </div>
-                  <button
-                    onClick={() => setShowAddPalier(true)}
-                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                  >
-                    Nouveau palier
-                  </button>
+                  {isAuthenticated && (
+                    <button
+                      onClick={() => setShowAddPalier(true)}
+                      className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                    >
+                      Nouveau palier
+                    </button>
+                  )}
                 </div>
 
                 {/* Progression */}
@@ -296,7 +328,7 @@ export default function MontantePage() {
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="font-medium">Palier {palier.number}</h3>
                         <div className="flex items-center space-x-2">
-                          {palier.status === 'pending' && (
+                          {palier.status === 'pending' && isAuthenticated && (
                             <>
                               <button
                                 onClick={() => validatePalier(palier.id, true)}
@@ -317,6 +349,9 @@ export default function MontantePage() {
                           )}
                           {palier.status === 'lost' && (
                             <span className="text-red-600 font-medium">✗ Perdu</span>
+                          )}
+                          {palier.status === 'pending' && !isAuthenticated && (
+                            <span className="text-gray-500 text-sm">En attente</span>
                           )}
                         </div>
                       </div>
@@ -345,12 +380,14 @@ export default function MontantePage() {
                 <p className="text-gray-500 mb-4">
                   Aucune montante active
                 </p>
-                <button
-                  onClick={() => setShowNewMontante(true)}
-                  className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-                >
-                  Démarrer une montante
-                </button>
+                {isAuthenticated && (
+                  <button
+                    onClick={() => setShowNewMontante(true)}
+                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+                  >
+                    Démarrer une montante
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -358,7 +395,7 @@ export default function MontantePage() {
       </div>
 
       {/* Modal nouvelle montante */}
-      {showNewMontante && (
+      {showNewMontante && isAuthenticated && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
             <h3 className="text-lg font-semibold mb-4">Nouvelle montante</h3>
@@ -429,7 +466,7 @@ export default function MontantePage() {
       )}
 
       {/* Modal nouveau palier */}
-      {showAddPalier && (
+      {showAddPalier && isAuthenticated && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
           <div className="bg-white rounded-lg p-6 w-full max-w-2xl my-8">
             <h3 className="text-lg font-semibold mb-4">Nouveau palier</h3>

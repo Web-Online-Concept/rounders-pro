@@ -14,48 +14,42 @@ export default function ParisSporifsPage() {
       title: 'Gestion de Montante',
       description: 'Outil de suivi et calcul pour la stratégie de montante',
       icon: '📈',
-      path: '/paris-sportifs/montante',
-      requiresAuth: true
+      path: '/paris-sportifs/montante'
     },
     {
       id: 'martingale',
       title: 'Gestion de Martingale',
       description: 'Calculateur et suivi pour la stratégie de martingale',
       icon: '🎯',
-      path: '/paris-sportifs/martingale',
-      requiresAuth: true
+      path: '/paris-sportifs/martingale'
     },
     {
       id: 'suivi-paris',
       title: 'Suivi des Paris',
       description: 'Enregistrement et analyse de vos paris sportifs',
       icon: '📊',
-      path: '/paris-sportifs/suivi-paris',
-      requiresAuth: true
+      path: '/paris-sportifs/suivi-paris'
     },
     {
       id: 'bankroll',
       title: 'Gestion de Bankroll',
       description: 'Suivez vos gains, pertes et l\'évolution de votre capital',
       icon: '💰',
-      path: '/paris-sportifs/bankroll',
-      requiresAuth: true
+      path: '/paris-sportifs/bankroll'
     },
     {
       id: 'calculateur-cotes',
       title: 'Calculateur de Cotes',
       description: 'Convertisseur et calculateur de cotes (décimales, fractionnelles, américaines)',
       icon: '🧮',
-      path: '/paris-sportifs/calculateur-cotes',
-      requiresAuth: false
+      path: '/paris-sportifs/calculateur-cotes'
     },
     {
       id: 'statistiques',
       title: 'Statistiques Globales',
       description: 'Vue d\'ensemble de vos performances et statistiques détaillées',
       icon: '📉',
-      path: '/paris-sportifs/statistiques',
-      requiresAuth: true
+      path: '/paris-sportifs/statistiques'
     }
   ]
 
@@ -65,16 +59,20 @@ export default function ParisSporifsPage() {
       setIsAuthenticated(true)
       setShowPasswordModal(false)
       setPassword('')
+      // Stocker dans localStorage pour persister entre les pages
+      localStorage.setItem('rounders_auth', 'true')
     } else {
       alert('Mot de passe incorrect')
     }
   }
 
-  const handleToolClick = (tool) => {
-    if (tool.requiresAuth && !isAuthenticated) {
-      setShowPasswordModal(true)
+  // Vérifier l'authentification au chargement
+  useState(() => {
+    const auth = localStorage.getItem('rounders_auth')
+    if (auth === 'true') {
+      setIsAuthenticated(true)
     }
-  }
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -94,9 +92,6 @@ export default function ParisSporifsPage() {
                   Mode édition activé
                 </span>
               )}
-              <Link href="/" className="text-gray-600 hover:text-gray-900">
-                Retour au site
-              </Link>
             </div>
           </div>
         </div>
@@ -106,26 +101,14 @@ export default function ParisSporifsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tools.map((tool) => (
-            <div
+            <Link
               key={tool.id}
-              className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200 overflow-hidden"
+              href={tool.path}
+              className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200 overflow-hidden block"
             >
-              <div 
-                className="p-6 cursor-pointer"
-                onClick={() => handleToolClick(tool)}
-              >
+              <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-4xl">{tool.icon}</span>
-                  {tool.requiresAuth && (
-                    <svg 
-                      className={`w-5 h-5 ${isAuthenticated ? 'text-green-500' : 'text-gray-400'}`} 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                  )}
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   {tool.title}
@@ -135,29 +118,14 @@ export default function ParisSporifsPage() {
                 </p>
               </div>
               <div className="bg-gray-50 px-6 py-3">
-                {tool.requiresAuth && !isAuthenticated ? (
-                  <button 
-                    className="text-blue-600 text-sm hover:text-blue-800 flex items-center"
-                    onClick={() => setShowPasswordModal(true)}
-                  >
-                    Déverrouiller
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                ) : (
-                  <Link 
-                    href={tool.path}
-                    className="text-blue-600 text-sm hover:text-blue-800 flex items-center"
-                  >
-                    Accéder à l'outil
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
-                )}
+                <span className="text-blue-600 text-sm hover:text-blue-800 flex items-center">
+                  Accéder à l'outil
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
