@@ -11,16 +11,16 @@ export default function ParisSporifsPage() {
   const tools = [
     {
       id: 'montante',
-      title: 'Gestion de Montante',
-      description: 'Outil de suivi et calcul pour la stratégie de montante',
+      title: 'Nos Montantes',
+      description: 'Toutes nos montantes et résultats',
       icon: '📈',
       path: '/paris-sportifs/montante',
       available: true
     },
     {
       id: 'martingale',
-      title: 'Gestion de Martingale',
-      description: 'Calculateur et suivi pour la stratégie de martingale',
+      title: 'Nos Maetingales',
+      description: 'Toutes nos martingales et résultats',
       icon: '🎯',
       path: '/paris-sportifs/martingale',
       available: false
@@ -123,7 +123,7 @@ export default function ParisSporifsPage() {
                 </div>
                 <div className="bg-gray-50 px-4 sm:px-6 py-2 sm:py-3">
                   <span className="text-blue-600 text-xs sm:text-sm hover:text-blue-800 flex items-center">
-                    Accéder à nos montantes
+                    Accéder à nos pronos et résultats
                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
