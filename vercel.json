@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "rounders.pro"
+        }
+      ],
+      "destination": "https://www.rounders.pro/:path*",
+      "permanent": true
+    }
+  ]
+}
