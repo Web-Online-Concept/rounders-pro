@@ -928,12 +928,19 @@ export default function MontantePage() {
                   </div>
                   {isAuthenticated && (
                     <div className="flex items-center space-x-2">
-                      <button
-                        onClick={() => setShowAddPalier(true)}
-                        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                      >
-                        Nouveau palier
-                      </button>
+                      {/* Vérifier s'il y a un palier en attente */}
+                      {activeMontante.paliers && activeMontante.paliers.some(p => p.status === 'pending') ? (
+                        <div className="text-sm text-gray-500 italic">
+                          Validez le palier en cours avant d'ajouter le suivant
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => setShowAddPalier(true)}
+                          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                        >
+                          Nouveau palier
+                        </button>
+                      )}
                       <button
                         onClick={() => deleteMontante(activeMontante.id)}
                         className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
@@ -968,17 +975,27 @@ export default function MontantePage() {
                     Mise initiale: {parseFloat(activeMontante.initial_stake).toFixed(2)}€ | 
                     Multiplicateur actuel: x{(parseFloat(activeMontante.current_amount) / parseFloat(activeMontante.initial_stake)).toFixed(2)}
                   </p>
+                  {activeMontante.paliers && activeMontante.paliers.some(p => p.status === 'pending') && (
+                    <p className="text-sm text-blue-600 mt-2 font-medium">
+                      💰 Capital actuel misé : {parseFloat(activeMontante.current_amount).toFixed(2)}€
+                    </p>
+                  )}
                 </div>
 
                 {/* Liste des paliers */}
                 <div className="space-y-3">
                   {activeMontante.paliers && activeMontante.paliers.map(palier => (
-                    <div key={palier.id} className="border rounded-lg p-4">
+                    <div key={palier.id} className={`border rounded-lg p-4 ${
+                      palier.status === 'pending' ? 'border-blue-400 bg-blue-50' : ''
+                    }`}>
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="font-medium">
                           Palier {palier.number} - {getPalierType(palier)}
                           {palier.bookmaker && (
                             <span className="ml-2 text-sm text-gray-500">({palier.bookmaker})</span>
+                          )}
+                          {palier.status === 'pending' && (
+                            <span className="ml-2 text-sm text-blue-600 font-normal">⏳ En attente de validation</span>
                           )}
                         </h3>
                         <div className="flex items-center space-x-2">
