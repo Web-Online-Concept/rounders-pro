@@ -21,12 +21,9 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="font-bold text-white mb-4">Bonus</h4>
+            <h4 className="font-bold text-white mb-4">Outils paris sportifs</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/guide-stake/bonus" className="hover:text-white">Bonus & Rakeback</Link></li>
-              <li><Link href="/guide-stake/vip" className="hover:text-white">Programme VIP</Link></li>
-              <li><Link href="/affilies" className="hover:text-white">Espace Affiliés</Link></li>
-              <li><Link href="/guide-stake/strategies" className="hover:text-white">Stratégies</Link></li>
+              <li><Link href="/paris-sportifs/montante" className="hover:text-white">Montantes</Link></li>
             </ul>
           </div>
           <div>
