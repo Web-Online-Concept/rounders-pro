@@ -55,3 +55,53 @@ export async function GET(request, { params }) {
     }, { status: 500 })
   }
 }
+
+// DELETE - Supprimer une montante
+export async function DELETE(request, { params }) {
+  try {
+    const montanteId = params.id
+    const { searchParams } = new URL(request.url)
+    const password = searchParams.get('password')
+
+    // Vérifier le mot de passe
+    if (password !== 'rounders2024') {
+      return NextResponse.json({ 
+        error: 'Non autorisé' 
+      }, { status: 401 })
+    }
+
+    // Supprimer en cascade : pronos -> paliers -> montante
+    // D'abord récupérer les paliers
+    const paliers = await sql`
+      SELECT id FROM paliers WHERE montante_id = ${montanteId}
+    `
+
+    // Supprimer les pronos de chaque palier
+    for (const palier of paliers.rows) {
+      await sql`
+        DELETE FROM pronos WHERE palier_id = ${palier.id}
+      `
+    }
+
+    // Supprimer les paliers
+    await sql`
+      DELETE FROM paliers WHERE montante_id = ${montanteId}
+    `
+
+    // Supprimer la montante
+    await sql`
+      DELETE FROM montantes WHERE id = ${montanteId}
+    `
+
+    return NextResponse.json({ 
+      success: true,
+      message: 'Montante supprimée avec succès' 
+    })
+
+  } catch (error) {
+    console.error('Erreur lors de la suppression de la montante:', error)
+    return NextResponse.json({ 
+      error: 'Erreur lors de la suppression' 
+    }, { status: 500 })
+  }
+}
