@@ -9,6 +9,7 @@ export default function MontantePage() {
   const [archivedMontantes, setArchivedMontantes] = useState([])
   const [showNewMontante, setShowNewMontante] = useState(false)
   const [showAddPalier, setShowAddPalier] = useState(false)
+  const [loading, setLoading] = useState(true)
   
   // Formulaire nouvelle montante
   const [montanteName, setMontanteName] = useState('')
@@ -18,143 +19,138 @@ export default function MontantePage() {
   // Formulaire nouveau palier
   const [pronos, setPronos] = useState([{ sport: '', match: '', bet: '', odds: '' }])
 
-  // Vérifier l'authentification et charger les données
+  // Vérifier l'authentification
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // Vérifier l'authentification
       const auth = localStorage.getItem('rounders_auth')
       if (auth === 'true') {
         setIsAuthenticated(true)
       }
-      
-      // Charger les données
-      const saved = localStorage.getItem('rounders_montantes')
-      if (saved) {
-        const data = JSON.parse(saved)
-        setActiveMontante(data.active)
-        setArchivedMontantes(data.archived || [])
-      }
     }
   }, [])
 
-  // Sauvegarder les données
-  const saveData = (active, archived) => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('rounders_montantes', JSON.stringify({
-        active: active,
-        archived: archived
-      }))
+  // Charger les données depuis l'API
+  const loadData = async () => {
+    try {
+      const response = await fetch('/api/montantes')
+      if (response.ok) {
+        const data = await response.json()
+        setActiveMontante(data.active)
+        setArchivedMontantes(data.archived || [])
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement:', error)
+    } finally {
+      setLoading(false)
     }
   }
 
+  // Charger les données au montage
+  useEffect(() => {
+    loadData()
+  }, [])
+
   // Créer une nouvelle montante
-  const createMontante = () => {
+  const createMontante = async () => {
     if (!montanteName || !initialStake || !targetAmount) return
 
-    const newMontante = {
-      id: Date.now(),
-      name: montanteName,
-      initialStake: parseFloat(initialStake),
-      targetAmount: parseFloat(targetAmount),
-      currentAmount: parseFloat(initialStake),
-      paliers: [],
-      status: 'active',
-      startDate: new Date().toISOString()
-    }
+    try {
+      const response = await fetch('/api/montantes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: montanteName,
+          initialStake: parseFloat(initialStake),
+          targetAmount: parseFloat(targetAmount),
+          password: 'rounders2024'
+        })
+      })
 
-    setActiveMontante(newMontante)
-    saveData(newMontante, archivedMontantes)
-    
-    // Reset form
-    setMontanteName('')
-    setInitialStake('')
-    setTargetAmount('')
-    setShowNewMontante(false)
+      if (response.ok) {
+        // Recharger les données
+        await loadData()
+        
+        // Reset form
+        setMontanteName('')
+        setInitialStake('')
+        setTargetAmount('')
+        setShowNewMontante(false)
+      } else {
+        alert('Erreur lors de la création de la montante')
+      }
+    } catch (error) {
+      console.error('Erreur:', error)
+      alert('Erreur lors de la création')
+    }
   }
 
   // Ajouter un palier
-  const addPalier = () => {
+  const addPalier = async () => {
     if (!activeMontante || pronos.some(p => !p.odds)) return
 
-    // Calculer la cote combinée
-    const combinedOdds = pronos.reduce((acc, p) => acc * parseFloat(p.odds || 1), 1)
-    
-    const newPalier = {
-      id: Date.now(),
-      number: activeMontante.paliers.length + 1,
-      pronos: pronos.filter(p => p.odds),
-      combinedOdds: combinedOdds,
-      stake: activeMontante.currentAmount,
-      potentialWin: activeMontante.currentAmount * combinedOdds,
-      status: 'pending',
-      date: new Date().toISOString()
-    }
+    try {
+      const response = await fetch('/api/paliers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          montanteId: activeMontante.id,
+          pronos: pronos.filter(p => p.odds),
+          currentAmount: activeMontante.current_amount,
+          password: 'rounders2024'
+        })
+      })
 
-    const updatedMontante = {
-      ...activeMontante,
-      paliers: [...activeMontante.paliers, newPalier]
+      if (response.ok) {
+        // Recharger les données
+        await loadData()
+        
+        // Reset form
+        setPronos([{ sport: '', match: '', bet: '', odds: '' }])
+        setShowAddPalier(false)
+      } else {
+        alert('Erreur lors de l\'ajout du palier')
+      }
+    } catch (error) {
+      console.error('Erreur:', error)
+      alert('Erreur lors de l\'ajout')
     }
-
-    setActiveMontante(updatedMontante)
-    saveData(updatedMontante, archivedMontantes)
-    
-    // Reset form
-    setPronos([{ sport: '', match: '', bet: '', odds: '' }])
-    setShowAddPalier(false)
   }
 
   // Valider un palier
-  const validatePalier = (palierId, won) => {
+  const validatePalier = async (palierId, won) => {
     if (!isAuthenticated) {
       alert('Vous devez être authentifié pour modifier les données')
       return
     }
 
-    const palier = activeMontante.paliers.find(p => p.id === palierId)
-    if (!palier) return
+    try {
+      const response = await fetch('/api/paliers', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          palierId: palierId,
+          won: won,
+          montanteId: activeMontante.id,
+          password: 'rounders2024'
+        })
+      })
 
-    const updatedPaliers = activeMontante.paliers.map(p => {
-      if (p.id === palierId) {
-        return { ...p, status: won ? 'won' : 'lost' }
+      if (response.ok) {
+        // Recharger les données
+        await loadData()
+      } else {
+        alert('Erreur lors de la validation')
       }
-      return p
-    })
-
-    let updatedMontante = {
-      ...activeMontante,
-      paliers: updatedPaliers
+    } catch (error) {
+      console.error('Erreur:', error)
+      alert('Erreur lors de la validation')
     }
-
-    if (won) {
-      updatedMontante.currentAmount = palier.potentialWin
-      
-      // Vérifier si objectif atteint
-      if (updatedMontante.currentAmount >= updatedMontante.targetAmount) {
-        updatedMontante.status = 'completed'
-        updatedMontante.endDate = new Date().toISOString()
-        updatedMontante.finalAmount = updatedMontante.currentAmount
-        
-        // Archiver
-        setArchivedMontantes([...archivedMontantes, updatedMontante])
-        setActiveMontante(null)
-        saveData(null, [...archivedMontantes, updatedMontante])
-        return
-      }
-    } else {
-      // Montante perdue
-      updatedMontante.status = 'lost'
-      updatedMontante.endDate = new Date().toISOString()
-      updatedMontante.finalAmount = 0
-      
-      // Archiver
-      setArchivedMontantes([...archivedMontantes, updatedMontante])
-      setActiveMontante(null)
-      saveData(null, [...archivedMontantes, updatedMontante])
-      return
-    }
-
-    setActiveMontante(updatedMontante)
-    saveData(updatedMontante, archivedMontantes)
   }
 
   // Ajouter un prono au formulaire
@@ -172,6 +168,14 @@ export default function MontantePage() {
     const updated = [...pronos]
     updated[index][field] = value
     setPronos(updated)
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-gray-500">Chargement...</div>
+      </div>
+    )
   }
 
   return (
@@ -237,9 +241,9 @@ export default function MontantePage() {
                     <span className="font-medium text-blue-600">
                       {archivedMontantes.reduce((sum, m) => {
                         if (m.status === 'completed') {
-                          return sum + (m.finalAmount - m.initialStake)
+                          return sum + (parseFloat(m.final_amount) - parseFloat(m.initial_stake))
                         }
-                        return sum - m.initialStake
+                        return sum - parseFloat(m.initial_stake)
                       }, 0).toFixed(2)}€
                     </span>
                   </div>
@@ -271,11 +275,13 @@ export default function MontantePage() {
                     <div className="flex justify-between">
                       <span className="font-medium">{m.name}</span>
                       <span className={m.status === 'completed' ? 'text-green-600' : 'text-red-600'}>
-                        {m.status === 'completed' ? `+${(m.finalAmount - m.initialStake).toFixed(2)}€` : `-${m.initialStake}€`}
+                        {m.status === 'completed' 
+                          ? `+${(parseFloat(m.final_amount) - parseFloat(m.initial_stake)).toFixed(2)}€` 
+                          : `-${m.initial_stake}€`}
                       </span>
                     </div>
                     <div className="text-gray-500 text-xs">
-                      {new Date(m.endDate).toLocaleDateString()}
+                      {new Date(m.end_date).toLocaleDateString()}
                     </div>
                   </div>
                 ))}
@@ -291,7 +297,7 @@ export default function MontantePage() {
                   <div>
                     <h2 className="text-xl font-bold">{activeMontante.name}</h2>
                     <p className="text-gray-600 text-sm">
-                      Démarrée le {new Date(activeMontante.startDate).toLocaleDateString()}
+                      Démarrée le {new Date(activeMontante.start_date).toLocaleDateString()}
                     </p>
                   </div>
                   {isAuthenticated && (
@@ -309,24 +315,24 @@ export default function MontantePage() {
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm text-gray-600">Progression</span>
                     <span className="text-sm font-medium">
-                      {activeMontante.currentAmount.toFixed(2)}€ / {activeMontante.targetAmount}€
+                      {parseFloat(activeMontante.current_amount).toFixed(2)}€ / {parseFloat(activeMontante.target_amount).toFixed(2)}€
                     </span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div 
                       className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${Math.min(100, (activeMontante.currentAmount / activeMontante.targetAmount) * 100)}%` }}
+                      style={{ width: `${Math.min(100, (parseFloat(activeMontante.current_amount) / parseFloat(activeMontante.target_amount)) * 100)}%` }}
                     />
                   </div>
                   <p className="text-xs text-gray-500 mt-2">
-                    Mise initiale: {activeMontante.initialStake}€ | 
-                    Multiplicateur actuel: x{(activeMontante.currentAmount / activeMontante.initialStake).toFixed(2)}
+                    Mise initiale: {parseFloat(activeMontante.initial_stake).toFixed(2)}€ | 
+                    Multiplicateur actuel: x{(parseFloat(activeMontante.current_amount) / parseFloat(activeMontante.initial_stake)).toFixed(2)}
                   </p>
                 </div>
 
                 {/* Liste des paliers */}
                 <div className="space-y-3">
-                  {activeMontante.paliers.map(palier => (
+                  {activeMontante.paliers && activeMontante.paliers.map(palier => (
                     <div key={palier.id} className="border rounded-lg p-4">
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="font-medium">Palier {palier.number}</h3>
@@ -360,7 +366,7 @@ export default function MontantePage() {
                       </div>
                       
                       <div className="text-sm space-y-1">
-                        {palier.pronos.map((prono, idx) => (
+                        {palier.pronos && palier.pronos.map((prono, idx) => (
                           <div key={idx} className="text-gray-600">
                             {prono.sport} - {prono.match} - {prono.bet} @ {prono.odds}
                           </div>
@@ -369,9 +375,9 @@ export default function MontantePage() {
                       
                       <div className="mt-2 pt-2 border-t text-sm">
                         <div className="flex justify-between">
-                          <span>Mise: {palier.stake.toFixed(2)}€</span>
-                          <span>Cote: {palier.combinedOdds.toFixed(2)}</span>
-                          <span className="font-medium">Gain potentiel: {palier.potentialWin.toFixed(2)}€</span>
+                          <span>Mise: {parseFloat(palier.stake).toFixed(2)}€</span>
+                          <span>Cote: {parseFloat(palier.combined_odds).toFixed(2)}</span>
+                          <span className="font-medium">Gain potentiel: {parseFloat(palier.potential_win).toFixed(2)}€</span>
                         </div>
                       </div>
                     </div>
@@ -555,7 +561,7 @@ export default function MontantePage() {
                   <div className="flex justify-between items-center mt-2">
                     <span className="text-sm text-gray-600">Gain potentiel:</span>
                     <span className="font-bold text-lg text-green-600">
-                      {(activeMontante.currentAmount * pronos.reduce((acc, p) => acc * (parseFloat(p.odds) || 1), 1)).toFixed(2)}€
+                      {(parseFloat(activeMontante.current_amount) * pronos.reduce((acc, p) => acc * (parseFloat(p.odds) || 1), 1)).toFixed(2)}€
                     </span>
                   </div>
                 )}

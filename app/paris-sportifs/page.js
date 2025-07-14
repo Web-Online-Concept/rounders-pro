@@ -136,11 +136,11 @@ export default function ParisSporifsPage() {
         {/* Info Section */}
         <div className="mt-12 bg-blue-50 rounded-lg p-6">
           <h2 className="text-lg font-semibold text-blue-900 mb-2">
-            À propos de ces outils
+            Dashboard Paris Sportifs
           </h2>
           <p className="text-blue-800">
-            Cette suite d'outils est conçue pour vous aider à gérer vos paris sportifs de manière professionnelle. 
-            Chaque outil fonctionne de manière indépendante et sauvegarde vos données localement.
+            Bienvenue sur mon dashboard personnel de suivi de paris sportifs. 
+            Vous pouvez consulter mes stratégies, montantes et résultats en temps réel.
           </p>
           {!isAuthenticated && (
             <button
