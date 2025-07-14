@@ -69,7 +69,7 @@ export default function ParisSporifsPage() {
               <a href="https://www.rounders.pro" className="hover:text-blue-600 transition-colors">
                 Rounders.pro
               </a>
-              <span className="block sm:inline text-xl sm:text-3xl"> - Outils Paris Sportifs</span>
+              <span className="block sm:inline text-xl sm:text-3xl"> - Paris Sportifs</span>
             </h1>
             <div className="flex items-center space-x-4">
               {isAuthenticated ? (
