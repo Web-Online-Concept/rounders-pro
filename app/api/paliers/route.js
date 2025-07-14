@@ -1,5 +1,10 @@
-import { sql } from '@vercel/postgres'
+import { createPool } from '@vercel/postgres'
 import { NextResponse } from 'next/server'
+
+const pool = createPool({
+  connectionString: process.env.PARIS_SPORTIFS_POSTGRES_URL
+})
+const sql = pool.sql
 
 // POST - Ajouter un nouveau palier
 export async function POST(request) {
