@@ -19,7 +19,7 @@ export default function ParisSporifsPage() {
     },
     {
       id: 'martingale',
-      title: 'Nos Maetingales',
+      title: 'Nos Martingales',
       description: 'Toutes nos martingales et résultats',
       icon: '🎯',
       path: '/paris-sportifs/martingale',
