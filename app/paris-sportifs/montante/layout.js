@@ -1,10 +1,10 @@
 export const metadata = {
-  title: 'Calculateur de Montante Gratuit - Stratégie Paris Sportifs | Rounders Pro',
-  description: 'Outil gratuit de calcul et suivi de montante pour paris sportifs. Gérez vos paliers, suivez votre progression et optimisez vos gains. Interface simple et efficace.',
-  keywords: 'montante paris sportifs, calculateur montante, stratégie montante, gestion montante, paliers paris, montante football, montante tennis',
+  title: 'Montantes - Rounders Pro',
+  description: 'Retrouvez chaque jour nos montantes sur différents paris sportifs, et suivez nos résultats.',
+  keywords: 'montantes paris sportifs, stratégie montante, paris sportifs, paliers paris, montante football, montante tennis',
   openGraph: {
-    title: 'Calculateur de Montante - Rounders Pro',
-    description: 'Gérez vos montantes de paris sportifs comme un pro',
+    title: 'Montantes - Rounders Pro',
+    description: 'Suivez l'ensemble des montantes et résultats Rounders.Pro',
     type: 'website',
   },
 }

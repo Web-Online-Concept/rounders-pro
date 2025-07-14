@@ -707,7 +707,7 @@ export default function MontantePage() {
                   </button>
                 </div>
                 <div className="space-y-3">
-                  {archivedMontantes.map(m => (
+                  {[...archivedMontantes].reverse().map(m => (
                     <div 
                       key={m.id}
                       className="border rounded-lg p-4 cursor-pointer hover:bg-gray-50"
@@ -830,10 +830,10 @@ export default function MontantePage() {
                   </div>
                 </div>
 
-                {/* Liste des paliers */}
+                {/* Liste des paliers - INVERSÉE */}
                 <h3 className="font-medium mb-3">Détail des paliers</h3>
                 <div className="space-y-3">
-                  {selectedArchivedMontante.paliers && selectedArchivedMontante.paliers.map(palier => (
+                  {selectedArchivedMontante.paliers && [...selectedArchivedMontante.paliers].reverse().map(palier => (
                     <div key={palier.id} className="border rounded-lg p-4">
                       <div className="flex flex-col sm:flex-row justify-between items-start mb-2">
                         <h3 className="font-medium text-sm sm:text-base mb-2 sm:mb-0">
@@ -987,9 +987,9 @@ export default function MontantePage() {
                   )}
                 </div>
 
-                {/* Liste des paliers */}
+                {/* Liste des paliers - INVERSÉE */}
                 <div className="space-y-3">
-                  {activeMontante.paliers && activeMontante.paliers.map(palier => (
+                  {activeMontante.paliers && [...activeMontante.paliers].reverse().map(palier => (
                     <div key={palier.id} className={`border rounded-lg p-4 ${
                       palier.status === 'pending' ? 'border-blue-400 bg-blue-50' : ''
                     }`}>
