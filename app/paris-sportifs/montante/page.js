@@ -7,6 +7,7 @@ export default function MontantePage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [activeMontante, setActiveMontante] = useState(null)
   const [archivedMontantes, setArchivedMontantes] = useState([])
+  const [selectedArchivedMontante, setSelectedArchivedMontante] = useState(null)
   const [showNewMontante, setShowNewMontante] = useState(false)
   const [showAddPalier, setShowAddPalier] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -66,6 +67,19 @@ export default function MontantePage() {
     loadData()
   }, [])
 
+  // Charger les détails d'une montante archivée
+  const loadArchivedMontanteDetails = async (montanteId) => {
+    try {
+      const response = await fetch(`/api/montantes/${montanteId}`)
+      if (response.ok) {
+        const data = await response.json()
+        setSelectedArchivedMontante(data)
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des détails:', error)
+    }
+  }
+
   // Créer une nouvelle montante
   const createMontante = async () => {
     if (!montanteName || !initialStake || !targetAmount) return
@@ -90,6 +104,7 @@ export default function MontantePage() {
         setInitialStake('')
         setTargetAmount('')
         setShowNewMontante(false)
+        setSelectedArchivedMontante(null)  // Fermer la vue archivée
       } else {
         const error = await response.json()
         console.error('Erreur API:', error)
@@ -373,9 +388,26 @@ export default function MontantePage() {
                 </div>
               </div>
 
-              {!activeMontante && isAuthenticated && (
+              {selectedArchivedMontante && typeof selectedArchivedMontante === 'object' && (
+                <div className="mb-4 p-3 bg-blue-50 rounded text-sm">
+                  <p className="text-blue-800">
+                    Consultation d'une montante archivée
+                  </p>
+                  <button
+                    onClick={() => setSelectedArchivedMontante(null)}
+                    className="text-blue-600 hover:underline mt-1"
+                  >
+                    Retour à la vue normale
+                  </button>
+                </div>
+              )}
+              
+              {!activeMontante && isAuthenticated && !selectedArchivedMontante && (
                 <button
-                  onClick={() => setShowNewMontante(true)}
+                  onClick={() => {
+                    setSelectedArchivedMontante(null)
+                    setShowNewMontante(true)
+                  }}
                   className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
                 >
                   Nouvelle montante
@@ -394,7 +426,11 @@ export default function MontantePage() {
               <h2 className="text-lg font-semibold mb-4">Historique récent</h2>
               <div className="space-y-2">
                 {archivedMontantes.slice(-5).reverse().map(m => (
-                  <div key={m.id} className="text-sm py-2 border-b">
+                  <div 
+                    key={m.id} 
+                    className="text-sm py-2 border-b cursor-pointer hover:bg-gray-50 px-2 -mx-2 rounded"
+                    onClick={() => loadArchivedMontanteDetails(m.id)}
+                  >
                     <div className="flex justify-between">
                       <span className="font-medium">{m.name}</span>
                       <span className={m.status === 'completed' ? 'text-green-600' : 'text-red-600'}>
@@ -409,12 +445,180 @@ export default function MontantePage() {
                   </div>
                 ))}
               </div>
+              {archivedMontantes.length > 5 && (
+                <button 
+                  className="text-blue-600 text-sm mt-3 hover:underline"
+                  onClick={() => setSelectedArchivedMontante('all')}
+                >
+                  Voir tout l'historique ({archivedMontantes.length})
+                </button>
+              )}
             </div>
           </div>
 
           {/* Zone principale */}
           <div className="lg:col-span-2">
-            {activeMontante ? (
+            {/* Affichage de l'historique complet */}
+            {selectedArchivedMontante === 'all' ? (
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-bold">Historique complet</h2>
+                  <button
+                    onClick={() => setSelectedArchivedMontante(null)}
+                    className="text-gray-600 hover:text-gray-900"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <div className="space-y-3">
+                  {archivedMontantes.map(m => (
+                    <div 
+                      key={m.id}
+                      className="border rounded-lg p-4 cursor-pointer hover:bg-gray-50"
+                      onClick={() => loadArchivedMontanteDetails(m.id)}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="font-medium text-lg">{m.name}</h3>
+                          <p className="text-sm text-gray-600">
+                            {new Date(m.start_date).toLocaleDateString()} - {new Date(m.end_date).toLocaleDateString()}
+                          </p>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Mise initiale: {parseFloat(m.initial_stake).toFixed(2)}€ | 
+                            Objectif: {parseFloat(m.target_amount).toFixed(2)}€
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <span className={`inline-block px-2 py-1 rounded text-sm ${
+                            m.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                          }`}>
+                            {m.status === 'completed' ? 'Réussie' : 'Échouée'}
+                          </span>
+                          <p className={`mt-2 font-bold ${m.status === 'completed' ? 'text-green-600' : 'text-red-600'}`}>
+                            {m.status === 'completed' 
+                              ? `+${(parseFloat(m.final_amount) - parseFloat(m.initial_stake)).toFixed(2)}€` 
+                              : `-${parseFloat(m.initial_stake).toFixed(2)}€`}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : selectedArchivedMontante && typeof selectedArchivedMontante === 'object' ? (
+              /* Affichage d'une montante archivée */
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-2">
+                      <h2 className="text-xl font-bold">{selectedArchivedMontante.name}</h2>
+                      <span className={`inline-block px-2 py-1 rounded text-sm ${
+                        selectedArchivedMontante.status === 'completed' 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-red-100 text-red-800'
+                      }`}>
+                        {selectedArchivedMontante.status === 'completed' ? 'Réussie' : 'Échouée'}
+                      </span>
+                    </div>
+                    <p className="text-gray-600 text-sm">
+                      {new Date(selectedArchivedMontante.start_date).toLocaleDateString()} - 
+                      {new Date(selectedArchivedMontante.end_date).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setSelectedArchivedMontante(null)}
+                    className="text-gray-600 hover:text-gray-900"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Graphique d'évolution */}
+                {renderEvolutionChart(selectedArchivedMontante)}
+
+                {/* Résumé final */}
+                <div className="bg-gray-50 rounded p-4 mb-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <span className="text-sm text-gray-600">Mise initiale</span>
+                      <p className="font-bold">{parseFloat(selectedArchivedMontante.initial_stake).toFixed(2)}€</p>
+                    </div>
+                    <div>
+                      <span className="text-sm text-gray-600">Objectif</span>
+                      <p className="font-bold">{parseFloat(selectedArchivedMontante.target_amount).toFixed(2)}€</p>
+                    </div>
+                    <div>
+                      <span className="text-sm text-gray-600">Montant final</span>
+                      <p className={`font-bold ${
+                        selectedArchivedMontante.status === 'completed' ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                        {parseFloat(selectedArchivedMontante.final_amount || 0).toFixed(2)}€
+                      </p>
+                    </div>
+                    <div>
+                      <span className="text-sm text-gray-600">Profit/Perte</span>
+                      <p className={`font-bold ${
+                        selectedArchivedMontante.status === 'completed' ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                        {selectedArchivedMontante.status === 'completed' 
+                          ? `+${(parseFloat(selectedArchivedMontante.final_amount) - parseFloat(selectedArchivedMontante.initial_stake)).toFixed(2)}€` 
+                          : `-${parseFloat(selectedArchivedMontante.initial_stake).toFixed(2)}€`}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Liste des paliers */}
+                <h3 className="font-medium mb-3">Détail des paliers</h3>
+                <div className="space-y-3">
+                  {selectedArchivedMontante.paliers && selectedArchivedMontante.paliers.map(palier => (
+                    <div key={palier.id} className="border rounded-lg p-4">
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="font-medium">
+                          Palier {palier.number} - {getPalierType(palier)}
+                          {palier.bookmaker && (
+                            <span className="ml-2 text-sm text-gray-500">({palier.bookmaker})</span>
+                          )}
+                        </h3>
+                        <div>
+                          {palier.status === 'won' && (
+                            <span className="text-green-600 font-medium">✓ Gagné</span>
+                          )}
+                          {palier.status === 'lost' && (
+                            <span className="text-red-600 font-medium">✗ Perdu</span>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <div className="text-sm space-y-1">
+                        {palier.pronos && palier.pronos.map((prono, idx) => (
+                          <div key={idx} className="text-gray-600">
+                            {prono.sport} - {prono.match} - {prono.bet} @ {prono.odds}
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <div className="mt-2 pt-2 border-t text-sm">
+                        <div className="flex justify-between">
+                          <span>Mise: {parseFloat(palier.stake).toFixed(2)}€</span>
+                          <span>Cote: {parseFloat(palier.combined_odds).toFixed(2)}</span>
+                          <span className="font-medium">
+                            {palier.status === 'won' 
+                              ? `Gain: ${parseFloat(palier.potential_win).toFixed(2)}€`
+                              : `Perte: ${parseFloat(palier.stake).toFixed(2)}€`
+                            }
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : activeMontante ? (
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex-1">
@@ -568,7 +772,10 @@ export default function MontantePage() {
                 </p>
                 {isAuthenticated && (
                   <button
-                    onClick={() => setShowNewMontante(true)}
+                    onClick={() => {
+                      setSelectedArchivedMontante(null)
+                      setShowNewMontante(true)
+                    }}
                     className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
                   >
                     Démarrer une montante
