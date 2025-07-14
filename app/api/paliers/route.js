@@ -98,13 +98,13 @@ export async function PUT(request) {
       const palier = await sql`
         SELECT potential_win FROM paliers WHERE id = ${palierId}
       `
-      const newAmount = palier.rows[0].potential_win
+      const newAmount = parseFloat(palier.rows[0].potential_win)
 
       // Récupérer la montante pour vérifier l'objectif
       const montante = await sql`
         SELECT target_amount FROM montantes WHERE id = ${montanteId}
       `
-      const targetAmount = montante.rows[0].target_amount
+      const targetAmount = parseFloat(montante.rows[0].target_amount)
 
       if (newAmount >= targetAmount) {
         // Objectif atteint - archiver la montante

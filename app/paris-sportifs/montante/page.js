@@ -707,7 +707,7 @@ export default function MontantePage() {
                   </button>
                 </div>
                 <div className="space-y-3">
-                  {[...archivedMontantes].reverse().map(m => (
+                  {archivedMontantes.map(m => (
                     <div 
                       key={m.id}
                       className="border rounded-lg p-4 cursor-pointer hover:bg-gray-50"
