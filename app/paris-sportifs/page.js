@@ -14,42 +14,48 @@ export default function ParisSporifsPage() {
       title: 'Gestion de Montante',
       description: 'Outil de suivi et calcul pour la stratégie de montante',
       icon: '📈',
-      path: '/paris-sportifs/montante'
+      path: '/paris-sportifs/montante',
+      available: true
     },
     {
       id: 'martingale',
       title: 'Gestion de Martingale',
       description: 'Calculateur et suivi pour la stratégie de martingale',
       icon: '🎯',
-      path: '/paris-sportifs/martingale'
+      path: '/paris-sportifs/martingale',
+      available: false
     },
     {
       id: 'suivi-paris',
       title: 'Suivi des Paris',
       description: 'Enregistrement et analyse de vos paris sportifs',
       icon: '📊',
-      path: '/paris-sportifs/suivi-paris'
+      path: '/paris-sportifs/suivi-paris',
+      available: false
     },
     {
       id: 'bankroll',
       title: 'Gestion de Bankroll',
       description: 'Suivez vos gains, pertes et l\'évolution de votre capital',
       icon: '💰',
-      path: '/paris-sportifs/bankroll'
+      path: '/paris-sportifs/bankroll',
+      available: false
     },
     {
       id: 'calculateur-cotes',
       title: 'Calculateur de Cotes',
       description: 'Convertisseur et calculateur de cotes (décimales, fractionnelles, américaines)',
       icon: '🧮',
-      path: '/paris-sportifs/calculateur-cotes'
+      path: '/paris-sportifs/calculateur-cotes',
+      available: false
     },
     {
       id: 'statistiques',
       title: 'Statistiques Globales',
       description: 'Vue d\'ensemble de vos performances et statistiques détaillées',
       icon: '📉',
-      path: '/paris-sportifs/statistiques'
+      path: '/paris-sportifs/statistiques',
+      available: false
     }
   ]
 
@@ -88,13 +94,20 @@ export default function ParisSporifsPage() {
               Outils Paris Sportifs
             </h1>
             <div className="flex items-center space-x-4">
-              {isAuthenticated && (
+              {isAuthenticated ? (
                 <span className="text-sm text-green-600 flex items-center">
                   <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                   Mode édition activé
                 </span>
+              ) : (
+                <button
+                  onClick={() => setShowPasswordModal(true)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors text-sm"
+                >
+                  Activer le mode édition
+                </button>
               )}
             </div>
           </div>
@@ -105,51 +118,56 @@ export default function ParisSporifsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tools.map((tool) => (
-            <Link
-              key={tool.id}
-              href={tool.path}
-              className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200 overflow-hidden block"
-            >
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-4xl">{tool.icon}</span>
+            tool.available ? (
+              <Link
+                key={tool.id}
+                href={tool.path}
+                className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200 overflow-hidden block"
+              >
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-4xl">{tool.icon}</span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {tool.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm">
+                    {tool.description}
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {tool.title}
-                </h3>
-                <p className="text-gray-600 text-sm">
-                  {tool.description}
-                </p>
+                <div className="bg-gray-50 px-6 py-3">
+                  <span className="text-blue-600 text-sm hover:text-blue-800 flex items-center">
+                    Accéder à l'outil
+                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </div>
+              </Link>
+            ) : (
+              <div
+                key={tool.id}
+                className="bg-white rounded-lg shadow overflow-hidden opacity-75"
+              >
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-4xl">{tool.icon}</span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {tool.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm">
+                    {tool.description}
+                  </p>
+                </div>
+                <div className="bg-gray-50 px-6 py-3">
+                  <span className="text-gray-500 text-sm flex items-center">
+                    En attente
+                  </span>
+                </div>
               </div>
-              <div className="bg-gray-50 px-6 py-3">
-                <span className="text-blue-600 text-sm hover:text-blue-800 flex items-center">
-                  Accéder à l'outil
-                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </span>
-              </div>
-            </Link>
+            )
           ))}
-        </div>
-
-        {/* Info Section */}
-        <div className="mt-12 bg-blue-50 rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-blue-900 mb-2">
-            Dashboard Paris Sportifs
-          </h2>
-          <p className="text-blue-800">
-            Bienvenue sur mon dashboard personnel de suivi de paris sportifs. 
-            Vous pouvez consulter mes stratégies, montantes et résultats en temps réel.
-          </p>
-          {!isAuthenticated && (
-            <button
-              onClick={() => setShowPasswordModal(true)}
-              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
-            >
-              Activer le mode édition
-            </button>
-          )}
         </div>
       </div>
 
