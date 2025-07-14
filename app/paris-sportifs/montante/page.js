@@ -301,7 +301,8 @@ export default function MontantePage() {
     return (
       <div className="mt-4 p-3 bg-gray-50 rounded">
         <h3 className="text-sm font-medium text-gray-700 mb-2">Évolution des résultats</h3>
-        <svg width={chartWidth} height={chartHeight} className="w-full">
+        <div className="w-full overflow-x-auto">
+          <svg width={chartWidth} height={chartHeight} className="min-w-[260px]">
           {/* Grille de fond */}
           {[0, 0.25, 0.5, 0.75, 1].map(ratio => (
             <line
@@ -383,7 +384,8 @@ export default function MontantePage() {
               </g>
             )
           })}
-        </svg>
+                  </svg>
+        </div>
         
         <div className="flex justify-between text-xs text-gray-500 mt-2">
           <span>Début</span>
@@ -421,7 +423,8 @@ export default function MontantePage() {
 
     return (
       <div className="mb-4 p-3 bg-gray-50 rounded">
-        <svg width={chartWidth} height={chartHeight} className="w-full">
+        <div className="w-full overflow-x-auto">
+          <svg width={chartWidth} height={chartHeight} className="min-w-[300px]">
           {/* Ligne de l'objectif */}
           <line
             x1="0"
@@ -453,7 +456,8 @@ export default function MontantePage() {
               />
             )
           })}
-        </svg>
+                  </svg>
+        </div>
         <div className="flex justify-between text-xs text-gray-500 mt-1">
           <span>Départ: {montante.initial_stake}€</span>
           <span>Objectif: {montante.target_amount}€</span>
@@ -483,14 +487,14 @@ export default function MontantePage() {
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <h1 className="text-2xl font-bold text-gray-900">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 sm:py-6 space-y-2 sm:space-y-0">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
               Gestion des Montantes
             </h1>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               {isAuthenticated && (
                 <>
-                  <span className="text-sm text-green-600 flex items-center">
+                  <span className="text-xs sm:text-sm text-green-600 flex items-center">
                     <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
@@ -498,7 +502,7 @@ export default function MontantePage() {
                   </span>
                   <button
                     onClick={handleLogout}
-                    className="text-sm text-gray-600 hover:text-gray-900"
+                    className="text-xs sm:text-sm text-gray-600 hover:text-gray-900"
                   >
                     Déconnexion
                   </button>
@@ -506,12 +510,13 @@ export default function MontantePage() {
               )}
               <Link 
                 href="/paris-sportifs" 
-                className="text-gray-600 hover:text-gray-900 flex items-center"
+                className="text-gray-600 hover:text-gray-900 flex items-center text-xs sm:text-sm"
               >
-                <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
-                Retour au menu
+                <span className="hidden sm:inline">Retour au menu</span>
+                <span className="sm:hidden">Retour</span>
               </Link>
             </div>
           </div>
@@ -519,10 +524,10 @@ export default function MontantePage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Sidebar - Stats et actions */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 order-2 lg:order-1">
             <div className="bg-white rounded-lg shadow p-6">
               <h2 className="text-lg font-semibold mb-4">Vue d'ensemble</h2>
               
@@ -564,15 +569,15 @@ export default function MontantePage() {
               {/* Indicateurs de performance */}
               {archivedMontantes.length > 0 && (
                 <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-                  <div className="bg-gray-50 rounded p-2">
-                    <span className="text-gray-600">Taux de réussite</span>
-                    <p className="font-bold text-lg">
+                  <div className="bg-gray-50 rounded p-2 text-center">
+                    <span className="text-gray-600 block">Taux de réussite</span>
+                    <p className="font-bold text-base sm:text-lg">
                       {Math.round((archivedMontantes.filter(m => m.status === 'completed').length / archivedMontantes.length) * 100)}%
                     </p>
                   </div>
-                  <div className="bg-gray-50 rounded p-2">
-                    <span className="text-gray-600">ROI moyen</span>
-                    <p className="font-bold text-lg">
+                  <div className="bg-gray-50 rounded p-2 text-center">
+                    <span className="text-gray-600 block">ROI moyen</span>
+                    <p className="font-bold text-base sm:text-lg">
                       {(archivedMontantes.reduce((sum, m) => {
                         const roi = m.status === 'completed' 
                           ? ((parseFloat(m.final_amount) - parseFloat(m.initial_stake)) / parseFloat(m.initial_stake)) * 100
@@ -686,12 +691,12 @@ export default function MontantePage() {
           </div>
 
           {/* Zone principale */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 order-1 lg:order-2">
             {/* Affichage de l'historique complet */}
             {selectedArchivedMontante === 'all' ? (
               <div className="bg-white rounded-lg shadow p-6">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold">Historique complet</h2>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 space-y-2 sm:space-y-0">
+                  <h2 className="text-lg sm:text-xl font-bold">Historique complet</h2>
                   <button
                     onClick={() => setSelectedArchivedMontante(null)}
                     className="text-gray-600 hover:text-gray-900"
@@ -708,19 +713,19 @@ export default function MontantePage() {
                       className="border rounded-lg p-4 cursor-pointer hover:bg-gray-50"
                       onClick={() => loadArchivedMontanteDetails(m.id)}
                     >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-medium text-lg">{m.name}</h3>
-                          <p className="text-sm text-gray-600">
+                      <div className="flex flex-col sm:flex-row justify-between items-start">
+                        <div className="mb-2 sm:mb-0">
+                          <h3 className="font-medium text-base sm:text-lg">{m.name}</h3>
+                          <p className="text-xs sm:text-sm text-gray-600">
                             {new Date(m.start_date).toLocaleDateString()} - {new Date(m.end_date).toLocaleDateString()}
                           </p>
-                          <p className="text-sm text-gray-600 mt-1">
+                          <p className="text-xs sm:text-sm text-gray-600 mt-1">
                             Mise initiale: {parseFloat(m.initial_stake).toFixed(2)}€ | 
                             Objectif: {parseFloat(m.target_amount).toFixed(2)}€
                           </p>
                         </div>
-                        <div className="text-right">
-                          <span className={`inline-block px-2 py-1 rounded text-sm ${
+                        <div className="text-left sm:text-right">
+                          <span className={`inline-block px-2 py-1 rounded text-xs sm:text-sm ${
                             m.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                           }`}>
                             {m.status === 'completed' ? 'Réussie' : 'Échouée'}
@@ -736,7 +741,7 @@ export default function MontantePage() {
                                 e.stopPropagation()
                                 deleteMontante(m.id)
                               }}
-                              className="text-red-600 hover:text-red-800 text-sm mt-2"
+                              className="text-red-600 hover:text-red-800 text-xs sm:text-sm mt-2"
                             >
                               Supprimer
                             </button>
@@ -752,9 +757,9 @@ export default function MontantePage() {
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex-1">
-                    <div className="flex items-center space-x-2">
-                      <h2 className="text-xl font-bold">{selectedArchivedMontante.name}</h2>
-                      <span className={`inline-block px-2 py-1 rounded text-sm ${
+                    <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
+                      <h2 className="text-lg sm:text-xl font-bold">{selectedArchivedMontante.name}</h2>
+                      <span className={`inline-block px-2 py-1 rounded text-xs sm:text-sm ${
                         selectedArchivedMontante.status === 'completed' 
                           ? 'bg-green-100 text-green-800' 
                           : 'bg-red-100 text-red-800'
@@ -762,7 +767,7 @@ export default function MontantePage() {
                         {selectedArchivedMontante.status === 'completed' ? 'Réussie' : 'Échouée'}
                       </span>
                     </div>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-600 text-xs sm:text-sm mt-1">
                       {new Date(selectedArchivedMontante.start_date).toLocaleDateString()} - 
                       {new Date(selectedArchivedMontante.end_date).toLocaleDateString()}
                     </p>
@@ -795,26 +800,26 @@ export default function MontantePage() {
 
                 {/* Résumé final */}
                 <div className="bg-gray-50 rounded p-4 mb-6">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                      <span className="text-sm text-gray-600">Mise initiale</span>
-                      <p className="font-bold">{parseFloat(selectedArchivedMontante.initial_stake).toFixed(2)}€</p>
+                      <span className="text-xs sm:text-sm text-gray-600">Mise initiale</span>
+                      <p className="font-bold text-sm sm:text-base">{parseFloat(selectedArchivedMontante.initial_stake).toFixed(2)}€</p>
                     </div>
                     <div>
-                      <span className="text-sm text-gray-600">Objectif</span>
-                      <p className="font-bold">{parseFloat(selectedArchivedMontante.target_amount).toFixed(2)}€</p>
+                      <span className="text-xs sm:text-sm text-gray-600">Objectif</span>
+                      <p className="font-bold text-sm sm:text-base">{parseFloat(selectedArchivedMontante.target_amount).toFixed(2)}€</p>
                     </div>
                     <div>
-                      <span className="text-sm text-gray-600">Montant final</span>
-                      <p className={`font-bold ${
+                      <span className="text-xs sm:text-sm text-gray-600">Montant final</span>
+                      <p className={`font-bold text-sm sm:text-base ${
                         selectedArchivedMontante.status === 'completed' ? 'text-green-600' : 'text-red-600'
                       }`}>
                         {parseFloat(selectedArchivedMontante.final_amount || 0).toFixed(2)}€
                       </p>
                     </div>
                     <div>
-                      <span className="text-sm text-gray-600">Profit/Perte</span>
-                      <p className={`font-bold ${
+                      <span className="text-xs sm:text-sm text-gray-600">Profit/Perte</span>
+                      <p className={`font-bold text-sm sm:text-base ${
                         selectedArchivedMontante.status === 'completed' ? 'text-green-600' : 'text-red-600'
                       }`}>
                         {selectedArchivedMontante.status === 'completed' 
@@ -830,11 +835,11 @@ export default function MontantePage() {
                 <div className="space-y-3">
                   {selectedArchivedMontante.paliers && selectedArchivedMontante.paliers.map(palier => (
                     <div key={palier.id} className="border rounded-lg p-4">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-medium">
+                      <div className="flex flex-col sm:flex-row justify-between items-start mb-2">
+                        <h3 className="font-medium text-sm sm:text-base mb-2 sm:mb-0">
                           Palier {palier.number} - {getPalierType(palier)}
                           {palier.bookmaker && (
-                            <span className="ml-2 text-sm text-gray-500">({palier.bookmaker})</span>
+                            <span className="ml-2 text-xs sm:text-sm text-gray-500">({palier.bookmaker})</span>
                           )}
                         </h3>
                         <div>
@@ -847,7 +852,7 @@ export default function MontantePage() {
                         </div>
                       </div>
                       
-                      <div className="text-sm space-y-1">
+                      <div className="text-xs sm:text-sm space-y-1">
                         {palier.pronos && palier.pronos.map((prono, idx) => (
                           <div key={idx} className="text-gray-600">
                             {prono.sport} - {prono.match} - {prono.bet} @ {prono.odds}
@@ -855,8 +860,8 @@ export default function MontantePage() {
                         ))}
                       </div>
                       
-                      <div className="mt-2 pt-2 border-t text-sm">
-                        <div className="flex justify-between">
+                      <div className="mt-2 pt-2 border-t text-xs sm:text-sm">
+                        <div className="flex flex-col sm:flex-row sm:justify-between space-y-1 sm:space-y-0">
                           <span>Mise: {parseFloat(palier.stake).toFixed(2)}€</span>
                           <span>Cote: {parseFloat(palier.combined_odds).toFixed(2)}</span>
                           <span className="font-medium">
@@ -881,7 +886,7 @@ export default function MontantePage() {
                           type="text"
                           value={newTitle}
                           onChange={(e) => setNewTitle(e.target.value)}
-                          className="text-xl font-bold px-2 py-1 border rounded"
+                          className="text-lg sm:text-xl font-bold px-2 py-1 border rounded w-full max-w-xs"
                           autoFocus
                         />
                         <button
@@ -906,7 +911,7 @@ export default function MontantePage() {
                       </div>
                     ) : (
                       <div className="flex items-center space-x-2">
-                        <h2 className="text-xl font-bold">{activeMontante.name}</h2>
+                        <h2 className="text-lg sm:text-xl font-bold">{activeMontante.name}</h2>
                         {isAuthenticated && (
                           <button
                             onClick={() => {
@@ -988,14 +993,14 @@ export default function MontantePage() {
                     <div key={palier.id} className={`border rounded-lg p-4 ${
                       palier.status === 'pending' ? 'border-blue-400 bg-blue-50' : ''
                     }`}>
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-medium">
+                      <div className="flex flex-col sm:flex-row justify-between items-start mb-2">
+                        <h3 className="font-medium text-sm sm:text-base mb-2 sm:mb-0">
                           Palier {palier.number} - {getPalierType(palier)}
                           {palier.bookmaker && (
-                            <span className="ml-2 text-sm text-gray-500">({palier.bookmaker})</span>
+                            <span className="ml-2 text-xs sm:text-sm text-gray-500">({palier.bookmaker})</span>
                           )}
                           {palier.status === 'pending' && (
-                            <span className="ml-2 text-sm text-blue-600 font-normal">⏳ En attente de validation</span>
+                            <span className="ml-2 text-xs sm:text-sm text-blue-600 font-normal block sm:inline mt-1 sm:mt-0">⏳ En attente de validation</span>
                           )}
                         </h3>
                         <div className="flex items-center space-x-2">
@@ -1003,13 +1008,13 @@ export default function MontantePage() {
                             <>
                               <button
                                 onClick={() => validatePalier(palier.id, true)}
-                                className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
+                                className="bg-green-500 text-white px-2 sm:px-3 py-1 rounded text-xs sm:text-sm hover:bg-green-600"
                               >
                                 Gagné
                               </button>
                               <button
                                 onClick={() => validatePalier(palier.id, false)}
-                                className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600"
+                                className="bg-red-500 text-white px-2 sm:px-3 py-1 rounded text-xs sm:text-sm hover:bg-red-600"
                               >
                                 Perdu
                               </button>
@@ -1027,7 +1032,7 @@ export default function MontantePage() {
                         </div>
                       </div>
                       
-                      <div className="text-sm space-y-1">
+                      <div className="text-xs sm:text-sm space-y-1">
                         {palier.pronos && palier.pronos.map((prono, idx) => (
                           <div key={idx} className="text-gray-600">
                             {prono.sport} - {prono.match} - {prono.bet} @ {prono.odds}
@@ -1035,8 +1040,8 @@ export default function MontantePage() {
                         ))}
                       </div>
                       
-                      <div className="mt-2 pt-2 border-t text-sm">
-                        <div className="flex justify-between">
+                      <div className="mt-2 pt-2 border-t text-xs sm:text-sm">
+                        <div className="flex flex-col sm:flex-row sm:justify-between space-y-1 sm:space-y-0">
                           <span>Mise: {parseFloat(palier.stake).toFixed(2)}€</span>
                           <span>Cote: {parseFloat(palier.combined_odds).toFixed(2)}</span>
                           <span className="font-medium">Gain potentiel: {parseFloat(palier.potential_win).toFixed(2)}€</span>
@@ -1047,8 +1052,8 @@ export default function MontantePage() {
                 </div>
               </div>
             ) : (
-              <div className="bg-white rounded-lg shadow p-12 text-center">
-                <p className="text-gray-500 mb-4">
+              <div className="bg-white rounded-lg shadow p-6 sm:p-12 text-center">
+                <p className="text-gray-500 mb-4 text-sm sm:text-base">
                   Aucune montante active
                 </p>
                 {isAuthenticated && (
@@ -1070,8 +1075,8 @@ export default function MontantePage() {
 
       {/* Modal nouvelle montante */}
       {showNewMontante && isAuthenticated && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-4 sm:p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-semibold mb-4">Nouvelle montante</h3>
             
             <div className="space-y-4">
@@ -1141,8 +1146,8 @@ export default function MontantePage() {
 
       {/* Modal nouveau palier */}
       {showAddPalier && isAuthenticated && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl my-8">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto p-4">
+          <div className="bg-white rounded-lg p-4 sm:p-6 w-full max-w-2xl my-4 max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-semibold mb-4">Nouveau palier</h3>
             
             {/* Sélection du bookmaker */}
@@ -1164,7 +1169,7 @@ export default function MontantePage() {
               {pronos.map((prono, index) => (
                 <div key={index} className="border rounded p-4">
                   <div className="flex justify-between items-center mb-2">
-                    <h4 className="font-medium">Prono {index + 1}</h4>
+                    <h4 className="font-medium text-sm sm:text-base">Prono {index + 1}</h4>
                     {pronos.length > 1 && (
                       <button
                         onClick={() => removeProno(index)}
@@ -1175,7 +1180,7 @@ export default function MontantePage() {
                     )}
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-sm text-gray-600 mb-1">Sport</label>
                       <input

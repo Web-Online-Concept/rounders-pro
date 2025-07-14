@@ -96,9 +96,12 @@ export default function ParisSporifsPage() {
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <h1 className="text-3xl font-bold text-gray-900">
-              Rounders.pro - Outils Paris Sportifs
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 sm:py-6 space-y-3 sm:space-y-0">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              <a href="https://www.rounders.pro" className="hover:text-blue-600 transition-colors">
+                Rounders.pro
+              </a>
+              <span className="block sm:inline text-xl sm:text-3xl"> - Outils Paris Sportifs</span>
             </h1>
             <div className="flex items-center space-x-4">
               {isAuthenticated ? (
@@ -130,8 +133,8 @@ export default function ParisSporifsPage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {tools.map((tool) => (
             tool.available ? (
               <Link
@@ -139,19 +142,19 @@ export default function ParisSporifsPage() {
                 href={tool.path}
                 className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200 overflow-hidden block"
               >
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-4xl">{tool.icon}</span>
+                    <span className="text-3xl sm:text-4xl">{tool.icon}</span>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
                     {tool.title}
                   </h3>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-600 text-xs sm:text-sm">
                     {tool.description}
                   </p>
                 </div>
-                <div className="bg-gray-50 px-6 py-3">
-                  <span className="text-blue-600 text-sm hover:text-blue-800 flex items-center">
+                <div className="bg-gray-50 px-4 sm:px-6 py-2 sm:py-3">
+                  <span className="text-blue-600 text-xs sm:text-sm hover:text-blue-800 flex items-center">
                     Accéder à l'outil
                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -164,19 +167,19 @@ export default function ParisSporifsPage() {
                 key={tool.id}
                 className="bg-white rounded-lg shadow overflow-hidden opacity-75"
               >
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-4xl">{tool.icon}</span>
+                    <span className="text-3xl sm:text-4xl">{tool.icon}</span>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
                     {tool.title}
                   </h3>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-600 text-xs sm:text-sm">
                     {tool.description}
                   </p>
                 </div>
-                <div className="bg-gray-50 px-6 py-3">
-                  <span className="text-gray-500 text-sm flex items-center">
+                <div className="bg-gray-50 px-4 sm:px-6 py-2 sm:py-3">
+                  <span className="text-gray-500 text-xs sm:text-sm flex items-center">
                     En attente
                   </span>
                 </div>
@@ -188,8 +191,8 @@ export default function ParisSporifsPage() {
 
       {/* Password Modal */}
       {showPasswordModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-4 sm:p-6 w-full max-w-md">
             <h3 className="text-lg font-semibold mb-4">Accès au mode édition</h3>
             <p className="text-gray-600 mb-4">
               Entrez le mot de passe pour accéder aux fonctionnalités de modification.
