@@ -250,6 +250,152 @@ export default function MontantePage() {
     }
   }
 
+  // Fonction pour créer le graphique d'évolution globale
+  const renderGlobalEvolutionChart = () => {
+    if (archivedMontantes.length === 0) return null
+
+    // Trier les montantes par date de fin
+    const sortedMontantes = [...archivedMontantes].sort((a, b) => 
+      new Date(a.end_date) - new Date(b.end_date)
+    )
+
+    // Calculer les points du graphique
+    const chartData = [{ value: 0, montante: null }]
+    let cumulativeProfit = 0
+
+    sortedMontantes.forEach(montante => {
+      if (montante.status === 'completed') {
+        cumulativeProfit += (parseFloat(montante.final_amount) - parseFloat(montante.initial_stake))
+      } else {
+        cumulativeProfit -= parseFloat(montante.initial_stake)
+      }
+      chartData.push({ 
+        value: cumulativeProfit, 
+        montante: montante,
+        profit: montante.status === 'completed' 
+          ? (parseFloat(montante.final_amount) - parseFloat(montante.initial_stake))
+          : -parseFloat(montante.initial_stake)
+      })
+    })
+
+    // Dimensions du graphique
+    const chartWidth = 260
+    const chartHeight = 120
+    const padding = 10
+    const graphWidth = chartWidth - (padding * 2)
+    const graphHeight = chartHeight - (padding * 2)
+
+    // Calculer les échelles
+    const maxValue = Math.max(...chartData.map(d => d.value), 0)
+    const minValue = Math.min(...chartData.map(d => d.value), 0)
+    const range = Math.max(Math.abs(maxValue), Math.abs(minValue)) * 1.1
+    const adjustedRange = range || 100 // Valeur par défaut si range est 0
+
+    // Créer le path de la ligne
+    const points = chartData.map((data, index) => {
+      const x = padding + (index / (chartData.length - 1 || 1)) * graphWidth
+      const y = padding + graphHeight/2 - (data.value / adjustedRange) * (graphHeight/2)
+      return `${x},${y}`
+    }).join(' ')
+
+    return (
+      <div className="mt-4 p-3 bg-gray-50 rounded">
+        <h3 className="text-sm font-medium text-gray-700 mb-2">Évolution des résultats</h3>
+        <svg width={chartWidth} height={chartHeight} className="w-full">
+          {/* Grille de fond */}
+          {[0, 0.25, 0.5, 0.75, 1].map(ratio => (
+            <line
+              key={ratio}
+              x1={padding}
+              y1={padding + graphHeight * ratio}
+              x2={padding + graphWidth}
+              y2={padding + graphHeight * ratio}
+              stroke="#e5e7eb"
+              strokeWidth="1"
+              strokeDasharray={ratio === 0.5 ? "0" : "2,2"}
+            />
+          ))}
+          
+          {/* Indicateurs de valeur */}
+          {maxValue > 0 && (
+            <text x={padding + 5} y={padding + 10} className="text-xs fill-green-600 font-medium">
+              +{maxValue.toFixed(0)}€
+            </text>
+          )}
+          <text x={padding + 5} y={padding + graphHeight/2 - 2} className="text-xs fill-gray-400">
+            0€
+          </text>
+          {minValue < 0 && (
+            <text x={padding + 5} y={padding + graphHeight - 5} className="text-xs fill-red-600 font-medium">
+              {minValue.toFixed(0)}€
+            </text>
+          )}
+          
+          {/* Zone positive (vert clair) */}
+          <rect
+            x={padding}
+            y={padding}
+            width={graphWidth}
+            height={graphHeight/2}
+            fill="#dcfce7"
+            opacity="0.2"
+          />
+          
+          {/* Zone négative (rouge clair) */}
+          <rect
+            x={padding}
+            y={padding + graphHeight/2}
+            width={graphWidth}
+            height={graphHeight/2}
+            fill="#fee2e2"
+            opacity="0.2"
+          />
+          
+          {/* Courbe d'évolution */}
+          <polyline
+            points={points}
+            fill="none"
+            stroke={cumulativeProfit >= 0 ? '#10b981' : '#ef4444'}
+            strokeWidth="2"
+          />
+          
+          {/* Points pour chaque montante */}
+          {chartData.map((data, index) => {
+            if (index === 0) return null
+            const x = padding + (index / (chartData.length - 1 || 1)) * graphWidth
+            const y = padding + graphHeight/2 - (data.value / adjustedRange) * (graphHeight/2)
+            return (
+              <g key={index}>
+                <circle
+                  cx={x}
+                  cy={y}
+                  r="4"
+                  fill={data.montante.status === 'completed' ? '#10b981' : '#ef4444'}
+                  className="cursor-pointer hover:r-6 transition-all"
+                  onClick={() => loadArchivedMontanteDetails(data.montante.id)}
+                  onMouseEnter={(e) => e.target.setAttribute('r', '6')}
+                  onMouseLeave={(e) => e.target.setAttribute('r', '4')}
+                />
+                <title>
+                  {data.montante.name}: {data.profit > 0 ? '+' : ''}{data.profit.toFixed(2)}€
+                  {'\n'}Cumulé: {data.value.toFixed(2)}€
+                </title>
+              </g>
+            )
+          })}
+        </svg>
+        
+        <div className="flex justify-between text-xs text-gray-500 mt-2">
+          <span>Début</span>
+          <span className={`font-medium ${cumulativeProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {cumulativeProfit >= 0 ? '+' : ''}{cumulativeProfit.toFixed(2)}€
+          </span>
+          <span>Maintenant</span>
+        </div>
+      </div>
+    )
+  }
+
   // Fonction pour créer le graphique d'évolution
   const renderEvolutionChart = (montante) => {
     if (!montante.paliers || montante.paliers.length === 0) return null
@@ -411,6 +557,65 @@ export default function MontantePage() {
                   </div>
                 </div>
               </div>
+
+              {/* Graphique d'évolution globale */}
+              {archivedMontantes.length > 0 && renderGlobalEvolutionChart()}
+
+              {/* Indicateurs de performance */}
+              {archivedMontantes.length > 0 && (
+                <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
+                  <div className="bg-gray-50 rounded p-2">
+                    <span className="text-gray-600">Taux de réussite</span>
+                    <p className="font-bold text-lg">
+                      {Math.round((archivedMontantes.filter(m => m.status === 'completed').length / archivedMontantes.length) * 100)}%
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 rounded p-2">
+                    <span className="text-gray-600">ROI moyen</span>
+                    <p className="font-bold text-lg">
+                      {(archivedMontantes.reduce((sum, m) => {
+                        const roi = m.status === 'completed' 
+                          ? ((parseFloat(m.final_amount) - parseFloat(m.initial_stake)) / parseFloat(m.initial_stake)) * 100
+                          : -100
+                        return sum + roi
+                      }, 0) / archivedMontantes.length).toFixed(1)}%
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Série en cours */}
+              {archivedMontantes.length > 0 && (() => {
+                const lastMontantes = [...archivedMontantes]
+                  .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
+                  .slice(0, 10)
+                
+                let streak = 0
+                const lastStatus = lastMontantes[0]?.status
+                
+                for (const montante of lastMontantes) {
+                  if (montante.status === lastStatus) {
+                    streak++
+                  } else {
+                    break
+                  }
+                }
+                
+                if (streak >= 2) {
+                  return (
+                    <div className={`mt-3 p-2 rounded text-xs ${
+                      lastStatus === 'completed' 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      <span className="font-medium">
+                        {streak} {lastStatus === 'completed' ? 'victoires' : 'défaites'} consécutives
+                      </span>
+                    </div>
+                  )
+                }
+                return null
+              })()}
 
               {selectedArchivedMontante && typeof selectedArchivedMontante === 'object' && (
                 <div className="mb-4 p-3 bg-blue-50 rounded text-sm">
