@@ -21,7 +21,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="font-bold text-white mb-4">Outils paris sportifs</h4>
+            <h4 className="font-bold text-white mb-4"><Link href="/paris-sportifs" className="hover:text-white">Outils paris sportifs</Link></h4>
             <ul className="space-y-2 text-sm">
               <li><Link href="/paris-sportifs/montante" className="hover:text-white">Montantes</Link></li>
             </ul>
