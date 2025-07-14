@@ -123,7 +123,7 @@ export default function ParisSporifsPage() {
                 </div>
                 <div className="bg-gray-50 px-4 sm:px-6 py-2 sm:py-3">
                   <span className="text-blue-600 text-xs sm:text-sm hover:text-blue-800 flex items-center">
-                    Accéder à l'outil
+                    Accéder à nos montantes
                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
