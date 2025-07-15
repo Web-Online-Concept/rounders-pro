@@ -489,8 +489,11 @@ export default function MontantePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 sm:py-6 space-y-2 sm:space-y-0">
             <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-              Gestion des Montantes
-            </h1>
+			<a href="https://www.rounders.pro" className="hover:text-blue-600 transition-colors">
+			Rounders.pro
+			</a>
+			<span className="block sm:inline text-base sm:text-2xl"> - Gestion des Montantes</span>
+			</h1>
             <div className="flex items-center space-x-2 sm:space-x-4">
               {isAuthenticated && (
                 <>
