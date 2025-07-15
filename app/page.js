@@ -28,14 +28,14 @@ export default function Home() {
 
             {/* Cartes des services Paris Sportifs */}
             <div className="grid md:grid-cols-3 gap-6 mb-12">
-              <div className="bg-gradient-to-br from-gray-300 to-gray-400 text-white rounded-xl p-6 relative">
+              <div className="bg-[#1a2c38] text-white rounded-xl p-6 relative">
                 <div className="absolute top-2 right-2 bg-yellow-400 text-gray-800 text-xs font-bold px-2 py-1 rounded">
                   BIENTÔT
                 </div>
                 <div className="text-center opacity-75">
                   <div className="text-4xl mb-4">🏆</div>
                   <h3 className="text-xl font-bold mb-2">Pronos Premium</h3>
-                  <p className="text-gray-100 text-sm">
+                  <p className="text-gray-300 text-sm">
                     Sélection quotidienne de nos meilleurs pronostics
                   </p>
                 </div>
