@@ -215,7 +215,7 @@ export default function NosJeux() {
                 <div className="bg-white p-6 rounded-xl shadow-lg">
                   <div className="text-4xl mb-4">🔔</div>
                   <h3 className="font-bold text-xl mb-3">Notifications instant</h3>
-                  <p className="text-gray-600">Ne ratez jamais une opportun1043ité de gagner</p>
+                  <p className="text-gray-600">Ne ratez jamais une opportunité de gagner</p>
                 </div>
               </div>
             </div>
