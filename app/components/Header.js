@@ -1,8 +1,12 @@
 'use client';
 import Link from 'next/link';
 import { AFFILIATE_LINK } from '../config/affiliate';
+import { useState } from 'react';
 
 export default function Header() {
+  const [isParisOpen, setIsParisOpen] = useState(false);
+  const [isAffiliationOpen, setIsAffiliationOpen] = useState(false);
+
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,21 +59,60 @@ export default function Header() {
           
           {/* Navigation desktop */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/avantages-rounders" className="text-gray-700 hover:text-blue-600 transition-colors">
-              Avantages Rounders
-            </Link>
-            <Link href="/affilies" className="text-gray-700 hover:text-blue-600 transition-colors">
-              Bonus Affiliés
-            </Link>
-            <Link href="/nos-jeux" className="text-gray-700 hover:text-blue-600 transition-colors flex items-center gap-1">
-              Nos Jeux
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-              </svg>
-            </Link>
-            <Link href="/guide-stake" className="text-gray-700 hover:text-blue-600 transition-colors">
-              Guide Stake
-            </Link>
+            {/* Menu Paris Sportifs */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setIsParisOpen(true)}
+              onMouseLeave={() => setIsParisOpen(false)}
+            >
+              <button className="text-gray-700 hover:text-blue-600 transition-colors flex items-center space-x-1">
+                <span>Paris Sportifs</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {isParisOpen && (
+                <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                  <Link href="/paris-sportifs/montante" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Montantes
+                  </Link>
+                  <Link href="/paris-sportifs/martingale" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Martingales
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Menu Affiliation & Guide Stake */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setIsAffiliationOpen(true)}
+              onMouseLeave={() => setIsAffiliationOpen(false)}
+            >
+              <button className="text-gray-700 hover:text-blue-600 transition-colors flex items-center space-x-1">
+                <span>Affiliation & Guide Stake</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {isAffiliationOpen && (
+                <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 z-50">
+                  <Link href="/guide-stake" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Guide Stake
+                  </Link>
+                  <Link href="/avantages-rounders" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Avantages Rounders
+                  </Link>
+                  <Link href="/affilies" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Bonus Affiliés
+                  </Link>
+                  <Link href="/nos-jeux" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Nos Jeux
+                  </Link>
+                </div>
+              )}
+            </div>
+
             <a 
               href={AFFILIATE_LINK}
               target="_blank"
