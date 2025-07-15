@@ -33,7 +33,6 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li>Email : rounders.pro@gmail.com</li>
               <li><Link href="https://x.com/rounders_pro" target="_blank" rel="noopener noreferrer" className="hover:text-white">Twitter : @rounders_pro</Link></li>
-              <li><Link href="https://www.youtube.com/@Rounders_fr" target="_blank" rel="noopener noreferrer" className="hover:text-white">Youtube : @Rounders_fr</Link></li>
             </ul>
           </div>
         </div>
