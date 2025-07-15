@@ -47,21 +47,25 @@ export default function MartingalePage() {
     }
   }
 
-  // Charger les données depuis l'API
-  const loadData = async () => {
-    try {
-      const response = await fetch('/api/martingales')
-      if (response.ok) {
-        const data = await response.json()
-        setActiveMartingale(data.active)
-        setArchivedMartingales(data.archived || [])
-      }
-    } catch (error) {
-      console.error('Erreur lors du chargement:', error)
-    } finally {
-      setLoading(false)
+// Charger les données depuis l'API
+const loadData = async () => {
+  try {
+    const response = await fetch('/api/martingales')
+    if (response.ok) {
+      const data = await response.json()
+      setActiveMartingale(data.active)
+      setArchivedMartingales(data.archived || [])
+      
+      // AJOUT TEMPORAIRE POUR DEBUG
+      console.log('Martingales archivées:', data.archived)
+      
     }
+  } catch (error) {
+    console.error('Erreur lors du chargement:', error)
+  } finally {
+    setLoading(false)
   }
+}
 
   // Charger les données au montage
   useEffect(() => {
