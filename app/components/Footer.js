@@ -11,20 +11,20 @@ export default function Footer() {
               Le guide ultime pour maximiser vos gains sur Stake avec des bonus exclusifs.
             </p>
           </div>
+		  <div>
+            <h4 className="font-bold text-white mb-4"><Link href="/paris-sportifs" className="hover:text-white">Paris Sportifs</Link></h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link href="/paris-sportifs/montante" className="hover:text-white">Montantes</Link></li>
+              <li><Link href="/paris-sportifs/martingale" className="hover:text-white">Martingales</Link></li>
+            </ul>
+          </div>
           <div>
-            <h4 className="font-bold text-white mb-4">Guide Stake</h4>
+            <h4 className="font-bold text-white mb-4">Affiliation & Guide Stake</h4>
             <ul className="space-y-2 text-sm">
               <li><Link href="/guide-stake" className="hover:text-white">Sommaire</Link></li>
               <li><Link href="/guide-stake/france" className="hover:text-white">Jouer depuis la France</Link></li>
               <li><Link href="/guide-stake/inscription" className="hover:text-white">Inscription</Link></li>
               <li><Link href="/guide-stake/crypto" className="hover:text-white">Cryptomonnaies</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold text-white mb-4"><Link href="/paris-sportifs" className="hover:text-white">Paris Sportifs</Link></h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/paris-sportifs/montante" className="hover:text-white">Montantes</Link></li>
-              <li><Link href="/paris-sportifs/martingale" className="hover:text-white">Martingales</Link></li>
             </ul>
           </div>
           <div>
