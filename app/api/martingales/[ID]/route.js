@@ -2,8 +2,10 @@ import { sql } from '@vercel/postgres'
 import { NextResponse } from 'next/server'
 
 // GET - Récupérer les détails d'une martingale
-export async function GET(request, { params }) {
+export async function GET(request, props) {
   try {
+    // IMPORTANT: await params pour Next.js 13+
+    const params = await props.params
     const martingaleId = params.id
 
     // Récupérer la martingale
@@ -54,8 +56,10 @@ export async function GET(request, { params }) {
 }
 
 // DELETE - Supprimer une martingale
-export async function DELETE(request, { params }) {
+export async function DELETE(request, props) {
   try {
+    // IMPORTANT: await params pour Next.js 13+
+    const params = await props.params
     const martingaleId = params.id
     const { searchParams } = new URL(request.url)
     const password = searchParams.get('password')
