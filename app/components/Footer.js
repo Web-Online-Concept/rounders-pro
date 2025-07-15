@@ -12,9 +12,10 @@ export default function Footer() {
             </p>
           </div>
 		  <div>
-            <h4 className="font-bold text-white mb-4">Paris Sportifs</h4>
+            <h4 className="font-bold text-white mb-4">Nos Pronostics</h4>
             <ul className="space-y-2 text-sm">
               <li><Link href="/paris-sportifs" className="hover:text-white">Tous nos Paris Sportifs</Link></li>
+			  <li><Link href="/paris-sportifs/montante" className="hover:text-white">Pronos Classiques</Link></li>
               <li><Link href="/paris-sportifs/montante" className="hover:text-white">Montantes</Link></li>
               <li><Link href="/paris-sportifs/martingale" className="hover:text-white">Martingales</Link></li>
             </ul>
