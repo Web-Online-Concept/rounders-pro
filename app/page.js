@@ -28,6 +28,19 @@ export default function Home() {
 
             {/* Cartes des services Paris Sportifs */}
             <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <div className="bg-gradient-to-br from-gray-300 to-gray-400 text-white rounded-xl p-6 relative">
+                <div className="absolute top-2 right-2 bg-yellow-400 text-gray-800 text-xs font-bold px-2 py-1 rounded">
+                  BIENTÔT
+                </div>
+                <div className="text-center opacity-75">
+                  <div className="text-4xl mb-4">🏆</div>
+                  <h3 className="text-xl font-bold mb-2">Pronos Premium</h3>
+                  <p className="text-gray-100 text-sm">
+                    Sélection quotidienne de nos meilleurs pronostics
+                  </p>
+                </div>
+              </div>
+
               <Link href="/paris-sportifs/montante" className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                 <div className="text-center">
                   <div className="text-4xl mb-4">📈</div>
@@ -47,19 +60,6 @@ export default function Home() {
                   </p>
                 </div>
               </Link>
-
-              <div className="bg-gradient-to-br from-gray-400 to-gray-500 text-white rounded-xl p-6 relative">
-                <div className="absolute top-2 right-2 bg-yellow-400 text-gray-800 text-xs font-bold px-2 py-1 rounded">
-                  BIENTÔT
-                </div>
-                <div className="text-center opacity-75">
-                  <div className="text-4xl mb-4">🏆</div>
-                  <h3 className="text-xl font-bold mb-2">Pronos Premium</h3>
-                  <p className="text-gray-100 text-sm">
-                    Sélection quotidienne de nos meilleurs pronostics
-                  </p>
-                </div>
-              </div>
             </div>
 
             {/* Avantages Paris Sportifs */}
@@ -82,9 +82,9 @@ export default function Home() {
                   <div className="text-xs text-gray-600 mt-1">Stratégies sécurisées et calculées</div>
                 </div>
                 <div>
-                  <div className="text-3xl mb-2">🤝</div>
-                  <div className="text-sm font-semibold text-gray-700">Suivi personnalisé</div>
-                  <div className="text-xs text-gray-600 mt-1">Conseils adaptés à votre profil</div>
+                  <div className="text-3xl mb-2">📈</div>
+                  <div className="text-sm font-semibold text-gray-700">Historique complet</div>
+                  <div className="text-xs text-gray-600 mt-1">Accès à tous nos résultats passés</div>
                 </div>
               </div>
             </div>
