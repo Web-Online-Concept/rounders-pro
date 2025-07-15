@@ -34,7 +34,7 @@ export default function Home() {
                 </div>
                 <div className="text-center opacity-75">
                   <div className="text-4xl mb-4">🏆</div>
-                  <h3 className="text-xl font-bold mb-2">Pronos Premium</h3>
+                  <h3 className="text-xl font-bold mb-2">Pronos</h3>
                   <p className="text-blue-100 text-sm">
                     Sélection quotidienne de nos meilleurs pronostics
                   </p>
