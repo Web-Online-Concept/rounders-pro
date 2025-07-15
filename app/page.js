@@ -15,14 +15,35 @@ export default function Home() {
         <section className="bg-white pt-12 pb-20">
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center mb-12">
-              <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-                ⚽ Nos Paris Sportifs
+              <h1 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900">
+                ⚽ Pronostics Sportifs Gratuits
               </h1>
+              
+              {/* Image d'illustration */}
+              <div className="mb-8">
+                <picture>
+                  <source 
+                    media="(max-width: 768px)"
+                    srcSet="/images/pronostics-hero-mobile.jpg"
+                  />
+                  <source 
+                    media="(min-width: 769px)"
+                    srcSet="/images/pronostics-hero-desktop.jpg"
+                  />
+                  <img 
+                    src="/images/pronostics-hero-desktop.jpg"
+                    alt="Pronostics Sportifs Rounders Pro"
+                    className="w-full rounded-xl shadow-lg mx-auto"
+                    style={{ maxWidth: '100%', height: 'auto' }}
+                  />
+                </picture>
+              </div>
+              
               <p className="text-xl md:text-2xl mb-2 text-gray-700">
-                Des pronostics gagnants basés sur des analyses expertes
+                Des pronostics basés sur des analyses expertes avec suivi complet des résultats
               </p>
               <p className="text-lg text-gray-600">
-                Montantes, Martingales et pronos exclusifs pour maximiser vos gains
+                Pronos classiques, Montantes, Martingales pour maximiser vos gains
               </p>
             </div>
 
@@ -34,7 +55,7 @@ export default function Home() {
                 </div>
                 <div className="text-center opacity-75">
                   <div className="text-4xl mb-4">🏆</div>
-                  <h3 className="text-xl font-bold mb-2">Pronos</h3>
+                  <h3 className="text-xl font-bold mb-2">Nos Pronos Classiques</h3>
                   <p className="text-white text-sm">
                     Sélection quotidienne de nos meilleurs pronostics
                   </p>
@@ -64,7 +85,7 @@ export default function Home() {
 
             {/* Avantages Paris Sportifs */}
             <div className="bg-gray-50 rounded-xl p-8">
-              <h3 className="text-xl font-bold text-center mb-6 text-gray-900">Pourquoi choisir nos Paris Sportifs ?</h3>
+              <h3 className="text-xl font-bold text-center mb-6 text-gray-900">Pourquoi suivre nos Pronostics ?</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                 <div>
                   <div className="text-3xl mb-2">📊</div>
