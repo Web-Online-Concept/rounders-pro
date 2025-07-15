@@ -8,14 +8,14 @@ export default function Header() {
   const [isAffiliationOpen, setIsAffiliationOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200">
+    <header className="bg-gray-900 shadow-sm border-b border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo - À gauche sur mobile */}
           <div className="flex items-center space-x-3">
             <Link href="/" className="flex items-center space-x-2">
               <img src="/logo.png" alt="Rounders" className="w-8 h-8" />
-              <span className="text-xl font-bold text-gray-900">Rounders.pro</span>
+              <span className="text-xl font-bold text-white">Rounders.pro</span>
             </Link>
             
             {/* Logos sociaux */}
@@ -24,7 +24,7 @@ export default function Header() {
                 href="https://x.com/rounders_pro" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
+                className="text-gray-300 hover:text-white transition-colors"
                 aria-label="Twitter Rounders"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -37,7 +37,7 @@ export default function Header() {
           {/* Lien Nos Jeux mobile uniquement */}
           <Link 
             href="/nos-jeux" 
-            className="md:hidden flex items-center gap-1 text-gray-700 hover:text-blue-600 transition-colors font-medium"
+            className="md:hidden flex items-center gap-1 text-gray-300 hover:text-white transition-colors font-medium"
             aria-label="Nos Jeux Rounders"
           >
             Nos Jeux
@@ -54,18 +54,18 @@ export default function Header() {
               onMouseEnter={() => setIsParisOpen(true)}
               onMouseLeave={() => setIsParisOpen(false)}
             >
-              <button className="text-gray-700 hover:text-blue-600 transition-colors">
+              <button className="text-gray-300 hover:text-white transition-colors">
                 Paris Sportifs
               </button>
               {isParisOpen && (
-                <div className="absolute top-full left-0 -mt-1 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                  <Link href="/paris-sportifs" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <div className="absolute top-full left-0 -mt-1 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50">
+                  <Link href="/paris-sportifs" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Tous nos Paris Sportifs
                   </Link>
-                  <Link href="/paris-sportifs/montante" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <Link href="/paris-sportifs/montante" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Montantes
                   </Link>
-                  <Link href="/paris-sportifs/martingale" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <Link href="/paris-sportifs/martingale" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Martingales
                   </Link>
                 </div>
@@ -78,21 +78,21 @@ export default function Header() {
               onMouseEnter={() => setIsAffiliationOpen(true)}
               onMouseLeave={() => setIsAffiliationOpen(false)}
             >
-              <button className="text-gray-700 hover:text-blue-600 transition-colors">
+              <button className="text-gray-300 hover:text-white transition-colors">
                 Affiliation & Guide Stake
               </button>
               {isAffiliationOpen && (
-                <div className="absolute top-full left-0 -mt-1 w-56 bg-white rounded-md shadow-lg py-1 z-50">
-                  <Link href="/guide-stake" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <div className="absolute top-full left-0 -mt-1 w-56 bg-gray-800 rounded-md shadow-lg py-1 z-50">
+                  <Link href="/guide-stake" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Guide Stake
                   </Link>
-                  <Link href="/avantages-rounders" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <Link href="/avantages-rounders" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Avantages Rounders
                   </Link>
-                  <Link href="/affilies" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <Link href="/affilies" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Bonus Affiliés
                   </Link>
-                  <Link href="/nos-jeux" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <Link href="/nos-jeux" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Nos Jeux
                   </Link>
                 </div>
