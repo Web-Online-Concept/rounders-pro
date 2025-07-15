@@ -33,7 +33,7 @@ export default function Header() {
           
           {/* Navigation desktop */}
           <nav className="hidden md:flex items-center space-x-8">
-            {/* Menu Paris Sportifs */}
+            {/* Menu Nos Pronostics */}
             <div 
               className="relative py-5"
               onMouseEnter={() => setIsParisOpen(true)}
@@ -47,12 +47,39 @@ export default function Header() {
                   <Link href="/paris-sportifs" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Tous nos Pronostics
                   </Link>
+                  <div className="block px-4 py-2 text-sm text-gray-400 opacity-75 cursor-not-allowed">
+                    Pronos Classiques (bientôt)
+                  </div>
                   <Link href="/paris-sportifs/montante" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Montantes
                   </Link>
                   <Link href="/paris-sportifs/martingale" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Martingales
                   </Link>
+                </div>
+              )}
+            </div>
+			
+            {/* Menu Nos Tutoriels */}
+            <div 
+              className="relative py-5"
+              onMouseEnter={() => setIsTutorielsOpen(true)}
+              onMouseLeave={() => setIsTutorielsOpen(false)}
+            >
+              <button className="text-white hover:text-blue-400 transition-colors">
+                Nos Tutoriels
+              </button>
+              {isTutorielsOpen && (
+                <div className="absolute top-full left-0 -mt-1 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50">
+                  <div className="block px-4 py-2 text-sm text-gray-400 opacity-75 cursor-not-allowed">
+                    Paris Sportifs
+                  </div>
+                  <div className="block px-4 py-2 text-sm text-gray-400 opacity-75 cursor-not-allowed">
+                    Casino
+                  </div>
+                  <div className="block px-4 py-2 text-sm text-gray-400 opacity-75 cursor-not-allowed">
+                    Poker
+                  </div>
                 </div>
               )}
             </div>
