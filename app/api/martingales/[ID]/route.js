@@ -1,16 +1,15 @@
 import { sql } from '@vercel/postgres'
 import { NextResponse } from 'next/server'
 
-// GET - Récupérer les détails d'une martingale
-export async function GET(request, props) {
+// GET - Récupérer les détails d'une martingale spécifique
+export async function GET(request, { params }) {
   try {
-    // IMPORTANT: await params pour Next.js 13+
-    const params = await props.params
     const martingaleId = params.id
 
     // Récupérer la martingale
     const martingaleResult = await sql`
-      SELECT * FROM martingales WHERE id = ${martingaleId}
+      SELECT * FROM martingales 
+      WHERE id = ${martingaleId}
     `
 
     if (martingaleResult.rows.length === 0) {
@@ -42,24 +41,24 @@ export async function GET(request, props) {
       })
     )
 
-    return NextResponse.json({
+    const martingaleWithDetails = {
       ...martingale,
       paliers: paliersWithPronos
-    })
+    }
+
+    return NextResponse.json(martingaleWithDetails)
 
   } catch (error) {
-    console.error('Erreur lors de la récupération des détails:', error)
+    console.error('Erreur lors de la récupération de la martingale:', error)
     return NextResponse.json({ 
-      error: 'Erreur lors de la récupération' 
+      error: 'Erreur lors de la récupération des données' 
     }, { status: 500 })
   }
 }
 
 // DELETE - Supprimer une martingale
-export async function DELETE(request, props) {
+export async function DELETE(request, { params }) {
   try {
-    // IMPORTANT: await params pour Next.js 13+
-    const params = await props.params
     const martingaleId = params.id
     const { searchParams } = new URL(request.url)
     const password = searchParams.get('password')
@@ -71,15 +70,36 @@ export async function DELETE(request, props) {
       }, { status: 401 })
     }
 
-    // Supprimer la martingale (les paliers et pronos seront supprimés en cascade)
+    // Supprimer en cascade : pronos -> paliers -> martingale
+    // D'abord récupérer les paliers
+    const paliers = await sql`
+      SELECT id FROM paliers_martingale WHERE martingale_id = ${martingaleId}
+    `
+
+    // Supprimer les pronos de chaque palier
+    for (const palier of paliers.rows) {
+      await sql`
+        DELETE FROM pronos_martingale WHERE palier_id = ${palier.id}
+      `
+    }
+
+    // Supprimer les paliers
+    await sql`
+      DELETE FROM paliers_martingale WHERE martingale_id = ${martingaleId}
+    `
+
+    // Supprimer la martingale
     await sql`
       DELETE FROM martingales WHERE id = ${martingaleId}
     `
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ 
+      success: true,
+      message: 'Martingale supprimée avec succès' 
+    })
 
   } catch (error) {
-    console.error('Erreur lors de la suppression:', error)
+    console.error('Erreur lors de la suppression de la martingale:', error)
     return NextResponse.json({ 
       error: 'Erreur lors de la suppression' 
     }, { status: 500 })
