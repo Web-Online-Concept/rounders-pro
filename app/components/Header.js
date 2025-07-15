@@ -61,18 +61,15 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             {/* Menu Paris Sportifs */}
             <div 
-              className="relative"
+              className="relative py-5"
               onMouseEnter={() => setIsParisOpen(true)}
               onMouseLeave={() => setIsParisOpen(false)}
             >
-              <button className="text-gray-700 hover:text-blue-600 transition-colors flex items-center space-x-1">
-                <span>Paris Sportifs</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+              <button className="text-gray-700 hover:text-blue-600 transition-colors">
+                Paris Sportifs
               </button>
               {isParisOpen && (
-                <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                <div className="absolute top-full left-0 -mt-1 w-48 bg-white rounded-md shadow-lg py-1 z-50">
                   <Link href="/paris-sportifs/montante" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Montantes
                   </Link>
@@ -85,18 +82,15 @@ export default function Header() {
 
             {/* Menu Affiliation & Guide Stake */}
             <div 
-              className="relative"
+              className="relative py-5"
               onMouseEnter={() => setIsAffiliationOpen(true)}
               onMouseLeave={() => setIsAffiliationOpen(false)}
             >
-              <button className="text-gray-700 hover:text-blue-600 transition-colors flex items-center space-x-1">
-                <span>Affiliation & Guide Stake</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+              <button className="text-gray-700 hover:text-blue-600 transition-colors">
+                Affiliation & Guide Stake
               </button>
               {isAffiliationOpen && (
-                <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 z-50">
+                <div className="absolute top-full left-0 -mt-1 w-56 bg-white rounded-md shadow-lg py-1 z-50">
                   <Link href="/guide-stake" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Guide Stake
                   </Link>
