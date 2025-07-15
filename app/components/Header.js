@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 export default function Header() {
   const [isParisOpen, setIsParisOpen] = useState(false);
+  const [isTutorielsOpen, setIsTutorielsOpen] = useState(false);
   const [isAffiliationOpen, setIsAffiliationOpen] = useState(false);
 
   return (
@@ -46,38 +47,11 @@ export default function Header() {
                   <Link href="/paris-sportifs" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Tous nos Pronostics
                   </Link>
-				  <Link href="/paris-sportifs/montante" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
-                    Pronos Classiques
-                  </Link>
                   <Link href="/paris-sportifs/montante" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Montantes
                   </Link>
                   <Link href="/paris-sportifs/martingale" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Martingales
-                  </Link>
-                </div>
-              )}
-            </div>
-			
-			{/* Menu Tutoriels */}
-            <div 
-              className="relative py-5"
-              onMouseEnter={() => setIsParisOpen(true)}
-              onMouseLeave={() => setIsParisOpen(false)}
-            >
-              <button className="text-white hover:text-blue-400 transition-colors">
-                Nos Tutoriels
-              </button>
-              {isParisOpen && (
-                <div className="absolute top-full left-0 -mt-1 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50">
-                  <Link href="/paris-sportifs" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
-                    Paris Sportifs
-                  </Link>
-				  <Link href="/paris-sportifs/montante" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
-                    Casino
-                  </Link>
-                  <Link href="/paris-sportifs/montante" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
-                    Poker
                   </Link>
                 </div>
               )}
