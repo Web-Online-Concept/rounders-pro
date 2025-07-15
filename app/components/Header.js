@@ -39,7 +39,7 @@ export default function Header() {
               onMouseLeave={() => setIsParisOpen(false)}
             >
               <button className="text-white hover:text-blue-400 transition-colors">
-                Pronostics
+                Nos Pronostics
               </button>
               {isParisOpen && (
                 <div className="absolute top-full left-0 -mt-1 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50">
