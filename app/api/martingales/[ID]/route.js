@@ -4,7 +4,8 @@ import { NextResponse } from 'next/server'
 // GET - Récupérer les détails d'une martingale
 export async function GET(request, { params }) {
   try {
-    const martingaleId = params.id
+    // IMPORTANT: await params dans Next.js 13+
+    const { id: martingaleId } = await params
 
     // Récupérer la martingale
     const martingaleResult = await sql`
@@ -56,7 +57,8 @@ export async function GET(request, { params }) {
 // DELETE - Supprimer une martingale
 export async function DELETE(request, { params }) {
   try {
-    const martingaleId = params.id
+    // IMPORTANT: await params dans Next.js 13+
+    const { id: martingaleId } = await params
     const { searchParams } = new URL(request.url)
     const password = searchParams.get('password')
 
