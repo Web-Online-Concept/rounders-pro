@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import { AFFILIATE_LINK } from '../config/affiliate';
 import { useState } from 'react';
 
 export default function Header() {
@@ -17,21 +16,6 @@ export default function Header() {
               <img src="/logo.png" alt="Rounders" className="w-8 h-8" />
               <span className="text-xl font-bold text-white">Rounders.pro</span>
             </Link>
-            
-            {/* Logos sociaux */}
-            <div className="flex items-center space-x-2">
-              <a 
-                href="https://x.com/rounders_pro" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white transition-colors"
-                aria-label="Twitter Rounders"
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
-              </a>
-            </div>
           </div>
           
           {/* Lien Nos Jeux mobile uniquement */}
@@ -54,7 +38,7 @@ export default function Header() {
               onMouseEnter={() => setIsParisOpen(true)}
               onMouseLeave={() => setIsParisOpen(false)}
             >
-              <button className="text-gray-300 hover:text-white transition-colors">
+              <button className="text-white hover:text-blue-400 transition-colors">
                 Paris Sportifs
               </button>
               {isParisOpen && (
@@ -78,7 +62,7 @@ export default function Header() {
               onMouseEnter={() => setIsAffiliationOpen(true)}
               onMouseLeave={() => setIsAffiliationOpen(false)}
             >
-              <button className="text-gray-300 hover:text-white transition-colors">
+              <button className="text-white hover:text-blue-400 transition-colors">
                 Affiliation & Guide Stake
               </button>
               {isAffiliationOpen && (
@@ -100,12 +84,12 @@ export default function Header() {
             </div>
 
             <a 
-              href={AFFILIATE_LINK}
+              href="https://x.com/rounders_pro"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
             >
-              Commencer sur Stake →
+              Suivez nous sur 𝕏
             </a>
           </nav>
         </div>
