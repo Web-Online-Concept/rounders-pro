@@ -12,74 +12,79 @@ export default function Home() {
       
       <main className="pb-16 md:pb-0">
         {/* Section Paris Sportifs - NOUVELLE SECTION EN PREMIER */}
-        <section className="bg-gradient-to-br from-blue-600 to-blue-800 text-white pt-12 pb-20">
+        <section className="bg-white pt-12 pb-20">
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center mb-12">
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
                 ⚽ Nos Paris Sportifs Premium
               </h1>
-              <p className="text-xl md:text-2xl mb-2">
+              <p className="text-xl md:text-2xl mb-2 text-gray-700">
                 Des pronostics gagnants basés sur des analyses expertes
               </p>
-              <p className="text-lg opacity-90">
+              <p className="text-lg text-gray-600">
                 Montantes, Martingales et pronos exclusifs pour maximiser vos gains
               </p>
             </div>
 
             {/* Cartes des services Paris Sportifs */}
             <div className="grid md:grid-cols-3 gap-6 mb-12">
-              <Link href="/paris-sportifs/montante" className="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
+              <Link href="/paris-sportifs/montante" className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                 <div className="text-center">
                   <div className="text-4xl mb-4">📈</div>
                   <h3 className="text-xl font-bold mb-2">Nos Montantes</h3>
-                  <p className="text-white/80 text-sm">
+                  <p className="text-blue-100 text-sm">
                     Stratégies progressives pour des gains constants et maîtrisés
                   </p>
                 </div>
               </Link>
 
-              <Link href="/paris-sportifs/martingale" className="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
+              <Link href="/paris-sportifs/martingale" className="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                 <div className="text-center">
                   <div className="text-4xl mb-4">🎯</div>
                   <h3 className="text-xl font-bold mb-2">Nos Martingales</h3>
-                  <p className="text-white/80 text-sm">
+                  <p className="text-purple-100 text-sm">
                     Méthode éprouvée pour récupérer et générer des profits
                   </p>
                 </div>
               </Link>
 
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 relative">
-                <div className="absolute top-2 right-2 bg-yellow-400 text-blue-800 text-xs font-bold px-2 py-1 rounded">
+              <div className="bg-gradient-to-br from-gray-400 to-gray-500 text-white rounded-xl p-6 relative">
+                <div className="absolute top-2 right-2 bg-yellow-400 text-gray-800 text-xs font-bold px-2 py-1 rounded">
                   BIENTÔT
                 </div>
                 <div className="text-center opacity-75">
                   <div className="text-4xl mb-4">🏆</div>
                   <h3 className="text-xl font-bold mb-2">Pronos Premium</h3>
-                  <p className="text-white/80 text-sm">
+                  <p className="text-gray-100 text-sm">
                     Sélection quotidienne de nos meilleurs pronostics
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Stats Paris Sportifs */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8">
+            {/* Avantages Paris Sportifs */}
+            <div className="bg-gray-50 rounded-xl p-8">
+              <h3 className="text-xl font-bold text-center mb-6 text-gray-900">Pourquoi choisir nos Paris Sportifs ?</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                 <div>
-                  <div className="text-2xl md:text-3xl font-bold text-yellow-300">87%</div>
-                  <div className="text-sm opacity-80">Taux de réussite</div>
+                  <div className="text-3xl mb-2">📊</div>
+                  <div className="text-sm font-semibold text-gray-700">Analyses détaillées</div>
+                  <div className="text-xs text-gray-600 mt-1">Études approfondies avant chaque prono</div>
                 </div>
                 <div>
-                  <div className="text-2xl md:text-3xl font-bold text-green-300">+45%</div>
-                  <div className="text-sm opacity-80">ROI moyen</div>
+                  <div className="text-3xl mb-2">💡</div>
+                  <div className="text-sm font-semibold text-gray-700">Transparence totale</div>
+                  <div className="text-xs text-gray-600 mt-1">Tous nos résultats sont vérifiables</div>
                 </div>
                 <div>
-                  <div className="text-2xl md:text-3xl font-bold">500+</div>
-                  <div className="text-sm opacity-80">Membres actifs</div>
+                  <div className="text-3xl mb-2">🛡️</div>
+                  <div className="text-sm font-semibold text-gray-700">Gestion des risques</div>
+                  <div className="text-xs text-gray-600 mt-1">Stratégies sécurisées et calculées</div>
                 </div>
                 <div>
-                  <div className="text-2xl md:text-3xl font-bold">24/7</div>
-                  <div className="text-sm opacity-80">Analyses en continu</div>
+                  <div className="text-3xl mb-2">🤝</div>
+                  <div className="text-sm font-semibold text-gray-700">Suivi personnalisé</div>
+                  <div className="text-xs text-gray-600 mt-1">Conseils adaptés à votre profil</div>
                 </div>
               </div>
             </div>
@@ -88,7 +93,7 @@ export default function Home() {
             <div className="text-center mt-12">
               <Link 
                 href="/paris-sportifs" 
-                className="bg-white text-blue-700 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all shadow-lg inline-flex items-center"
+                className="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition-all shadow-lg inline-flex items-center"
               >
                 Découvrir tous nos Paris Sportifs
                 <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
