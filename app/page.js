@@ -16,13 +16,13 @@ export default function Home() {
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center mb-12">
               <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-                ⚽ Nos Paris Sportifs
+                ⚽ Paris Sportifs Gratuits
               </h1>
               <p className="text-xl md:text-2xl mb-2 text-gray-700">
-                Des pronostics gagnants basés sur des analyses expertes
+                Des pronostics basés sur des analyses expertes avec suivi complet des résultats
               </p>
               <p className="text-lg text-gray-600">
-                Montantes, Martingales et pronos exclusifs pour maximiser vos gains
+                Pronos classiques, Montantes, Martingales pour maximiser vos gains
               </p>
             </div>
 
