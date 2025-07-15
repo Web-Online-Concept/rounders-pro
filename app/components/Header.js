@@ -58,6 +58,30 @@ export default function Header() {
                 </div>
               )}
             </div>
+			
+			{/* Menu Tutoriels */}
+            <div 
+              className="relative py-5"
+              onMouseEnter={() => setIsParisOpen(true)}
+              onMouseLeave={() => setIsParisOpen(false)}
+            >
+              <button className="text-white hover:text-blue-400 transition-colors">
+                Nos Tutoriels
+              </button>
+              {isParisOpen && (
+                <div className="absolute top-full left-0 -mt-1 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50">
+                  <Link href="/paris-sportifs" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
+                    Paris Sportifs
+                  </Link>
+				  <Link href="/paris-sportifs/montante" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
+                    Casino
+                  </Link>
+                  <Link href="/paris-sportifs/montante" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
+                    Poker
+                  </Link>
+                </div>
+              )}
+            </div>
 
             {/* Menu Affiliation & Guide Stake */}
             <div 
