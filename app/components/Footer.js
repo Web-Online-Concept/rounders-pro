@@ -8,7 +8,7 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-white mb-4">Rounders</h4>
             <p className="text-sm">
-              Le guide ultime pour maximiser vos gains sur Stake avec des bonus exclusifs.
+              Paris sportifs & Affiliation Stake : Maximisez vos gains aux Paris Sportifs avec des bonus exclusifs.
             </p>
           </div>
 		  <div>
