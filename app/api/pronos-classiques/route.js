@@ -39,9 +39,21 @@ export async function GET(request) {
       FROM pronos_classiques
     `
 
+    // Convertir les valeurs en nombres
+    const statsData = stats.rows[0]
+    const cleanStats = {
+      total: parseInt(statsData.total) || 0,
+      won: parseInt(statsData.won) || 0,
+      lost: parseInt(statsData.lost) || 0,
+      pending: parseInt(statsData.pending) || 0,
+      total_profit: parseFloat(statsData.total_profit) || 0,
+      total_loss: parseFloat(statsData.total_loss) || 0,
+      total_staked: parseFloat(statsData.total_staked) || 0
+    }
+
     return NextResponse.json({
       pronos: result.rows,
-      stats: stats.rows[0]
+      stats: cleanStats
     })
 
   } catch (error) {
