@@ -10,7 +10,15 @@ export default function ParisSporifsPage() {
   const [password, setPassword] = useState('')
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   
-  const tools = [
+const tools = [
+    {
+      id: 'classiques',
+      title: 'Nos Pronostics Classiques',
+      description: 'Tous nos pronostics simples et combinés',
+      icon: '🏆',
+      path: '/paris-sportifs/classiques',
+      available: true
+    },
     {
       id: 'montante',
       title: 'Nos Montantes',

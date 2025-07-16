@@ -47,26 +47,23 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Cartes des services Paris Sportifs */}
+{/* Cartes des services Paris Sportifs */}
             <div className="grid md:grid-cols-3 gap-6 mb-12">
-              <div className="bg-[#4c7b9b] text-white rounded-xl p-6 relative">
-                <div className="absolute top-2 right-2 bg-yellow-400 text-gray-800 text-xs font-bold px-2 py-1 rounded">
-                  BIENTÔT
-                </div>
-                <div className="text-center opacity-75">
+              <Link href="/paris-sportifs/classiques" className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <div className="text-center">
                   <div className="text-4xl mb-4">🏆</div>
                   <h3 className="text-xl font-bold mb-2">Nos Pronos Classiques</h3>
-                  <p className="text-white text-sm">
+                  <p className="text-blue-100 text-sm">
                     Sélection quotidienne de nos meilleurs pronostics
                   </p>
                 </div>
-              </div>
+              </Link>
 
-              <Link href="/paris-sportifs/montante" className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+              <Link href="/paris-sportifs/montante" className="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-xl p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                 <div className="text-center">
                   <div className="text-4xl mb-4">📈</div>
                   <h3 className="text-xl font-bold mb-2">Nos Montantes</h3>
-                  <p className="text-blue-100 text-sm">
+                  <p className="text-green-100 text-sm">
                     Stratégies progressives pour des gains constants et maîtrisés
                   </p>
                 </div>
