@@ -32,7 +32,7 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-white mb-4">Divers</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/divers" className="hover:text-white">Vidéos</Link></li>
+              <li><Link href="/divers" className="hover:text-white">Articles & Infos</Link></li>
             </ul>
           </div>
           <div>
