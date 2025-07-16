@@ -176,7 +176,7 @@ export default function ArticleDetailPage() {
                 <div className="mt-8 p-4 bg-gray-50 rounded-lg">
                   <p className="text-sm text-gray-600 mb-2">Voir sur YouTube :</p>
                   
-                    href={article.youtube_url}
+                   <a href={article.youtube_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-800 break-all"
@@ -204,7 +204,7 @@ export default function ArticleDetailPage() {
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-500">Partager :</span>
               
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(window.location.href)}`}
+              <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(window.location.href)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-blue-400"
@@ -215,7 +215,7 @@ export default function ArticleDetailPage() {
                 </svg>
               </a>
               
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+              <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-blue-600"
