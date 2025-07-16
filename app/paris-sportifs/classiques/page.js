@@ -170,6 +170,7 @@ export default function ClassiquesPage() {
     updated[index][field] = value
     setPronosList(updated)
   }
+
   // Fonction pour créer le graphique d'évolution
   const renderEvolutionChart = () => {
     if (!pronos || pronos.length === 0) return null
@@ -366,55 +367,61 @@ export default function ClassiquesPage() {
       </>
     )
   }
+
   return (
     <>
       <Header />
-      <div className="flex flex-col sm:flex-row justify-between items-center py-4 sm:py-6 space-y-2 sm:space-y-0">
-  <h1 className="text-xl sm:text-2xl font-bold text-gray-900 text-center flex-1">
-    Nos Pronostics Classiques - Paris Sportifs
-  </h1>
-  <div className="flex items-center space-x-2 sm:space-x-4">
-    {/* NOUVEAU BOUTON ICI */}
-    <Link 
-      href="/paris-sportifs/classiques/comment-ca-marche" 
-      className="text-blue-600 hover:text-blue-800 flex items-center text-xs sm:text-sm font-medium"
-    >
-      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <span className="hidden sm:inline">Comment ça marche ?</span>
-      <span className="sm:hidden">Aide</span>
-    </Link>
-    {/* FIN DU NOUVEAU BOUTON */}
-    
-    {isAuthenticated && (
-      <>
-        <span className="text-xs sm:text-sm text-green-600 flex items-center">
-          <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-          </svg>
-          Mode édition
-        </span>
-        <button
-          onClick={handleLogout}
-          className="text-xs sm:text-sm text-gray-600 hover:text-gray-900"
-        >
-          Déconnexion
-        </button>
-      </>
-    )}
-    <Link 
-      href="/paris-sportifs" 
-      className="text-gray-600 hover:text-gray-900 flex items-center text-xs sm:text-sm"
-    >
-      <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-      </svg>
-      <span className="hidden sm:inline">Retour au menu</span>
-      <span className="sm:hidden">Retour</span>
-    </Link>
-  </div>
-</div>
+      <div className="min-h-screen bg-gray-50">
+        {/* Header */}
+        <div className="bg-white shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row justify-between items-center py-4 sm:py-6 space-y-2 sm:space-y-0">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 text-center flex-1">
+                Nos Pronostics Classiques - Paris Sportifs
+              </h1>
+              <div className="flex items-center space-x-2 sm:space-x-4">
+                {/* BOUTON COMMENT ÇA MARCHE */}
+                <Link 
+                  href="/paris-sportifs/classiques/comment-ca-marche" 
+                  className="text-blue-600 hover:text-blue-800 flex items-center text-xs sm:text-sm font-medium"
+                >
+                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="hidden sm:inline">Comment ça marche ?</span>
+                  <span className="sm:hidden">Aide</span>
+                </Link>
+                
+                {isAuthenticated && (
+                  <>
+                    <span className="text-xs sm:text-sm text-green-600 flex items-center">
+                      <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      Mode édition
+                    </span>
+                    <button
+                      onClick={handleLogout}
+                      className="text-xs sm:text-sm text-gray-600 hover:text-gray-900"
+                    >
+                      Déconnexion
+                    </button>
+                  </>
+                )}
+                <Link 
+                  href="/paris-sportifs" 
+                  className="text-gray-600 hover:text-gray-900 flex items-center text-xs sm:text-sm"
+                >
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  </svg>
+                  <span className="hidden sm:inline">Retour au menu</span>
+                  <span className="sm:hidden">Retour</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Filtres */}
         <div className="bg-white border-b">
