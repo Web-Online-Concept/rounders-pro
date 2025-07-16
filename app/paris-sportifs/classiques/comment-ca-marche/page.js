@@ -120,7 +120,7 @@ export default function CommentCaMarcheClassiquesPage() {
                 <div>
                   <h4 className="font-semibold">Placez vos paris chez votre bookmaker</h4>
                   <p className="text-gray-600 text-sm">
-                    Nous travaillons avec les principaux bookmakers français. Les cotes peuvent 
+                    Nous plaçons nos paris sur Stake et sur les principaux bookmakers français. Les cotes peuvent 
                     légèrement varier selon votre opérateur.
                   </p>
                 </div>
@@ -228,7 +228,7 @@ export default function CommentCaMarcheClassiquesPage() {
               <div>
                 <h2 className="text-xl font-semibold mb-2">🐦 Ne manquez aucun pronostic !</h2>
                 <p className="text-gray-200">
-                  Abonnez-vous à notre compte Twitter/X pour recevoir une notification 
+                  Abonnez-vous à notre compte Twitter/X afin de pouvoir recevoir une notification 
                   instantanée à chaque nouveau pronostic publié.
                 </p>
               </div>
