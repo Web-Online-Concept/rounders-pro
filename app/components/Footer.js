@@ -30,6 +30,12 @@ export default function Footer() {
             </ul>
           </div>
           <div>
+            <h4 className="font-bold text-white mb-4">Divers</h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link href="/divers" className="hover:text-white">Vidéos</Link></li>
+            </ul>
+          </div>
+          <div>
             <h4 className="font-bold text-white mb-4">Contact</h4>
             <ul className="space-y-2 text-sm">
               <li>Email : rounders.pro@gmail.com</li>

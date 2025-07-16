@@ -4,8 +4,8 @@ import { useState } from 'react';
 
 export default function Header() {
   const [isParisOpen, setIsParisOpen] = useState(false);
-  const [isTutorielsOpen, setIsTutorielsOpen] = useState(false);
   const [isAffiliationOpen, setIsAffiliationOpen] = useState(false);
+  const [isDiversOpen, setIsDiversOpen] = useState(false);
 
   return (
     <header className="bg-gray-900 shadow-sm border-b border-gray-700">
@@ -59,30 +59,6 @@ export default function Header() {
                 </div>
               )}
             </div>
-			
-            {/* Menu Nos Tutoriels */}
-            <div 
-              className="relative py-5"
-              onMouseEnter={() => setIsTutorielsOpen(true)}
-              onMouseLeave={() => setIsTutorielsOpen(false)}
-            >
-              <button className="text-white hover:text-blue-400 transition-colors">
-                Nos Tutoriels
-              </button>
-              {isTutorielsOpen && (
-                <div className="absolute top-full left-0 -mt-1 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50">
-                  <div className="block px-4 py-2 text-sm text-gray-400 opacity-75 cursor-not-allowed">
-                    Paris Sportifs
-                  </div>
-                  <div className="block px-4 py-2 text-sm text-gray-400 opacity-75 cursor-not-allowed">
-                    Casino
-                  </div>
-                  <div className="block px-4 py-2 text-sm text-gray-400 opacity-75 cursor-not-allowed">
-                    Poker
-                  </div>
-                </div>
-              )}
-            </div>
 
             {/* Menu Affiliation & Guide Stake */}
             <div 
@@ -106,6 +82,24 @@ export default function Header() {
                   </Link>
                   <Link href="/nos-jeux" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Nos Jeux
+                  </Link>
+                </div>
+              )}
+            </div>
+			
+            {/* Menu Divers */}
+            <div 
+              className="relative py-5"
+              onMouseEnter={() => setIsDiversOpen(true)}
+              onMouseLeave={() => setIsDiversOpen(false)}
+            >
+              <button className="text-white hover:text-blue-400 transition-colors">
+                Divers
+              </button>
+              {isDiversOpen && (
+                <div className="absolute top-full left-0 -mt-1 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50">
+                  <Link href="/divers" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
+                    Vidéos
                   </Link>
                 </div>
               )}
