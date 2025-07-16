@@ -28,40 +28,61 @@ export async function GET(request) {
   const offset = (page - 1) * limit
 
   try {
-    // Construire la requête dynamiquement
-    let conditions = []
-    let values = []
-    let valueIndex = 1
-
-    if (category && category !== 'all') {
-      conditions.push(`category = $${valueIndex}`)
-      values.push(category)
-      valueIndex++
+    // Requête pour compter le total
+    let totalResult
+    if (category && category !== 'all' && search) {
+      totalResult = await sql`
+        SELECT COUNT(*) as total FROM articles 
+        WHERE category = ${category} 
+        AND (title ILIKE ${'%' + search + '%'} OR content ILIKE ${'%' + search + '%'})
+      `
+    } else if (category && category !== 'all') {
+      totalResult = await sql`
+        SELECT COUNT(*) as total FROM articles 
+        WHERE category = ${category}
+      `
+    } else if (search) {
+      totalResult = await sql`
+        SELECT COUNT(*) as total FROM articles 
+        WHERE title ILIKE ${'%' + search + '%'} OR content ILIKE ${'%' + search + '%'}
+      `
+    } else {
+      totalResult = await sql`SELECT COUNT(*) as total FROM articles`
     }
     
-    if (search) {
-      conditions.push(`(title ILIKE $${valueIndex} OR content ILIKE $${valueIndex} OR youtube_description ILIKE $${valueIndex})`)
-      values.push(`%${search}%`)
-      valueIndex++
-    }
-    
-    const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
-    
-    // Compter le total
-    const countQuery = `SELECT COUNT(*) as total FROM articles ${whereClause}`
-    const totalResult = await sql.query(countQuery, values)
     const total = parseInt(totalResult.rows[0].total)
     
-    // Récupérer les articles
-    values.push(limit, offset)
-    const articlesQuery = `
-      SELECT * FROM articles 
-      ${whereClause}
-      ORDER BY created_at DESC 
-      LIMIT $${valueIndex} OFFSET $${valueIndex + 1}
-    `
-    
-    const result = await sql.query(articlesQuery, values)
+    // Requête pour récupérer les articles
+    let result
+    if (category && category !== 'all' && search) {
+      result = await sql`
+        SELECT * FROM articles 
+        WHERE category = ${category} 
+        AND (title ILIKE ${'%' + search + '%'} OR content ILIKE ${'%' + search + '%'})
+        ORDER BY created_at DESC 
+        LIMIT ${limit} OFFSET ${offset}
+      `
+    } else if (category && category !== 'all') {
+      result = await sql`
+        SELECT * FROM articles 
+        WHERE category = ${category}
+        ORDER BY created_at DESC 
+        LIMIT ${limit} OFFSET ${offset}
+      `
+    } else if (search) {
+      result = await sql`
+        SELECT * FROM articles 
+        WHERE title ILIKE ${'%' + search + '%'} OR content ILIKE ${'%' + search + '%'}
+        ORDER BY created_at DESC 
+        LIMIT ${limit} OFFSET ${offset}
+      `
+    } else {
+      result = await sql`
+        SELECT * FROM articles 
+        ORDER BY created_at DESC 
+        LIMIT ${limit} OFFSET ${offset}
+      `
+    }
 
     return NextResponse.json({
       articles: result.rows,
@@ -73,8 +94,8 @@ export async function GET(request) {
       }
     })
   } catch (error) {
-    console.error('Erreur:', error)
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
+    console.error('Erreur GET:', error)
+    return NextResponse.json({ error: 'Erreur serveur', details: error.message }, { status: 500 })
   }
 }
 
@@ -116,8 +137,8 @@ export async function POST(request) {
       articleId: result.rows[0].id 
     })
   } catch (error) {
-    console.error('Erreur:', error)
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
+    console.error('Erreur POST:', error)
+    return NextResponse.json({ error: 'Erreur serveur', details: error.message }, { status: 500 })
   }
 }
 
@@ -142,13 +163,14 @@ export async function PUT(request) {
         youtube_url = ${youtube_url || null},
         youtube_id = ${youtubeId || null},
         youtube_thumbnail = ${youtubeInfo.youtube_thumbnail || null},
-        youtube_description = ${youtubeInfo.youtube_description || null}
+        youtube_description = ${youtubeInfo.youtube_description || null},
+        updated_at = CURRENT_TIMESTAMP
       WHERE id = ${articleId}
     `
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Erreur:', error)
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
+    console.error('Erreur PUT:', error)
+    return NextResponse.json({ error: 'Erreur serveur', details: error.message }, { status: 500 })
   }
 }
