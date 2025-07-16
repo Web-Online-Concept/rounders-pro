@@ -30,6 +30,8 @@ export default function ArticleDetailPage() {
         if (response.ok) {
           const data = await response.json()
           setArticle(data)
+          // Mettre à jour le titre de la page
+          document.title = `${data.title} - Rounders Pro`
         } else {
           console.error('Article non trouvé')
         }
@@ -168,15 +170,17 @@ export default function ArticleDetailPage() {
               {/* Contenu */}
               <div 
                 className="prose prose-lg max-w-none"
-                dangerouslySetInnerHTML={{ __html: article.content }}
+                dangerouslySetInnerHTML={{ 
+                  __html: article.content.replace(/\n/g, '<br>') 
+                }}
               />
 
               {/* Lien YouTube */}
               {article.youtube_url && (
                 <div className="mt-8 p-4 bg-gray-50 rounded-lg">
                   <p className="text-sm text-gray-600 mb-2">Voir sur YouTube :</p>
-                  
-                   <a href={article.youtube_url}
+                  <a 
+                    href={article.youtube_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-800 break-all"
@@ -203,8 +207,8 @@ export default function ArticleDetailPage() {
             {/* Partage réseaux sociaux */}
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-500">Partager :</span>
-              
-              <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(window.location.href)}`}
+              <a 
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(window.location.href)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-blue-400"
@@ -214,8 +218,8 @@ export default function ArticleDetailPage() {
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                 </svg>
               </a>
-              
-              <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+              <a 
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-blue-600"
