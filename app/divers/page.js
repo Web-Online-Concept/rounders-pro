@@ -140,7 +140,7 @@ export default function DiversPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row justify-between items-center py-4 sm:py-6 space-y-2 sm:space-y-0">
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900 text-center flex-1">
-                Articles & Vidéos
+                Articles & Infos diverses
               </h1>
               <div className="flex items-center space-x-2 sm:space-x-4">
                 {isAuthenticated && (
