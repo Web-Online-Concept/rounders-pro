@@ -35,7 +35,7 @@ export default function CommentCaMarcheClassiquesPage() {
           <div className="bg-white rounded-lg shadow p-6 mb-6">
             <h2 className="text-xl font-semibold mb-4 text-blue-600">📊 Notre philosophie</h2>
             <p className="text-gray-700 leading-relaxed">
-              Les <strong>Pronostics Classiques Rounders</strong> représentent notre sélection quotidienne 
+              Les <strong>Pronostics Classiques Rounders</strong> représentent notre sélection 
               de paris sportifs minutieusement analysés. Chaque pronostic est publié avec transparence 
               et suivi jusqu'à son résultat final. Notre approche privilégie la qualité à la quantité, 
               avec une sélection rigoureuse des meilleures opportunités.
@@ -90,10 +90,11 @@ export default function CommentCaMarcheClassiquesPage() {
                   <span className="text-purple-600 font-bold">1</span>
                 </div>
                 <div>
-                  <h4 className="font-semibold">Consultez nos sélections du jour</h4>
+                  <h4 className="font-semibold">Abonnez-vous à notre Twitter/X</h4>
                   <p className="text-gray-600 text-sm">
-                    Nos pronostics sont publiés quotidiennement, généralement en fin de matinée. 
-                    Chaque sélection inclut le sport, le match, le type de pari et la cote.
+                    Pour être notifié dès qu'un nouveau pronostic est publié, abonnez-vous à 
+                    <a href="https://x.com/rounders_pro" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium"> @rounders_pro</a>. 
+                    Nous publions régulièrement nos sélections et vous recevrez une notification instantanée.
                   </p>
                 </div>
               </div>
@@ -101,6 +102,20 @@ export default function CommentCaMarcheClassiquesPage() {
               <div className="flex items-start">
                 <div className="bg-purple-100 rounded-full p-2 mr-3 flex-shrink-0">
                   <span className="text-purple-600 font-bold">2</span>
+                </div>
+                <div>
+                  <h4 className="font-semibold">Consultez nos sélections</h4>
+                  <p className="text-gray-600 text-sm">
+                    Chaque pronostic inclut toutes les informations nécessaires : le sport, 
+                    le match, le type de pari et la cote. Tous nos pronos sont accessibles 
+                    sur cette page.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start">
+                <div className="bg-purple-100 rounded-full p-2 mr-3 flex-shrink-0">
+                  <span className="text-purple-600 font-bold">3</span>
                 </div>
                 <div>
                   <h4 className="font-semibold">Placez vos paris chez votre bookmaker</h4>
@@ -113,7 +128,7 @@ export default function CommentCaMarcheClassiquesPage() {
               
               <div className="flex items-start">
                 <div className="bg-purple-100 rounded-full p-2 mr-3 flex-shrink-0">
-                  <span className="text-purple-600 font-bold">3</span>
+                  <span className="text-purple-600 font-bold">4</span>
                 </div>
                 <div>
                   <h4 className="font-semibold">Suivez les résultats en temps réel</h4>
@@ -207,18 +222,42 @@ export default function CommentCaMarcheClassiquesPage() {
             </div>
           </div>
 
+          {/* Twitter/X Call-to-Action */}
+          <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg p-6 mb-6 text-white">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-semibold mb-2">🐦 Ne manquez aucun pronostic !</h2>
+                <p className="text-gray-200">
+                  Abonnez-vous à notre compte Twitter/X pour recevoir une notification 
+                  instantanée à chaque nouveau pronostic publié.
+                </p>
+              </div>
+              <a 
+                href="https://x.com/rounders_pro" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-white text-gray-900 px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors font-semibold flex items-center"
+              >
+                Suivre @rounders_pro
+                <svg className="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
           {/* CTA */}
           <div className="bg-white rounded-lg shadow p-8 text-center">
             <h3 className="text-xl font-semibold mb-4">Prêt à nous suivre ?</h3>
             <p className="text-gray-600 mb-6">
-              Rejoignez des centaines de parieurs qui suivent quotidiennement nos sélections 
+              Rejoignez des centaines de parieurs qui suivent nos sélections 
               pour optimiser leurs paris sportifs.
             </p>
             <Link 
               href="/paris-sportifs/classiques"
               className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Voir nos Pronostics du Jour
+              Voir nos Pronostics
             </Link>
           </div>
         </div>
