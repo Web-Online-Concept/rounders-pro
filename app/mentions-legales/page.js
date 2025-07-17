@@ -20,6 +20,8 @@ export default function MentionsLegales() {
                 <p>TOUS LES JEUX, BONUS ET RÉCOMPENSES MENTIONNÉS SUR CE SITE SONT OFFERTS À TITRE PUREMENT GRACIEUX ET VOLONTAIRE.</p>
                 <p>WEB ONLINE CONCEPT N'A AUCUNE OBLIGATION CONTRACTUELLE OU LÉGALE DE VERSER QUELQUE SOMME QUE CE SOIT.</p>
                 <p>NOUS NOUS RÉSERVONS LE DROIT DE MODIFIER, SUSPENDRE OU ANNULER TOUT JEU OU BONUS À TOUT MOMENT, SANS PRÉAVIS NI JUSTIFICATION.</p>
+                <p>LES PRONOSTICS SPORTIFS SONT FOURNIS À TITRE PUREMENT INFORMATIF ET NE CONSTITUENT PAS DES CONSEILS D'INVESTISSEMENT.</p>
+                <p>LE CONTENU DU BLOG EST À TITRE INFORMATIF UNIQUEMENT ET N'ENGAGE PAS NOTRE RESPONSABILITÉ.</p>
               </div>
             </section>
 
@@ -51,15 +53,30 @@ export default function MentionsLegales() {
               <h2 className="text-2xl font-semibold mb-4">Nature du site et des services</h2>
               <div className="space-y-4 text-gray-700">
                 <p><strong>Rounders.pro est un site d'information et de divertissement gratuit.</strong></p>
-                <p>Les jeux proposés (Roue de la Fortune, tirages au sort, concours Twitter, etc.) sont des animations marketing offertes sans contrepartie et sans obligation de résultat.</p>
-                <p>Nous participons au programme d'affiliation de Stake mais restons totalement indépendants dans l'organisation de nos jeux.</p>
-                <p className="font-semibold">Les participants reconnaissent que :</p>
+                
+                <p className="font-semibold">Le site propose :</p>
                 <ul className="list-disc list-inside ml-4">
-                  <li>La participation est gratuite et volontaire</li>
-                  <li>Aucun achat n'est nécessaire</li>
-                  <li>Les gains annoncés sont indicatifs et non contractuels</li>
-                  <li>Nous pouvons disqualifier tout participant sans justification</li>
-                  <li>Les jeux peuvent être annulés à tout moment</li>
+                  <li>Des jeux gratuits (Roue de la Fortune, tirages au sort, concours Twitter)</li>
+                  <li>Des pronostics sportifs gratuits à titre purement informatif</li>
+                  <li>Un blog avec des articles et vidéos sur les paris sportifs, casino et poker</li>
+                  <li>Des informations sur notre programme d'affiliation Stake</li>
+                </ul>
+
+                <p className="font-semibold mt-4">Concernant les pronostics sportifs :</p>
+                <ul className="list-disc list-inside ml-4">
+                  <li>Fournis gratuitement et sans garantie de résultat</li>
+                  <li>Ne constituent PAS des conseils d'investissement</li>
+                  <li>L'utilisateur est seul responsable de ses décisions de paris</li>
+                  <li>Nous ne garantissons aucun gain ou profit</li>
+                  <li>Les résultats passés ne préjugent pas des résultats futurs</li>
+                </ul>
+
+                <p className="font-semibold mt-4">Concernant le blog et les articles :</p>
+                <ul className="list-disc list-inside ml-4">
+                  <li>Contenu fourni à titre informatif uniquement</li>
+                  <li>Aucune garantie d'exactitude ou d'exhaustivité</li>
+                  <li>Les opinions exprimées n'engagent que leurs auteurs</li>
+                  <li>Nous ne sommes pas responsables des décisions prises sur la base de ces informations</li>
                 </ul>
               </div>
             </section>
@@ -87,12 +104,17 @@ export default function MentionsLegales() {
             {/* Propriété intellectuelle */}
             <section>
               <h2 className="text-2xl font-semibold mb-4">Propriété intellectuelle</h2>
-              <p className="text-gray-600 mb-4">
-                L'ensemble du contenu de ce site (textes, images, vidéos) est la propriété exclusive de Web Online Concept ou de ses partenaires. Toute reproduction, même partielle, est strictement interdite sans autorisation préalable écrite.
-              </p>
-              <p className="text-gray-600">
-                La marque Rounders.pro est la propriété exclusive de Web Online Concept.
-              </p>
+              <div className="space-y-4 text-gray-600">
+                <p>
+                  L'ensemble du contenu de ce site (textes, images, vidéos, pronostics, articles) est la propriété exclusive de Web Online Concept ou de ses partenaires. Toute reproduction, même partielle, est strictement interdite sans autorisation préalable écrite.
+                </p>
+                <p>
+                  La marque Rounders.pro est la propriété exclusive de Web Online Concept.
+                </p>
+                <p className="font-semibold">
+                  Les pronostics et analyses publiés restent notre propriété intellectuelle et ne peuvent être revendus ou redistribués.
+                </p>
+              </div>
             </section>
 
             {/* Limitation de responsabilité */}
@@ -105,25 +127,39 @@ export default function MentionsLegales() {
                   <li>La modification ou l'annulation de tout jeu ou bonus</li>
                   <li>Les erreurs techniques empêchant la participation</li>
                   <li>Les décisions de refus de paiement, quelle qu'en soit la raison</li>
-                  <li>Les pertes financières liées aux jeux d'argent sur Stake</li>
+                  <li>Les pertes financières liées aux paris sportifs effectués sur la base de nos pronostics</li>
+                  <li>L'exactitude, la pertinence ou l'exhaustivité des informations publiées</li>
+                  <li>Les décisions prises sur la base du contenu du blog ou des pronostics</li>
+                  <li>Les pertes financières liées aux jeux d'argent sur Stake ou toute autre plateforme</li>
                   <li>L'impossibilité de participer aux jeux pour quelque raison que ce soit</li>
                   <li>La fermeture temporaire ou définitive du site</li>
+                  <li>Les dommages directs ou indirects résultant de l'utilisation du site</li>
                 </ul>
               </div>
             </section>
 
-            {/* Jeux d'argent */}
+            {/* Jeux d'argent et pronostics */}
             <section className="bg-red-50 border-l-4 border-red-400 p-6">
-              <h2 className="text-2xl font-semibold mb-4 text-red-800">Avertissement jeux d'argent</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-red-800">Avertissement jeux d'argent et pronostics sportifs</h2>
               <div className="space-y-4 text-red-700">
                 <p className="font-semibold">
-                  Les jeux d'argent comportent des risques : endettement, isolement, dépendance.
+                  Les jeux d'argent et les paris sportifs comportent des risques : endettement, isolement, dépendance.
                 </p>
                 <p>
                   <strong>Interdiction formelle aux mineurs de moins de 18 ans.</strong>
                 </p>
-                <p>
-                  Nos jeux gratuits ne doivent pas inciter aux jeux d'argent. L'utilisateur est seul responsable de ses décisions de jeu sur Stake ou toute autre plateforme.
+                <p className="font-semibold">
+                  Concernant nos pronostics sportifs :
+                </p>
+                <ul className="list-disc list-inside ml-4">
+                  <li>Ils sont fournis à titre informatif et éducatif uniquement</li>
+                  <li>Ils ne garantissent aucun gain</li>
+                  <li>Parier comporte des risques de pertes financières</li>
+                  <li>Ne pariez que ce que vous pouvez vous permettre de perdre</li>
+                  <li>L'utilisateur est seul responsable de ses décisions de paris</li>
+                </ul>
+                <p className="font-semibold mt-4">
+                  Nos jeux gratuits et nos pronostics ne doivent pas inciter aux jeux d'argent. L'utilisateur est seul responsable de ses décisions de jeu sur Stake ou toute autre plateforme.
                 </p>
               </div>
             </section>
@@ -135,7 +171,7 @@ export default function MentionsLegales() {
                 Pour toute question concernant ces mentions légales : web.online.concept@gmail.com
               </p>
               <p className="text-gray-600 mt-2 text-sm">
-                Note : Les réclamations concernant les jeux ne sont pas garanties d'obtenir une réponse.
+                Note : Les réclamations concernant les jeux, pronostics ou articles ne sont pas garanties d'obtenir une réponse.
               </p>
             </section>
 
