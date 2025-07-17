@@ -16,7 +16,11 @@ export default function Home() {
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center mb-12">
               <h1 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900">
-                ⚽ Pronostics Sportifs Gratuits
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Rounders.pro
+                </span>
+                <span className="text-gray-700"> : </span>
+                <span className="text-gray-800">Paris Sportifs, Casino & Poker</span>
               </h1>
               
               {/* Image d'illustration */}
@@ -38,6 +42,10 @@ export default function Home() {
                   />
                 </picture>
               </div>
+              
+              <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">
+                ⚽ Pronostics Sportifs Gratuits
+              </h2>
               
               <p className="text-xl md:text-2xl mb-2 text-gray-700">
                 Des pronostics basés sur des analyses expertes avec suivi complet des résultats
