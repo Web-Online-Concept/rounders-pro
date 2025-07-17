@@ -21,7 +21,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="font-bold text-white mb-4">Affiliation & Guide Stake</h4>
+            <h4 className="font-bold text-white mb-4">Affiliation Stake</h4>
             <ul className="space-y-2 text-sm">
 			  <li><Link href="/guide-stake" className="hover:text-white">Guide Stake</Link></li>
               <li><Link href="/avantages-rounders" className="hover:text-white">Avantages Rounders</Link></li>
