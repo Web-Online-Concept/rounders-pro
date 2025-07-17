@@ -50,7 +50,7 @@ export default function SurebetsPage() {
           
           <div className="bg-blue-50 rounded p-4 mb-4">
             <h3 className="font-bold mb-2">Condition mathématique :</h3>
-            <p className="font-mono text-lg mb-2">1/Cote1 + 1/Cote2 + 1/CoteN < 1</p>
+            <p className="font-mono text-lg mb-2">1/Cote1 + 1/Cote2 + 1/CoteN {'<'} 1</p>
             <p className="text-sm">Si la somme est inférieure à 1, il y a arbitrage possible !</p>
           </div>
 

@@ -54,7 +54,7 @@ export default function ValueBettingPage() {
               <li>• EV = Expected Value (Valeur Espérée)</li>
               <li>• P = Probabilité réelle estimée (en décimal)</li>
               <li>• C = Cote proposée</li>
-              <li className="font-bold">• Si EV > 0 → Il y a de la value !</li>
+              <li className="font-bold">• Si EV {'>'} 0 → Il y a de la value !</li>
             </ul>
           </div>
 
@@ -133,7 +133,7 @@ export default function ValueBettingPage() {
               </li>
               <li className="flex items-start">
                 <span className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-2 flex-shrink-0">5</span>
-                <span>Pariez uniquement si value > 5%</span>
+                <span>Pariez uniquement si value {'>'} 5%</span>
               </li>
             </ol>
           </div>
@@ -299,7 +299,7 @@ export default function ValueBettingPage() {
                   <td className="text-right">3-4% bankroll</td>
                 </tr>
                 <tr>
-                  <td className="py-2">> 20%</td>
+                  <td className="py-2">{'>'} 20%</td>
                   <td className="text-right">4-5% max</td>
                 </tr>
               </tbody>

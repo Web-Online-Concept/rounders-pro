@@ -189,7 +189,7 @@ export default function OptimisationPage() {
                 <div>
                   <p className="font-semibold text-sm mb-1">Dropping odds :</p>
                   <ul className="text-sm space-y-1">
-                    <li>• Chute > 10% en 24h</li>
+                    <li>• Chute {'>'} 10% en 24h</li>
                     <li>• Volume de paris anormal</li>
                     <li>• Smart money indicators</li>
                   </ul>
@@ -197,7 +197,7 @@ export default function OptimisationPage() {
                 <div>
                   <p className="font-semibold text-sm mb-1">Value alerts :</p>
                   <ul className="text-sm space-y-1">
-                    <li>• Cote > moyenne marché +5%</li>
+                    <li>• Cote {'>'} moyenne marché +5%</li>
                     <li>• Ouverture de nouveaux marchés</li>
                     <li>• Arbitrage temporaire</li>
                   </ul>
@@ -230,7 +230,7 @@ export default function OptimisationPage() {
             <div className="bg-white/20 rounded p-4">
               <h3 className="font-bold mb-2">Déclaration obligatoire :</h3>
               <ul className="text-sm space-y-1">
-                <li>• Gains > 1500€/an</li>
+                <li>• Gains {'>'} 1500€/an</li>
                 <li>• Case 2TT ou 2TS</li>
                 <li>• Flat tax 30% (12.8% + 17.2%)</li>
                 <li>• Ou barème progressif si avantageux</li>
