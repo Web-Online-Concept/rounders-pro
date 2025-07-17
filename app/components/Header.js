@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 export default function Header() {
   const [isParisOpen, setIsParisOpen] = useState(false);
+  const [isJeuxOpen, setIsJeuxOpen] = useState(false);
   const [isAffiliationOpen, setIsAffiliationOpen] = useState(false);
   const [isDiversOpen, setIsDiversOpen] = useState(false);
 
@@ -60,6 +61,27 @@ export default function Header() {
                   </Link>
                   <Link href="/paris-sportifs/martingale" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Martingales
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Menu Nos Jeux */}
+            <div 
+              className="relative py-5"
+              onMouseEnter={() => setIsJeuxOpen(true)}
+              onMouseLeave={() => setIsJeuxOpen(false)}
+            >
+              <button className="text-white hover:text-blue-400 transition-colors">
+                Nos Jeux
+              </button>
+              {isJeuxOpen && (
+                <div className="absolute top-full left-0 -mt-1 w-56 bg-gray-800 rounded-md shadow-lg py-1 z-50">
+                  <Link href="/nos-jeux" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
+                    Tous nos jeux Exclusifs
+                  </Link>
+                  <Link href="/roue-fortune" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
+                    Roue de la Fortune
                   </Link>
                 </div>
               )}
