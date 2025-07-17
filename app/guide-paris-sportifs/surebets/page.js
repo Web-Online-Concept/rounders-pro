@@ -147,7 +147,7 @@ export default function SurebetsPage() {
               <div className="text-sm font-bold text-green-700">Double gain !</div>
             </div>
             <div className="bg-blue-100 rounded p-3 text-center">
-              <div className="font-semibold">> 218 points</div>
+              <div className="font-semibold">{'>'} 218 points</div>
               <div className="text-sm">Gain sur Over</div>
             </div>
           </div>
@@ -348,7 +348,7 @@ export default function SurebetsPage() {
               <strong>1. Détection :</strong> Scanner trouve cotes 2.15 (Nadal) vs 2.08 (Federer)
             </div>
             <div className="bg-white rounded p-3">
-              <strong>2. Vérification :</strong> 1/2.15 + 1/2.08 = 0.465 + 0.481 = 0.946 < 1 ✓
+              <strong>2. Vérification :</strong> 1/2.15 + 1/2.08 = 0.465 + 0.481 = 0.946 {'<'} 1 ✓
             </div>
             <div className="bg-white rounded p-3">
               <strong>3. Profit :</strong> (1 - 0.946) × 100 = 5.4% garanti
