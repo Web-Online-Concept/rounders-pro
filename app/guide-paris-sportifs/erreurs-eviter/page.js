@@ -184,7 +184,7 @@ export default function ErreursEviterPage() {
             <ul className="text-sm space-y-1">
               <li>• MAX 2-3 sports que vous suivez vraiment</li>
               <li>• 1-2 championnats principaux par sport</li>
-              <li>• Devenir expert > Être partout</li>
+              <li>• Devenir expert {'>'} Être partout</li>
               <li>• Quality over quantity TOUJOURS</li>
             </ul>
           </div>

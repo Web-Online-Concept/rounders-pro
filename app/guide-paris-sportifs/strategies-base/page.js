@@ -42,7 +42,7 @@ export default function StrategiesBasePage() {
           <div className="bg-green-50 rounded p-4 mb-4">
             <h3 className="font-bold mb-2">Formule simple :</h3>
             <p className="font-mono text-lg mb-2">Value = (Probabilité × Cote) - 1</p>
-            <p className="text-sm">Si Value > 0, il y a de la valeur</p>
+            <p className="text-sm">Si Value {'>'} 0, il y a de la valeur</p>
           </div>
 
           <div className="bg-gray-100 rounded p-4 mb-4">
@@ -264,7 +264,7 @@ export default function StrategiesBasePage() {
               <li>• Score : 0-0 ou 1-0 à la 70e minute</li>
               <li>• Équipe menée pousse pour égaliser</li>
               <li>• Espaces qui s'ouvrent en défense</li>
-              <li>• Cote "Un but de plus" > 1.50</li>
+              <li>• Cote "Un but de plus" {'>'} 1.50</li>
             </ul>
           </div>
 

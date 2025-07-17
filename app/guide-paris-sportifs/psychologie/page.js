@@ -161,7 +161,7 @@ export default function PsychologiePage() {
                   <li>• Suivre les "tips chauds"</li>
                   <li>• Pas de sélection</li>
                 </ul>
-                <p className="text-blue-600 font-bold mt-2 text-sm">Quality > Quantity</p>
+                <p className="text-blue-600 font-bold mt-2 text-sm">Quality {'>'} Quantity</p>
               </div>
             </div>
           </div>

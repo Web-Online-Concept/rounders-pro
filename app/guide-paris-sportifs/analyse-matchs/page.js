@@ -93,7 +93,7 @@ export default function AnalyseMatchsPage() {
               <h4 className="font-bold text-blue-800 mb-2">💡 Astuce Pro :</h4>
               <p className="text-blue-700">
                 Les xG (Expected Goals) sont plus fiables que les buts réels pour prédire les performances futures. 
-                Une équipe avec xG > buts marqués est en "sous-performance" et devrait s'améliorer.
+                Une équipe avec xG {'>'} buts marqués est en "sous-performance" et devrait s'améliorer.
               </p>
             </div>
           </div>
@@ -164,7 +164,7 @@ export default function AnalyseMatchsPage() {
                 <li>• <strong>Domination historique :</strong> Certaines équipes ont un "complexe" face à d'autres</li>
                 <li>• <strong>Styles de jeu :</strong> Certains styles s'opposent mal à d'autres</li>
                 <li>• <strong>Facteur domicile :</strong> L'importance du terrain dans les H2H</li>
-                <li>• <strong>Évolution récente :</strong> Les 5 dernières confrontations > historique ancien</li>
+                <li>• <strong>Évolution récente :</strong> Les 5 dernières confrontations {'>'} historique ancien</li>
               </ul>
             </div>
           </div>

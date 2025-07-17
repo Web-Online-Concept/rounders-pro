@@ -154,9 +154,9 @@ export default function OptimisationPage() {
             <div className="bg-red-50 rounded p-4">
               <h3 className="font-bold mb-2">Bonus à éviter :</h3>
               <ul className="text-sm space-y-1">
-                <li>• Rollover > 5x</li>
-                <li>• Cotes min > 1.80</li>
-                <li>• Délais < 7 jours</li>
+                <li>• Rollover {'>'} 5x</li>
+				<li>• Cotes min {'>'} 1.80</li>
+				<li>• Délais {'<'} 7 jours</li>
                 <li>• Restrictions sports/marchés</li>
               </ul>
             </div>
