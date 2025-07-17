@@ -15,11 +15,13 @@ export default function Header() {
           <div className="flex items-center space-x-3">
             <Link href="/" className="flex items-center space-x-2">
               <img src="/logo.png" alt="Rounders" className="w-8 h-8" />
-              <span className="text-xl font-bold text-white">Rounders.pro</span>
+              <div className="flex items-baseline space-x-2">
+                <span className="text-xl font-bold text-white">Rounders.pro</span>
+                <span className="text-sm text-gray-300 italic hidden sm:inline">
+                  Paris Sportifs, Casino, Poker
+                </span>
+              </div>
             </Link>
-            <span className="text-sm text-gray-300 italic hidden sm:inline">
-              Paris Sportifs, Casino, Poker
-            </span>
           </div>
           
           {/* Lien Nos Jeux mobile uniquement */}
