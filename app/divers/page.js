@@ -14,8 +14,6 @@ export default function DiversPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [selectedCategory, setSelectedCategory] = useState('all')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [searchInput, setSearchInput] = useState('')
 
   const categories = [
     { value: 'all', label: 'Toutes les catégories' },
@@ -50,8 +48,7 @@ export default function DiversPage() {
       const params = new URLSearchParams({
         page: currentPage,
         limit: 12,
-        category: selectedCategory,
-        search: searchTerm
+        category: selectedCategory
       })
 
       const response = await fetch(`/api/articles?${params}`)
@@ -70,14 +67,7 @@ export default function DiversPage() {
   // Charger les articles quand les filtres changent
   useEffect(() => {
     loadArticles()
-  }, [currentPage, selectedCategory, searchTerm])
-
-  // Gérer la recherche
-  const handleSearch = (e) => {
-    e.preventDefault()
-    setSearchTerm(searchInput)
-    setCurrentPage(1)
-  }
+  }, [currentPage, selectedCategory])
 
   // Supprimer un article
   const deleteArticle = async (articleId) => {
@@ -180,12 +170,12 @@ export default function DiversPage() {
           </div>
         </div>
 
-        {/* Filtres et recherche */}
+        {/* Filtres */}
         <div className="bg-white border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+            <div className="flex justify-center">
               {/* Catégories */}
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 justify-center">
                 {categories.map(cat => (
                   <button
                     key={cat.value}
@@ -203,27 +193,6 @@ export default function DiversPage() {
                   </button>
                 ))}
               </div>
-
-              {/* Recherche */}
-              <form onSubmit={handleSearch} className="flex-1 max-w-md lg:ml-8">
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    placeholder="Rechercher un article ou une vidéo..."
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <svg
-                    className="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </div>
-              </form>
             </div>
           </div>
         </div>
