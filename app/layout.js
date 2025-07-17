@@ -4,8 +4,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 
 export const metadata = {
-  title: 'Rounders Pro | Paris Sportifs & Bonus Stake 200€',
-  description: 'Paris sportifs gagnants avec nos montantes et martingales. Pronostics experts + Bonus jusqu\'à 200€ sur Stake. Stratégies éprouvées et résultats transparents.',
+  title: 'Rounders Pro - Paris Sportifs, Casino, Poker - Affiliation & Bonus Stake 200€',
+  description: 'Paris sportifs gagnants avec nos pronos, nos montantes et nos martingales. Stratégies éprouvées et résultats transparents. Infos sur les jeux de Casino et de Poker en ligne. Affiliation + Bonus jusqu\'à 200€ sur Stake. ',
   keywords: 'rounders pro, paris sportifs, montantes, martingales, pronostics sportifs, stake bonus, affiliation stake, pronos, stratégies paris',
   openGraph: {
     title: 'Rounders Pro | Paris Sportifs & Bonus Stake',
