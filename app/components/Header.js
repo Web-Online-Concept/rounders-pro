@@ -17,6 +17,9 @@ export default function Header() {
               <img src="/logo.png" alt="Rounders" className="w-8 h-8" />
               <span className="text-xl font-bold text-white">Rounders.pro</span>
             </Link>
+            <span className="text-sm text-gray-300 italic hidden sm:inline">
+              Paris Sportifs, Casino, Poker
+            </span>
           </div>
           
           {/* Lien Nos Jeux mobile uniquement */}
