@@ -6,9 +6,9 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-5 gap-8">
           <div>
-            <h4 className="font-bold text-white mb-4">Rounders</h4>
+            <h4 className="font-bold text-white mb-4">Rounders.pro</h4>
             <p className="text-sm">
-              Paris sportifs & Affiliation Stake : Maximisez vos gains aux Paris Sportifs avec des bonus exclusifs.
+              Paris sportifs, Casino & Poker - Affiliation Stake : Maximisez vos gains aux Paris Sportifs et profitez de la meilleur plateforme avec des bonus exclusifs.
             </p>
           </div>
 		  <div>
