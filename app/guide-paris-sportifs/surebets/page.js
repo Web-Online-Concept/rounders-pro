@@ -60,7 +60,7 @@ export default function SurebetsPage() {
               <li>• Bookmaker A : Nadal 2.10</li>
               <li>• Bookmaker B : Djokovic 2.05</li>
               <li>• Calcul : 1/2.10 + 1/2.05 = 0.476 + 0.488 = 0.964</li>
-              <li className="font-bold text-green-600">• 0.964 < 1 → Surebet détecté ! Profit : 3.6%</li>
+              <li className="font-bold text-green-600">• 0.964 {'<'} 1 → Surebet détecté ! Profit : 3.6%</li>
             </ul>
           </div>
         </div>
