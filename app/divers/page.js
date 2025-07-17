@@ -155,16 +155,6 @@ export default function DiversPage() {
                     </button>
                   </>
                 )}
-                <Link 
-                  href="/" 
-                  className="text-gray-600 hover:text-gray-900 flex items-center text-xs sm:text-sm"
-                >
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                  </svg>
-                  <span className="hidden sm:inline">Retour à l'accueil</span>
-                  <span className="sm:hidden">Retour</span>
-                </Link>
               </div>
             </div>
           </div>
