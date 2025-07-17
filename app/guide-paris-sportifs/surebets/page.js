@@ -115,7 +115,7 @@ export default function SurebetsPage() {
           <div className="bg-gray-100 rounded p-4">
             <p className="font-semibold mb-2">Calcul du surebet :</p>
             <p className="text-sm">1/3.20 + 1/3.45 + 1/2.50 = 0.3125 + 0.2899 + 0.4000 = 1.0024</p>
-            <p className="text-red-600 font-bold">Pas de surebet ici (> 1), mais proche !</p>
+            <p className="text-red-600 font-bold">Pas de surebet ici ({'>'} 1), mais proche !</p>
           </div>
         </div>
 
@@ -139,7 +139,7 @@ export default function SurebetsPage() {
 
           <div className="grid md:grid-cols-3 gap-3">
             <div className="bg-red-100 rounded p-3 text-center">
-              <div className="font-semibold">< 216 points</div>
+              <div className="font-semibold">{'<'} 216 points</div>
               <div className="text-sm">Gain sur Under</div>
             </div>
             <div className="bg-green-100 rounded p-3 text-center">
