@@ -1,4 +1,3 @@
-// app/guide-paris-sportifs/GuideParisSidebar.jsx
 'use client';
 
 import { useState } from 'react';
@@ -179,8 +178,8 @@ export default function GuideParisSidebar() {
         </div>
       )}
       
-      {/* Sidebar desktop - Position absolue pour ne pas affecter le layout mobile */}
-      <aside className="hidden md:block md:sticky md:top-0 md:h-screen md:w-64 bg-gray-50 border-r border-gray-200 md:pt-16">
+      {/* Sidebar desktop */}
+      <aside className="hidden md:block md:w-64 bg-gray-50 border-r border-gray-200">
         <div className="p-6">
           <h2 className="text-xl font-bold text-gray-800 mb-6">Guide Paris Sportifs</h2>
           <nav className="space-y-2">

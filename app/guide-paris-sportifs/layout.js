@@ -1,4 +1,3 @@
-// app/guide-paris-sportifs/layout.js
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import BottomBar from '../components/BottomBar';
@@ -41,8 +40,10 @@ export default function GuideParisLayout({ children }) {
       <Header />
       <div className="flex flex-1">
         <GuideParisSidebar />
-        <main className="flex-1 p-8 pb-20 md:pb-8">
-          {children}
+        <main className="flex-1 bg-white pb-20 md:pb-8">
+          <div className="max-w-4xl mx-auto p-6">
+            {children}
+          </div>
         </main>
       </div>
       <Footer />
