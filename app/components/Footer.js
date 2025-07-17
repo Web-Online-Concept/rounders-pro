@@ -33,6 +33,7 @@ export default function Footer() {
             <h4 className="font-bold text-white mb-4">Divers</h4>
             <ul className="space-y-2 text-sm">
               <li><Link href="/divers" className="hover:text-white">Articles & Infos</Link></li>
+              <li><Link href="/twitter" className="hover:text-white">Notre flux 𝕏</Link></li>
             </ul>
           </div>
           <div>

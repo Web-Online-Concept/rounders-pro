@@ -101,6 +101,9 @@ export default function Header() {
                   <Link href="/divers" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
                     Articles & Infos
                   </Link>
+                  <Link href="/twitter" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
+                    Notre flux 𝕏
+                  </Link>
                 </div>
               )}
             </div>
