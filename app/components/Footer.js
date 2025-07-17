@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300 py-12 pb-24 md:pb-12">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-5 gap-8">
+        <div className="grid md:grid-cols-6 gap-6">
           <div>
             <h4 className="font-bold text-white mb-4">Rounders.pro</h4>
             <p className="text-sm">
@@ -33,7 +33,6 @@ export default function Footer() {
 			  <li><Link href="/guide-stake" className="hover:text-white">Guide Stake</Link></li>
               <li><Link href="/avantages-rounders" className="hover:text-white">Avantages Rounders</Link></li>
               <li><Link href="/affilies" className="hover:text-white">Bonus Affiliés</Link></li>
-              <li><Link href="/nos-jeux" className="hover:text-white">Nos Jeux</Link></li>
             </ul>
           </div>
           <div>
