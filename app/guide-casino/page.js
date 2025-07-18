@@ -4,217 +4,201 @@ import Link from 'next/link';
 export default function GuideCasinoPage() {
   const sections = [
     {
-      title: "🎰 Introduction au Casino",
-      slug: "introduction",
-      description: "Découvrez l'univers du casino en ligne, les bases essentielles et comment bien démarrer"
+      href: '/guide-casino/introduction',
+      title: '🎰 Introduction au Casino',
+      description: 'Découvrez l\'univers du casino en ligne, les bases essentielles et comment bien démarrer.',
+      tag: 'DÉBUTER'
     },
     {
-      title: "🎲 Les Jeux de Table",
-      slug: "jeux-table",
-      description: "Roulette, Blackjack, Baccarat, Craps : règles, stratégies et variantes"
+      href: '/guide-casino/jeux-table',
+      title: '🎲 Les Jeux de Table',
+      description: 'Roulette, Blackjack, Baccarat, Craps : règles, stratégies et variantes expliquées.',
+      tag: 'ESSENTIEL'
     },
     {
-      title: "🎯 Les Machines à Sous",
-      slug: "machines-sous",
-      description: "Comprendre les slots : RTP, volatilité, lignes de paiement et bonus"
+      href: '/guide-casino/machines-sous',
+      title: '🎯 Les Machines à Sous',
+      description: 'Comprendre les slots : RTP, volatilité, lignes de paiement et fonctionnalités bonus.',
+      tag: 'APPRENDRE'
     },
     {
-      title: "♠️ Le Blackjack Pro",
-      slug: "blackjack-pro",
-      description: "Stratégie de base, comptage de cartes, gestion de bankroll au Blackjack"
+      href: '/guide-casino/blackjack-pro',
+      title: '♠️ Le Blackjack Pro',
+      description: 'Stratégie de base, comptage de cartes et gestion de bankroll au Blackjack.',
+      highlight: true,
+      tag: 'CRUCIAL'
     },
     {
-      title: "🎡 La Roulette Maîtrisée",
-      slug: "roulette",
-      description: "Systèmes de mise, probabilités et stratégies pour la roulette"
+      href: '/guide-casino/roulette',
+      title: '🎡 La Roulette Maîtrisée',
+      description: 'Systèmes de mise, probabilités et stratégies pour optimiser vos sessions roulette.',
+      tag: 'ANALYSE'
     },
     {
-      title: "💎 Le Baccarat",
-      slug: "baccarat",
-      description: "Règles, stratégies et gestion des mises au Baccarat"
+      href: '/guide-casino/baccarat',
+      title: '💎 Le Baccarat',
+      description: 'Règles complètes, stratégies avancées et gestion des mises au Baccarat.',
+      tag: 'STRATÉGIE'
     },
     {
-      title: "🎰 Stratégies Slots",
-      slug: "strategies-slots",
-      description: "Maximiser vos chances aux machines à sous : sélection et gestion"
+      href: '/guide-casino/strategies-slots',
+      title: '🎰 Stratégies Slots',
+      description: 'Maximiser vos chances aux machines à sous : sélection, bankroll et sessions.',
+      highlight: true,
+      tag: 'PRO'
     },
     {
-      title: "🏆 Casino Live",
-      slug: "casino-live",
-      description: "Tout savoir sur les casinos en direct avec croupiers réels"
+      href: '/guide-casino/casino-live',
+      title: '🏆 Casino Live',
+      description: 'Tout savoir sur les casinos en direct avec croupiers réels et stratégies adaptées.',
+      tag: 'AVANCÉ'
     },
     {
-      title: "💰 Bonus et Promotions",
-      slug: "bonus-promotions",
-      description: "Comprendre et optimiser les bonus casino : wagering, conditions, stratégies"
+      href: '/guide-casino/bonus-promotions',
+      title: '💰 Bonus et Promotions',
+      description: 'Comprendre et optimiser les bonus casino : wagering, conditions et calculs EV.',
+      tag: 'BONUS'
     },
     {
-      title: "📊 Gestion de Bankroll",
-      slug: "gestion-bankroll",
-      description: "Techniques de money management spécifiques au casino"
+      href: '/guide-casino/gestion-bankroll',
+      title: '📊 Gestion de Bankroll',
+      description: 'Techniques de money management spécifiques au casino pour durer dans le temps.',
+      tag: 'OPTIMISER'
     },
     {
-      title: "🧮 Mathématiques du Casino",
-      slug: "mathematiques",
-      description: "Comprendre l'avantage maison, RTP, variance et probabilités"
+      href: '/guide-casino/mathematiques',
+      title: '🧮 Mathématiques du Casino',
+      description: 'Comprendre l\'avantage maison, RTP, variance et probabilités de tous les jeux.',
+      tag: 'IMPORTANT'
     },
     {
-      title: "🚫 Erreurs à Éviter",
-      slug: "erreurs-eviter",
-      description: "Les pièges classiques du casino et comment les éviter"
+      href: '/guide-casino/erreurs-eviter',
+      title: '🚫 Erreurs à Éviter',
+      description: 'Les pièges classiques du casino et comment les éviter définitivement.',
+      tag: 'ERREURS'
     },
     {
-      title: "🧠 Psychologie du Joueur",
-      slug: "psychologie",
-      description: "Maîtriser ses émotions et développer un mental de gagnant"
+      href: '/guide-casino/psychologie',
+      title: '🧠 Psychologie du Joueur',
+      description: 'Maîtriser ses émotions, éviter le tilt et développer un mental de gagnant.',
+      tag: 'MENTAL'
     },
     {
-      title: "🛡️ Jouer Responsable",
-      slug: "responsable",
-      description: "Limites, contrôle et jeu responsable au casino"
+      href: '/guide-casino/responsable',
+      title: '🛡️ Jouer Responsable',
+      description: 'Conseils essentiels pour garder le contrôle et faire du casino un plaisir sain.',
+      tag: 'SÉCURITÉ'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-red-50 to-white">
+    <div className="pb-20 md:pb-0">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-red-600 to-red-800 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            🎰 Guide Ultime du Casino
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 text-red-100">
-            Maîtrisez tous les jeux de casino avec nos guides experts
-          </p>
-          <div className="bg-white/20 backdrop-blur rounded-lg p-6 max-w-3xl">
-            <p className="text-lg">
-              Du débutant au joueur confirmé, découvrez toutes les stratégies, 
-              techniques et secrets pour maximiser vos chances au casino. 
-              Guide complet et professionnel pour tous les jeux.
-            </p>
-          </div>
+      <div className="bg-gradient-to-br from-red-50 to-white rounded-xl p-8 mb-8">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          Guide Ultime du Casino
+        </h1>
+        <p className="text-xl text-gray-600 mb-6">
+          Le guide le plus complet en français pour maîtriser tous les jeux de casino. 
+          De débutant à expert, apprenez les stratégies des joueurs professionnels.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Link
+            href="/guide-casino/introduction"
+            className="inline-block bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition shadow-lg text-center"
+          >
+            Commencer le Guide →
+          </Link>
+          <Link
+            href="/nos-jeux"
+            className="inline-block bg-gray-800 text-white px-6 py-3 rounded-lg font-bold hover:bg-gray-900 transition shadow-lg text-center"
+          >
+            Jouer au Casino →
+          </Link>
         </div>
-      </section>
+      </div>
 
-      {/* Introduction */}
-      <section className="py-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Pourquoi ce guide casino ?
-            </h2>
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className="text-center">
-                <div className="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">📚</span>
+      {/* Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="bg-white rounded-lg shadow p-4 text-center">
+          <div className="text-2xl font-bold text-red-600">14</div>
+          <div className="text-sm text-gray-600">Chapitres</div>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4 text-center">
+          <div className="text-2xl font-bold text-blue-600">50+</div>
+          <div className="text-sm text-gray-600">Stratégies</div>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4 text-center">
+          <div className="text-2xl font-bold text-purple-600">PRO</div>
+          <div className="text-sm text-gray-600">Niveau</div>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4 text-center">
+          <div className="text-2xl font-bold text-orange-600">2025</div>
+          <div className="text-sm text-gray-600">Mis à jour</div>
+        </div>
+      </div>
+
+      {/* Sections Grid */}
+      <div className="space-y-4">
+        {sections.map((section) => (
+          <Link
+            key={section.href}
+            href={section.href}
+            className={`block bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group ${
+              section.highlight ? 'ring-2 ring-red-500' : ''
+            }`}
+          >
+            <div className="p-6">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 group-hover:text-red-600 transition">
+                    {section.title}
+                  </h2>
+                  <p className="text-gray-600">
+                    {section.description}
+                  </p>
                 </div>
-                <h3 className="font-bold mb-2">Guide Complet</h3>
-                <p className="text-gray-600">Tous les jeux de casino expliqués en détail</p>
-              </div>
-              <div className="text-center">
-                <div className="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">🎯</span>
+                <div className="ml-4 flex-shrink-0">
+                  <span className={`inline-block px-3 py-1 text-xs font-bold rounded-full ${
+                    section.highlight 
+                      ? 'bg-red-100 text-red-700' 
+                      : 'bg-gray-100 text-gray-700'
+                  }`}>
+                    {section.tag}
+                  </span>
                 </div>
-                <h3 className="font-bold mb-2">Stratégies Pro</h3>
-                <p className="text-gray-600">Techniques utilisées par les joueurs expérimentés</p>
-              </div>
-              <div className="text-center">
-                <div className="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">💡</span>
-                </div>
-                <h3 className="font-bold mb-2">Conseils Pratiques</h3>
-                <p className="text-gray-600">Astuces concrètes pour améliorer votre jeu</p>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+            <div className={`h-1 ${
+              section.highlight ? 'bg-red-500' : 'bg-red-600'
+            } transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`} />
+          </Link>
+        ))}
+      </div>
 
-      {/* Sections du guide */}
-      <section className="py-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            Explorez le Guide Casino
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {sections.map((section, index) => (
-              <Link
-                key={index}
-                href={`/guide-casino/${section.slug}`}
-                className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow border-2 border-transparent hover:border-red-500"
-              >
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
-                  {section.title}
-                </h3>
-                <p className="text-gray-600">
-                  {section.description}
-                </p>
-                <div className="mt-4 text-red-600 font-semibold flex items-center">
-                  Découvrir
-                  <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </Link>
-            ))}
-          </div>
+      {/* Bottom CTA */}
+      <div className="mt-12 bg-gradient-to-r from-red-700 to-red-900 text-white rounded-xl p-8 text-center">
+        <h3 className="text-2xl font-bold mb-4">
+          🎰 Prêt à devenir un joueur de casino profitable ?
+        </h3>
+        <p className="text-red-100 mb-6">
+          Commencez par les bases et progressez à votre rythme jusqu'aux stratégies avancées
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            href="/guide-casino/introduction"
+            className="inline-block bg-white text-red-800 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg"
+          >
+            Débuter le Guide →
+          </Link>
+          <Link
+            href="/nos-jeux"
+            className="inline-block bg-red-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-red-500 transition shadow-lg"
+          >
+            Jouer au Casino →
+          </Link>
         </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-red-600 to-red-800">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-white mb-6">
-            Prêt à devenir un expert du casino ?
-          </h2>
-          <p className="text-xl text-red-100 mb-8">
-            Commencez par les bases ou plongez directement dans les stratégies avancées
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              href="/guide-casino/introduction"
-              className="bg-white text-red-600 px-8 py-4 rounded-lg font-bold hover:bg-red-50 transition"
-            >
-              Commencer le Guide
-            </Link>
-            <Link
-              href="/nos-jeux"
-              className="bg-red-700 text-white px-8 py-4 rounded-lg font-bold hover:bg-red-800 transition border-2 border-white"
-            >
-              Jouer Maintenant
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Points importants */}
-      <section className="py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-red-50 border-2 border-red-200 rounded-lg p-6">
-            <h3 className="text-xl font-bold text-red-800 mb-4">
-              ⚠️ Points Importants
-            </h3>
-            <ul className="space-y-2 text-red-700">
-              <li className="flex items-start">
-                <span className="mr-2">•</span>
-                <span>Le casino reste un divertissement avec un avantage mathématique pour la maison</span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-2">•</span>
-                <span>Aucune stratégie ne garantit des gains à long terme</span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-2">•</span>
-                <span>Jouez toujours de manière responsable avec des limites définies</span>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-2">•</span>
-                <span>Ce guide vise à optimiser votre expérience, pas à promettre des gains</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
   );
 }
