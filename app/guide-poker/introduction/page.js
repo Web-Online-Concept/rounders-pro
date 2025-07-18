@@ -6,7 +6,7 @@ export default function IntroductionPage() {
     <div className="pb-20 md:pb-0">
       {/* Breadcrumb */}
       <nav className="flex mb-6 text-sm">
-        <Link href="/guide-poker" className="text-green-600 hover:text-green-700">
+        <Link href="/guide-poker" className="text-blue-600 hover:text-blue-700">
           Guide Poker
         </Link>
         <span className="mx-2 text-gray-400">/</span>
@@ -19,7 +19,7 @@ export default function IntroductionPage() {
       </h1>
 
       {/* Chapeau */}
-      <div className="bg-green-50 rounded-lg p-6 mb-8">
+      <div className="bg-blue-50 rounded-lg p-6 mb-8">
         <p className="text-lg text-gray-700">
           Le poker est bien plus qu'un simple jeu de cartes. C'est un univers fascinant où se mêlent 
           stratégie, psychologie, mathématiques et maîtrise de soi. Découvrez pourquoi des millions de 
@@ -222,49 +222,49 @@ export default function IntroductionPage() {
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
           Comment bien débuter
         </h2>
-        <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg p-6 mb-8">
+        <div className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg p-6 mb-8">
           <ol className="space-y-4">
             <li className="flex items-start">
-              <span className="bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">1</span>
+              <span className="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">1</span>
               <div>
                 <strong>Apprenez les règles de base</strong>
-                <p className="text-green-100">Commencez par le Texas Hold'em, la variante la plus populaire</p>
+                <p className="text-blue-100">Commencez par le Texas Hold'em, la variante la plus populaire</p>
               </div>
             </li>
             <li className="flex items-start">
-              <span className="bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">2</span>
+              <span className="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">2</span>
               <div>
                 <strong>Créez un compte sur Stake</strong>
-                <p className="text-green-100">
-                  <Link href="/guide-stake" className="underline hover:text-green-200">
+                <p className="text-blue-100">
+                  <Link href="/guide-stake" className="underline hover:text-blue-200">
                     Suivez notre guide Stake
                   </Link> pour vous inscrire et commencer
                 </p>
               </div>
             </li>
             <li className="flex items-start">
-              <span className="bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">3</span>
+              <span className="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">3</span>
               <div>
                 <strong>Étudiez la stratégie de base</strong>
-                <p className="text-green-100">Suivez ce guide et lisez des livres de poker reconnus</p>
+                <p className="text-blue-100">Suivez ce guide et lisez des livres de poker reconnus</p>
               </div>
             </li>
             <li className="flex items-start">
-              <span className="bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">4</span>
+              <span className="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">4</span>
               <div>
                 <strong>Commencez aux micro-limites sur Stake</strong>
-                <p className="text-green-100">
-                  <Link href="/guide-stake" className="underline hover:text-green-200">
+                <p className="text-blue-100">
+                  <Link href="/guide-stake" className="underline hover:text-blue-200">
                     Stake propose des tables adaptées
                   </Link> aux débutants
                 </p>
               </div>
             </li>
             <li className="flex items-start">
-              <span className="bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">5</span>
+              <span className="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">5</span>
               <div>
                 <strong>Analysez votre jeu</strong>
-                <p className="text-green-100">Revoyez vos mains et identifiez vos erreurs</p>
+                <p className="text-blue-100">Revoyez vos mains et identifiez vos erreurs</p>
               </div>
             </li>
           </ol>
@@ -307,31 +307,31 @@ export default function IntroductionPage() {
           </h3>
           <ul className="space-y-3">
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Le poker est un jeu de compétence où la stratégie bat la chance sur le long terme
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Maîtriser le poker développe des compétences utiles dans la vie quotidienne
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Commencez petit, apprenez constamment et soyez patient dans votre progression
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 La discipline et le contrôle émotionnel sont aussi importants que la technique
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Le poker moderne est un jeu sophistiqué qui récompense l'étude et l'analyse
               </span>
@@ -354,7 +354,7 @@ export default function IntroductionPage() {
           </Link>
           <Link 
             href="/guide-poker/regles-base"
-            className="flex items-center bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition"
+            className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
           >
             Règles et Variantes
             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

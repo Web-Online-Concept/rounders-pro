@@ -6,7 +6,7 @@ export default function MainsPokerPage() {
     <div className="pb-20 md:pb-0">
       {/* Breadcrumb */}
       <nav className="flex mb-6 text-sm">
-        <Link href="/guide-poker" className="text-green-600 hover:text-green-700">
+        <Link href="/guide-poker" className="text-blue-600 hover:text-blue-700">
           Guide Poker
         </Link>
         <span className="mx-2 text-gray-400">/</span>
@@ -19,7 +19,7 @@ export default function MainsPokerPage() {
       </h1>
 
       {/* Chapeau */}
-      <div className="bg-green-50 rounded-lg p-6 mb-8">
+      <div className="bg-blue-50 rounded-lg p-6 mb-8">
         <p className="text-lg text-gray-700">
           La première étape pour jouer au poker est de connaître parfaitement la hiérarchie des mains. 
           De la simple carte haute à la mythique quinte flush royale, découvrez toutes les combinaisons 
@@ -30,7 +30,7 @@ export default function MainsPokerPage() {
       {/* Contenu principal */}
       <div className="prose prose-lg max-w-none">
         
-        {/* Vue d'ensemble */}
+        {/* Vue d'ensemble - DÉJÀ EN BLEU */}
         <div className="bg-blue-50 rounded-lg p-6 mb-8">
           <h2 className="text-xl font-bold text-blue-700 mb-4">
             Les 10 mains du poker - De la plus forte à la plus faible
@@ -53,7 +53,7 @@ export default function MainsPokerPage() {
           </div>
         </div>
 
-        {/* 1. Quinte Flush Royale */}
+        {/* 1. Quinte Flush Royale - GARDER PURPLE */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-purple-700 mb-4">
             👑 1. Quinte Flush Royale (Royal Flush)
@@ -86,7 +86,7 @@ export default function MainsPokerPage() {
           </div>
         </div>
 
-        {/* 2. Quinte Flush */}
+        {/* 2. Quinte Flush - DÉJÀ EN BLEU */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-blue-700 mb-4">
             🌟 2. Quinte Flush (Straight Flush)
@@ -119,7 +119,7 @@ export default function MainsPokerPage() {
           </div>
         </div>
 
-        {/* 3. Carré */}
+        {/* 3. Carré - GARDER RED */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-red-700 mb-4">
             🎰 3. Carré (Four of a Kind)
@@ -152,7 +152,7 @@ export default function MainsPokerPage() {
           </div>
         </div>
 
-        {/* 4. Full House */}
+        {/* 4. Full House - GARDER ORANGE */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-orange-700 mb-4">
             🏠 4. Full House (Full)
@@ -185,7 +185,7 @@ export default function MainsPokerPage() {
           </div>
         </div>
 
-        {/* 5. Couleur */}
+        {/* 5. Couleur - GARDER GREEN */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-green-700 mb-4">
             💎 5. Couleur (Flush)
@@ -218,7 +218,7 @@ export default function MainsPokerPage() {
           </div>
         </div>
 
-        {/* 6. Suite */}
+        {/* 6. Suite - GARDER INDIGO */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-indigo-700 mb-4">
             📈 6. Suite / Quinte (Straight)
@@ -252,7 +252,7 @@ export default function MainsPokerPage() {
           </div>
         </div>
 
-        {/* 7. Brelan */}
+        {/* 7. Brelan - GARDER PINK */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-pink-700 mb-4">
             🎲 7. Brelan (Three of a Kind)
@@ -286,7 +286,7 @@ export default function MainsPokerPage() {
           </div>
         </div>
 
-        {/* 8. Double Paire */}
+        {/* 8. Double Paire - GARDER YELLOW */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-yellow-700 mb-4">
             👫 8. Double Paire (Two Pair)
@@ -321,7 +321,7 @@ export default function MainsPokerPage() {
           </div>
         </div>
 
-        {/* 9. Paire */}
+        {/* 9. Paire - GARDER GRAY */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-gray-700 mb-4">
             👥 9. Paire (One Pair)
@@ -354,7 +354,7 @@ export default function MainsPokerPage() {
           </div>
         </div>
 
-        {/* 10. Carte Haute */}
+        {/* 10. Carte Haute - GARDER GRAY */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-gray-600 mb-4">
             🃏 10. Carte Haute (High Card)
@@ -387,7 +387,7 @@ export default function MainsPokerPage() {
           </div>
         </div>
 
-        {/* Cas particuliers */}
+        {/* Cas particuliers - GARDER LES COULEURS */}
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
           Cas particuliers et pièges fréquents
         </h2>
@@ -416,7 +416,7 @@ export default function MainsPokerPage() {
           </div>
         </div>
 
-        {/* Probabilités comparatives */}
+        {/* Probabilités comparatives - GARDER PURPLE TO BLUE GRADIENT */}
         <div className="bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg p-6 mb-8">
           <h2 className="text-2xl font-bold mb-4">
             📊 Probabilités au flop (Texas Hold'em)
@@ -441,7 +441,7 @@ export default function MainsPokerPage() {
           </div>
         </div>
 
-        {/* Conseils pratiques */}
+        {/* Conseils pratiques - GARDER GREEN */}
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
           Conseils pour bien jouer ses mains
         </h2>
@@ -480,33 +480,33 @@ export default function MainsPokerPage() {
           </h3>
           <ul className="space-y-3">
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Mémorisez parfaitement la hiérarchie - c'est la base absolue du poker
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Au Hold'em, vous utilisez la meilleure combinaison de 5 cartes parmi 7
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Les kickers sont cruciaux - A-K bat A-Q si les deux ont une paire d'As
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Les couleurs (♠️♥️♦️♣️) n'ont aucune hiérarchie entre elles
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
-                <Link href="/guide-stake" className="underline hover:text-green-300">
+                <Link href="/guide-stake" className="underline hover:text-blue-300">
                   Pratiquez sur Stake
                 </Link> pour mémoriser naturellement toutes les combinaisons
               </span>
@@ -529,7 +529,7 @@ export default function MainsPokerPage() {
           </Link>
           <Link 
             href="/guide-poker/positions-table"
-            className="flex items-center bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition"
+            className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
           >
             Positions à la Table
             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

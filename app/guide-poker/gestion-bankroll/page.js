@@ -6,7 +6,7 @@ export default function GestionBankrollPage() {
     <div className="pb-20 md:pb-0">
       {/* Breadcrumb */}
       <nav className="flex mb-6 text-sm">
-        <Link href="/guide-poker" className="text-green-600 hover:text-green-700">
+        <Link href="/guide-poker" className="text-blue-600 hover:text-blue-700">
           Guide Poker
         </Link>
         <span className="mx-2 text-gray-400">/</span>
@@ -19,7 +19,7 @@ export default function GestionBankrollPage() {
       </h1>
 
       {/* Chapeau */}
-      <div className="bg-green-50 rounded-lg p-6 mb-8">
+      <div className="bg-blue-50 rounded-lg p-6 mb-8">
         <p className="text-lg text-gray-700">
           La gestion de bankroll est LA compétence qui sépare les joueurs récréatifs des professionnels. 
           Peu importe votre niveau technique, sans une gestion rigoureuse de votre capital, vous êtes 
@@ -431,33 +431,33 @@ export default function GestionBankrollPage() {
           </h3>
           <ul className="space-y-3">
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Votre bankroll est votre outil de travail - protégez-la avec des règles strictes
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 30-40 buy-ins minimum en cash game, 100+ en tournois pour absorber la variance
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Descendre de limite n'est pas un échec mais une décision intelligente
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 La discipline dans la gestion bankroll est plus importante que le talent
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
-                <Link href="/guide-stake" className="underline hover:text-green-300">
+                <Link href="/guide-stake" className="underline hover:text-blue-300">
                   Commencez petit sur Stake
                 </Link> et montez progressivement en respectant votre plan
               </span>
@@ -480,7 +480,7 @@ export default function GestionBankrollPage() {
           </Link>
           <Link 
             href="/guide-poker/tells-psychologie"
-            className="flex items-center bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition"
+            className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
           >
             Tells et Psychologie
             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

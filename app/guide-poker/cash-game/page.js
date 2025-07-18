@@ -6,7 +6,7 @@ export default function CashGamePage() {
     <div className="pb-20 md:pb-0">
       {/* Breadcrumb */}
       <nav className="flex mb-6 text-sm">
-        <Link href="/guide-poker" className="text-green-600 hover:text-green-700">
+        <Link href="/guide-poker" className="text-blue-600 hover:text-blue-700">
           Guide Poker
         </Link>
         <span className="mx-2 text-gray-400">/</span>
@@ -19,7 +19,7 @@ export default function CashGamePage() {
       </h1>
 
       {/* Chapeau */}
-      <div className="bg-green-50 rounded-lg p-6 mb-8">
+      <div className="bg-blue-50 rounded-lg p-6 mb-8">
         <p className="text-lg text-gray-700">
           Le cash game est la forme la plus pure du poker. Chaque jeton a une valeur réelle, 
           vous pouvez quitter quand vous voulez, et la variance est plus faible qu'en tournoi. 
@@ -456,33 +456,33 @@ export default function CashGamePage() {
           </h3>
           <ul className="space-y-3">
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 La table selection est votre décision la plus importante - ne jouez que sur de bonnes tables
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Le cash game reward la constance - développez une routine solide et respectez-la
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Exploitez les récréatifs sans pitié - ils sont là pour s'amuser, vous pour profit
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Le volume est roi - visez la qualité ET la quantité pour maximiser l'hourly
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
-                <Link href="/guide-stake" className="underline hover:text-green-300">
+                <Link href="/guide-stake" className="underline hover:text-blue-300">
                   Grindez sur Stake
                 </Link> avec une approche professionnelle et une bankroll management stricte
               </span>
@@ -505,7 +505,7 @@ export default function CashGamePage() {
           </Link>
           <Link 
             href="/guide-poker/poker-en-ligne"
-            className="flex items-center bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition"
+            className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
           >
             Poker en Ligne
             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

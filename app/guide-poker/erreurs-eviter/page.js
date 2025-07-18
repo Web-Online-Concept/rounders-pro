@@ -6,7 +6,7 @@ export default function ErreursEviterPage() {
     <div className="pb-20 md:pb-0">
       {/* Breadcrumb */}
       <nav className="flex mb-6 text-sm">
-        <Link href="/guide-poker" className="text-green-600 hover:text-green-700">
+        <Link href="/guide-poker" className="text-blue-600 hover:text-blue-700">
           Guide Poker
         </Link>
         <span className="mx-2 text-gray-400">/</span>
@@ -19,7 +19,7 @@ export default function ErreursEviterPage() {
       </h1>
 
       {/* Chapeau */}
-      <div className="bg-green-50 rounded-lg p-6 mb-8">
+      <div className="bg-blue-50 rounded-lg p-6 mb-8">
         <p className="text-lg text-gray-700">
           Les erreurs au poker coûtent cher. Que vous soyez débutant ou joueur confirmé, 
           identifier et corriger vos leaks est essentiel pour progresser. Découvrez les pièges 
@@ -445,38 +445,38 @@ export default function ErreursEviterPage() {
           
           <ol className="space-y-3">
             <li className="flex items-start">
-              <span className="bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">1</span>
+              <span className="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">1</span>
               <div>
                 <strong>Audit Honnête</strong>
-                <p className="text-sm text-green-100">Listez vos 5 plus gros leaks actuels</p>
+                <p className="text-sm text-blue-100">Listez vos 5 plus gros leaks actuels</p>
               </div>
             </li>
             <li className="flex items-start">
-              <span className="bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">2</span>
+              <span className="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">2</span>
               <div>
                 <strong>Prioriser</strong>
-                <p className="text-sm text-green-100">Attaquez le leak le plus coûteux en premier</p>
+                <p className="text-sm text-blue-100">Attaquez le leak le plus coûteux en premier</p>
               </div>
             </li>
             <li className="flex items-start">
-              <span className="bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">3</span>
+              <span className="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">3</span>
               <div>
                 <strong>Plan Spécifique</strong>
-                <p className="text-sm text-green-100">Actions concrètes pour chaque leak</p>
+                <p className="text-sm text-blue-100">Actions concrètes pour chaque leak</p>
               </div>
             </li>
             <li className="flex items-start">
-              <span className="bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">4</span>
+              <span className="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">4</span>
               <div>
                 <strong>Mesurer</strong>
-                <p className="text-sm text-green-100">Tracker pour vérifier l'amélioration</p>
+                <p className="text-sm text-blue-100">Tracker pour vérifier l'amélioration</p>
               </div>
             </li>
             <li className="flex items-start">
-              <span className="bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">5</span>
+              <span className="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">5</span>
               <div>
                 <strong>Itérer</strong>
-                <p className="text-sm text-green-100">Nouveau leak → Répéter le processus</p>
+                <p className="text-sm text-blue-100">Nouveau leak → Répéter le processus</p>
               </div>
             </li>
           </ol>
@@ -489,33 +489,33 @@ export default function ErreursEviterPage() {
           </h3>
           <ul className="space-y-3">
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Les erreurs préflop se propagent - une fondation solide évite des catastrophes postflop
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 La bankroll management ennuyeuse protège votre avenir - respectez-la religieusement
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Le tilt et l'ego coûtent plus cher que le manque technique - travaillez votre mental
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Identifier ses leaks nécessite honnêteté et humilité - le déni = stagnation
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
-                <Link href="/guide-stake" className="underline hover:text-green-300">
+                <Link href="/guide-stake" className="underline hover:text-blue-300">
                   Commencez sur Stake aux micro-limites
                 </Link> pour corriger vos erreurs sans pression financière
               </span>
@@ -524,21 +524,21 @@ export default function ErreursEviterPage() {
         </div>
 
         {/* Message final */}
-        <div className="mt-8 bg-gradient-to-r from-green-600 to-green-800 text-white rounded-lg p-6 text-center">
+        <div className="mt-8 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg p-6 text-center">
           <h3 className="text-2xl font-bold mb-4">
             🎯 Le Poker est un Jeu d'Erreurs
           </h3>
           <p className="text-lg mb-4">
             "Celui qui fait le moins d'erreurs gagne." - Doyle Brunson
           </p>
-          <p className="text-green-100">
+          <p className="text-blue-100">
             Acceptez vos erreurs, apprenez d'elles, et transformez-les en profit. 
             La perfection n'existe pas, mais l'amélioration constante mène au succès.
           </p>
           <div className="mt-6">
             <Link 
               href="/guide-stake"
-              className="inline-block bg-white text-green-800 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg"
+              className="inline-block bg-white text-blue-800 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg"
             >
               Commencer sur Stake →
             </Link>
@@ -560,7 +560,7 @@ export default function ErreursEviterPage() {
           </Link>
           <Link 
             href="/guide-poker"
-            className="flex items-center bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition"
+            className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
           >
             Retour au Guide
             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

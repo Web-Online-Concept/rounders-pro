@@ -6,7 +6,7 @@ export default function PokerEnLignePage() {
     <div className="pb-20 md:pb-0">
       {/* Breadcrumb */}
       <nav className="flex mb-6 text-sm">
-        <Link href="/guide-poker" className="text-green-600 hover:text-green-700">
+        <Link href="/guide-poker" className="text-blue-600 hover:text-blue-700">
           Guide Poker
         </Link>
         <span className="mx-2 text-gray-400">/</span>
@@ -19,7 +19,7 @@ export default function PokerEnLignePage() {
       </h1>
 
       {/* Chapeau */}
-      <div className="bg-green-50 rounded-lg p-6 mb-8">
+      <div className="bg-blue-50 rounded-lg p-6 mb-8">
         <p className="text-lg text-gray-700">
           Le poker online offre des avantages uniques : volume de mains énorme, multi-tabling, 
           outils d'analyse avancés et accès 24/7. Découvrez comment optimiser votre setup 
@@ -275,7 +275,7 @@ export default function PokerEnLignePage() {
                 💡 Recommandation Stake
               </h3>
               <p className="text-sm text-gray-700">
-                <Link href="/guide-stake" className="text-green-600 hover:text-green-700 underline font-semibold">
+                <Link href="/guide-stake" className="text-blue-600 hover:text-blue-700 underline font-semibold">
                   Stake
                 </Link> offre une excellente option pour le poker online : 
                 trafic international, rake compétitif, et cashouts crypto rapides. 
@@ -425,33 +425,33 @@ export default function PokerEnLignePage() {
           </h3>
           <ul className="space-y-3">
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Le volume est l'avantage majeur du online - exploitez-le avec le multi-tabling progressif
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 HUD et trackers sont essentiels - investissez et apprenez à les utiliser parfaitement
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Votre setup est votre bureau - optimisez-le pour le confort et l'efficacité
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 La discipline est encore plus importante online - respectez vos horaires et limites
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
-                <Link href="/guide-stake" className="underline hover:text-green-300">
+                <Link href="/guide-stake" className="underline hover:text-blue-300">
                   Stake offre un environnement idéal
                 </Link> pour développer votre jeu online avec tous les formats disponibles
               </span>
@@ -474,7 +474,7 @@ export default function PokerEnLignePage() {
           </Link>
           <Link 
             href="/guide-poker/erreurs-eviter"
-            className="flex items-center bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition"
+            className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
           >
             Erreurs à Éviter
             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

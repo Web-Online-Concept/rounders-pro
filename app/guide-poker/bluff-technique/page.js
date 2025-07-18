@@ -6,7 +6,7 @@ export default function BluffTechniquePage() {
     <div className="pb-20 md:pb-0">
       {/* Breadcrumb */}
       <nav className="flex mb-6 text-sm">
-        <Link href="/guide-poker" className="text-green-600 hover:text-green-700">
+        <Link href="/guide-poker" className="text-blue-600 hover:text-blue-700">
           Guide Poker
         </Link>
         <span className="mx-2 text-gray-400">/</span>
@@ -19,7 +19,7 @@ export default function BluffTechniquePage() {
       </h1>
 
       {/* Chapeau */}
-      <div className="bg-green-50 rounded-lg p-6 mb-8">
+      <div className="bg-blue-50 rounded-lg p-6 mb-8">
         <p className="text-lg text-gray-700">
           Le bluff est l'essence même du poker. C'est ce qui différencie le poker des autres jeux de cartes. 
           Mais bluffer efficacement nécessite timing, observation et courage calculé. Découvrez comment 
@@ -30,7 +30,7 @@ export default function BluffTechniquePage() {
       {/* Contenu principal */}
       <div className="prose prose-lg max-w-none">
         
-        {/* Types de bluffs */}
+        {/* Types de bluffs - PAS DE CHANGEMENT ICI, reste avec les couleurs d'origine blue, red, green, purple */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-blue-700 mb-4">
             Types de Bluffs
@@ -102,7 +102,7 @@ export default function BluffTechniquePage() {
           </div>
         </div>
 
-        {/* Quand bluffer */}
+        {/* Quand bluffer - GARDER GREEN ICI pour la section spécifique */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-green-700 mb-4">
             ⏰ Quand Bluffer - Timing Parfait
@@ -185,7 +185,7 @@ export default function BluffTechniquePage() {
           </div>
         </div>
 
-        {/* Histoire cohérente */}
+        {/* Histoire cohérente - GARDER PURPLE */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-purple-700 mb-4">
             📖 Raconter une Histoire Cohérente
@@ -231,7 +231,7 @@ export default function BluffTechniquePage() {
           </div>
         </div>
 
-        {/* Sizing du bluff */}
+        {/* Sizing du bluff - GARDER ORANGE */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-orange-700 mb-4">
             💰 Sizing du Bluff
@@ -273,7 +273,7 @@ export default function BluffTechniquePage() {
           </div>
         </div>
 
-        {/* Fréquence de bluff */}
+        {/* Fréquence de bluff - GARDER INDIGO/PURPLE GRADIENT */}
         <div className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg p-6 mb-8">
           <h2 className="text-2xl font-bold mb-4">
             📊 Fréquence de Bluff Optimale
@@ -321,7 +321,7 @@ export default function BluffTechniquePage() {
           </div>
         </div>
 
-        {/* Bluffs avancés */}
+        {/* Bluffs avancés - GARDER LES COULEURS VARIÉES */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-red-700 mb-4">
             🚀 Techniques de Bluff Avancées
@@ -410,7 +410,7 @@ export default function BluffTechniquePage() {
           </div>
         </div>
 
-        {/* Exercices pratiques */}
+        {/* Exercices pratiques - GARDER YELLOW */}
         <div className="bg-yellow-50 rounded-lg p-6 mb-8">
           <h2 className="text-xl font-bold text-yellow-800 mb-4">
             📝 Exercices pour Améliorer vos Bluffs
@@ -447,33 +447,33 @@ export default function BluffTechniquePage() {
           </h3>
           <ul className="space-y-3">
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Un bon bluff raconte une histoire cohérente du début à la fin
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Le timing et la sélection des adversaires sont cruciaux - ne bluffez pas les calling stations
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Votre fréquence de bluff doit être équilibrée avec vos value bets
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Les semi-bluffs sont préférables aux pure bluffs - équité + fold equity
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
-                <Link href="/guide-stake" className="underline hover:text-green-300">
+                <Link href="/guide-stake" className="underline hover:text-blue-300">
                   Pratiquez sur Stake
                 </Link> en commençant par des petits bluffs bien timés avant les moves complexes
               </span>
@@ -496,7 +496,7 @@ export default function BluffTechniquePage() {
           </Link>
           <Link 
             href="/guide-poker/tournois-strategie"
-            className="flex items-center bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition"
+            className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
           >
             Stratégie Tournois
             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
