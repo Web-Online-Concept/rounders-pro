@@ -1,6 +1,6 @@
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import BottomBar from '../../components/BottomBar';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import BottomBar from '../components/BottomBar';
 import GuideCasinoSidebar from './GuideCasinoSidebar';
 
 export const metadata = {
