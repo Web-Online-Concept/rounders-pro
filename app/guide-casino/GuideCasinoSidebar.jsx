@@ -232,7 +232,7 @@ export default function GuideCasinoSidebar() {
           </nav>
           <div className="mt-8">
             <Link
-              href="/nos-jeux"
+              href="/guide-stake
               className="block w-full bg-red-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-red-700 transition"
             >
               Jouer au Casino →

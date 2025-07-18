@@ -110,7 +110,7 @@ export default function GuideCasinoPage() {
             Commencer le Guide →
           </Link>
           <Link
-            href="/nos-jeux"
+            href="/guide-stake"
             className="inline-block bg-gray-800 text-white px-6 py-3 rounded-lg font-bold hover:bg-gray-900 transition shadow-lg text-center"
           >
             Jouer au Casino →
@@ -192,7 +192,7 @@ export default function GuideCasinoPage() {
             Débuter le Guide →
           </Link>
           <Link
-            href="/nos-jeux"
+            href="/guide-stake"
             className="inline-block bg-red-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-red-500 transition shadow-lg"
           >
             Jouer au Casino →
