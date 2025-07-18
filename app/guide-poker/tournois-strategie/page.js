@@ -125,7 +125,7 @@ export default function TournoisStrategiePage() {
                   <ul className="text-xs space-y-1">
                     <li>• Push/fold strategy</li>
                     <li>• Chercher les spots +cEV</li>
-                    <li>• Ignorer l'ICM si < 10BB</li>
+                    <li>• Ignorer l'ICM si {'<'} 10BB</li>
                     <li>• Viser les double-ups</li>
                   </ul>
                 </div>
@@ -270,7 +270,7 @@ export default function TournoisStrategiePage() {
 
             {/* Micro Stack */}
             <div className="bg-white border-2 border-red-200 rounded p-4">
-              <h3 className="font-semibold text-red-700 mb-2">🔥 Micro Stack (<10BB)</h3>
+              <h3 className="font-semibold text-red-700 mb-2">🔥 Micro Stack ({'<'}10BB)</h3>
               <ul className="text-sm space-y-1">
                 <li>• Push/fold strict selon les charts</li>
                 <li>• Ignorer l'ICM, jouer pour chip EV</li>

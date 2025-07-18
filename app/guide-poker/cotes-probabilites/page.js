@@ -260,7 +260,7 @@ export default function CotesProbabilitesPage() {
           <div className="bg-gray-100 rounded p-4 mb-4">
             <h3 className="font-bold mb-2">📐 Calcul de l'EV</h3>
             <div className="bg-white rounded p-3 font-mono">
-              <p className="text-center mb-2">EV = (% Victoire × Gain) - (% Défaite × Perte)</p>
+              <p className="text-center mb-2">EV = (% Victoire {'×'} Gain) - (% Défaite {'×'} Perte)</p>
             </div>
           </div>
 
@@ -273,7 +273,7 @@ export default function CotesProbabilitesPage() {
             <div className="bg-gray-50 rounded p-2 text-sm">
               <p>• Si touché (18%) : Gain = 150€</p>
               <p>• Si raté (82%) : Perte = 50€</p>
-              <p>• EV = (0.18 × 150) - (0.82 × 50)</p>
+              <p>• EV = (0.18 {'×'} 150) - (0.82 {'×'} 50)</p>
               <p>• EV = 27 - 41 = <span className="font-bold text-red-600">-14€</span></p>
               <p className="mt-1 font-semibold">→ Call -EV sans implied odds</p>
             </div>
