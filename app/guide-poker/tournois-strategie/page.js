@@ -331,7 +331,7 @@ export default function TournoisStrategiePage() {
                 Les satellites ont une structure de paiement unique : tous les qualifiés gagnent le même prix.
               </p>
               <ul className="text-xs space-y-1">
-                <li>• Survie > accumulation de jetons</li>
+                <li>• Survie {'>'} accumulation de jetons</li>
                 <li>• Éviter les confrontations avec stacks similaires</li>
                 <li>• Exploiter les joueurs qui jouent pour gagner</li>
                 <li>• Fold même AA près de la qualification si nécessaire</li>
@@ -379,8 +379,8 @@ export default function TournoisStrategiePage() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-white border-2 border-yellow-200 rounded p-4">
-              <h3 className="font-semibold text-yellow-700 mb-2">Considérations ICM</h3>
+            <div className="bg-white border-2 border-orange-200 rounded p-4">
+              <h3 className="font-semibold text-orange-700 mb-2">Considérations ICM</h3>
               <ul className="text-sm space-y-1">
                 <li>• Pay jumps énormes entre chaque place</li>
                 <li>• Pression maximale sur les moyens stacks</li>
@@ -389,8 +389,8 @@ export default function TournoisStrategiePage() {
               </ul>
             </div>
             
-            <div className="bg-white border-2 border-yellow-200 rounded p-4">
-              <h3 className="font-semibold text-yellow-700 mb-2">Ajustements</h3>
+            <div className="bg-white border-2 border-orange-200 rounded p-4">
+              <h3 className="font-semibold text-orange-700 mb-2">Ajustements</h3>
               <ul className="text-sm space-y-1">
                 <li>• Jouer plus serré vs stacks similaires</li>
                 <li>• Attaquer les joueurs qui "ladder"</li>
