@@ -6,7 +6,7 @@ export default function PositionsTablePage() {
     <div className="pb-20 md:pb-0">
       {/* Breadcrumb */}
       <nav className="flex mb-6 text-sm">
-        <Link href="/guide-poker" className="text-green-600 hover:text-green-700">
+        <Link href="/guide-poker" className="text-blue-600 hover:text-blue-700">
           Guide Poker
         </Link>
         <span className="mx-2 text-gray-400">/</span>
@@ -19,7 +19,7 @@ export default function PositionsTablePage() {
       </h1>
 
       {/* Chapeau */}
-      <div className="bg-green-50 rounded-lg p-6 mb-8">
+      <div className="bg-blue-50 rounded-lg p-6 mb-8">
         <p className="text-lg text-gray-700">
           Au poker, la position est votre arme la plus puissante. Jouer en position vous donne un 
           avantage considérable : vous agissez après vos adversaires et disposez de plus d'informations. 
@@ -280,7 +280,7 @@ export default function PositionsTablePage() {
         </div>
 
         {/* Avantages de la position */}
-        <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg p-6 mb-8">
+        <div className="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg p-6 mb-8">
           <h2 className="text-2xl font-bold mb-4">
             🎯 Les 5 avantages majeurs de la position
           </h2>
@@ -288,35 +288,35 @@ export default function PositionsTablePage() {
           <div className="space-y-4">
             <div className="bg-white bg-opacity-20 rounded p-4">
               <h3 className="font-bold mb-2">1. Information = Pouvoir</h3>
-              <p className="text-green-100">
+              <p className="text-blue-100">
                 Voir les actions des adversaires avant de décider. Plus de données = meilleures décisions.
               </p>
             </div>
             
             <div className="bg-white bg-opacity-20 rounded p-4">
               <h3 className="font-bold mb-2">2. Contrôle du pot</h3>
-              <p className="text-green-100">
+              <p className="text-blue-100">
                 En position, vous décidez de la taille du pot. Check pour le garder petit, bet pour le grossir.
               </p>
             </div>
             
             <div className="bg-white bg-opacity-20 rounded p-4">
               <h3 className="font-bold mb-2">3. Bluff plus efficace</h3>
-              <p className="text-green-100">
+              <p className="text-blue-100">
                 Les bluffs en position sont plus crédibles et réussissent plus souvent.
               </p>
             </div>
             
             <div className="bg-white bg-opacity-20 rounded p-4">
               <h3 className="font-bold mb-2">4. Value bet optimisée</h3>
-              <p className="text-green-100">
+              <p className="text-blue-100">
                 Extraire le maximum de value avec vos bonnes mains en ajustant selon les actions adverses.
               </p>
             </div>
             
             <div className="bg-white bg-opacity-20 rounded p-4">
               <h3 className="font-bold mb-2">5. Carte gratuite</h3>
-              <p className="text-green-100">
+              <p className="text-blue-100">
                 Possibilité de check behind pour voir la carte suivante gratuitement avec un tirage.
               </p>
             </div>
@@ -458,33 +458,33 @@ export default function PositionsTablePage() {
           </h3>
           <ul className="space-y-3">
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 La position est l'avantage le plus important au poker - utilisez-la sans pitié
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Jouez serré en début de parole (UTG) et élargissez progressivement jusqu'au bouton
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Le bouton est la position la plus profitable - maximisez son exploitation
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
                 Les blinds sont structurellement perdantes - minimisez les pertes avec une défense solide
               </span>
             </li>
             <li className="flex items-start">
-              <span className="text-green-400 mr-2 text-xl">✓</span>
+              <span className="text-blue-400 mr-2 text-xl">✓</span>
               <span>
-                <Link href="/guide-stake" className="underline hover:text-green-300">
+                <Link href="/guide-stake" className="underline hover:text-blue-300">
                   Pratiquez sur Stake
                 </Link> en observant comment les bons joueurs exploitent leur position
               </span>
@@ -507,7 +507,7 @@ export default function PositionsTablePage() {
           </Link>
           <Link 
             href="/guide-poker/preflop-strategy"
-            className="flex items-center bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition"
+            className="flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
           >
             Stratégie Préflop
             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
