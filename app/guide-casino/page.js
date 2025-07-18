@@ -125,7 +125,7 @@ export default function GuideCasinoPage() {
           <div className="text-sm text-gray-600">Chapitres</div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 text-center">
-          <div className="text-2xl font-bold text-blue-600">50+</div>
+          <div className="text-2xl font-bold text-blue-600">10+</div>
           <div className="text-sm text-gray-600">Stratégies</div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 text-center">
