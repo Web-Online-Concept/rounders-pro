@@ -285,7 +285,7 @@ export default function PostflopPlayPage() {
             <h3 className="font-bold text-green-700 mb-3">💰 Value Bet River</h3>
             <div className="bg-green-50 rounded p-4">
               <p className="text-sm text-gray-700 mb-2">
-                Pour value bet river, vous devez gagner >50% quand payé.
+                Pour value bet river, vous devez gagner {'>'}50% quand payé.
               </p>
               <div className="bg-white rounded p-3 mt-2">
                 <p className="font-semibold text-sm mb-2">Questions à se poser :</p>
@@ -340,7 +340,7 @@ export default function PostflopPlayPage() {
                 <p className="font-semibold text-sm mb-2">Facteurs pour hero call :</p>
                 <ul className="text-sm space-y-1">
                   <li>• L'histoire est-elle cohérente ?</li>
-                  <li>• L'adversaire bluff-t-il assez ? (>33% avec pot bet)</li>
+                  <li>• L'adversaire bluff-t-il assez ? ({'>'}33% avec pot bet)</li>
                   <li>• Avez-vous des blockers sur ses value hands ?</li>
                   <li>• Votre image induit-elle le bluff ?</li>
                   <li>• Le sizing suggère-t-il bluff ou value ?</li>
@@ -430,7 +430,7 @@ export default function PostflopPlayPage() {
             
             <div className="flex items-center justify-between bg-white border-2 border-red-200 rounded p-3">
               <div>
-                <span className="font-semibold">Overbet (>100% pot)</span>
+                <span className="font-semibold">Overbet ({'>'}100% pot)</span>
                 <p className="text-xs text-gray-600">Nuts ou bluff, max pressure</p>
               </div>
               <span className="text-red-600 font-bold">Extreme</span>

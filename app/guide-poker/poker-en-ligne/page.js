@@ -181,7 +181,7 @@ export default function PokerEnLignePage() {
             <h3 className="font-semibold mb-2">🎯 Profils Types (6-max)</h3>
             <div className="space-y-2 text-sm">
               <div>
-                <strong>Nit :</strong> VPIP < 15%, PFR < 12%
+                <strong>Nit :</strong> VPIP {'<'} 15%, PFR {'<'} 12%
                 <span className="text-xs block text-gray-600">→ Ultra serré, exploitable</span>
               </div>
               <div>
@@ -193,7 +193,7 @@ export default function PokerEnLignePage() {
                 <span className="text-xs block text-gray-600">→ Loose-aggressive, dangereux</span>
               </div>
               <div>
-                <strong>Fish :</strong> VPIP > 35%, PFR < 15%
+                <strong>Fish :</strong> VPIP {'>'} 35%, PFR {'<'} 15%
                 <span className="text-xs block text-gray-600">→ Passif, cible prioritaire</span>
               </div>
             </div>

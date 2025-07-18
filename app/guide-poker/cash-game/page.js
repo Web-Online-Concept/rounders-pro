@@ -153,7 +153,7 @@ export default function CashGamePage() {
               <div className="bg-green-50 rounded p-3">
                 <h4 className="font-semibold text-sm mb-2">Stats à rechercher</h4>
                 <ul className="text-xs space-y-1">
-                  <li>• VPIP moyen > 30%</li>
+                  <li>• VPIP moyen {'>'} 30%</li>
                   <li>• Plusieurs joueurs 40%+ VPIP</li>
                   <li>• Beaucoup de limpers</li>
                   <li>• Pots multiway fréquents</li>
@@ -379,7 +379,7 @@ export default function CashGamePage() {
             <div>
               <h3 className="font-semibold mb-2">Durée Optimale</h3>
               <p className="text-sm text-gray-700">
-                2-4 heures pour la concentration maximale. Qualité > Quantité. 
+                2-4 heures pour la concentration maximale. Qualité {'>'} Quantité. 
                 Faites des pauses de 5 min toutes les heures.
               </p>
             </div>

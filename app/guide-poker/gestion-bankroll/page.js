@@ -267,7 +267,7 @@ export default function GestionBankrollPage() {
               <div className="space-y-2">
                 <div className="flex items-center">
                   <span className="text-red-600 mr-2">✓</span>
-                  <span className="text-sm">Bankroll < 20 buy-ins de la limite actuelle</span>
+                  <span className="text-sm">Bankroll {'<'} 20 buy-ins de la limite actuelle</span>
                 </div>
                 <div className="flex items-center">
                   <span className="text-red-600 mr-2">✓</span>

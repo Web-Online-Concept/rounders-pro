@@ -50,7 +50,7 @@ export default function ErreursEviterPage() {
                 <div className="bg-red-50 rounded p-3">
                   <p className="text-xs font-semibold mb-1">❌ L'erreur :</p>
                   <ul className="text-xs space-y-0.5">
-                    <li>• VPIP > 30% en 6-max</li>
+                    <li>• VPIP {'>'} 30% en 6-max</li>
                     <li>• Jouer K2o, Q7s, J8o...</li>
                     <li>• "Mais c'est suited!"</li>
                     <li>• Chasser l'action</li>
@@ -61,7 +61,7 @@ export default function ErreursEviterPage() {
                   <ul className="text-xs space-y-0.5">
                     <li>• Ranges strictes par position</li>
                     <li>• Fold pré sans hésiter</li>
-                    <li>• Qualité > Quantité</li>
+                    <li>• Qualité {'>'} Quantité</li>
                     <li>• Patience = Profit</li>
                   </ul>
                 </div>
@@ -112,7 +112,7 @@ export default function ErreursEviterPage() {
                     <li>• 4-bet ou fold mostly</li>
                     <li>• Call only IP</li>
                     <li>• Ranges polarisées</li>
-                    <li>• Position > Cartes</li>
+                    <li>• Position {'>'} Cartes</li>
                   </ul>
                 </div>
               </div>
@@ -167,7 +167,7 @@ export default function ErreursEviterPage() {
                     <li>• Calculer TOUJOURS</li>
                     <li>• Fold si -EV</li>
                     <li>• Considérer implied odds</li>
-                    <li>• Discipline > Espoir</li>
+                    <li>• Discipline {'>'} Espoir</li>
                   </ul>
                 </div>
               </div>
@@ -241,7 +241,7 @@ export default function ErreursEviterPage() {
 
           <div className="mt-4 bg-white bg-opacity-10 rounded p-4">
             <p className="text-center font-semibold">
-              "La bankroll management ennuyeuse > Les moves fancy excitants"
+              "La bankroll management ennuyeuse {'>'} Les moves fancy excitants"
             </p>
           </div>
         </div>
@@ -260,7 +260,7 @@ export default function ErreursEviterPage() {
 
           <div className="space-y-4">
             <div className="bg-white border-2 border-purple-200 rounded p-4">
-              <h3 className="font-semibold text-purple-700 mb-2">7. Résultats > Processus</h3>
+              <h3 className="font-semibold text-purple-700 mb-2">7. Résultats {'>'} Processus</h3>
               <p className="text-sm text-gray-700 mb-2">
                 Focus sur les gains court terme plutôt que les bonnes décisions.
               </p>
