@@ -166,11 +166,11 @@ export default function GuidePokerSidebar() {
               <div className="border-t mx-8 my-2"></div>
               <div className="px-4 py-3">
                 <Link
-                  href="/poker"
+                  href="/guide-stake"
                   className="block w-full bg-green-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-green-700 transition"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Jouer au Poker →
+                  Jouer sur Stake →
                 </Link>
               </div>
             </div>
@@ -232,10 +232,10 @@ export default function GuidePokerSidebar() {
           </nav>
           <div className="mt-8">
             <Link
-              href="/poker"
+              href="/guide-stake"
               className="block w-full bg-green-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-green-700 transition"
             >
-              Jouer au Poker →
+              Jouer sur Stake →
             </Link>
           </div>
         </div>

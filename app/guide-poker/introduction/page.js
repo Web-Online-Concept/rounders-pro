@@ -234,8 +234,12 @@ export default function IntroductionPage() {
             <li className="flex items-start">
               <span className="bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">2</span>
               <div>
-                <strong>Jouez en argent fictif</strong>
-                <p className="text-green-100">Pratiquez sans risque pour vous familiariser avec le jeu</p>
+                <strong>Créez un compte sur Stake</strong>
+                <p className="text-green-100">
+                  <Link href="/guide-stake" className="underline hover:text-green-200">
+                    Suivez notre guide Stake
+                  </Link> pour vous inscrire et commencer
+                </p>
               </div>
             </li>
             <li className="flex items-start">
@@ -248,8 +252,12 @@ export default function IntroductionPage() {
             <li className="flex items-start">
               <span className="bg-white text-green-600 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">4</span>
               <div>
-                <strong>Commencez aux micro-limites</strong>
-                <p className="text-green-100">Jouez petit pour apprendre sans pression financière</p>
+                <strong>Commencez aux micro-limites sur Stake</strong>
+                <p className="text-green-100">
+                  <Link href="/guide-stake" className="underline hover:text-green-200">
+                    Stake propose des tables adaptées
+                  </Link> aux débutants
+                </p>
               </div>
             </li>
             <li className="flex items-start">

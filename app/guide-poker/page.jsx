@@ -110,10 +110,10 @@ export default function GuidePokerPage() {
             Commencer le Guide →
           </Link>
           <Link
-            href="/poker"
+            href="/guide-stake"
             className="inline-block bg-gray-800 text-white px-6 py-3 rounded-lg font-bold hover:bg-gray-900 transition shadow-lg text-center"
           >
-            Jouer au Poker →
+            Jouer sur Stake →
           </Link>
         </div>
       </div>
@@ -192,10 +192,10 @@ export default function GuidePokerPage() {
             Débuter le Guide →
           </Link>
           <Link
-            href="/poker"
+            href="/guide-stake"
             className="inline-block bg-green-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-green-500 transition shadow-lg"
           >
-            Jouer Maintenant →
+            Jouer sur Stake →
           </Link>
         </div>
       </div>
