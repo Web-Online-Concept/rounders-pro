@@ -11,14 +11,14 @@ export default function GuidePokerSidebar() {
   const linkClass = (path) =>
     `block px-4 py-2 rounded ${
       pathname === path
-        ? 'bg-green-100 text-green-700 font-semibold'
+        ? 'bg-blue-100 text-blue-700 font-semibold'
         : 'text-gray-700 hover:bg-gray-100'
     }`;
 
   const mobileLinkClass = (path) =>
     `block px-6 py-3 ${
       pathname === path
-        ? 'bg-green-100 text-green-700 font-semibold border-l-4 border-green-500'
+        ? 'bg-blue-100 text-blue-700 font-semibold border-l-4 border-blue-500'
         : 'text-gray-700 hover:bg-gray-50'
     }`;
 
@@ -29,7 +29,7 @@ export default function GuidePokerSidebar() {
         <div className="sticky top-0 z-40">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="w-full py-3 px-4 bg-green-600 text-white font-bold flex items-center justify-center hover:bg-green-700 transition-colors border-b"
+            className="w-full py-3 px-4 bg-blue-600 text-white font-bold flex items-center justify-center hover:bg-blue-700 transition-colors border-b"
           >
             <span className="mr-2">{mobileMenuOpen ? '✕' : '☰'}</span>
             Menu Guide Poker
@@ -47,11 +47,11 @@ export default function GuidePokerSidebar() {
             className="fixed left-0 top-0 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="bg-green-600 text-white p-4 flex justify-between items-center">
+            <div className="bg-blue-600 text-white p-4 flex justify-between items-center">
               <h2 className="text-lg font-bold">Menu Guide Poker</h2>
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-2xl hover:text-green-200"
+                className="text-2xl hover:text-blue-200"
               >
                 ✕
               </button>
@@ -167,7 +167,7 @@ export default function GuidePokerSidebar() {
               <div className="px-4 py-3">
                 <Link
                   href="/guide-stake"
-                  className="block w-full bg-green-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-green-700 transition"
+                  className="block w-full bg-blue-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Jouer sur Stake →
@@ -233,7 +233,7 @@ export default function GuidePokerSidebar() {
           <div className="mt-8">
             <Link
               href="/guide-stake"
-              className="block w-full bg-green-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-green-700 transition"
+              className="block w-full bg-blue-600 text-white text-center px-4 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
             >
               Jouer sur Stake →
             </Link>

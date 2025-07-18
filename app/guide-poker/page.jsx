@@ -94,7 +94,7 @@ export default function GuidePokerPage() {
   return (
     <div className="pb-20 md:pb-0">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-green-50 to-white rounded-xl p-8 mb-8">
+      <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-8 mb-8">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
           Guide Ultime du Poker
         </h1>
@@ -105,7 +105,7 @@ export default function GuidePokerPage() {
         <div className="flex flex-col sm:flex-row gap-4">
           <Link
             href="/guide-poker/introduction"
-            className="inline-block bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-lg text-center"
+            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg text-center"
           >
             Commencer le Guide →
           </Link>
@@ -121,7 +121,7 @@ export default function GuidePokerPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <div className="bg-white rounded-lg shadow p-4 text-center">
-          <div className="text-2xl font-bold text-green-600">14</div>
+          <div className="text-2xl font-bold text-blue-600">14</div>
           <div className="text-sm text-gray-600">Chapitres</div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 text-center">
@@ -145,13 +145,13 @@ export default function GuidePokerPage() {
             key={section.href}
             href={section.href}
             className={`block bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group ${
-              section.highlight ? 'ring-2 ring-green-500' : ''
+              section.highlight ? 'ring-2 ring-blue-500' : ''
             }`}
           >
             <div className="p-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 group-hover:text-green-600 transition">
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition">
                     {section.title}
                   </h2>
                   <p className="text-gray-600">
@@ -161,7 +161,7 @@ export default function GuidePokerPage() {
                 <div className="ml-4 flex-shrink-0">
                   <span className={`inline-block px-3 py-1 text-xs font-bold rounded-full ${
                     section.highlight 
-                      ? 'bg-green-100 text-green-700' 
+                      ? 'bg-blue-100 text-blue-700' 
                       : 'bg-gray-100 text-gray-700'
                   }`}>
                     {section.tag}
@@ -170,30 +170,30 @@ export default function GuidePokerPage() {
               </div>
             </div>
             <div className={`h-1 ${
-              section.highlight ? 'bg-green-500' : 'bg-green-600'
+              section.highlight ? 'bg-blue-500' : 'bg-blue-600'
             } transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`} />
           </Link>
         ))}
       </div>
 
       {/* Bottom CTA */}
-      <div className="mt-12 bg-gradient-to-r from-green-700 to-green-900 text-white rounded-xl p-8 text-center">
+      <div className="mt-12 bg-gradient-to-r from-blue-700 to-blue-900 text-white rounded-xl p-8 text-center">
         <h3 className="text-2xl font-bold mb-4">
           ♠️ Prêt à devenir un joueur gagnant ?
         </h3>
-        <p className="text-green-100 mb-6">
-          Commencez par les bases et progressez jusqu\'aux stratégies avancées des pros
+        <p className="text-blue-100 mb-6">
+          Commencez par les bases et progressez jusqu'aux stratégies avancées des pros
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/guide-poker/introduction"
-            className="inline-block bg-white text-green-800 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg"
+            className="inline-block bg-white text-blue-800 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition shadow-lg"
           >
             Débuter le Guide →
           </Link>
           <Link
             href="/guide-stake"
-            className="inline-block bg-green-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-green-500 transition shadow-lg"
+            className="inline-block bg-blue-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-500 transition shadow-lg"
           >
             Jouer sur Stake →
           </Link>
