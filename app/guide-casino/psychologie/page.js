@@ -522,7 +522,7 @@ export default function PsychologiePage() {
             </li>
             <li className="flex items-start">
               <span className="text-blue-600 font-bold mr-2">10.</span>
-              <span className="text-gray-700">Connaître ses limites mentales > connaître les stratégies</span>
+              <span className="text-gray-700">Connaître ses limites mentales {'>'} connaître les stratégies</span>
             </li>
           </ol>
         </div>
