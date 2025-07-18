@@ -126,7 +126,7 @@ export default function GuidePokerPage() {
         </div>
         <div className="bg-white rounded-lg shadow p-4 text-center">
           <div className="text-2xl font-bold text-blue-600">50+</div>
-          <div className="text-sm text-gray-600">Concepts</div>
+          <div className="text-sm text-gray-600">Conseils</div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 text-center">
           <div className="text-2xl font-bold text-purple-600">PRO</div>
